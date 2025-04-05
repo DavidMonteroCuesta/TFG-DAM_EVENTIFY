@@ -1,3 +1,7 @@
+<style>
+    p {text-align:justify}
+</style>
+
 # Elección de base de datos para Eventify
 
 ## Objetivo

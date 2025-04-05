@@ -1,3 +1,7 @@
+<style>
+    p {text-align:justify}
+</style>
+
 # Funcionalidades de los Calendarios en iOS y Android  
 
 Los calendarios de **iOS (Apple Calendar)** y **Android (Google Calendar)** ofrecen una variedad de funcionalidades diseñadas para la gestión de eventos, recordatorios y planificación.  

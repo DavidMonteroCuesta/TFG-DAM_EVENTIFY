@@ -1,3 +1,7 @@
+<style>
+    p {text-align:justify}
+</style>
+
 # FLUTTER VS KOTLIN MULTIPLATFORM
 ## FLUTTER
 Flutter, desarrollado por Google, es un framework que permite crear aplicaciones multiplataforma con un solo código base, utilizando el lenguaje *Dart*.

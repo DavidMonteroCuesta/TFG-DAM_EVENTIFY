@@ -1,3 +1,7 @@
+<style>
+    p {text-align:justify}
+</style>
+
 # Requisitos de Eventify
 
 ## Necesidades del Usuario
@@ -30,7 +34,7 @@
 
 ---
 
-## 🚫 Requisitos No Funcionales
+## Requisitos No Funcionales
 
 1. **Rendimiento**
    - La aplicación debe **responder rápidamente** y mantener una experiencia fluida.
