@@ -1,122 +1,193 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+// Define el widget de botones de navegación
+class BottomNavigationBarButtons extends StatelessWidget {
+  const BottomNavigationBarButtons({super.key});
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.1,
+      decoration: const BoxDecoration(
+        color: Color(0xFF2B2B2B),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(width: 20), // Espacio antes de los botones
+          IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).colorScheme.primary, // Usando el color primario del tema
+              size: 24,
+            ),
+            onPressed: () {
+              print('IconButton pressed ...');
+            },
+          ),
+          const SizedBox(width: 30), // Espacio entre botones
+          IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).colorScheme.primary, // Usando el color primario del tema
+              size: 24,
+            ),
+            onPressed: () {
+              print('IconButton pressed ...');
+            },
+          ),
+          const SizedBox(width: 30), // Espacio entre botones
+          IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).colorScheme.primary, // Usando el color primario del tema
+              size: 24,
+            ),
+            onPressed: () {
+              print('IconButton pressed ...');
+            },
+          ),
+          const SizedBox(width: 30), // Espacio entre botones
+          IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).colorScheme.primary, // Usando el color primario del tema
+              size: 24,
+            ),
+            onPressed: () {
+              print('IconButton pressed ...');
+            },
+          ),
+          const SizedBox(width: 20), // Espacio después de los botones
+        ],
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// Define el widget de MonthButton
+class MonthButton extends StatelessWidget {
+  const MonthButton({
+    super.key,
+    required this.monthName,
+    required this.backgroundColor,
+    required this.textColor,
+    required this.textStyle,
+  });
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final String monthName;
+  final Color backgroundColor;
+  final Color textColor;
+  final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.3,
+      height: MediaQuery.of(context).size.height * 0.13,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(10),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          monthName,
+          style: textStyle.copyWith(color: textColor),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+// Define el widget de MonthSelector
+class MonthSelector extends StatelessWidget {
+  const MonthSelector({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Color monthButtonBackgroundColor = Theme.of(context).primaryColor;
+    final Color monthButtonTextColor = Colors.white;
+    const TextStyle monthButtonTextStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 18,
+      letterSpacing: 0.0,
+      fontWeight: FontWeight.w600,
+    );
+
+    return Align(
+      alignment: AlignmentDirectional(0, 0),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MonthButton(
+                monthName: 'JANUARY',
+                backgroundColor: monthButtonBackgroundColor,
+                textColor: monthButtonTextColor,
+                textStyle: monthButtonTextStyle,
+              ),
+              MonthButton(
+                monthName: 'FEBRUARY',
+                backgroundColor: monthButtonBackgroundColor,
+                textColor: monthButtonTextColor,
+                textStyle: monthButtonTextStyle,
+              ),
+              MonthButton(
+                monthName: 'MARCH',
+                backgroundColor: monthButtonBackgroundColor,
+                textColor: monthButtonTextColor,
+                textStyle: monthButtonTextStyle,
+              ),
+              MonthButton(
+                monthName: 'APRIL',
+                backgroundColor: monthButtonBackgroundColor,
+                textColor: monthButtonTextColor,
+                textStyle: monthButtonTextStyle,
+              ),
+              // Puedes agregar más botones de meses aquí
+            ].expand((monthButton) => [monthButton, const SizedBox(width: 8)]).toList(), // Añadiendo espacio entre los botones
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// La pantalla principal que usa BottomNavigationBarButtons y MonthSelector
+class MonthScreen extends StatelessWidget {
+  const MonthScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Month Selector Screen"),
+      ),
+      body: Column(
+        children: [
+          // Primer widget, el selector de meses
+          const MonthSelector(),
+          // Un espacio entre el selector de meses y la barra de navegación
+          const SizedBox(height: 20),
+          // Segundo widget, los botones de navegación
+          const BottomNavigationBarButtons(),
+        ],
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: const MonthScreen(),
+  ));
+}
+
