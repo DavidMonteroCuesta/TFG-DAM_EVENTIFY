@@ -29,7 +29,6 @@ class EventifyAuthLayout extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Encabezado: “EVENTIFY”
                   Text(
                     'EVENTIFY',
                     style: TextStyle(

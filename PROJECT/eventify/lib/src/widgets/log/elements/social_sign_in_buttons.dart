@@ -7,17 +7,20 @@ class SocialSignInButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        SocialSignInButton( // Use the correct widget here
-          icon: Icons.g_mobiledata,
+      children: [
+        SocialSignInButton(
+          icon: Image.asset(
+            'assets/icons/google.png',
+            height: 18,
+          ),
           text: 'Continue with Google',
-          onPressed: null, // You can pass your Google sign-in logic here
+          onPressed: null,
         ),
-        SizedBox(height: 10),
-        SocialSignInButton( // Use the correct widget here
-          icon: Icons.apple,
+        const SizedBox(height: 10),
+        SocialSignInButton(
+          icon: const Icon(Icons.apple), 
           text: 'Continue with Apple',
-          onPressed: null, // You can pass your Apple sign-in logic here
+          onPressed: null,
         ),
       ],
     );

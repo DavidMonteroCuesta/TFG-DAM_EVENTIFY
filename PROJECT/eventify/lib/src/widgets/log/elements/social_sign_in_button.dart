@@ -1,9 +1,8 @@
-// widgets/log/widgets/social_sign_in_button.dart
 import 'package:flutter/material.dart';
 
 class SocialSignInButton extends StatelessWidget {
   final String text;
-  final IconData icon;
+  final Widget icon;
   final VoidCallback? onPressed;
 
   const SocialSignInButton({
@@ -22,7 +21,7 @@ class SocialSignInButton extends StatelessWidget {
           foregroundColor: Colors.white,
           side: const BorderSide(color: Colors.grey),
         ),
-        icon: Icon(icon),
+        icon: icon,
         label: Text(text),
         onPressed: onPressed,
       ),

@@ -2,24 +2,26 @@ import 'package:eventify/src/widgets/calendar/elements/month_row.dart';
 import 'package:flutter/material.dart';
 
 class Calendar extends StatelessWidget {
-  Calendar({super.key});
+  const Calendar({super.key});
 
   final List<String> months = const [
-    'January', 'February', 'March',
-    'April', 'May', 'June',
-    'July', 'August', 'September',
-    'October', 'November', 'December',
+    'JANUARY', 'FEBRUARY', 'MARCH',
+    'APRIL', 'MAY', 'JUNE',
+    'JULY', 'AUGUST', 'SEPTEMBER',
+    'OCTOBER', 'NOVEMBER', 'DECEMBER',
   ];
 
-  final List<int> notifications = List.generate(12, (index) => 0);
+  final List<int> notifications = const [
+    0, 7, 0,
+    5, 0, 4,
+    0, 3, 9,
+    0, 1, 0,
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-      child: Column(
-        children: _buildMonthRows(MediaQuery.of(context).size.width),
-      ),
+    return Column(
+      children: _buildMonthRows(MediaQuery.of(context).size.width),
     );
   }
 

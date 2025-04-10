@@ -13,7 +13,8 @@ class PrimaryButton extends StatelessWidget {
       height: 48,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF90B77D),
+          backgroundColor: Colors.greenAccent.shade400, // Establece aquí el verde claro
+          foregroundColor: Colors.black, // Asegúrate de que el texto sea legible
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),

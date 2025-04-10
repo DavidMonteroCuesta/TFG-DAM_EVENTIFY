@@ -1,6 +1,6 @@
-import 'package:eventify/src/widgets/log/login/signin_screen.dart' show SignInScreen;
+import 'package:eventify/src/widgets/calendar/months_screen.dart';
+import 'package:eventify/src/widgets/log/login/sign_in_screen.dart' show SignInScreen;
 import 'package:flutter/material.dart';
-// import 'sign_up_screen.dart'; // Alternativamente, inicia en registro
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.grey[900],
       ),
-      home: const SignInScreen(),
+      home: const MonthsScreen(),
     );
   }
 }

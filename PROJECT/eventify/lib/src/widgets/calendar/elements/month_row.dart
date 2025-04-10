@@ -10,9 +10,9 @@ class MonthRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0), // Añade padding horizontal aquí si es necesario para cada fila
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: rowMonths.asMap().entries.map((entry) {
           final index = entry.key;
           final month = entry.value;
