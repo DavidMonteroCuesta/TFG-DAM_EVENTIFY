@@ -1,6 +1,6 @@
-import 'package:eventify/src/widgets/months/elements/calendar.dart';
-import 'package:eventify/src/widgets/months/elements/footer.dart';
-import 'package:eventify/src/widgets/months/elements/header.dart';
+import 'package:eventify/src/widgets/calendar/elements/calendar.dart';
+import 'package:eventify/src/widgets/calendar/elements/footer.dart';
+import 'package:eventify/src/widgets/calendar/elements/header.dart';
 import 'package:flutter/material.dart';
 
 class MonthsScreen extends StatelessWidget {

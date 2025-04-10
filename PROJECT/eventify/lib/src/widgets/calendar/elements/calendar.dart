@@ -1,4 +1,4 @@
-import 'package:eventify/src/widgets/months/elements/month_row.dart';
+import 'package:eventify/src/widgets/calendar/elements/month_row.dart';
 import 'package:flutter/material.dart';
 
 class Calendar extends StatelessWidget {
