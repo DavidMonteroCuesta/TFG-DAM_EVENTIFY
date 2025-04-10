@@ -11,7 +11,7 @@ class MonthsScreen extends StatelessWidget {
     'title': 'Reunión importante...',
     'type': 'Trabajo',
     'date': '2025-04-11 10:00:00',
-    'priority': 'Alta',
+    'priority': 'Crítica',
     'description': 'Discutir los avances del sprint actual...',
   };
 

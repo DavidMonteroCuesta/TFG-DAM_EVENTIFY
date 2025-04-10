@@ -10,7 +10,7 @@ class MonthItem extends StatelessWidget {
     if (count == 1) {
       return Colors.green;
     } else if (count > 1 && count <= 3) {
-      return Colors.orangeAccent; // Amarillo anaranjado
+      return Colors.orangeAccent;
     } else if (count >= 4 && count <= 7) {
       return Colors.orange;
     } else if (count > 7) {

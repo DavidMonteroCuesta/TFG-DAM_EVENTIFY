@@ -17,9 +17,25 @@ class UpcomingEventCard extends StatelessWidget {
     required this.description,
   });
 
+  Color? _getPriorityColor(String priority) {
+    switch (priority.toLowerCase()) {
+      case 'baja':
+        return Colors.green;
+      case 'media':
+        return Colors.orangeAccent;
+      case 'alta':
+        return Colors.orange;
+      case 'crítica':
+        return Colors.red;
+      default:
+        return Colors.orangeAccent; // Un color por defecto si la prioridad no coincide
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final formattedDate = DateFormat('EEE, MMM d, yyyy, HH:mm', 'en_US').format(date);
+    final formattedDate = DateFormat('EEE MMM d HH:mm', 'en_US').format(date);
+    final priorityColor = _getPriorityColor(priority);
 
     return Container(
       width: double.infinity,
@@ -73,13 +89,13 @@ class UpcomingEventCard extends StatelessWidget {
               ),
               Text(
                 priority,
-                style: const TextStyle(color: Colors.orangeAccent), // Puedes personalizar el color por prioridad
+                style: TextStyle(color: priorityColor),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
-            _truncateText(description, 60), // Limitar la descripción
+            _truncateText(description, 60),
             style: const TextStyle(color: Colors.white60),
           ),
         ],

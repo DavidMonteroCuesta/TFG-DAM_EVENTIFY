@@ -1,7 +1,8 @@
+import 'package:eventify/common/widgets/auth/animations/ani_shining_text.dart';
 import 'package:flutter/material.dart';
 
 class EventifyAuthLayout extends StatelessWidget {
-  final Widget child;                 // El contenido que cambiará (SignInBody o SignUpBody)
+  final Widget child;
   final VoidCallback? onLeftFooterTap;
   final VoidCallback? onRightFooterTap;
   final String leftFooterText;
@@ -29,23 +30,23 @@ class EventifyAuthLayout extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'EVENTIFY',
-                    style: TextStyle(
+                  ShiningTextAnimation( // Envuelve el Text con ShiningTextAnimation
+                    text: 'EVENTIFY',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
                     ),
+                    duration: const Duration(milliseconds: 2000), // Ajusta la duración del brillo
+                    shineColor: Colors.greenAccent.shade400, // Ajusta el color del brillo
                   ),
                   const SizedBox(height: 32),
 
-                  // Cuerpo variable (Sign In o Sign Up)
                   child,
 
                   const SizedBox(height: 24),
 
-                  // Footer: Dos textos con onTap (Create Account / Log In)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

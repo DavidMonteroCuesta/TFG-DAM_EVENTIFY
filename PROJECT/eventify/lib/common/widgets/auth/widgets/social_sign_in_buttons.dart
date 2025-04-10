@@ -1,4 +1,4 @@
-import 'package:eventify/src/widgets/log/elements/social_sign_in_button.dart' show SocialSignInButton;
+import 'package:eventify/common/widgets/auth/widgets/social_sign_in_button.dart' show SocialSignInButton;
 import 'package:flutter/material.dart';
 
 class SocialSignInButtons extends StatelessWidget {
