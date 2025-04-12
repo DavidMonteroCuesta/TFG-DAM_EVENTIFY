@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
+ 
 abstract class SlideLeftToRightAnimationState<T extends StatefulWidget> extends State<T> {
   double get screenWidth => MediaQuery.of(context).size.width;
 
-  void animateElement(double offset, int delay, void Function(double) updateOffset) {
+  void animateElement(double beginOffset, int delay, void Function(double) updateOffset) {
     Future.delayed(Duration(milliseconds: delay), () {
       if (mounted) {
         setState(() {

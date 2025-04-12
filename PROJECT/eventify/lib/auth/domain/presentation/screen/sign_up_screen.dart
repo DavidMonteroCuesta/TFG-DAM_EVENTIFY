@@ -5,10 +5,11 @@ import 'package:eventify/common/widgets/auth/widgets/custom_text_field.dart';
 import 'package:eventify/common/widgets/auth/widgets/login_auth_layout.dart';
 import 'package:eventify/common/widgets/auth/widgets/primary_button.dart';
 import 'package:eventify/common/widgets/auth/widgets/social_sign_in_buttons.dart';
-import 'package:eventify/src/widgets/calendar/months_screen.dart'; // Importa MonthsScreen
+import 'package:eventify/src/widgets/calendar/months_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_up_view_model.dart';
+import 'package:eventify/common/widgets/auth/animations/ani_left_to_right.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,10 +18,47 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  double _emailOffset = 0.0;
+  double _passwordOffset = 0.0;
+  double _confirmPasswordOffset = 0.0;
+  double _signUpButtonOffset = 0.0;
+
+    @override
+  void initializeAnimationOffsets() {
+    _emailOffset = -screenWidth;
+    _passwordOffset = -screenWidth;
+    _confirmPasswordOffset = -screenWidth;
+    _signUpButtonOffset = -screenWidth;
+  }
+
+  @override
+  void startAnimations() {
+    animateElement(-screenWidth, 200, (value) {
+      setState(() {
+        _emailOffset = value;
+      });
+    });
+    animateElement(-screenWidth, 300, (value) {
+      setState(() {
+        _passwordOffset = value;
+      });
+    });
+    animateElement(-screenWidth, 400, (value) {
+      setState(() {
+        _confirmPasswordOffset = value;
+      });
+    });
+    animateElement(-screenWidth, 1, (value) {
+      setState(() {
+        _signUpButtonOffset = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,41 +83,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
           const SizedBox(height: 8),
           const AuthSubtitle(text: 'Let\'s get started by filling out the form below.'),
           const SizedBox(height: 24),
-          CustomTextField(hintText: 'Email', controller: _emailController),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
+            child: CustomTextField(hintText: 'Email', controller: _emailController),
+          ),
           const SizedBox(height: 16),
-          CustomTextField(hintText: 'Password', obscure: true, controller: _passwordController),
+           AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
+            child: CustomTextField(hintText: 'Password', obscure: true, controller: _passwordController),
+          ),
           const SizedBox(height: 16),
-          CustomTextField(hintText: 'Confirm Password', obscure: true, controller: _confirmPasswordController),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            transform: Matrix4.translationValues(_confirmPasswordOffset, 0.0, 0.0),
+            child: CustomTextField(hintText: 'Confirm Password', obscure: true, controller: _confirmPasswordController),
+          ),
           const SizedBox(height: 16),
-          PrimaryButton(
-            text: 'Get Started',
-            onPressed: signUpViewModel.isLoading
-                ? null
-                : () async {
-                    if (_passwordController.text == _confirmPasswordController.text) {
-                      final success = await signUpViewModel.register(
-                        _emailController.text,
-                        _passwordController.text,
-                      );
-                      if (success) {
-                        // Navegar a la pantalla del calendario después del registro
-                        Navigator.pushReplacement(
-                          // ignore: use_build_context_synchronously
-                          context,
-                          MaterialPageRoute(builder: (_) => const MonthsScreen()),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            transform: Matrix4.translationValues(_signUpButtonOffset, 0.0, 0.0),
+            child: PrimaryButton(
+              text: 'Get Started',
+              onPressed: signUpViewModel.isLoading
+                  ? null
+                  : () async {
+                      if (_passwordController.text == _confirmPasswordController.text) {
+                        final success = await signUpViewModel.register(
+                          _emailController.text,
+                          _passwordController.text,
                         );
+                        if (success) {
+                          // Navegar a la pantalla del calendario después del registro
+                          Navigator.pushReplacement(
+                            // ignore: use_build_context_synchronously
+                            context,
+                            MaterialPageRoute(builder: (_) => const MonthsScreen()),
+                          );
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(signUpViewModel.errorMessage ?? 'Registration failed')),
+                          );
+                        }
                       } else {
-                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(signUpViewModel.errorMessage ?? 'Registration failed')),
+                          const SnackBar(content: Text('Passwords do not match')),
                         );
                       }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Passwords do not match')),
-                      );
-                    }
-                  },
+                    },
+            ),
           ),
           if (signUpViewModel.isLoading) const CircularProgressIndicator(),
           if (signUpViewModel.errorMessage != null)
