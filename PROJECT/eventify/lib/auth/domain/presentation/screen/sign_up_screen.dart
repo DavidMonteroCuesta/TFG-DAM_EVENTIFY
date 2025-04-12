@@ -64,10 +64,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (success) {
                         // Navegar a la pantalla del calendario después del registro
                         Navigator.pushReplacement(
+                          // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(builder: (_) => const MonthsScreen()),
                         );
                       } else {
+                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(signUpViewModel.errorMessage ?? 'Registration failed')),
                         );
