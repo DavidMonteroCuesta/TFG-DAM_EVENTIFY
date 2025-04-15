@@ -1,4 +1,5 @@
 import 'package:eventify/common/widgets/auth/animations/ani_shining_text.dart';
+import 'package:eventify/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class EventifyAuthLayout extends StatelessWidget {
@@ -19,6 +20,8 @@ class EventifyAuthLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = S.of(context); // Obtén la instancia de AppLocalizations
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -31,7 +34,7 @@ class EventifyAuthLayout extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ShiningTextAnimation( // Envuelve el Text con ShiningTextAnimation
-                    text: 'EVENTIFY',
+                    text: localizations.EVENTIFY,  // Usa la clave l10n
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 40,
@@ -42,18 +45,15 @@ class EventifyAuthLayout extends StatelessWidget {
                     shineColor: Colors.greenAccent.shade400, // Ajusta el color del brillo
                   ),
                   const SizedBox(height: 32),
-
                   child,
-
                   const SizedBox(height: 24),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
                         onTap: onLeftFooterTap,
                         child: Text(
-                          leftFooterText,
+                          leftFooterText, // Usa la variable, asumo que ya están l10n
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -65,7 +65,7 @@ class EventifyAuthLayout extends StatelessWidget {
                       GestureDetector(
                         onTap: onRightFooterTap,
                         child: Text(
-                          rightFooterText,
+                          rightFooterText, // Usa la variable, asumo que ya están l10n
                           style: const TextStyle(
                             color: Color(0xFF90B77D),
                             fontSize: 14,

@@ -18,3 +18,5 @@
 - **Dart Packages.** *Firebase Core - Instalación de Firebase en Flutter*. Recuperado en abril de 2025, de [https://pub.dev/packages/firebase_core/install](https://pub.dev/packages/firebase_core/install)  
   Se ha utilizado este recurso para instalar y configurar **Firebase Core**, la biblioteca base necesaria para la integración de Firebase en Flutter. La documentación oficial ha servido de guía para la correcta implementación de los servicios de Firebase dentro del proyecto, asegurando compatibilidad y optimización en el entorno de desarrollo.
 
+- YouTube. *Flutter Internationalization (i18n) | App localization in Flutter using .arb files*. Recuperado en abril de 2025, de [https://youtu.be/LjO2aXUZeWo?si=sqSUj-bpqsAsN2sY](https://youtu.be/LjO2aXUZeWo?si=sqSUj-bpqsAsN2sY)
+  Este video fue clave para aprender cómo implementar correctamente el sistema de traducciones en Flutter utilizando archivos `.arb`. Se siguieron los pasos indicados para estructurar la carpeta `l10n`, definir archivos de idioma y configurar el `pubspec.yaml` para habilitar la generación automática de código de localización.

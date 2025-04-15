@@ -1,0 +1,34 @@
+{
+    "locale": "en",
+    "@@locale": "en",
+    "EVENTIFY": "EVENTIFY",
+    "@EVENTIFY": {
+        "description": "Application name",
+        "type": "text"
+    },
+    "saludo_simple": "Hello",
+    "@saludo_simple": {
+        "description": "Simple greeting",
+        "type": "text"
+    },
+     "app_bar_title": "App Title",
+    "@app_bar_title": {
+        "description": "App Title",
+        "type": "text"
+    },
+    "forgotPassword": "Forgot Password?",
+    "@forgotPassword": {
+        "description": "Text for the forgot password option",
+        "type": "text"
+    },
+    "continueWithGoogle": "Continue with Google",
+    "@continueWithGoogle": {
+        "description": "Text for the sign in with Google button",
+        "type": "text"
+    },
+    "continueWithApple": "Continue with Apple",
+    "@continueWithApple": {
+        "description": "Text for the sign in with Apple button",
+        "type": "text"
+    }
+  }

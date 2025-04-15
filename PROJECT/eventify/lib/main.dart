@@ -2,7 +2,9 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_in_screen.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_up_view_model.dart';
+import 'package:eventify/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'di/service_locator.dart' as di;
 
@@ -60,6 +62,14 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: Colors.white),
           ),
         ),
+        localizationsDelegates: {
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        },
+        supportedLocales: S.delegate.supportedLocales,
+        
         home: const SignInScreen(),
       ),
     );
