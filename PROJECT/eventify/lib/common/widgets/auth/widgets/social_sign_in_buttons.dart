@@ -8,7 +8,7 @@ class SocialSignInButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = S.of(context); // Obtén la instancia de AppLocalizations
+    final localizations = S.of(context);
 
     return Column(
       children: [
@@ -17,13 +17,13 @@ class SocialSignInButtons extends StatelessWidget {
             'assets/icons/google.png',
             height: 18,
           ),
-          text: localizations.continueWithGoogle, // Clave l10n
+          text: localizations.continueWithGoogle,
           onPressed: null,
         ),
         const SizedBox(height: 10),
         SocialSignInButton(
           icon: const Icon(Icons.apple),
-          text: localizations.continueWithApple, // Clave l10n
+          text: localizations.continueWithApple,
           onPressed: null,
         ),
       ],

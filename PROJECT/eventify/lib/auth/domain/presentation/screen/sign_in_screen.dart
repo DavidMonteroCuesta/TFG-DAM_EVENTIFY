@@ -1,4 +1,5 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_up_screen.dart';
+import 'package:eventify/generated/l10n.dart';
 import 'package:eventify/src/widgets/calendar/months_screen.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_subtitle.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_title.dart';
@@ -56,10 +57,11 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     final signInViewModel = Provider.of<SignInViewModel>(context);
+    final localizations = S.of(context);
 
     return EventifyAuthLayout(
-      leftFooterText: 'Create Account',
-      rightFooterText: 'Log In',
+      leftFooterText: "create account", // Use the correct key
+      rightFooterText: "log in",
       onLeftFooterTap: () {
         Navigator.pushReplacement(
           context,
@@ -70,9 +72,11 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AuthTitle(text: 'Welcome Back'),
+          AuthTitle(text: "welcome back"), // Use the correct key
           const SizedBox(height: 8),
-          const AuthSubtitle(text: 'Fill out the information below in order to access your account.'),
+          AuthSubtitle(
+              text: localizations
+                  .signInSubtitle), // Use the correct key
           const SizedBox(height: 24),
 
           // EMAIL
@@ -80,7 +84,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: 'Email',
+              hintText: localizations.email, // Use the correct key
               controller: _emailController,
             ),
           ),
@@ -91,7 +95,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: 'Password',
+              hintText: localizations.password, // Use the correct key
               obscure: true,
               controller: _passwordController,
             ),
@@ -103,7 +107,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_signInButtonOffset, 0.0, 0.0),
             child: PrimaryButton(
-              text: 'Sign In',
+              text: localizations.signIn, // Use the correct key
               onPressed: signInViewModel.isLoading
                   ? null
                   : () async {
@@ -115,12 +119,15 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
                         Navigator.pushReplacement(
                           // ignore: use_build_context_synchronously
                           context,
-                          MaterialPageRoute(builder: (_) => const MonthsScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => const MonthsScreen()),
                         );
                       } else {
                         // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(signInViewModel.errorMessage ?? 'Login failed')),
+                          SnackBar(
+                              content: Text(signInViewModel.errorMessage ??
+                                  localizations.loginFailed)), // Use the correct key
                         );
                       }
                     },
@@ -139,7 +146,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
           const SizedBox(height: 16),
 
           Text(
-            'Or sign in with',
+            localizations.orSignInWith, // Use the correct key
             style: TextStyle(
               color: Colors.grey[500],
               fontSize: 14,
@@ -154,3 +161,4 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     );
   }
 }
+

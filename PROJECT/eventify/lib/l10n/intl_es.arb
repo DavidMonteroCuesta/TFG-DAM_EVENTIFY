@@ -1,0 +1,79 @@
+{
+  "locale": "es",
+  "@@locale": "es",
+  "eventify": "EVENTIFY",
+  "@eventify": {
+      "description": "Nombre de la aplicación",
+      "type": "text"
+  },
+  "saludoSimple": "Hola",
+  "@saludoSimple": {
+      "description": "Saludo simple",
+      "type": "text"
+  },
+  "appBarTitle": "Título de la App",
+  "@appBarTitle": {
+      "description": "Título de la App",
+      "type": "text"
+  },
+  "continueWithGoogle": "Continuar con Google",
+  "@continueWithGoogle": {
+      "description": "Texto para el botón de iniciar sesión con Google",
+      "type": "text"
+  },
+  "continueWithApple": "Continuar con Apple",
+  "@continueWithApple": {
+      "description": "Texto para el botón de iniciar sesión con Apple",
+      "type": "text"
+  },
+  "welcomeBack": "Bienvenido de nuevo",
+  "@welcomeBack": {
+      "description": "Título de la pantalla de inicio de sesión",
+      "type": "text"
+  },
+  "signInSubtitle": "Complete la siguiente información para acceder a su cuenta.",
+  "@signInSubtitle": {
+      "description": "Subtítulo de la pantalla de inicio de sesión",
+      "type": "text"
+  },
+  "email": "Correo electrónico",
+  "@email": {
+      "description": "Etiqueta para el campo de correo electrónico",
+      "type": "text"
+  },
+  "password": "Contraseña",
+  "@password": {
+      "description": "Etiqueta para el campo de contraseña",
+      "type": "text"
+  },
+  "signIn": "Iniciar sesión",
+  "@signIn": {
+      "description": "Texto del botón de iniciar sesión",
+      "type": "text"
+  },
+  "orSignInWith": "O iniciar sesión con",
+  "@orSignInWith": {
+      "description": "Texto antes de los botones de inicio de sesión social",
+      "type": "text"
+  },
+  "forgotPassword": "Olvidé mi contraseña",
+  "@forgotPassword": {
+      "description": "Texto para la opción de contraseña olvidada",
+      "type": "text"
+  },
+  "createAccount": "Crear cuenta",
+  "@createAccount": {
+      "description": "Texto para el botón de crear una nueva cuenta",
+      "type": "text"
+  },
+   "logIn": "Iniciar sesión",
+  "@logIn": {
+      "description": "Texto para iniciar sesión",
+      "type": "text"
+  },
+  "loginFailed": "Inicio de sesión fallido",
+  "@loginFailed":{
+      "description": "Texto mostrado cuando el inicio de sesión falla",
+      "type": "text"
+  }
+}

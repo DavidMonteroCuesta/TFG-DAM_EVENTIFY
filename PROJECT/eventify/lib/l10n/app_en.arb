@@ -1,0 +1,80 @@
+{
+    "locale": "en",
+    "@@locale": "en",
+    "eventify": "EVENTIFY",
+    "@eventify": {
+      "description": "Application name",
+      "type": "text"
+    },
+    "saludoSimple": "Hello",
+    "@saludoSimple": {
+      "description": "Simple greeting",
+      "type": "text"
+    },
+    "appBarTitle": "App Title",
+    "@appBarTitle": {
+      "description": "App Title",
+      "type": "text"
+    },
+    "continueWithGoogle": "Continue with Google",
+    "@continueWithGoogle": {
+      "description": "Text for the sign in with Google button",
+      "type": "text"
+    },
+    "continueWithApple": "Continue with Apple",
+    "@continueWithApple": {
+      "description": "Text for the sign in with Apple button",
+      "type": "text"
+    },
+    "welcomeBack": "Welcome Back",
+    "@welcomeBack": {
+      "description": "Title of the sign in screen",
+      "type": "text"
+    },
+    "signInSubtitle": "Fill out the information below in order to access your account.",
+    "@signInSubtitle": {
+      "description": "Subtitle of the sign in screen",
+      "type": "text"
+    },
+    "email": "Email",
+    "@email": {
+      "description": "Label for the email field",
+      "type": "text"
+    },
+    "password": "Password",
+    "@password": {
+      "description": "Label for the password field",
+      "type": "text"
+    },
+    "signIn": "Sign In",
+    "@signIn": {
+      "description": "Text of the sign in button",
+      "type": "text"
+    },
+    "orSignInWith": "Or sign in with",
+    "@orSignInWith": {
+      "description": "Text before the social sign in buttons",
+      "type": "text"
+    },
+    "forgotPassword": "Forgot Password?",
+    "@forgotPassword": {
+      "description": "Text for the forgot password option",
+      "type": "text"
+    },
+    "createAccount": "Create Account",
+    "@createAccount": {
+      "description": "Text for the button to create a new account",
+      "type": "text"
+    },
+    "logIn": "Log In",
+    "@logIn": {
+      "description": "Text to log in",
+      "type": "text"
+    },
+    "loginFailed": "Login failed",
+    "@loginFailed": {
+      "description": "Text shown when login fails",
+      "type": "text"
+    }
+  }
+  

@@ -20,7 +20,7 @@ class EventifyAuthLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = S.of(context); // Obtén la instancia de AppLocalizations
+    final localizations = S.of(context);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -33,16 +33,16 @@ class EventifyAuthLayout extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ShiningTextAnimation( // Envuelve el Text con ShiningTextAnimation
-                    text: localizations.EVENTIFY,  // Usa la clave l10n
+                  ShiningTextAnimation(
+                    text: localizations.EVENTIFY,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
                     ),
-                    duration: const Duration(milliseconds: 2000), // Ajusta la duración del brillo
-                    shineColor: Colors.greenAccent.shade400, // Ajusta el color del brillo
+                    duration: const Duration(milliseconds: 2000),
+                    shineColor: Colors.greenAccent.shade400,
                   ),
                   const SizedBox(height: 32),
                   child,
@@ -53,7 +53,7 @@ class EventifyAuthLayout extends StatelessWidget {
                       GestureDetector(
                         onTap: onLeftFooterTap,
                         child: Text(
-                          leftFooterText, // Usa la variable, asumo que ya están l10n
+                          leftFooterText,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -65,7 +65,7 @@ class EventifyAuthLayout extends StatelessWidget {
                       GestureDetector(
                         onTap: onRightFooterTap,
                         child: Text(
-                          rightFooterText, // Usa la variable, asumo que ya están l10n
+                          rightFooterText,
                           style: const TextStyle(
                             color: Color(0xFF90B77D),
                             fontSize: 14,
