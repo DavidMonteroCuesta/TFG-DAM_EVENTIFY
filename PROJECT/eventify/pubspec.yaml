@@ -11,20 +11,32 @@ dependencies:
   flutter:
     sdk: flutter
   table_calendar: ^3.1.0
-  intl: ^0.20.2
+  intl: ^0.19.0
   collection: ^1.19.1
   provider: ^6.1.1
   get_it: ^7.0.0
 
   cupertino_icons: ^1.0.8
   firebase_core: ^3.13.0
+  flutter_localizations:
+    sdk: flutter # Añadido para la localización
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  intl_utils: ^2.8.3 # Añadido para generar el archivo de localizaciones
 
 flutter:
   uses-material-design: true
   assets:
     - assets/icons/
+  generate: true # Asegúrate de tener esta línea para la generación automática de l10n
+
+# Configuración de flutter_intl (al mismo nivel que 'flutter')
+flutter_intl:
+  enabled: true
+  class_name: AppLocalizations # El nombre de tu clase de localizaciones
+  arb_dir: lib/l10n # La carpeta donde estarán tus archivos .arb
+  output_dir: lib # Donde se generará el archivo Dart
+  # main_locale: en # El idioma principal (opcional)

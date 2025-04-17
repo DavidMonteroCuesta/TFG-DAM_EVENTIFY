@@ -1,5 +1,4 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_up_screen.dart';
-import 'package:eventify/generated/l10n.dart';
 import 'package:eventify/src/widgets/calendar/months_screen.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_subtitle.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_title.dart';
@@ -57,11 +56,10 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     final signInViewModel = Provider.of<SignInViewModel>(context);
-    final localizations = S.of(context);
 
     return EventifyAuthLayout(
-      leftFooterText: "create account", // Use the correct key
-      rightFooterText: "log in",
+      leftFooterText: "Create Account",
+      rightFooterText: "Log In",
       onLeftFooterTap: () {
         Navigator.pushReplacement(
           context,
@@ -72,11 +70,10 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AuthTitle(text: "welcome back"), // Use the correct key
+          AuthTitle(text: "Welcome back"),
           const SizedBox(height: 8),
           AuthSubtitle(
-              text: localizations
-                  .signInSubtitle), // Use the correct key
+              text: 'Fill out the information below in order to access your account.'),
           const SizedBox(height: 24),
 
           // EMAIL
@@ -84,7 +81,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: localizations.email, // Use the correct key
+              hintText: 'Email',
               controller: _emailController,
             ),
           ),
@@ -95,19 +92,18 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: localizations.password, // Use the correct key
+              hintText: 'Password',
               obscure: true,
               controller: _passwordController,
             ),
           ),
           const SizedBox(height: 16),
 
-          // SIGN IN BUTTON
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_signInButtonOffset, 0.0, 0.0),
             child: PrimaryButton(
-              text: localizations.signIn, // Use the correct key
+              text: 'Sign In', // Use the correct key
               onPressed: signInViewModel.isLoading
                   ? null
                   : () async {
@@ -126,8 +122,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
                         // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                              content: Text(signInViewModel.errorMessage ??
-                                  localizations.loginFailed)), // Use the correct key
+                              content: Text(signInViewModel.errorMessage ?? 'Login failed')),
                         );
                       }
                     },
@@ -146,7 +141,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
           const SizedBox(height: 16),
 
           Text(
-            localizations.orSignInWith, // Use the correct key
+            'Or sign in with', // Use the correct key
             style: TextStyle(
               color: Colors.grey[500],
               fontSize: 14,
@@ -161,4 +156,3 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     );
   }
 }
-
