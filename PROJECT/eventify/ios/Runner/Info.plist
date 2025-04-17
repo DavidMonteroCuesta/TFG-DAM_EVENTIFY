@@ -45,9 +45,5 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<array>
-		<string>en</string>
-		<string>es_ES</string>
-	</array>
 </dict>
 </plist>

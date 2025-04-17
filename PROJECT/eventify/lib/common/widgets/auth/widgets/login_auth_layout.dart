@@ -1,5 +1,4 @@
 import 'package:eventify/common/widgets/auth/animations/ani_shining_text.dart';
-import 'package:eventify/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class EventifyAuthLayout extends StatelessWidget {
@@ -20,8 +19,6 @@ class EventifyAuthLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = S.of(context);
-
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -34,7 +31,7 @@ class EventifyAuthLayout extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ShiningTextAnimation(
-                    text: localizations.EVENTIFY,
+                    text: 'EVENTIFY',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 40,
@@ -45,8 +42,11 @@ class EventifyAuthLayout extends StatelessWidget {
                     shineColor: Colors.greenAccent.shade400,
                   ),
                   const SizedBox(height: 32),
+
                   child,
+
                   const SizedBox(height: 24),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

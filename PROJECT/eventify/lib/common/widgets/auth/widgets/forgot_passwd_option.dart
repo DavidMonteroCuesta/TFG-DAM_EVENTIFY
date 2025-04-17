@@ -1,4 +1,4 @@
-import 'package:eventify/generated/l10n.dart';
+// Widget separado para la opción de "Forgot Password?"
 import 'package:flutter/material.dart';
 
 class ForgotPasswordOption extends StatelessWidget {
@@ -6,15 +6,14 @@ class ForgotPasswordOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = S.of(context);
     return Center(
       child: GestureDetector(
         onTap: () {
           // Lógica para recuperar contraseña
         },
-        child: Text(
-          localizations.forgotPassword,
-          style: const TextStyle(
+        child: const Text(
+          'Forgot Password?',
+          style: TextStyle(
             color: Colors.grey,
             decoration: TextDecoration.underline,
           ),

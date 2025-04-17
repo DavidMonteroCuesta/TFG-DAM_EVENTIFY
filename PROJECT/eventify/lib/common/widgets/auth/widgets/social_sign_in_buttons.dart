@@ -1,6 +1,4 @@
-import 'package:eventify/common/widgets/auth/widgets/social_sign_in_button.dart'
-    show SocialSignInButton;
-import 'package:eventify/generated/l10n.dart';
+import 'package:eventify/common/widgets/auth/widgets/social_sign_in_button.dart' show SocialSignInButton;
 import 'package:flutter/material.dart';
 
 class SocialSignInButtons extends StatelessWidget {
@@ -8,22 +6,18 @@ class SocialSignInButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = S.of(context);
 
     return Column(
       children: [
         SocialSignInButton(
-          icon: Image.asset(
-            'assets/icons/google.png',
-            height: 18,
-          ),
-          text: localizations.continueWithGoogle,
+          icon: Image.asset('assets/icons/google.png', height: 18),
+          text: 'Continue with Google',
           onPressed: null,
         ),
         const SizedBox(height: 10),
         SocialSignInButton(
-          icon: const Icon(Icons.apple),
-          text: localizations.continueWithApple,
+          icon: const Icon(Icons.apple), 
+          text: 'Continue with Apple',
           onPressed: null,
         ),
       ],
