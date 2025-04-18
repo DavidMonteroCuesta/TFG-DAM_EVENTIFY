@@ -1,4 +1,5 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_up_screen.dart';
+import 'package:eventify/common/utils/errors/localization_error_constants.dart';
 import 'package:eventify/src/widgets/calendar/months_screen.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_subtitle.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_title.dart';
@@ -11,6 +12,7 @@ import 'package:eventify/common/widgets/auth/animations/ani_left_to_right.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_in_view_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -56,10 +58,11 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     final signInViewModel = Provider.of<SignInViewModel>(context);
+    final localizations = AppLocalizations.of(context);
 
     return EventifyAuthLayout(
-      leftFooterText: "Create Account",
-      rightFooterText: "Log In",
+      leftFooterText: 'Create Account',
+      rightFooterText: 'Log In',
       onLeftFooterTap: () {
         Navigator.pushReplacement(
           context,
@@ -70,13 +73,11 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AuthTitle(text: "Welcome back"),
+          AuthTitle(text: 'Welcome Back'),
           const SizedBox(height: 8),
           AuthSubtitle(
               text: 'Fill out the information below in order to access your account.'),
           const SizedBox(height: 24),
-
-          // EMAIL
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
@@ -86,8 +87,6 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             ),
           ),
           const SizedBox(height: 16),
-
-          // PASSWORD
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
@@ -98,12 +97,11 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             ),
           ),
           const SizedBox(height: 16),
-
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_signInButtonOffset, 0.0, 0.0),
             child: PrimaryButton(
-              text: 'Sign In', // Use the correct key
+              text: 'Sign In',
               onPressed: signInViewModel.isLoading
                   ? null
                   : () async {
@@ -128,7 +126,6 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
                     },
             ),
           ),
-
           if (signInViewModel.isLoading) const CircularProgressIndicator(),
           if (signInViewModel.errorMessage != null)
             Padding(
@@ -139,9 +136,8 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
               ),
             ),
           const SizedBox(height: 16),
-
           Text(
-            'Or sign in with', // Use the correct key
+            'Or sign in with',
             style: TextStyle(
               color: Colors.grey[500],
               fontSize: 14,
@@ -156,3 +152,4 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     );
   }
 }
+

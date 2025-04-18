@@ -1,0 +1,43 @@
+{
+    "@@locale": "es",
+    "signInTitle": "Iniciar sesión",
+    "@signInTitle": {
+      "description": "El título de la pantalla de inicio de sesión"
+    },
+    "emailLabel": "Correo electrónico",
+    "@emailLabel": {
+      "description": "La etiqueta para el campo de entrada de correo electrónico"
+    },
+    "passwordLabel": "Contraseña",
+    "@passwordLabel": {
+      "description": "La etiqueta para el campo de entrada de contraseña"
+    },
+    "signInButton": "Iniciar sesión",
+    "@signInButton": {
+      "description": "El texto para el botón de inicio de sesión"
+    },
+    "welcomeBack": "Bienvenido/a de nuevo",
+    "@welcomeBack": {
+      "description": "El título en la pantalla de inicio de sesión"
+    },
+    "signInSubtitle": "Rellena la siguiente información para acceder a tu cuenta.",
+    "@signInSubtitle": {
+      "description": "El subtítulo en la pantalla de inicio de sesión"
+    },
+    "createAccount": "Crear cuenta",
+    "@createAccount": {
+      "description": "El texto para el enlace a la pantalla de registro"
+    },
+    "logIn": "Iniciar sesión",
+    "@logIn": {
+      "description": "El texto para el enlace a la pantalla de inicio de sesión"
+    },
+    "loginFailed": "Inicio de sesión fallido",
+    "@loginFailed": {
+      "description": "El mensaje cuando falla el proceso de inicio de sesión"
+    },
+    "orSignInWith": "O iniciar sesión con",
+    "@orSignInWith": {
+        "description": "The text before social sign in buttons"
+    }
+  }

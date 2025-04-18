@@ -1,0 +1,43 @@
+{
+    "@@locale": "en",
+    "signInTitle": "Sign In",
+    "@signInTitle": {
+      "description": "The title of the sign-in screen"
+    },
+    "emailLabel": "Email",
+    "@emailLabel": {
+      "description": "The label for the email input field"
+    },
+    "passwordLabel": "Password",
+    "@passwordLabel": {
+      "description": "The label for the password input field"
+    },
+    "signInButton": "Sign In",
+    "@signInButton": {
+      "description": "The text for the sign-in button"
+    },
+    "welcomeBack": "Welcome back",
+    "@welcomeBack": {
+      "description": "The title text on the sign-in screen"
+    },
+    "signInSubtitle": "Fill out the information below in order to access your account.",
+    "@signInSubtitle": {
+      "description": "The subtitle text on the sign-in screen"
+    },
+    "createAccount": "Create Account",
+    "@createAccount": {
+      "description": "The text for the link to the sign-up screen"
+    },
+    "logIn": "Log In",
+    "@logIn": {
+      "description": "The text for the link to the log in screen"
+    },
+    "loginFailed": "Login failed",
+    "@loginFailed": {
+      "description": "The message when the login process failed"
+    },
+    "orSignInWith": "Or sign in with",
+    "@orSignInWith": {
+      "description": "The text before social sign in buttons"
+    }
+  }
