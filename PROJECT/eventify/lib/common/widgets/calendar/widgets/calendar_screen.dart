@@ -5,15 +5,15 @@ import 'package:eventify/common/widgets/calendar/widgets/monthly_calendar.dart';
 import 'package:eventify/common/widgets/calendar/widgets/upcoming_event_card.dart';
 import 'package:flutter/material.dart';
 
-class MonthsScreen extends StatefulWidget {
-  const MonthsScreen({super.key});
+class CalendarScreen extends StatefulWidget {
+  const CalendarScreen({super.key});
 
   @override
-  State<MonthsScreen> createState() => _MonthsScreenState();
+  State<CalendarScreen> createState() => _CalendarScreenState();
 }
 
-class _MonthsScreenState extends State<MonthsScreen> {
-  final _pageController = PageController(initialPage: 0); // 0 para anual, 1 para mensual
+class _CalendarScreenState extends State<CalendarScreen> {
+  final _pageController = PageController(initialPage: 0);
   bool _isMonthlyView = false;
 
   final upcomingEvent = {
@@ -47,7 +47,7 @@ class _MonthsScreenState extends State<MonthsScreen> {
     const double spacingBetweenCalendarAndEvent = 20.0;
     const double spacingBetweenEventAndFooter = 20.0;
     final screenHeight = MediaQuery.of(context).size.height;
-    final footerHeight = screenHeight * 0.08; // Ajustamos el porcentaje del footer aquí también
+    final footerHeight = screenHeight * 0.08;
 
     return Scaffold(
       body: LayoutBuilder(
@@ -67,43 +67,43 @@ class _MonthsScreenState extends State<MonthsScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: isTablet || isDesktop
                       ? Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  const Expanded(child: Calendar()),
-                                  SizedBox(height: spacingBetweenCalendarAndEvent),
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 20.0), // Aumentamos ligeramente el padding inferior
-                                    child: UpcomingEventCard(
-                                      title: upcomingEvent['title'] as String,
-                                      type: upcomingEvent['type'] as String,
-                                      date: upcomingEvent['date'] as DateTime,
-                                      priority: upcomingEvent['priority'] as String,
-                                      description: upcomingEvent['description'] as String,
-                                    ),
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              children: [
+                                const Expanded(child: Calendar()),
+                                const SizedBox(height: spacingBetweenCalendarAndEvent),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 32.0),
+                                  child: UpcomingEventCard(
+                                    title: upcomingEvent['title'] as String,
+                                    type: upcomingEvent['type'] as String,
+                                    date: upcomingEvent['date'] as DateTime,
+                                    priority: upcomingEvent['priority'] as String,
+                                    description: upcomingEvent['description'] as String,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 20.0),
-                            const Expanded(
-                              flex: 1,
-                              child: MonthlyCalendar(),
-                            ),
-                          ],
-                        )
-                      : Expanded( // Envuelve el PageView con Expanded
+                          ),
+                          const SizedBox(width: 20.0),
+                          const Expanded(
+                            flex: 1,
+                            child: MonthlyCalendar(),
+                          ),
+                        ],
+                      )
+                      : Expanded(
                           child: PageView(
                             controller: _pageController,
-                            physics: const NeverScrollableScrollPhysics(), // Deshabilitar el deslizamiento manual
+                            physics: const NeverScrollableScrollPhysics(),
                             children: [
                               Column(
                                 children: [
-                                  const Expanded(child: Calendar()),
+                                  const Calendar(), // Remueve el Expanded aquí
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 20.0), // Aumentamos ligeramente el padding inferior
+                                    padding: const EdgeInsets.only(bottom: 20.0),
                                     child: UpcomingEventCard(
                                       title: upcomingEvent['title'] as String,
                                       type: upcomingEvent['type'] as String,

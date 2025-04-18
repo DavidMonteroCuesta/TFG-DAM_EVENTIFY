@@ -1,13 +1,17 @@
+import 'package:eventify/common/widgets/calendar/widgets/buttons/calendar_toggle_button.dart';
+import 'package:eventify/common/widgets/calendar/widgets/buttons/profile_button.dart';
 import 'package:flutter/material.dart';
 
 class Footer extends StatelessWidget {
   final VoidCallback onToggleCalendar;
   final bool isMonthlyView;
+  final VoidCallback? onProfileTap; // Callback opcional para la acción del perfil
 
   const Footer({
     super.key,
     required this.onToggleCalendar,
     required this.isMonthlyView,
+    this.onProfileTap, // Inicializa el callback del perfil
   });
 
   @override
@@ -24,16 +28,14 @@ class Footer extends StatelessWidget {
         children: [
           const Icon(Icons.star_border, color: Colors.white, size: 24.0),
           const Icon(Icons.star_border, color: Colors.white, size: 24.0),
-          IconButton(
-            onPressed: onToggleCalendar,
-            icon: Icon(
-              isMonthlyView ? Icons.calendar_view_month : Icons.calendar_today,
-              color: Colors.white,
-              size: 24.0,
-            ),
-            tooltip: 'Altern calendar',
+          CalendarToggleButton(
+            onToggleCalendar: onToggleCalendar,
+            isMonthlyView: isMonthlyView,
           ),
-          const Icon(Icons.star_border, color: Colors.white, size: 24.0),
+          ProfileButton( // Usa el ProfileButton aquí
+            onPressed: onProfileTap, // Asigna el callback
+            size: 24.0, // Ajusta el tamaño si es necesario
+          ),
         ],
       ),
     );

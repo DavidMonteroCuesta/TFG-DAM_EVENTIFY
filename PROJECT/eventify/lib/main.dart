@@ -2,7 +2,7 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_in_screen.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_up_view_model.dart';
-import 'package:eventify/common/widgets/calendar/widgets/months_screen.dart';
+import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'di/service_locator.dart' as di;
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: Colors.white),
           ),
         ),
-        home: const MonthsScreen(),
+        home: const SignInScreen(),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:eventify/common/widgets/calendar/widgets/upcoming_event_card.dart'; // Asegúrate de la ruta correcta
+import 'package:eventify/common/widgets/calendar/widgets/upcoming_event_card.dart';
 
 class MonthlyCalendar extends StatefulWidget {
   const MonthlyCalendar({super.key});
@@ -15,7 +15,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   late DateTime _lastDayOfMonth;
   late List<DateTime> _daysInMonth;
 
-  final upcomingEvent = const { // Ejemplo de evento para mostrar
+  final upcomingEvent = const {
     'title': 'Evento del mes',
     'type': 'Recordatorio',
     'date': '2025-04-18 15:00:00',
@@ -41,7 +41,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    final daysOfWeek = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+    final daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     return Container(
       decoration: BoxDecoration(
@@ -56,22 +56,22 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
             DateFormat('MMMM yyyy').format(_focusedDay),
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 18,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: daysOfWeek
                 .map((day) => Text(
                       day,
-                      style: const TextStyle(color: Colors.white70),
+                      style: const TextStyle(color: Colors.orangeAccent),
                     ))
                 .toList(),
           ),
-          const SizedBox(height: 8),
-          Expanded( // El GridView ocupa el espacio necesario para los días
+          const SizedBox(height: 10),
+          Expanded(
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -90,7 +90,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
                 return Container(
                   decoration: BoxDecoration(
-                    color: isToday ? Colors.blueAccent : null,
+                    color: isToday ? Colors.orangeAccent : null,
                     shape: BoxShape.circle,
                   ),
                   child: Center(

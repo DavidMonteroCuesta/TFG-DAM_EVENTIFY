@@ -5,7 +5,7 @@ import 'package:eventify/common/widgets/auth/widgets/custom_text_field.dart';
 import 'package:eventify/common/widgets/auth/widgets/login_auth_layout.dart';
 import 'package:eventify/common/widgets/auth/widgets/primary_button.dart';
 import 'package:eventify/common/widgets/auth/widgets/social_sign_in_buttons.dart';
-import 'package:eventify/common/widgets/calendar/widgets/months_screen.dart';
+import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_up_view_model.dart';
@@ -119,7 +119,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
                           Navigator.pushReplacement(
                             // ignore: use_build_context_synchronously
                             context,
-                            MaterialPageRoute(builder: (_) => const MonthsScreen()),
+                            MaterialPageRoute(builder: (_) => const CalendarScreen()),
                           );
                         } else {
                           // ignore: use_build_context_synchronously

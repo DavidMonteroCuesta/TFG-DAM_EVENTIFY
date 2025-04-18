@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final String hintText;
   final bool obscure;
-  final TextEditingController? controller; // Añade esta línea
+  final TextEditingController? controller;
 
   const CustomTextField({
     super.key,
     required this.hintText,
     this.obscure = false,
-    this.controller, // Añade esta línea
+    this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller, // Usa el controller proporcionado
+      controller: controller,
       obscureText: obscure,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(

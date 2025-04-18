@@ -1,6 +1,5 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_up_screen.dart';
-import 'package:eventify/common/utils/errors/localization_error_constants.dart';
-import 'package:eventify/common/widgets/calendar/widgets/months_screen.dart';
+import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_subtitle.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_title.dart';
 import 'package:eventify/common/widgets/auth/widgets/custom_text_field.dart';
@@ -12,7 +11,6 @@ import 'package:eventify/common/widgets/auth/animations/ani_left_to_right.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_in_view_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -58,7 +56,6 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     final signInViewModel = Provider.of<SignInViewModel>(context);
-    final localizations = AppLocalizations.of(context);
 
     return EventifyAuthLayout(
       leftFooterText: 'Create Account',
@@ -114,7 +111,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
                           // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(
-                              builder: (_) => const MonthsScreen()),
+                              builder: (_) => const CalendarScreen()),
                         );
                       } else {
                         // ignore: use_build_context_synchronously
