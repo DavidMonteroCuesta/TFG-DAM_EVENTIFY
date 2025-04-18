@@ -1,6 +1,6 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_up_screen.dart';
 import 'package:eventify/common/utils/errors/localization_error_constants.dart';
-import 'package:eventify/src/widgets/calendar/months_screen.dart';
+import 'package:eventify/common/widgets/calendar/widgets/months_screen.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_subtitle.dart';
 import 'package:eventify/common/widgets/auth/widgets/auth_title.dart';
 import 'package:eventify/common/widgets/auth/widgets/custom_text_field.dart';

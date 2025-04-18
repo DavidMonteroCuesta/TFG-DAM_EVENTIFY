@@ -1,4 +1,4 @@
-import 'package:eventify/src/widgets/calendar/elements/month_row.dart';
+import 'package:eventify/common/widgets/calendar/widgets/month_row.dart';
 import 'package:flutter/material.dart';
 
 class Calendar extends StatelessWidget {
@@ -31,7 +31,7 @@ class Calendar extends StatelessWidget {
     if (screenWidth >= 900) {
       itemsPerRow = 3;
     } else if (screenWidth > 600) {
-      itemsPerRow = 2;
+      itemsPerRow = 3;
     }
 
     for (int i = 0; i < months.length; i += itemsPerRow) {

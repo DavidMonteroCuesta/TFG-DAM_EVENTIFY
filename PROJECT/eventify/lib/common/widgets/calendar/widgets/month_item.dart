@@ -16,7 +16,7 @@ class MonthItem extends StatelessWidget {
     } else if (count > 7) {
       return Colors.red;
     }
-    return null; // Si es 0, devolvemos null para no mostrar el indicador
+    return null;
   }
 
   @override

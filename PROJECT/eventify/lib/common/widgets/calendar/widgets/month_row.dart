@@ -1,4 +1,4 @@
-import 'package:eventify/src/widgets/calendar/elements/month_item.dart';
+import 'package:eventify/common/widgets/calendar/widgets/month_item.dart';
 import 'package:flutter/material.dart';
 
 class MonthRow extends StatelessWidget {
@@ -10,7 +10,7 @@ class MonthRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0), // Añade padding horizontal aquí si es necesario para cada fila
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: rowMonths.asMap().entries.map((entry) {
