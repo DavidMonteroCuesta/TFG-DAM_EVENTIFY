@@ -1,25 +1,31 @@
+import 'package:eventify/common/widgets/profile/widgets/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileButton extends StatelessWidget {
   final String? profileImageUrl;
   final double size;
-  final VoidCallback? onPressed;
 
   const ProfileButton({
     super.key,
     this.profileImageUrl,
     this.size = 40.0,
-    this.onPressed,
   });
+
+  void _navigateToProfileScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
-      child: SizedBox( // Usamos SizedBox para controlar el tamaño del GestureDetector
-        width: size + 10, // Aumentamos el ancho
-        height: size + 10, // Aumentamos la altura
-        child: Center( // Centramos el Container dentro del SizedBox
+      onTap: () => _navigateToProfileScreen(context), // Llamamos a la función de navegación al tocar
+      child: SizedBox(
+        width: size + 10,
+        height: size + 10,
+        child: Center(
           child: Container(
             width: size,
             height: size,

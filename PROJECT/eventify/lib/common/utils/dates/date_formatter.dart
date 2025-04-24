@@ -9,4 +9,12 @@ class DateFormatter {
 
     return "$year ${day.toString().padLeft(2, '0')} ${currentMonth.abbreviation}";
   }
+
+  static String getCurrentMonthAndYear() {
+    final now = DateTime.now();
+    final year = now.year;
+    final currentMonth = Month.values[now.month - 1];
+
+    return "$year ${currentMonth.abbreviation}";
+  }
 }

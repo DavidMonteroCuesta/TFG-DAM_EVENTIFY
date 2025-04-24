@@ -1,4 +1,7 @@
+// profile_screen.dart
+import 'package:eventify/common/utils/auth/logout_service.dart';
 import 'package:eventify/common/widgets/auth/animations/ani_shining_text.dart';
+import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:eventify/common/utils/dates/date_formatter.dart';
@@ -12,6 +15,13 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key, this.username = 'Usuario'});
 
   String get _firstLetter => username.isNotEmpty ? username[0].toUpperCase() : '';
+
+  void _navigateToCalendarScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CalendarScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +46,16 @@ class ProfileScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 80,
                     color: headerBackgroundColor,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.close, color: Colors.grey),
+                        onPressed: () => _navigateToCalendarScreen(context),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 96.0),
@@ -287,7 +307,7 @@ class ProfileScreen extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                   child: ElevatedButton(
                     onPressed: () {
-                      print('Log Out pressed ...');
+                      LogoutService.logout(context); // Llama al método de logout
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: errorColor,

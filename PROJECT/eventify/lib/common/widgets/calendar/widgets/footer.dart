@@ -32,9 +32,8 @@ class Footer extends StatelessWidget {
             onToggleCalendar: onToggleCalendar,
             isMonthlyView: isMonthlyView,
           ),
-          ProfileButton( // Usa el ProfileButton aquí
-            onPressed: onProfileTap, // Asigna el callback
-            size: 24.0, // Ajusta el tamaño si es necesario
+          ProfileButton(
+            size: 24.0,
           ),
         ],
       ),
