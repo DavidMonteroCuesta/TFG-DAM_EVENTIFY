@@ -26,7 +26,7 @@ class _ShiningTextAnimationState extends State<ShiningTextAnimation> with Single
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration)
-      ..repeat(reverse: true); // Cambiando a false va pero o vuelve
+      ..repeat(reverse: true); // Cambiando a false va pero no vuelve
     _maskAnimation = Tween<double>(begin: -1.5, end: 1.5).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
@@ -61,7 +61,7 @@ class _ShiningTextAnimationState extends State<ShiningTextAnimation> with Single
                     Colors.transparent,
                   ],
                   stops: [
-                    _maskAnimation.value * 0.5 + 0.2, // Ajusta estos valores para controlar el brillo
+                    _maskAnimation.value * 0.5 + 0.2,
                     _maskAnimation.value * 0.5 + 0.5,
                     _maskAnimation.value * 0.5 + 0.6,
                     _maskAnimation.value * 0.5 + 0.8,

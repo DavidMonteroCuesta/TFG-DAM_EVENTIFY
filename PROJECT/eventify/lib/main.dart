@@ -1,16 +1,17 @@
-// En app.dart o main.dart
 import 'package:eventify/auth/domain/presentation/screen/sign_in_screen.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_up_view_model.dart';
 import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
+import 'package:eventify/common/widgets/profile/widgets/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'di/service_locator.dart' as di;
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
-  runApp(const MyApp());
+  await initializeDateFormatting('es_ES', null).then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: Colors.white),
           ),
         ),
-        home: const SignInScreen(),
+        home: const ProfileScreen(),
       ),
     );
   }

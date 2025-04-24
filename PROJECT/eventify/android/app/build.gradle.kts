@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.eventify"
+    namespace = "eventify"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
