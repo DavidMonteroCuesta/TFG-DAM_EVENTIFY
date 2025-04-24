@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
-
+  static const String routeName = '/calendar';
+  
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
 }

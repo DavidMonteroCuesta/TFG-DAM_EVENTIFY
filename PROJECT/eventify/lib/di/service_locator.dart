@@ -13,7 +13,7 @@ Future<void> init() async {
   // Auth Feature
   sl.registerFactory(() => SignInViewModel(loginUseCase: sl()));
   sl.registerFactory(() => SignUpViewModel(registerUseCase: sl()));
-  sl.registerLazySingleton(() => LoginUseCase(repository: sl()));
+  sl.registerLazySingleton(() =>LoginUseCase(repository: sl()));
   sl.registerLazySingleton(() => RegisterUseCase(repository: sl()));
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton(() => AuthRemoteDataSource());

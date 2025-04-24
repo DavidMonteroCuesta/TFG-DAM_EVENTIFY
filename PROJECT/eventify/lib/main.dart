@@ -2,6 +2,7 @@ import 'package:eventify/auth/domain/presentation/screen/sign_in_screen.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_up_view_model.dart';
 import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
+import 'package:eventify/common/widgets/chat/widgets/chat_screen.dart';
 import 'package:eventify/common/widgets/profile/widgets/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +63,14 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: Colors.white),
           ),
         ),
-        home: const ProfileScreen(),
+        home: const CalendarScreen(), // Establece la pantalla de calendario como la inicial
+        routes: {
+          CalendarScreen.routeName: (context) => const CalendarScreen(),
+          ChatScreen.routeName: (context) => const ChatScreen(),
+          ProfileScreen.routeName: (context) => const ProfileScreen(),
+          SignInScreen.routeName: (context) => const SignInScreen(),
+          // Puedes añadir más rutas aquí si es necesario
+        },
       ),
     );
   }
