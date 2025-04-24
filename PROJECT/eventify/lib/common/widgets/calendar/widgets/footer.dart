@@ -28,12 +28,15 @@ class Footer extends StatelessWidget {
         children: [
           const Icon(Icons.star_border, color: Colors.white, size: 24.0),
           const Icon(Icons.star_border, color: Colors.white, size: 24.0),
-          CalendarToggleButton(
-            onToggleCalendar: onToggleCalendar,
-            isMonthlyView: isMonthlyView,
+          Transform.scale(
+            scale: 1,
+            child: CalendarToggleButton(
+              onToggleCalendar: onToggleCalendar,
+              isMonthlyView: isMonthlyView,
+            ),
           ),
           ProfileButton(
-            size: 24.0,
+            size: 32,
           ),
         ],
       ),
