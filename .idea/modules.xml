@@ -3,6 +3,26 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/TFG.iml" filepath="$PROJECT_DIR$/.idea/TFG.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-495653069/android.firebase_core.iml" filepath="$PROJECT_DIR$/.idea/modules/-495653069/android.firebase_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-495653069/android.firebase_core.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-495653069/android.firebase_core.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-495653069/android.firebase_core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/-495653069/android.firebase_core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-495653069/android.firebase_core.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-495653069/android.firebase_core.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.iml" filepath="$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-747965131/android.tflite_flutter.iml" filepath="$PROJECT_DIR$/.idea/modules/-747965131/android.tflite_flutter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-747965131/android.tflite_flutter.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-747965131/android.tflite_flutter.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-747965131/android.tflite_flutter.main.iml" filepath="$PROJECT_DIR$/.idea/modules/-747965131/android.tflite_flutter.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-747965131/android.tflite_flutter.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-747965131/android.tflite_flutter.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/919180247/gradle.iml" filepath="$PROJECT_DIR$/.idea/modules/919180247/gradle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/919180247/gradle.main.iml" filepath="$PROJECT_DIR$/.idea/modules/919180247/gradle.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/919180247/gradle.test.iml" filepath="$PROJECT_DIR$/.idea/modules/919180247/gradle.test.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="android.app" target="21" />
+      <module name="android.firebase_core" target="21" />
+      <module name="android.path_provider_android" target="21" />
+      <module name="android.tflite_flutter" target="21" />
+      <module name="gradle" target="21" />
+      <module name="gradle.main" target="11" />
+      <module name="gradle.test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

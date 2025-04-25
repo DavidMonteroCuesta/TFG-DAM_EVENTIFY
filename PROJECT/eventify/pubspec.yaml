@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   google_fonts: ^6.1.0
   flutter_animate: ^4.3.0
+  http: ^1.1.0
+  tflite_flutter: ^0.10.4
 
 dev_dependencies:
   flutter_test:

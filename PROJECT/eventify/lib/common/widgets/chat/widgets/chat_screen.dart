@@ -1,6 +1,8 @@
 import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/common/widgets/chat/widgets/chat_message.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ChatScreen extends StatefulWidget {
   static const String routeName = '/chat';
@@ -16,28 +18,75 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<ChatMessage> _messages = [];
   final ScrollController _scrollController = ScrollController();
 
-  void _handleSubmitted(String text) {
+  final String _agentId = 'ag:b9c70aec:20250425:agente-de-eventify:5b623f1b'; // ID del agente
+
+  @override
+  void initState() {
+    super.initState();
+    // Mensaje inicial del bot al abrir el chat
+    Future.delayed(Duration.zero, () {
+      ChatMessage botGreeting = const ChatMessage(
+        text: "¡Hola! Soy tu asistente de Eventify. ¿En qué puedo ayudarte hoy con tu agenda?",
+        isUser: false,
+      );
+      setState(() {
+        _messages.insert(0, botGreeting);
+      });
+      _scrollToBottom();
+    });
+  }
+
+  void _handleSubmitted(String text) async {
     _messageController.clear();
-    ChatMessage message = ChatMessage(
+    ChatMessage userMessage = ChatMessage(
       text: text,
       isUser: true,
     );
     setState(() {
-      _messages.insert(0, message);
+      _messages.insert(0, userMessage);
     });
     _scrollToBottom();
 
-    // Simulación de respuesta del bot (sin cambios aquí)
-    Future.delayed(const Duration(milliseconds: 800), () {
-      ChatMessage botResponse = ChatMessage(
-        text: "Hola, he recibido tu mensaje: '$text'. ¿En qué puedo ayudarte con tu agenda hoy?",
-        isUser: false,
-      );
-      setState(() {
-        _messages.insert(0, botResponse);
-      });
-      _scrollToBottom();
+    // Llamada a la API de Le-Chat
+    final response = await _sendMessageToLeChat(text);
+
+    ChatMessage botResponse = ChatMessage(
+      text: response,
+      isUser: false,
+    );
+    setState(() {
+      _messages.insert(0, botResponse);
     });
+    _scrollToBottom();
+  }
+
+  Future<String> _sendMessageToLeChat(String message) async {
+    final url = Uri.parse('YOUR_LE_CHAT_API_ENDPOINT'); // Reemplaza con el endpoint de Le-Chat
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'YOUR_LE_CHAT_API_KEY', // Si Le-Chat requiere autenticación
+    };
+    final body = jsonEncode({
+      'message': message, // Ajusta el nombre del campo según la API de Le-Chat
+      'agent_id': _agentId,
+      // ... otros parámetros que la API de Le-Chat pueda requerir
+    });
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        // Ajusta cómo extraes la respuesta del bot según la estructura de la respuesta de Le-Chat
+        return jsonResponse['response'] ?? 'Error al obtener respuesta';
+      } else {
+        print('Error al comunicarse con Le-Chat: ${response.statusCode}, body: ${response.body}');
+        return 'Error al comunicarse con la IA.';
+      }
+    } catch (e) {
+      print('Error de conexión con Le-Chat: $e');
+      return 'No se pudo conectar con la IA.';
+    }
   }
 
   void _scrollToBottom() {
@@ -58,6 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
           BoxShadow(
             offset: const Offset(0, -1),
             blurRadius: 2,
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.1),
           ),
         ],
@@ -122,4 +172,3 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: io.flutter:x86_64_debug:1.0.0-cf56914b326edb0ccb123ffdc60f00060bd513fa" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="io.flutter" artifactId="x86_64_debug" version="1.0.0-cf56914b326edb0ccb123ffdc60f00060bd513fa" baseVersion="1.0.0-cf56914b326edb0ccb123ffdc60f00060bd513fa" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.flutter/x86_64_debug/1.0.0-cf56914b326edb0ccb123ffdc60f00060bd513fa/450172c45ef1f4d8bc61043a41fa2084472828c3/x86_64_debug-1.0.0-cf56914b326edb0ccb123ffdc60f00060bd513fa.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

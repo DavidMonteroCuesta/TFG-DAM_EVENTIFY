@@ -18,3 +18,7 @@
 - **Dart Packages.** *Firebase Core - Instalación de Firebase en Flutter*. Recuperado en abril de 2025, de [https://pub.dev/packages/firebase_core/install](https://pub.dev/packages/firebase_core/install)  
   Se ha utilizado este recurso para instalar y configurar **Firebase Core**, la biblioteca base necesaria para la integración de Firebase en Flutter. La documentación oficial ha servido de guía para la correcta implementación de los servicios de Firebase dentro del proyecto, asegurando compatibilidad y optimización en el entorno de desarrollo.
 
+- YouTube. *Tutorial Crear Agentes AI Mistral - Crea tus propios agentes de IA con Mistral*. Recuperado en abril de 2025, de [https://youtu.be/s-1vO0nDpzE?si=DwUnzPco5QopWUa3](https://youtu.be/s-1vO0nDpzE?si=DwUnzPco5QopWUa3)  
+  Utilizado como referencia para la creación y comprensión del funcionamiento del agente de IA basado en Mistral.
+
+
