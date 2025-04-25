@@ -15,6 +15,7 @@ graph TD
     C -- "Tocar 'Buscar'" --> J(((Search Screen)));
     C -- "Tocar 'Perfil'" --> K(((Profile Screen)));
     C -- "Ver lista" --> L(((Events Screen)));
+    C -- "Tocar 'Chat'" --> N(((Chat Screen)));
     I -- "Añadir nuevo evento" --> C;
     I -- "Cancelar" --> C;
     J -- "Seleccionar evento" --> M(((Unique Event Screen)));
@@ -27,4 +28,5 @@ graph TD
     K -- "Ir a Calendar" --> C;
     K -- "Ir a Events Screen" --> L;
     K -- "Cerrar sesión" --> D;
+    N -- "Volver a Calendar" --> C;
 ```
