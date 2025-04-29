@@ -1,20 +1,24 @@
-// profile_screen.dart
 import 'package:eventify/common/utils/auth/logout_service.dart';
-import 'package:eventify/common/widgets/auth/animations/ani_shining_text.dart';
+import 'package:eventify/auth/domain/presentation/screen/animations/ani_shining_text.dart';
 import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:eventify/common/utils/dates/date_formatter.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 
 class ProfileScreen extends StatelessWidget {
   static String routeName = 'profile';
   static String routePath = '/profile';
 
-  final String username;
+  // Removed the username parameter
+  const ProfileScreen({super.key});
 
-  const ProfileScreen({super.key, this.username = 'Usuario'});
-
-  String get _firstLetter => username.isNotEmpty ? username[0].toUpperCase() : '';
+  String get _firstLetter {
+    // Use the current user's display name, or a default if null
+    final user = FirebaseAuth.instance.currentUser;
+    final username = user?.displayName ?? 'Usuario';
+    return username.isNotEmpty ? username[0].toUpperCase() : '';
+  }
 
   void _navigateToCalendarScreen(BuildContext context) {
     Navigator.push(
@@ -31,6 +35,13 @@ class ProfileScreen extends StatelessWidget {
     final mediumGreyColor = const Color.fromARGB(255, 70, 70, 70);
     final headerBackgroundColor = const Color.fromARGB(255, 49, 49, 49);
     final currentDate = DateFormatter.getCurrentDateFormatted();
+
+    // Get the current user
+    final user = FirebaseAuth.instance.currentUser;
+
+    // Use user data or default values
+    final username = user?.displayName ?? 'Usuario';
+    final email = user?.email ?? 'email@dominio.com'; // Provide a default email
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -84,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${username.toLowerCase().replaceAll(' ', '')}@domainname.com',
+                      email, // Use the user's email
                       style: GoogleFonts.plusJakartaSans(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
@@ -353,3 +364,4 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+

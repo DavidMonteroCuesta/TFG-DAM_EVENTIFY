@@ -1,24 +1,29 @@
-import 'package:eventify/common/widgets/auth/widgets/social_sign_in_button.dart' show SocialSignInButton;
+import 'package:eventify/auth/domain/presentation/view_model/sign_up_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'social_sign_in_button.dart';
 
 class SocialSignInButtons extends StatelessWidget {
   const SocialSignInButtons({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final signUpViewModel = Provider.of<SignUpViewModel>(context, listen: false);
 
     return Column(
       children: [
         SocialSignInButton(
           icon: Image.asset('assets/icons/google.png', height: 18),
           text: 'Continue with Google',
-          onPressed: null,
+          onPressed: () async {
+            await signUpViewModel.signInWithGoogle(context);
+          },
         ),
         const SizedBox(height: 10),
         SocialSignInButton(
-          icon: const Icon(Icons.apple), 
+          icon: const Icon(Icons.apple),
           text: 'Continue with Apple',
-          onPressed: null,
+          onPressed: null, // Implement Apple Sign-in similarly
         ),
       ],
     );

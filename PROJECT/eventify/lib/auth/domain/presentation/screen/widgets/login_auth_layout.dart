@@ -1,4 +1,4 @@
-import 'package:eventify/common/widgets/auth/animations/ani_shining_text.dart';
+import 'package:eventify/auth/domain/presentation/screen/animations/ani_shining_text.dart';
 import 'package:flutter/material.dart';
 
 class EventifyAuthLayout extends StatelessWidget {

@@ -1,15 +1,15 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_in_screen.dart';
-import 'package:eventify/common/widgets/auth/widgets/auth_subtitle.dart';
-import 'package:eventify/common/widgets/auth/widgets/auth_title.dart';
-import 'package:eventify/common/widgets/auth/widgets/custom_text_field.dart';
-import 'package:eventify/common/widgets/auth/widgets/login_auth_layout.dart';
-import 'package:eventify/common/widgets/auth/widgets/primary_button.dart';
-import 'package:eventify/common/widgets/auth/widgets/social_sign_in_buttons.dart';
+import 'package:eventify/auth/domain/presentation/screen/widgets/auth_subtitle.dart';
+import 'package:eventify/auth/domain/presentation/screen/widgets/auth_title.dart';
+import 'package:eventify/auth/domain/presentation/screen/widgets/custom_text_field.dart';
+import 'package:eventify/auth/domain/presentation/screen/widgets/login_auth_layout.dart';
+import 'package:eventify/auth/domain/presentation/screen/widgets/primary_button.dart';
+import 'package:eventify/auth/domain/presentation/screen/widgets/social_sign_in_buttons.dart';
 import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_up_view_model.dart';
-import 'package:eventify/common/widgets/auth/animations/ani_left_to_right.dart';
+import 'package:eventify/auth/domain/presentation/screen/animations/ani_left_to_right.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

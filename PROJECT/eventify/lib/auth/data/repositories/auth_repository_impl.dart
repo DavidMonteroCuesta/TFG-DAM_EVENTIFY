@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import '../../domain/repositories/auth_repository.dart';
 import '../data_sources/auth_remote_data_source.dart';
 import '../../domain/entities/user.dart';
@@ -18,6 +19,21 @@ class AuthRepositoryImpl implements AuthRepository {
     final String? userId = await remoteDataSource.registerWithEmailAndPassword(email, password);
     if (userId != null) {
       final UserModel userModel = UserModel(id: userId, username: username, email: email);
+      await remoteDataSource.saveUser(userModel);
+      return userModel.toDomain();
+    }
+    return null;
+  }
+
+  @override
+  Future<User?> signInWithGoogle(firebase_auth.User firebaseUser) async { // Correct parameter type
+    final User? user = await remoteDataSource.signInWithGoogle(firebaseUser);
+    if (user != null) {
+      final UserModel userModel = UserModel(
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      );
       await remoteDataSource.saveUser(userModel);
       return userModel.toDomain();
     }
