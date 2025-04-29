@@ -13,7 +13,6 @@ import 'package:eventify/common/widgets/auth/animations/ani_left_to_right.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
-
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -22,17 +21,20 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _usernameController = TextEditingController(); // Nuevo controlador para el nombre de usuario
 
   double _emailOffset = 0.0;
   double _passwordOffset = 0.0;
   double _confirmPasswordOffset = 0.0;
+  double _usernameOffset = 0.0; // Nuevo offset para el nombre de usuario
   double _signUpButtonOffset = 0.0;
 
-    @override
+  @override
   void initializeAnimationOffsets() {
     _emailOffset = -screenWidth;
     _passwordOffset = -screenWidth;
     _confirmPasswordOffset = -screenWidth;
+    _usernameOffset = -screenWidth; // Inicializar el offset del nombre de usuario
     _signUpButtonOffset = -screenWidth;
   }
 
@@ -41,6 +43,11 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
     animateElement(-screenWidth, 200, (value) {
       setState(() {
         _emailOffset = value;
+      });
+    });
+    animateElement(-screenWidth, 250, (value) { // Animar el campo del nombre de usuario
+      setState(() {
+        _usernameOffset = value;
       });
     });
     animateElement(-screenWidth, 300, (value) {
@@ -89,7 +96,13 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             child: CustomTextField(hintText: 'Email', controller: _emailController),
           ),
           const SizedBox(height: 16),
-           AnimatedContainer(
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            transform: Matrix4.translationValues(_usernameOffset, 0.0, 0.0), // Campo para el nombre de usuario
+            child: CustomTextField(hintText: 'Username', controller: _usernameController),
+          ),
+          const SizedBox(height: 16),
+          AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
             child: CustomTextField(hintText: 'Password', obscure: true, controller: _passwordController),
@@ -113,9 +126,9 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
                         final success = await signUpViewModel.register(
                           _emailController.text,
                           _passwordController.text,
+                          _usernameController.text,
                         );
                         if (success) {
-                          // Navegar a la pantalla del calendario después del registro
                           Navigator.pushReplacement(
                             // ignore: use_build_context_synchronously
                             context,

@@ -1,5 +1,6 @@
+import '../../domain/entities/user.dart';
+
 abstract class AuthRepository {
   Future<bool> login(String email, String password);
-  Future<bool> register(String email, String password);
-  // En una aplicación real, podrías tener más detalles en el registro.
+  Future<User?> register(String email, String password, String username);
 }

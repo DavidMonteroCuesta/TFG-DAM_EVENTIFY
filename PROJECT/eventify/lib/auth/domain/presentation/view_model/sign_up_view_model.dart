@@ -1,41 +1,42 @@
+import 'package:eventify/auth/domain/entities/user.dart';
 import 'package:eventify/auth/domain/use_cases/register_use_case.dart';
 import 'package:flutter/material.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   final RegisterUseCase registerUseCase;
 
-  // Estado de carga
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  // Mensaje de error
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
+  User? _registeredUser;
+  User? get registeredUser => _registeredUser;
+
   SignUpViewModel({required this.registerUseCase});
 
-  // Método de registro
-  Future<bool> register(String email, String password) async {
+  Future<bool> register(String email, String password, String username) async {
     _setLoadingState(true);
     _setErrorMessage(null);
 
     try {
-      final success = await registerUseCase.execute(email, password);
-      if (success) {
+      _registeredUser = await registerUseCase.execute(email, password, username);
+      if (_registeredUser != null) {
         _setLoadingState(false);
+        return true;
       } else {
         _setErrorMessage('Registration failed. Please try again.');
         _setLoadingState(false);
+        return false;
       }
-      return success;
     } catch (e) {
       _setLoadingState(false);
-      _setErrorMessage('An error occurred. Please try again.');
+      _setErrorMessage('An error occurred: $e');
       return false;
     }
   }
 
-  // Métodos auxiliares para actualizar el estado
   void _setLoadingState(bool isLoading) {
     _isLoading = isLoading;
     notifyListeners();

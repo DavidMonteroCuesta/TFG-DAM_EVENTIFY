@@ -64,7 +64,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
       onLeftFooterTap: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const SignUpScreen()),
+          MaterialPageRoute(builder: (_) => SignUpScreen()),
         );
       },
       onRightFooterTap: () {},

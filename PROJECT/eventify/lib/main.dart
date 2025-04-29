@@ -8,9 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'di/service_locator.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart'; // Import your generated Firebase options
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await di.init();
   await initializeDateFormatting('es_ES', null).then((_) => runApp(const MyApp()));
 }
@@ -69,7 +74,6 @@ class MyApp extends StatelessWidget {
           ChatScreen.routeName: (context) => const ChatScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
           SignInScreen.routeName: (context) => const SignInScreen(),
-          // Puedes añadir más rutas aquí si es necesario
         },
       ),
     );

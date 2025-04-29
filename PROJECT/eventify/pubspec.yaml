@@ -17,6 +17,8 @@ dependencies:
   get_it: ^7.0.0
   cupertino_icons: ^1.0.8
   firebase_core: ^3.13.0
+  cloud_firestore: ^5.6.7
+  firebase_auth: ^5.5.3 # Añadida la dependencia firebase_auth con una versión actual
   flutter_localizations:
     sdk: flutter
   google_fonts: ^6.1.0

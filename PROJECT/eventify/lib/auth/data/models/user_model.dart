@@ -1,22 +1,36 @@
 import 'package:eventify/auth/domain/entities/user.dart';
 
 class UserModel {
-  final String? id;
+  final String id;
+  final String username;
   final String email;
 
-  UserModel({this.id, required this.email});
+  UserModel({
+    required this.id,
+    required this.username,
+    required this.email,
+  });
 
-  // Métodos para convertir de/a JSON si estás usando una API
-  // UserModel.fromJson(Map<String, dynamic> json) : ...
-  // Map<String, dynamic> toJson() : ...
-
-  // Método para convertir a la entidad de dominio
-  User toDomain() {
-    return User(id: id ?? '', username: email.split('@')[0], email: email);
+  factory UserModel.fromJson(Map<String, dynamic> json, String id) {
+    return UserModel(
+      id: id,
+      username: json['username'] as String,
+      email: json['email'] as String,
+    );
   }
 
-  // Método para crear un UserModel desde una entidad de dominio (si es necesario)
-  factory UserModel.fromDomain(User user) {
-    return UserModel(id: user.id, email: user.email);
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'email': email,
+    };
+  }
+
+  User toDomain() {
+    return User(
+      id: id,
+      username: username,
+      email: email,
+    );
   }
 }

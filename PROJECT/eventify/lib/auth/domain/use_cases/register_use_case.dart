@@ -1,11 +1,12 @@
-import '../repositories/auth_repository.dart';
+import 'package:eventify/auth/domain/entities/user.dart';
+import '../../domain/repositories/auth_repository.dart';
 
 class RegisterUseCase {
-  final AuthRepository repository;
+  final AuthRepository authRepository;
 
-  RegisterUseCase({required this.repository});
+  RegisterUseCase({required this.authRepository});
 
-  Future<bool> execute(String email, String password) async {
-    return await repository.register(email, password);
+  Future<User?> execute(String email, String password, String username) async {
+    return await authRepository.register(email, password, username);
   }
 }
