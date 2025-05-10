@@ -1,15 +1,10 @@
+import 'package:eventify/auth/domain/presentation/screen/animations/ani_shining_text.dart';
+import 'package:eventify/calendar/domain/presentation/screen/calendar_screen.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
+import 'package:eventify/common/utils/events/events_type_enum.dart';
 import 'package:eventify/common/utils/priorities/priorities_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-enum EventType {
-  meeting,
-  exam,
-  appointment,
-  conference,
-  task,
-}
 
 class AddEventScreen extends StatefulWidget {
   const AddEventScreen({super.key});
@@ -27,7 +22,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   bool _hasNotification = false;
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
-  EventType _selectedEventType = EventType.meeting; // Valor por defecto
+  EventType _selectedEventType = EventType.task;
   final _locationController = TextEditingController();
   final _subjectController = TextEditingController();
   final _withPersonController = TextEditingController();
@@ -157,10 +152,21 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back),
-        title: const Text(
-          'CREATE EVENT',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
+        // Modified leading:
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const CalendarScreen(),
+              ),
+            );
+          },
+        ),
+        title:  ShiningTextAnimation(
+          text: "CREATE NEW EVENT",
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
+          shineColor: secondaryColor,
         ),
         backgroundColor: headerColor,
         foregroundColor: const Color.fromARGB(221, 255, 255, 255),
@@ -428,7 +434,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: secondaryColor, width: 1.5),
+                      borderSide: BorderSide.none,
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -445,7 +451,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     Row(
                       children: [
                         const Text(
-                          "With Person?",
+                          "With Person (Yes/No):",
                           style: TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
                         ),
                         const SizedBox(width: 8.0),
@@ -462,28 +468,33 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         ),
                       ],
                     ),
-                    if (_withPersonYesNo) // Mostrar solo si _withPersonYesNo es true
-                      TextFormField(
-                        controller: _withPersonController,
-                        style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
-                        decoration: InputDecoration(
-                          labelText: 'With Person',
-                          labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide.none,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0), // Add padding here
+                      child: Visibility(
+                        visible: _withPersonYesNo, // Mostrar solo si _withPersonYesNo es true
+                        child: TextFormField(
+                          controller: _withPersonController,
+                          style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
+                          decoration: InputDecoration(
+                            labelText: 'With Person',
+                            labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: secondaryColor, width: 1.5),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(color: secondaryColor, width: 1.5),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                         ),
                       ),
+                    ),
                   ],
                 ),
               const SizedBox(height: 30.0),
@@ -538,4 +549,3 @@ class _AddEventScreenState extends State<AddEventScreen> {
     );
   }
 }
-

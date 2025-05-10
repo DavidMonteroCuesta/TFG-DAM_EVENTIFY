@@ -1,7 +1,7 @@
 import 'package:eventify/auth/domain/entities/user.dart';
 import 'package:eventify/auth/domain/use_cases/google_sign_in_use_case.dart';
 import 'package:eventify/auth/domain/use_cases/register_use_case.dart';
-import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
+import 'package:eventify/calendar/domain/presentation/screen/calendar_screen.dart';
 import 'package:flutter/material.dart';
 
 

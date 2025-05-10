@@ -1,7 +1,7 @@
+import 'package:eventify/calendar/domain/presentation/screen/widgets/buttons/calendar_toggle_button.dart';
+import 'package:eventify/calendar/domain/presentation/screen/widgets/buttons/chat_button.dart';
+import 'package:eventify/calendar/domain/presentation/screen/widgets/buttons/profile_button.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
-import 'package:eventify/common/widgets/calendar/widgets/buttons/chat_button.dart';
-import 'package:eventify/common/widgets/calendar/widgets/buttons/calendar_toggle_button.dart';
-import 'package:eventify/common/widgets/calendar/widgets/buttons/profile_button.dart';
 import 'package:flutter/material.dart';
 
 class Footer extends StatelessWidget {

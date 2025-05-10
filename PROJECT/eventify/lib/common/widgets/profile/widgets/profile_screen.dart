@@ -1,6 +1,6 @@
+import 'package:eventify/calendar/domain/presentation/screen/calendar_screen.dart';
 import 'package:eventify/common/utils/auth/logout_service.dart';
 import 'package:eventify/auth/domain/presentation/screen/animations/ani_shining_text.dart';
-import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:eventify/common/utils/dates/date_formatter.dart';

@@ -1,6 +1,6 @@
+import 'package:eventify/calendar/domain/presentation/screen/widgets/upcoming_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:eventify/common/widgets/calendar/widgets/upcoming_event_card.dart';
 
 class MonthlyCalendar extends StatefulWidget {
   const MonthlyCalendar({super.key});

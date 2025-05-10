@@ -1,8 +1,9 @@
-import 'package:eventify/common/widgets/calendar/widgets/calendar.dart';
-import 'package:eventify/common/widgets/calendar/widgets/footer.dart';
-import 'package:eventify/common/widgets/calendar/widgets/header.dart';
-import 'package:eventify/common/widgets/calendar/widgets/monthly_calendar.dart';
-import 'package:eventify/common/widgets/calendar/widgets/upcoming_event_card.dart';
+
+import 'package:eventify/calendar/domain/presentation/screen/widgets/calendar.dart';
+import 'package:eventify/calendar/domain/presentation/screen/widgets/footer.dart';
+import 'package:eventify/calendar/domain/presentation/screen/widgets/header.dart';
+import 'package:eventify/calendar/domain/presentation/screen/widgets/monthly_calendar.dart';
+import 'package:eventify/calendar/domain/presentation/screen/widgets/upcoming_event_card.dart';
 import 'package:flutter/material.dart';
 
 class CalendarScreen extends StatefulWidget {

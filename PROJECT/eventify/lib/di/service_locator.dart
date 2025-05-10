@@ -6,7 +6,7 @@ import '../auth/data/repositories/auth_repository_impl.dart';
 import '../auth/domain/repositories/auth_repository.dart';
 import '../auth/domain/use_cases/login_use_case.dart';
 import '../auth/domain/use_cases/register_use_case.dart';
-import '../auth/domain/use_cases/google_sign_in_use_case.dart'; // Import GoogleSignInUseCase
+import '../auth/domain/use_cases/google_sign_in_use_case.dart';
 
 final sl = GetIt.instance;
 
