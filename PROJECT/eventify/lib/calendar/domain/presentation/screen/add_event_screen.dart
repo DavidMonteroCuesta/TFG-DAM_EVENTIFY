@@ -166,10 +166,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
         title:  ShiningTextAnimation(
           text: "CREATE NEW EVENT",
           style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
-          shineColor: secondaryColor,
+          shineColor: AppColors.textPrimary,
         ),
         backgroundColor: headerColor,
-        foregroundColor: const Color.fromARGB(221, 255, 255, 255),
+        foregroundColor: AppColors.outline,
         elevation: 0,
         centerTitle: true,
         toolbarHeight: kToolbarHeight,
@@ -181,6 +181,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 30.0), // Added space here
               TextFormField(
                 controller: _titleController,
                 style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
@@ -549,3 +550,4 @@ class _AddEventScreenState extends State<AddEventScreen> {
     );
   }
 }
+

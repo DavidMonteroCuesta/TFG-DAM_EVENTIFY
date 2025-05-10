@@ -1,7 +1,6 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_in_screen.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_up_view_model.dart';
-import 'package:eventify/calendar/domain/presentation/screen/add_event_screen.dart';
 import 'package:eventify/calendar/domain/presentation/screen/calendar_screen.dart';
 import 'package:eventify/common/widgets/chat/widgets/chat_screen.dart';
 import 'package:eventify/common/widgets/profile/widgets/profile_screen.dart';
