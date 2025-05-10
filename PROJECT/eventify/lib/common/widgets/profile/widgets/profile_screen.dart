@@ -4,17 +4,15 @@ import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:eventify/common/utils/dates/date_formatter.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatelessWidget {
   static String routeName = 'profile';
   static String routePath = '/profile';
 
-  // Removed the username parameter
   const ProfileScreen({super.key});
 
   String get _firstLetter {
-    // Use the current user's display name, or a default if null
     final user = FirebaseAuth.instance.currentUser;
     final username = user?.displayName ?? 'Usuario';
     return username.isNotEmpty ? username[0].toUpperCase() : '';
@@ -36,12 +34,10 @@ class ProfileScreen extends StatelessWidget {
     final headerBackgroundColor = const Color.fromARGB(255, 49, 49, 49);
     final currentDate = DateFormatter.getCurrentDateFormatted();
 
-    // Get the current user
     final user = FirebaseAuth.instance.currentUser;
 
-    // Use user data or default values
     final username = user?.displayName ?? 'Usuario';
-    final email = user?.email ?? 'email@dominio.com'; // Provide a default email
+    final email = user?.email ?? 'email@dominio.com';
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -82,7 +78,11 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 96.0, top: 16.0, right: 16.0),
+                padding: const EdgeInsets.only(
+                  left: 96.0,
+                  top: 16.0,
+                  right: 16.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -318,7 +318,9 @@ class ProfileScreen extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                   child: ElevatedButton(
                     onPressed: () {
-                      LogoutService.logout(context); // Llama al método de logout
+                      LogoutService.logout(
+                        context,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: errorColor,
@@ -364,4 +366,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-

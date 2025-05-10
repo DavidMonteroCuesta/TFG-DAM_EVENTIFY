@@ -1,0 +1,1 @@
+enum Priority { critical, high, medium, low }

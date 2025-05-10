@@ -1,6 +1,7 @@
 import 'package:eventify/auth/domain/presentation/screen/sign_in_screen.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/auth/domain/presentation/view_model/sign_up_view_model.dart';
+import 'package:eventify/common/widgets/calendar/widgets/add_event_screen.dart';
 import 'package:eventify/common/widgets/calendar/widgets/calendar_screen.dart';
 import 'package:eventify/common/widgets/chat/widgets/chat_screen.dart';
 import 'package:eventify/common/widgets/profile/widgets/profile_screen.dart';
@@ -10,6 +11,7 @@ import 'di/service_locator.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart'; // Import your generated Firebase options
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +70,7 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: Colors.white),
           ),
         ),
-        home: const CalendarScreen(), // Establece la pantalla de calendario como la inicial
+        home: const AddEventScreen(),
         routes: {
           CalendarScreen.routeName: (context) => const CalendarScreen(),
           ChatScreen.routeName: (context) => const ChatScreen(),
