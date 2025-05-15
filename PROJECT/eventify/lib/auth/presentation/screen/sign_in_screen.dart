@@ -6,7 +6,7 @@ import 'package:eventify/auth/presentation/screen/widgets/login_auth_layout.dart
 import 'package:eventify/auth/presentation/screen/widgets/primary_button.dart';
 import 'package:eventify/auth/presentation/screen/widgets/social_sign_in_buttons.dart';
 import 'package:eventify/auth/presentation/screen/widgets/forgot_passwd_option.dart';
-import 'package:eventify/auth/presentation/screen/animations/ani_left_to_right.dart';
+import 'package:eventify/common/animations/ani_left_to_right.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

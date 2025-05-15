@@ -1,5 +1,5 @@
-import 'package:eventify/auth/domain/entities/user.dart'; // Importa tu clase User
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth; // Importa FirebaseAuth con alias
+import 'package:eventify/auth/domain/entities/user.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
 import 'dart:developer';

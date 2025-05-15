@@ -1,4 +1,4 @@
-import 'package:eventify/auth/presentation/screen/animations/ani_shining_text.dart';
+import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/data/data_sources/event_remote_data_source.dart';
 import 'package:eventify/calendar/data/repositories/event_repository_impl.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';

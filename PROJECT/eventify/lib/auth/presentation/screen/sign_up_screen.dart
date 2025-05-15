@@ -9,7 +9,7 @@ import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_up_view_model.dart';
-import 'package:eventify/auth/presentation/screen/animations/ani_left_to_right.dart';
+import 'package:eventify/common/animations/ani_left_to_right.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

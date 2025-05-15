@@ -11,7 +11,6 @@ import '../auth/domain/use_cases/google_sign_in_use_case.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  // Auth Feature
   sl.registerFactory(() => SignInViewModel(loginUseCase: sl()));
   sl.registerFactory(() => SignUpViewModel(
         registerUseCase: sl(),
@@ -19,7 +18,7 @@ Future<void> init() async {
       ));
   sl.registerLazySingleton(() => LoginUseCase(repository: sl()));
   sl.registerLazySingleton(() => RegisterUseCase(authRepository: sl()));
-  sl.registerLazySingleton(() => GoogleSignInUseCase(authRepository: sl())); // Register GoogleSignInUseCase
+  sl.registerLazySingleton(() => GoogleSignInUseCase(authRepository: sl()));
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton(() => AuthRemoteDataSource());
 }
