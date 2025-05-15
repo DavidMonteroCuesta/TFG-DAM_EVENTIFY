@@ -31,16 +31,13 @@ class _AddEventScreenState extends State<AddEventScreen> {
   final _subjectController = TextEditingController();
   final _withPersonController = TextEditingController();
   bool _withPersonYesNo = false;
-  // Inject the EventViewModel
   late final EventViewModel _eventViewModel;
 
   @override
   void initState() {
     super.initState();
-     // Initialize EventViewModel.  You'll need to get the AddEventUseCase
-    // from your service locator or dependency injection mechanism.
     _eventViewModel = EventViewModel(
-      addEventUseCase: AddEventUseCase(eventRepository: EventRepositoryImpl(remoteDataSource: EventRemoteDataSource())), // Replace with actual implementation
+      addEventUseCase: AddEventUseCase(eventRepository: EventRepositoryImpl(remoteDataSource: EventRemoteDataSource())),
     );
   }
 
@@ -112,7 +109,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   void _saveEvent() {
   if (_formKey.currentState!.validate()) {
-    // No mover la navegación aquí.  Se moverá al ViewModel.
      _eventViewModel.addEvent(
           _selectedEventType,
           _titleController.text,
@@ -127,15 +123,12 @@ class _AddEventScreenState extends State<AddEventScreen> {
           _withPersonYesNo,
           context,
     ).then((_) {
-      // Navigator.of(context).pop(); // Mueve la navegación aquí, dentro del .then()
       Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const CalendarScreen(),
               ),
             );
     }).catchError((error) {
-      // Handle error, show a dialog, etc.
-      print("Error saving event: $error");
        ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Failed to save event: $error'),
@@ -145,8 +138,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     });
   }
 }
-
-
+  
   @override
   void dispose() {
     _titleController.dispose();
@@ -166,7 +158,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        // Modified leading:
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -195,7 +186,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 30.0), // Added space here
+              const SizedBox(height: 30.0),
               TextFormField(
                 controller: _titleController,
                 style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
@@ -369,11 +360,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ],
               ),
               const SizedBox(height: 22.0),
-              // Event Type Dropdown
               DropdownButtonFormField<EventType>(
                 value: _selectedEventType,
                 onChanged: (EventType? newValue) {
-                  if (newValue != null) { // null check
+                  if (newValue != null) {
                     setState(() {
                       _selectedEventType = newValue;
                     });
@@ -384,20 +374,20 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     value: value,
                     child: Text(
                       value.toString().split('.').last.toUpperCase(),
-                      style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary), // Consistent text color
+                      style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
                     ),
                   );
                 }).toList(),
                 decoration: InputDecoration(
                   labelText: 'Event Type',
-                  labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500), // Label color
+                  labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none, // Remove the border
+                    borderSide: BorderSide.none,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: secondaryColor, width: 1.5), // Focused border color
+                    borderSide: BorderSide(color: secondaryColor, width: 1.5),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -405,13 +395,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   ),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                   filled: true,
-                  fillColor: const Color(0xFF1F1F1F), // Background color of the dropdown
+                  fillColor: const Color(0xFF1F1F1F),
                 ),
-                style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary), // Text color
+                style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
               ),
               const SizedBox(height: 22.0),
-
-              // Conditional Fields
               if (_selectedEventType == EventType.meeting ||
                   _selectedEventType == EventType.conference ||
                   _selectedEventType == EventType.appointment)
@@ -477,16 +465,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               _withPersonYesNo = value ?? false;
                             });
                           },
-                          activeColor: secondaryColor, // Customize the active color
+                          activeColor: secondaryColor,
                           checkColor: onSecondaryColor,
                           side: BorderSide(color: outlineColor),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 12.0), // Add padding here
+                      padding: const EdgeInsets.only(top: 12.0),
                       child: Visibility(
-                        visible: _withPersonYesNo, // Mostrar solo si _withPersonYesNo es true
+                        visible: _withPersonYesNo,
                         child: TextFormField(
                           controller: _withPersonController,
                           style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
