@@ -7,15 +7,14 @@ import 'package:eventify/auth/presentation/screen/widgets/primary_button.dart';
 import 'package:eventify/auth/presentation/screen/widgets/social_sign_in_buttons.dart';
 import 'package:eventify/auth/presentation/screen/widgets/forgot_passwd_option.dart';
 import 'package:eventify/common/animations/ani_left_to_right.dart';
-import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_in_view_model.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
-  static const String routeName = '/signin'; 
-  
+  static const String routeName = '/signin';
+
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
@@ -74,7 +73,8 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
           AuthTitle(text: 'Welcome Back'),
           const SizedBox(height: 8),
           AuthSubtitle(
-              text: 'Fill out the information below in order to access your account.'),
+              text:
+                  'Fill out the information below in order to access your account.'),
           const SizedBox(height: 24),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
@@ -103,24 +103,9 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
               onPressed: signInViewModel.isLoading
                   ? null
                   : () async {
-                      final success = await signInViewModel.login(
-                        _emailController.text,
-                        _passwordController.text,
-                      );
-                      if (success) {
-                        Navigator.pushReplacement(
-                          // ignore: use_build_context_synchronously
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const CalendarScreen()),
-                        );
-                      } else {
-                        // ignore: use_build_context_synchronously
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(signInViewModel.errorMessage ?? 'Login failed')),
-                        );
-                      }
+                      // Llama a la función de inicio de sesión del ViewModel
+                      await signInViewModel.signInWithFirebase(
+                          context, _emailController.text.trim(), _passwordController.text.trim());
                     },
             ),
           ),
@@ -150,4 +135,3 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     );
   }
 }
-

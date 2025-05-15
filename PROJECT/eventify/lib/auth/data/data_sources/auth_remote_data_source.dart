@@ -9,15 +9,18 @@ class AuthRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String _tag = 'AuthRemoteDataSource';
 
-  Future<String?> registerWithEmailAndPassword(String email, String password) async {
+  Future<String?> registerWithEmailAndPassword(
+      String email, String password) async {
     try {
-      final firebase_auth.UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      final firebase_auth.UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       return userCredential.user?.uid;
     } on firebase_auth.FirebaseAuthException catch (e) {
-      log('Firebase Auth Register Error: ${e.message}', name: _tag, error: e);
+      log('Firebase Auth Register Error: ${e.message}',
+          name: _tag, error: e);
       return null;
     } catch (e) {
       log('Unexpected Register Error: $e', name: _tag, error: e);
@@ -27,23 +30,27 @@ class AuthRemoteDataSource {
 
   Future<void> saveUser(UserModel userModel) async {
     try {
-      await _firestore.collection('users').doc(userModel.id).set(userModel.toJson());
+      await _firestore
+          .collection('users')
+          .doc(userModel.id)
+          .set(userModel.toJson());
     } catch (e) {
       log('Firestore Save User Error: $e', name: _tag, error: e);
       rethrow;
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  // Modifica la función login para que devuelva Future<UserCredential?>
+  Future<firebase_auth.UserCredential?> login(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return true;
+      final userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return userCredential;
     } on firebase_auth.FirebaseAuthException catch (e) {
       log('Firebase Auth Login Error: ${e.message}', name: _tag, error: e);
-      return false;
+      rethrow;
     } catch (e) {
       log('Unexpected Login Error: $e', name: _tag, error: e);
-      return false;
+      rethrow;
     }
   }
 
@@ -65,7 +72,8 @@ class AuthRemoteDataSource {
         return userModel.toDomain();
       }
     } catch (e) {
-      log('Error saving Google user info to Firestore: $e', name: _tag, error: e);
+      log('Error saving Google user info to Firestore: $e',
+          name: _tag, error: e);
       return null;
     }
   }

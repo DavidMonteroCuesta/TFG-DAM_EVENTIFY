@@ -10,15 +10,17 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<bool> login(String email, String password) async {
+  Future<firebase_auth.UserCredential?> login(String email, String password) async {
     return await remoteDataSource.login(email, password);
   }
 
   @override
   Future<User?> register(String email, String password, String username) async {
-    final String? userId = await remoteDataSource.registerWithEmailAndPassword(email, password);
+    final String? userId =
+        await remoteDataSource.registerWithEmailAndPassword(email, password);
     if (userId != null) {
-      final UserModel userModel = UserModel(id: userId, username: username, email: email);
+      final UserModel userModel =
+          UserModel(id: userId, username: username, email: email);
       await remoteDataSource.saveUser(userModel);
       return userModel.toDomain();
     }
