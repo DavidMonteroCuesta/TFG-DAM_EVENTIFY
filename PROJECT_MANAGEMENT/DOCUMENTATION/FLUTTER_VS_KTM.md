@@ -60,3 +60,24 @@ Flutter cuenta con una comunidad extensa y un **ecosistema de paquetes bien desa
 ---
 
 Para desarrollar una **aplicación multiplataforma eficiente, con una interfaz moderna y un desarrollo ágil**, **Flutter se presenta como la mejor opción**. Gracias a su capacidad para compartir código entre todas las plataformas y a su amplio ecosistema de herramientas, permite optimizar el tiempo de desarrollo y garantizar una **experiencia de usuario consistente**.
+
+---
+
+| Característica                              | Flutter                                                                                  | Kotlin Multiplatform (KMP)                                                            |
+|--------------------------------------------|------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| **Lenguaje**                               | Dart                                                                                     | Kotlin                                                                                 |
+| **Base de código compartida**              | 100% compartida para Android, iOS, Web y escritorio                                      | Lógica compartida, pero UI separada por plataforma                                    |
+| **UI**                                     | Propia, consistente y personalizable en todas las plataformas                           | Usa componentes nativos (Jetpack Compose, SwiftUI), sin UI multiplataforma integrada  |
+| **Hot Reload**                             | Sí                                                                                       | No                                                                                     |
+| **Tamaño de la app**                       | Mayor, debido al motor de renderizado incluido                                           | Más ligero al usar componentes nativos                                                 |
+| **Rendimiento**                            | Alto, gracias al motor Skia                                                              | Nativo, sin capa adicional                                                             |
+| **Curva de aprendizaje**                   | Requiere aprender Dart y estructura Flutter                                              | Baja si ya conoces Kotlin; integración iOS requiere aprendizaje                       |
+| **Acceso a APIs nativas**                  | A través de canales de plataforma, menos directo                                         | Directo, especialmente en Android                                                      |
+| **Web y escritorio**                       | Buen soporte e integración                                                               | Soporte más limitado, especialmente en la UI                                           |
+| **Popularidad del lenguaje**               | Dart es menos adoptado                                                                   | Kotlin es más popular, especialmente en Android                                        |
+| **Ecosistema y comunidad**                 | Amplia comunidad y muchos paquetes disponibles                                           | Comunidad más pequeña y menos recursos disponibles                                     |
+| **Escalabilidad en proyectos grandes**     | Buena, gracias a su estructura modular y widgets reutilizables                           | Excelente para lógica compartida; UI requiere trabajo adicional                        |
+| **Reutilización de código**                | Completa                                                                                 | Parcial (principalmente lógica de negocio)                                             |
+| **Ideal para desarrollo ágil**             | Sí, gracias a Hot Reload y un solo código                                                | Menos ágil por la necesidad de compilar múltiples targets                              |
+| **Conclusión**                             | Ideal para apps con UI consistente en múltiples plataformas                              | Ideal si se necesita rendimiento nativo con personalización de UI por plataforma      |
+

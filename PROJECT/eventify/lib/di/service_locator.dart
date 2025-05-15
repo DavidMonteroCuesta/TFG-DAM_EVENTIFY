@@ -1,5 +1,5 @@
-import 'package:eventify/auth/domain/presentation/view_model/sign_in_view_model.dart';
-import 'package:eventify/auth/domain/presentation/view_model/sign_up_view_model.dart';
+import 'package:eventify/auth/presentation/view_model/sign_in_view_model.dart';
+import 'package:eventify/auth/presentation/view_model/sign_up_view_model.dart';
 import 'package:get_it/get_it.dart';
 import '../auth/data/data_sources/auth_remote_data_source.dart';
 import '../auth/data/repositories/auth_repository_impl.dart';

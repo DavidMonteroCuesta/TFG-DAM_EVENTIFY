@@ -26,7 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User?> signInWithGoogle(firebase_auth.User firebaseUser) async { // Correct parameter type
+  Future<User?> signInWithGoogle(firebase_auth.User firebaseUser) async {
     final User? user = await remoteDataSource.signInWithGoogle(firebaseUser);
     if (user != null) {
       final UserModel userModel = UserModel(

@@ -47,7 +47,6 @@ class AuthRemoteDataSource {
     }
   }
 
-  // Modificado para devolver tu clase User
   Future<User?> signInWithGoogle(firebase_auth.User firebaseUser) async {
     try {
       final userDoc = _firestore.collection('users').doc(firebaseUser.uid);

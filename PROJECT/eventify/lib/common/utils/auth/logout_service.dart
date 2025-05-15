@@ -1,4 +1,4 @@
-import 'package:eventify/auth/domain/presentation/screen/sign_in_screen.dart';
+import 'package:eventify/auth/presentation/screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 
 class LogoutService {
