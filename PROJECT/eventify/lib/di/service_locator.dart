@@ -7,6 +7,7 @@ import '../auth/domain/repositories/auth_repository.dart';
 import '../auth/domain/use_cases/login_use_case.dart';
 import '../auth/domain/use_cases/register_use_case.dart';
 import '../auth/domain/use_cases/google_sign_in_use_case.dart';
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 
 final sl = GetIt.instance;
 
@@ -21,4 +22,5 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GoogleSignInUseCase(authRepository: sl()));
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton(() => AuthRemoteDataSource());
+  sl.registerFactory(() => EventViewModel());
 }

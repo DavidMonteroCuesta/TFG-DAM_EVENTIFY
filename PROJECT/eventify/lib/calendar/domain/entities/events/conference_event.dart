@@ -1,6 +1,9 @@
-import 'package:eventify/calendar/domain/entities/events/meeting_event.dart';
+import 'package:eventify/calendar/domain/entities/event.dart';
+import 'package:eventify/common/utils/priorities/priorities_enum.dart';
 
-class ConferenceEvent extends MeetingEvent {
+class ConferenceEvent extends Event {
+  final String? location;
+
   ConferenceEvent({
     required super.id,
     required super.title,
@@ -10,14 +13,30 @@ class ConferenceEvent extends MeetingEvent {
     super.time,
     super.hasNotification,
     required super.userId,
-    super.location,
-  });
+    this.location,
+  }) : super();
+
+  factory ConferenceEvent.fromJson(Map<String, dynamic> json) {
+    return ConferenceEvent(
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'],
+      priority: PriorityConverter.stringToPriority(json['priority']),
+      date: json['date'] != null ? DateTime.tryParse(json['date']) : null,
+      time: json['time'],
+      hasNotification: json['hasNotification'],
+      location: json['location'],
+    );
+  }
 
   @override
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(),
-      'type': 'Conference',
+      'type': 'conference',
+      'location': location,
+       'priority': priority.toString(),
     };
   }
 }

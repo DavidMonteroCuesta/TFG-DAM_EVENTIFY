@@ -1,7 +1,7 @@
 import 'package:eventify/auth/domain/use_cases/login_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:eventify/calendar/presentation/screen/calendar_screen.dart'; // Importa la pantalla del calendario
+import 'package:eventify/calendar/presentation/screen/calendar_screen.dart'; // Import the calendar screen
 
 class SignInViewModel extends ChangeNotifier {
   final LoginUseCase loginUseCase;
@@ -9,50 +9,62 @@ class SignInViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
-  BuildContext? _context; // Almacena el contexto
+  BuildContext? _context; // Store the context
 
-  SignInViewModel({required this.loginUseCase});
+  SignInViewModel({required this.loginUseCase}) {
+       // No need to check current user here.  We do it in main.dart
+  }
 
-  // Método para iniciar sesión con Firebase, llamado desde la UI
+  // Method to initialize the view model with the context
+  void initialize(BuildContext context) {
+    _context = context;
+  }
+
+
+  // Method to sign in with Firebase, called from the UI
   Future<void> signInWithFirebase(BuildContext context, String email, String password) async {
     _isLoading = true;
     _errorMessage = null;
-    _context = context; // Guarda el contexto
+    _context = context; // Store the context
     notifyListeners();
 
     try {
-      final UserCredential? userCredential = await loginUseCase.execute(email, password); // Llama al caso de uso
+      final UserCredential? userCredential = await loginUseCase.execute(email, password); // Call the use case
       if (userCredential != null) {
-        // Manejar el éxito en el ViewModel
-        print('Inicio de sesión exitoso: ${userCredential.user?.email}');
+        // Handle success in the ViewModel
+        print('Sign in successful: ${userCredential.user?.email}');
         _isLoading = false;
         notifyListeners();
-        // Navega a la pantalla del calendario después de un inicio de sesión exitoso
+        // Navigate to the calendar screen after successful login
         if (_context != null) {
-          Navigator.of(_context!).pushReplacement(
+           Navigator.of(_context!).pushReplacement(
             MaterialPageRoute(builder: (_) => const CalendarScreen()),
           );
         }
+
+       
       } else {
         _isLoading = false;
-        _errorMessage = 'Inicio de sesión fallido';
+        _errorMessage = 'Sign in failed';
         notifyListeners();
-        if (_context != null) {
-          ScaffoldMessenger.of(_context!).showSnackBar(
-            const SnackBar(content: Text('Inicio de sesión fallido')),
+         if (_context != null) {
+           ScaffoldMessenger.of(_context!).showSnackBar(
+            const SnackBar(content: Text('Sign in failed')),
           );
         }
+       
       }
     } catch (error) {
-      // Manejar el error
+      // Handle the error
       _isLoading = false;
       _errorMessage = error.toString();
       notifyListeners();
        if (_context != null) {
-          ScaffoldMessenger.of(_context!).showSnackBar(
-            SnackBar(content: Text('Error: $error')),
-          );
-        }
+         ScaffoldMessenger.of(_context!).showSnackBar(
+          SnackBar(content: Text('Error: $error')),
+        );
+       }
+     
     }
   }
 

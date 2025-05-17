@@ -39,6 +39,14 @@ class ProfileScreen extends StatelessWidget {
     final username = user?.displayName ?? 'Usuario';
     final email = user?.email ?? 'email@dominio.com';
 
+    // Determina si la aplicación se está ejecutando en un dispositivo móvil
+    final bool isMobile = Theme.of(context).platform == TargetPlatform.android ||
+        Theme.of(context).platform == TargetPlatform.iOS;
+
+    // Ajusta el relleno superior basado en si es un dispositivo móvil
+    final double topPadding = isMobile ? 120.0 : 80.0; // Ajusta estos valores según sea necesario
+    final double usernameTopPadding = isMobile ? 56.0 : 16.0;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -51,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 80,
+                    height: 120, // Increased height of the header
                     color: headerBackgroundColor,
                   ),
                   Align(
@@ -65,7 +73,8 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 96.0),
+                    padding: EdgeInsets.only(left: 96.0, top: 40),
+                    // Usa el padding superior calculado
                     child: ShiningTextAnimation(
                       text: currentDate,
                       style: GoogleFonts.urbanist(
@@ -78,9 +87,9 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   left: 96.0,
-                  top: 16.0,
+                  top: usernameTopPadding, // Ajusta el padding superior basado en la plataforma
                   right: 16.0,
                 ),
                 child: Column(
@@ -344,7 +353,7 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: 40,
+            top: topPadding, // Usa el padding superior calculado
             left: 16,
             child: CircleAvatar(
               radius: 40,
@@ -366,3 +375,4 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+

@@ -1,4 +1,5 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
+import 'package:eventify/common/utils/priorities/priorities_enum.dart';
 
 class AppointmentEvent extends Event {
   final String? withPerson;
@@ -15,25 +16,36 @@ class AppointmentEvent extends Event {
     super.hasNotification,
     required super.userId,
     this.withPerson,
-    this.withPersonYesNo = false,
+    required this.withPersonYesNo,
     this.location,
-  });
+  }) : super();
+
+  factory AppointmentEvent.fromJson(Map<String, dynamic> json) {
+    return AppointmentEvent(
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'],
+      priority: PriorityConverter.stringToPriority(json['priority']),
+      date: json['date'] != null ? DateTime.tryParse(json['date']) : null,
+      time: json['time'],
+      hasNotification: json['hasNotification'],
+      withPerson: json['withPerson'],
+      withPersonYesNo: json['withPersonYesNo'] ??
+          false,
+      location: json['location'],
+    );
+  }
 
   @override
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'userId': userId,
-      'title': title,
-      'description': description,
-      'priority': priority.toString(),
-      'date': date?.toIso8601String(),
-      'time': time,
-      'hasNotification': hasNotification,
-      'type': 'Appointment',
+      ...super.toJson(),
+      'type': 'appointment',
       'withPerson': withPerson,
       'withPersonYesNo': withPersonYesNo,
       'location': location,
+       'priority': priority.toString(),
     };
   }
 }

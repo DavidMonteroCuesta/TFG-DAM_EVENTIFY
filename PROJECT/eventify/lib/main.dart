@@ -10,6 +10,7 @@ import 'di/service_locator.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 
 
 void main() async {
@@ -69,7 +70,18 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: Colors.white),
           ),
         ),
-        home: const CalendarScreen(),
+        // Use a builder to get the context and check the user
+        home: Builder(
+          builder: (context) {
+            final auth = FirebaseAuth.instance;
+            final user = auth.currentUser;
+            if (user != null) {
+              return const CalendarScreen(); // Or any other screen you want to show when logged in
+            } else {
+              return const SignInScreen();
+            }
+          },
+        ),
         routes: {
           CalendarScreen.routeName: (context) => const CalendarScreen(),
           ChatScreen.routeName: (context) => const ChatScreen(),
@@ -80,3 +92,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

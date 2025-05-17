@@ -1,4 +1,5 @@
 import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
+import 'package:eventify/calendar/presentation/screen/search_events_screen.dart';
 import 'package:eventify/common/utils/dates/date_formatter.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class Header extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(
-                  DateFormatter.getCurrentMonthAndYear().toUpperCase(), // Llamamos al método que devuelve la fecha
+                  DateFormatter.getCurrentMonthAndYear().toUpperCase(), // Llama al método que devuelve la fecha
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -33,7 +34,14 @@ class Header extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Navega a la pantalla de búsqueda al hacer clic en la lupa
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const EventSearchScreen(),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.search, color: Colors.white),
               ),
               IconButton(
@@ -53,3 +61,4 @@ class Header extends StatelessWidget {
     );
   }
 }
+

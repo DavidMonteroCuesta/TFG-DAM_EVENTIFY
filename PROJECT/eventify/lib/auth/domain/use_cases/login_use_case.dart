@@ -7,7 +7,7 @@ class LoginUseCase {
 
   LoginUseCase({required this.repository});
 
-  // Modifica el método execute para que devuelva UserCredential?
+  // Modify the execute method to return UserCredential?
   Future<UserCredential?> execute(String email, String password) async {
     try {
       return await _auth.signInWithEmailAndPassword(email: email, password: password);

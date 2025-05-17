@@ -1,9 +1,6 @@
 import 'package:eventify/common/animations/ani_shining_text.dart';
-import 'package:eventify/calendar/data/data_sources/event_remote_data_source.dart';
-import 'package:eventify/calendar/data/repositories/event_repository_impl.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/calendar/domain/use_cases/add_event_use_case.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/calendar/domain/entities/events_type_enum.dart';
 import 'package:eventify/common/utils/priorities/priorities_enum.dart';
@@ -36,9 +33,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   @override
   void initState() {
     super.initState();
-    _eventViewModel = EventViewModel(
-      addEventUseCase: AddEventUseCase(eventRepository: EventRepositoryImpl(remoteDataSource: EventRemoteDataSource())),
-    );
+    _eventViewModel = EventViewModel();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -246,7 +241,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   _buildPriorityOption(
                       'CRITICAL',
                       Priority.critical,
-                      secondaryColor.withOpacity(0.8),
+                      const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                       onSecondaryColor),
                   _buildPriorityOption(
                       'HIGH',
@@ -552,4 +547,3 @@ class _AddEventScreenState extends State<AddEventScreen> {
     );
   }
 }
-
