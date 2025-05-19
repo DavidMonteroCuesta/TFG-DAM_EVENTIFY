@@ -91,8 +91,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         DateTime? parsedDate = DateTime.tryParse(date);
         results = results.where((event) {
           if (event.date != null && parsedDate != null) {
-            return DateFormat('yyyy-MM-dd').format(event.date!) ==
-                DateFormat('yyyy-MM-dd').format(parsedDate);
+             return DateFormat('yyyy/MM/dd').format(event.date!) ==  DateFormat('yyyy/MM/dd').format(parsedDate);
           }
           return false;
         }).toList();
@@ -302,6 +301,9 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                     } else {
                       eventTypeString = 'Task';
                     }
+                    String formattedDate = event.date != null
+                        ? DateFormat('yyyy/MM/dd').format(event.date!) // Format the date here
+                        : 'N/A';
 
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -328,7 +330,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                               ),
                               const SizedBox(height: 4.0),
                               Text(
-                                'Date: ${event.date != null ? DateFormat('EEE, MMM d,ypeł').format(event.date!) : 'N/A'}',
+                                'Date: $formattedDate',
                                 style: const TextStyle(
                                     fontSize: 14.0, color: Colors.grey),
                               ),
