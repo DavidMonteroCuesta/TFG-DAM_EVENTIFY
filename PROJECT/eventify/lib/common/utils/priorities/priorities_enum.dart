@@ -13,7 +13,7 @@ class PriorityConverter {
       case 'low':
         return Priority.low;
       default:
-        return Priority.medium; // Valor por defecto
+        return Priority.medium;
     }
   }
 }

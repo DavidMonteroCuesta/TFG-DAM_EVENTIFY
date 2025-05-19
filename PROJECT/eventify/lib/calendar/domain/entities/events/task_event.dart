@@ -3,7 +3,6 @@ import 'package:eventify/common/utils/priorities/priorities_enum.dart';
 
 class TaskEvent extends Event {
   TaskEvent({
-    required super.id,
     required super.title,
     super.description,
     required super.priority,
@@ -15,7 +14,6 @@ class TaskEvent extends Event {
 
   factory TaskEvent.fromJson(Map<String, dynamic> json) {
     return TaskEvent(
-      id: json['id'] ?? '',
       userId: json['userId'] ?? '',
       title: json['title'] ?? '',
       description: json['description'],

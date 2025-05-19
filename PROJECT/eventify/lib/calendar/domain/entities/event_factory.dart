@@ -13,7 +13,6 @@ class EventFactory {
     switch (type) {
       case EventType.task:
         return TaskEvent(
-          id: data['id'] as String,
           title: data['title'] as String,
           description: data['description'] as String?,
           priority: data['priority'] as Priority,
@@ -24,7 +23,6 @@ class EventFactory {
         );
       case EventType.meeting:
         return MeetingEvent(
-          id: data['id'] as String,
           title: data['title'] as String,
           description: data['description'] as String?,
           priority: data['priority'] as Priority,
@@ -36,7 +34,6 @@ class EventFactory {
         );
       case EventType.exam:
         return ExamEvent(
-          id: data['id'] as String,
           title: data['title'] as String,
           description: data['description'] as String?,
           priority: data['priority'] as Priority,
@@ -48,7 +45,6 @@ class EventFactory {
         );
       case EventType.appointment:
         return AppointmentEvent(
-          id: data['id'] as String,
           title: data['title'] as String,
           description: data['description'] as String?,
           priority: data['priority'] as Priority,
@@ -62,7 +58,6 @@ class EventFactory {
         );
       case EventType.conference:
         return ConferenceEvent(
-          id: data['id'] as String,
           title: data['title'] as String,
           description: data['description'] as String?,
           priority: data['priority'] as Priority,

@@ -183,7 +183,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   @override
   Widget build(BuildContext context) {
     final Color headerColor = Colors.grey[800]!;
-    const secondaryColor = Color(0xFF6750A4);
     const outlineColor = Color(0xFFE0E0E0);
 
     return Scaffold(

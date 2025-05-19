@@ -5,7 +5,6 @@ class ExamEvent extends Event {
   final String? subject;
 
   ExamEvent({
-    required super.id,
     required super.title,
     super.description,
     required super.priority,
@@ -18,7 +17,6 @@ class ExamEvent extends Event {
 
   factory ExamEvent.fromJson(Map<String, dynamic> json) {
     return ExamEvent(
-      id: json['id'] ?? '',
       userId: json['userId'] ?? '',
       title: json['title'] ?? '',
       description: json['description'],

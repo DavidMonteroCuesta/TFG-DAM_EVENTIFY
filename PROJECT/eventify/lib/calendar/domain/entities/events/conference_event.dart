@@ -5,7 +5,6 @@ class ConferenceEvent extends Event {
   final String? location;
 
   ConferenceEvent({
-    required super.id,
     required super.title,
     super.description,
     required super.priority,
@@ -18,7 +17,6 @@ class ConferenceEvent extends Event {
 
   factory ConferenceEvent.fromJson(Map<String, dynamic> json) {
     return ConferenceEvent(
-      id: json['id'] ?? '',
       userId: json['userId'] ?? '',
       title: json['title'] ?? '',
       description: json['description'],

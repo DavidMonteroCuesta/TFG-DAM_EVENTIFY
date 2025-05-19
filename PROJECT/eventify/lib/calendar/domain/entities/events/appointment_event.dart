@@ -7,7 +7,6 @@ class AppointmentEvent extends Event {
   final String? location;
 
   AppointmentEvent({
-    required super.id,
     required super.title,
     super.description,
     required super.priority,
@@ -22,7 +21,6 @@ class AppointmentEvent extends Event {
 
   factory AppointmentEvent.fromJson(Map<String, dynamic> json) {
     return AppointmentEvent(
-      id: json['id'] ?? '',
       userId: json['userId'] ?? '',
       title: json['title'] ?? '',
       description: json['description'],
