@@ -1,9 +1,9 @@
+import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
-import 'package:eventify/calendar/domain/entities/events_type_enum.dart';
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

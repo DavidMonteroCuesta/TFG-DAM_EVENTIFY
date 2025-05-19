@@ -1,5 +1,5 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 
 class ExamEvent extends Event {
   final String? subject;
@@ -34,7 +34,7 @@ class ExamEvent extends Event {
       ...super.toJson(),
       'type': 'exam',
       'subject': subject,
-       'priority': priority.toString(),
+       'priority': priority.toFormattedString(),
     };
   }
 }

@@ -1,5 +1,5 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 
 class TaskEvent extends Event {
   TaskEvent({
@@ -29,7 +29,7 @@ class TaskEvent extends Event {
     return {
       ...super.toJson(),
       'type': 'task',
-       'priority': priority.toString(),
+       'priority': priority.toFormattedString(),
     };
   }
 }

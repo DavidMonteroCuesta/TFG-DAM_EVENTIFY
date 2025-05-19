@@ -1,5 +1,5 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 
 class MeetingEvent extends Event {
   final String? location;
@@ -24,7 +24,7 @@ class MeetingEvent extends Event {
           PriorityConverter.stringToPriority(json['priority']),
       date: json['date'] != null
           ? DateTime.tryParse(json['date'])
-          : null, // Use tryParse
+          : null,
       time: json['time'],
       hasNotification: json['hasNotification'],
       location: json['location'],
@@ -35,9 +35,9 @@ class MeetingEvent extends Event {
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(),
-      'type': 'meeting', // Add the type discriminator.
+      'type': 'meeting',
       'location': location,
-      'priority': priority.toString(), // Include priority here
+      'priority': priority.toFormattedString(),
     };
   }
 }

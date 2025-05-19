@@ -2,11 +2,11 @@ import 'package:eventify/calendar/domain/entities/events/appointment_event.dart'
 import 'package:eventify/calendar/domain/entities/events/conference_event.dart';
 import 'package:eventify/calendar/domain/entities/events/exam_event.dart';
 import 'package:eventify/calendar/domain/entities/events/meeting_event.dart';
-import 'package:eventify/calendar/domain/entities/events_type_enum.dart';
+import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/domain/entities/event.dart';
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,20 +24,20 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   final _titleSearchController = TextEditingController();
   final _descriptionSearchController = TextEditingController();
   final _dateSearchController = TextEditingController();
-  EventType _selectedEventType = EventType.task;
+  EventType _selectedEventType = EventType.all;
   final _locationSearchController = TextEditingController();
   final _subjectSearchController = TextEditingController();
   final _withPersonSearchController = TextEditingController();
   bool _withPersonYesNoSearch = false;
-  Priority _selectedPriority = Priority.medium;
+  Priority? _selectedPriority;
   List<Event> _searchResults = [];
   late EventViewModel _eventViewModel;
+  bool _enablePriorityFilter = false;
 
   @override
   void initState() {
     super.initState();
-    // Resolve EventViewModel using GetIt
-    _eventViewModel = sl<EventViewModel>(); // Get the instance from the service locator
+    _eventViewModel = sl<EventViewModel>();
     _loadEvents();
     _titleSearchController.addListener(_searchEvents);
     _descriptionSearchController.addListener(_searchEvents);
@@ -45,6 +45,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     _locationSearchController.addListener(_searchEvents);
     _subjectSearchController.addListener(_searchEvents);
     _withPersonSearchController.addListener(_searchEvents);
+    _searchEvents();
   }
 
   @override
@@ -110,11 +111,20 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           } else if (_selectedEventType == EventType.appointment &&
               event is AppointmentEvent) {
             return true;
+          } else if (_selectedEventType == EventType.all) {
+            return true;
+          } else if (_selectedEventType == EventType.task &&
+              event is! MeetingEvent &&
+              event is! ExamEvent &&
+              event is! ConferenceEvent &&
+              event is! AppointmentEvent) {
+            return true;
           }
           return false;
         }).toList();
       }
-      if (_selectedPriority != Priority.medium) {
+      if (_enablePriorityFilter &&
+          _selectedPriority != null) { // Usa _enablePriorityFilter
         results =
             results.where((event) => event.priority == _selectedPriority).toList();
       }
@@ -184,6 +194,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   Widget build(BuildContext context) {
     final Color headerColor = Colors.grey[800]!;
     const outlineColor = Color(0xFFE0E0E0);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -239,11 +250,10 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   return DropdownMenuItem<EventType>(
                     value: value,
                     child: Text(
-                      value.toString().split('.').last.toUpperCase(),
-                      style: const TextStyle(
-                          fontSize: 16.0,
-                          color:
-                              Color(0xFFCBCBCB)),
+                      value == EventType.all
+                          ? "ALL"
+                          : value.toString().split('.').last.toUpperCase(),
+                      style: const TextStyle(fontSize: 16.0, color: Color(0xFFCBCBCB)),
                     ),
                   );
                 }).toList(),
@@ -264,10 +274,10 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 ),
               if (_selectedEventType == EventType.appointment)
                 _buildWithPersonField(),
-              const SizedBox(height: 30.0),
-              // Display search results
+              //const SizedBox(height: 30.0), // Eliminado para reducir el espacio
+              // Mover resultados aquí
               if (_searchResults.isNotEmpty) ...[
-                const SizedBox(height: 30.0),
+                const SizedBox(height: 10.0), // Espacio reducido
                 Text(
                   'Search Results (${_searchResults.length})',
                   style: const TextStyle(
@@ -280,79 +290,68 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: _searchResults.map((event) {
+                    String eventTypeString = 'N/A';
+                    if (event is MeetingEvent) {
+                      eventTypeString = 'Meeting';
+                    } else if (event is ExamEvent) {
+                      eventTypeString = 'Exam';
+                    } else if (event is ConferenceEvent) {
+                      eventTypeString = 'Conference';
+                    } else if (event is AppointmentEvent) {
+                      eventTypeString = 'Appointment';
+                    } else {
+                      eventTypeString = 'Task';
+                    }
+
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Container(
-                        padding: const EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1F1F1F),
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                              color: outlineColor.withOpacity(0.3)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              event.title,
-                              style: const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFFCBCBCB),
+                      child: SizedBox(
+                        width: screenWidth * 0.9,
+                        child: Container(
+                          padding: const EdgeInsets.all(12.0),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1F1F1F),
+                            borderRadius: BorderRadius.circular(8.0),
+                            border:
+                                Border.all(color: outlineColor.withOpacity(0.3)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                event.title,
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFFCBCBCB),
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4.0),
-                            Text(
-                              'Date: ${event.date != null ? DateFormat('EEE, MMM d,ypeł').format(event.date!) : 'N/A'}',
-                              style: const TextStyle(
-                                  fontSize: 14.0, color: Colors.grey),
-                            ),
-                            const SizedBox(height: 4.0),
-                            Text(
-                              'Time: ${event.time ?? 'N/A'}',
-                              style: const TextStyle(
-                                  fontSize: 14.0, color: Colors.grey),
-                            ),
-                            const SizedBox(height: 4.0),
-                            Text(
-                              'Description: ${event.description ?? 'N/A'}',
-                              style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: const Color(0xFFCBCBCB)),
-                            ),
-                            Text(
-                              'Priority: ${event.priority.toString().split('.').last.toUpperCase()}',
-                              style: const TextStyle(
-                                  fontSize: 14.0, color: Colors.yellow),
-                            ),
-                            if (event is MeetingEvent) ...[
                               const SizedBox(height: 4.0),
                               Text(
-                                'Location: ${event.location ?? 'N/A'}',
+                                'Date: ${event.date != null ? DateFormat('EEE, MMM d,ypeł').format(event.date!) : 'N/A'}',
+                                style: const TextStyle(
+                                    fontSize: 14.0, color: Colors.grey),
+                              ),
+                              const SizedBox(height: 4.0),
+                              Text(
+                                'Type: $eventTypeString',
+                                style: const TextStyle(
+                                    fontSize: 14.0, color: Colors.grey),
+                              ),
+                              const SizedBox(height: 4.0),
+                              Text(
+                                'Description: ${event.description ?? 'N/A'}',
                                 style: const TextStyle(
                                     fontSize: 14.0,
                                     color: const Color(0xFFCBCBCB)),
                               ),
-                            ],
-                            if (event is ExamEvent) ...[
-                              const SizedBox(height: 4.0),
                               Text(
-                                'Subject: ${event.subject ?? 'N/A'}',
+                                'Priority: ${event.priority.toString().split('.').last.toUpperCase()}',
                                 style: const TextStyle(
-                                    fontSize: 14.0,
-                                    color: const Color(0xFFCBCBCB)),
+                                    fontSize: 14.0, color: Colors.yellow),
                               ),
                             ],
-                            if (event is AppointmentEvent) ...[
-                              const SizedBox(height: 4.0),
-                              Text(
-                                  'With Person: ${event.withPerson ?? 'N/A'}',
-                                  style: const TextStyle(
-                                      fontSize: 14.0,
-                                      color: const Color(0xFFCBCBCB)),
-                                  ),
-                            ],
-                          ],
+                          ),
                         ),
                       ),
                     );
@@ -374,9 +373,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
-        style: const TextStyle(
-            fontSize: 16.0,
-            color: const Color(0xFFCBCBCB)),
+        style: const TextStyle(fontSize: 16.0, color: const Color(0xFFCBCBCB)),
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: const TextStyle(
@@ -437,9 +434,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           filled: true,
           fillColor: const Color(0xFF1F1F1F),
         ),
-        style: const TextStyle(
-            fontSize: 16.0,
-            color: const Color(0xFFCBCBCB)),
+        style: const TextStyle(fontSize: 16.0, color: const Color(0xFFCBCBCB)),
       ),
     );
   }
@@ -450,38 +445,63 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Priority',
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 16.0,
-                color: Color(0xFFCBCBCB)),
+          Row(
+            children: [
+              const Text(
+                'Priority',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16.0,
+                    color: Color(0xFFCBCBCB)),
+              ),
+              const SizedBox(width: 10),
+              Switch(
+                value: _enablePriorityFilter,
+                onChanged: (bool newValue) {
+                  setState(() {
+                    _enablePriorityFilter = newValue;
+                    if (!newValue) {
+                      _selectedPriority =
+                          null; // Reset priority when switch is off
+                    }
+                    _searchEvents();
+                  });
+                },
+                activeColor:
+                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                inactiveTrackColor: Colors.grey[600],
+                inactiveThumbColor: Colors.grey[350],
+              ),
+            ],
           ),
           const SizedBox(height: 8.0),
-          Wrap(
-            spacing: 8.0,
-            children: [
-              _buildPriorityOption(
-                  'CRITICAL',
-                  Priority.critical,
-                  const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
-                  const Color(0xFF0F0F0F)),
-              _buildPriorityOption(
-                  'HIGH',
-                  Priority.high,
-                  const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
-                  const Color(0xFF0F0F0F)),
-              _buildPriorityOption(
-                  'MEDIUM',
-                  Priority.medium,
-                  const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
-                  const Color(0xFF0F0F0F)),
-              _buildPriorityOption(
-                  'LOW',
-                  Priority.low,
-                  const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
-                  const Color(0xFF0F0F0F)),
-            ],
+          Visibility(
+            visible: _enablePriorityFilter,
+            child: Wrap(
+              spacing: 8.0,
+              children: [
+                _buildPriorityOption(
+                    'CRITICAL',
+                    Priority.critical,
+                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                    const Color(0xFF0F0F0F)),
+                _buildPriorityOption(
+                    'HIGH',
+                    Priority.high,
+                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                    const Color(0xFF0F0F0F)),
+                _buildPriorityOption(
+                    'MEDIUM',
+                    Priority.medium,
+                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                    const Color(0xFF0F0F0F)),
+                _buildPriorityOption(
+                    'LOW',
+                    Priority.low,
+                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                    const Color(0xFF0F0F0F)),
+              ],
+            ),
           ),
         ],
       ),
@@ -499,7 +519,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       onSelected: (bool selected) {
         setState(() {
           if (selected) {
-            _selectedPriority = priority;
+            _selectedPriority =
+                _selectedPriority == priority ? null : priority;
             _searchEvents();
           }
         });
@@ -527,8 +548,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
             children: [
               const Text(
                 "With Person (Yes/No):",
-                style: TextStyle(
-                    fontSize: 16.0, color:  Color(0xFFCBCBCB)),
+                style: TextStyle(fontSize: 16.0, color: Color(0xFFCBCBCB)),
               ),
               const SizedBox(width: 8.0),
               Checkbox(

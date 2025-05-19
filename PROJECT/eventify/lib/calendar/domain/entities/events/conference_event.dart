@@ -1,5 +1,5 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 
 class ConferenceEvent extends Event {
   final String? location;
@@ -34,7 +34,7 @@ class ConferenceEvent extends Event {
       ...super.toJson(),
       'type': 'conference',
       'location': location,
-       'priority': priority.toString(),
+       'priority': priority.toFormattedString(),
     };
   }
 }

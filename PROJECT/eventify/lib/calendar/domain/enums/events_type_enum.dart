@@ -4,4 +4,5 @@ enum EventType {
   appointment,
   conference,
   task,
+  all
 }

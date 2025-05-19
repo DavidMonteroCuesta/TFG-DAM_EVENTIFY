@@ -1,5 +1,5 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 
 class AppointmentEvent extends Event {
   final String? withPerson;
@@ -43,7 +43,7 @@ class AppointmentEvent extends Event {
       'withPerson': withPerson,
       'withPersonYesNo': withPersonYesNo,
       'location': location,
-       'priority': priority.toString(),
+       'priority': priority.toFormattedString(),
     };
   }
 }

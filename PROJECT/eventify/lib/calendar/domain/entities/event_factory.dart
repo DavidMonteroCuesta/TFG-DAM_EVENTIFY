@@ -4,8 +4,8 @@ import 'package:eventify/calendar/domain/entities/events/conference_event.dart';
 import 'package:eventify/calendar/domain/entities/events/exam_event.dart';
 import 'package:eventify/calendar/domain/entities/events/meeting_event.dart';
 import 'package:eventify/calendar/domain/entities/events/task_event.dart';
-import 'package:eventify/calendar/domain/entities/events_type_enum.dart';
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:flutter/material.dart';
 
 class EventFactory {
@@ -67,6 +67,8 @@ class EventFactory {
           userId: userId,
           location: data['location'] as String?,
         );
+      default:
+        throw Exception('Type event not sopported');
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 
 class Event {
   final String userId;
@@ -29,7 +29,7 @@ class Event {
       'userId': userId,
       'title': title,
       'description': description,
-      'priority': priority.toString(),
+      'priority': priority.toFormattedString(),
       'date': date?.toIso8601String(),
       'time': time,
       'hasNotification': hasNotification,

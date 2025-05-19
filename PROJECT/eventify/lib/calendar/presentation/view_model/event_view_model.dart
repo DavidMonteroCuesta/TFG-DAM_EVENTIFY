@@ -2,9 +2,9 @@ import 'package:eventify/calendar/data/data_sources/event_remote_data_source.dar
 import 'package:eventify/calendar/data/repositories/event_repository_impl.dart';
 import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
-import 'package:eventify/calendar/domain/entities/events_type_enum.dart';
+import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/domain/repositories/event_repository.dart';
-import 'package:eventify/common/utils/priorities/priorities_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/calendar/domain/use_cases/add_event_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
