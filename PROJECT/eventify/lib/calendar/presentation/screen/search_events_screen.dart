@@ -23,7 +23,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleSearchController = TextEditingController();
   final _descriptionSearchController = TextEditingController();
-  final _dateSearchController = TextEditingController();
+  final _dateTimeSearchController = TextEditingController(); // Changed to dateTime
   EventType _selectedEventType = EventType.all;
   final _locationSearchController = TextEditingController();
   final _subjectSearchController = TextEditingController();
@@ -41,7 +41,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     _loadEvents();
     _titleSearchController.addListener(_searchEvents);
     _descriptionSearchController.addListener(_searchEvents);
-    _dateSearchController.addListener(_searchEvents);
+    _dateTimeSearchController.addListener(_searchEvents); // Changed to dateTime
     _locationSearchController.addListener(_searchEvents);
     _subjectSearchController.addListener(_searchEvents);
     _withPersonSearchController.addListener(_searchEvents);
@@ -56,9 +56,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   Future<void> _loadEvents() async {
     try {
       await _eventViewModel.getEventsForCurrentUser();
-      setState(() {
-        _searchResults = _eventViewModel.events;
-      });
+      setState(() => _searchResults = _eventViewModel.events);
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -74,7 +72,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
 
       final title = _titleSearchController.text;
       final description = _descriptionSearchController.text;
-      final date = _dateSearchController.text;
+      final dateTime = _dateTimeSearchController.text; // Changed to dateTime
 
       if (title.isNotEmpty) {
         results = results
@@ -87,11 +85,12 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
             .where((event) => event.description?.toLowerCase().contains(description.toLowerCase()) ?? false)
             .toList();
       }
-      if (date.isNotEmpty) {
-        DateTime? parsedDate = DateTime.tryParse(date);
+      if (dateTime.isNotEmpty) { // Changed to dateTime
+        DateTime? parsedDateTime = DateTime.tryParse(dateTime);
         results = results.where((event) {
-          if (event.date != null && parsedDate != null) {
-             return DateFormat('yyyy/MM/dd').format(event.date!) ==  DateFormat('yyyy/MM/dd').format(parsedDate);
+          if (event.dateTime != null && parsedDateTime != null) {
+            return DateFormat('yyyy/MM/dd HH:mm').format(event.dateTime!.toDate()) ==
+                DateFormat('yyyy/MM/dd HH:mm').format(parsedDateTime);
           }
           return false;
         }).toList();
@@ -182,7 +181,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   void dispose() {
     _titleSearchController.dispose();
     _descriptionSearchController.dispose();
-    _dateSearchController.dispose();
+    _dateTimeSearchController.dispose(); // Changed to dateTime
     _locationSearchController.dispose();
     _subjectSearchController.dispose();
     _withPersonSearchController.dispose();
@@ -230,8 +229,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 labelText: 'Description',
               ),
               _buildSearchField(
-                controller: _dateSearchController,
-                labelText: 'Date (YYYY-MM-DD)',
+                controller: _dateTimeSearchController, // Changed to dateTime
+                labelText: 'Date and Time (YYYY-MM-DD HH:MM)',
               ),
               _buildDropdownField(
                 value: _selectedEventType,
@@ -301,8 +300,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                     } else {
                       eventTypeString = 'Task';
                     }
-                    String formattedDate = event.date != null
-                        ? DateFormat('yyyy/MM/dd').format(event.date!) // Format the date here
+                    String formattedDateTime = event.dateTime != null 
+                        ? DateFormat('yyyy/MM/dd HH:mm').format(event.dateTime!.toDate())
                         : 'N/A';
 
                     return Padding(
@@ -330,7 +329,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                               ),
                               const SizedBox(height: 4.0),
                               Text(
-                                'Date: $formattedDate',
+                                'Date and Time: $formattedDateTime', // Changed to dateTime
                                 style: const TextStyle(
                                     fontSize: 14.0, color: Colors.grey),
                               ),

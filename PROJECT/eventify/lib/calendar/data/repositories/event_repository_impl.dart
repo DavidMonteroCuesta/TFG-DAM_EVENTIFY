@@ -49,4 +49,27 @@ class EventRepositoryImpl implements EventRepository {
       }
     }).toList();
   }
+  
+  @override
+  Future<Event?> getNearestEventForUser(String userId) async {
+    final Map<String, dynamic>? eventData =
+        await remoteDataSource.getNearestEventForUser(userId);
+    if (eventData == null) {
+      return null;
+    }
+     final String eventType = eventData['type'] ?? 'task'; 
+      switch (eventType) {
+        case 'meeting':
+          return MeetingEvent.fromJson(eventData);
+        case 'exam':
+          return ExamEvent.fromJson(eventData);
+        case 'conference':
+          return ConferenceEvent.fromJson(eventData);
+        case 'appointment':
+          return AppointmentEvent.fromJson(eventData);
+        case 'task':
+        default:
+          return TaskEvent.fromJson(eventData);
+      }
+  }
 }

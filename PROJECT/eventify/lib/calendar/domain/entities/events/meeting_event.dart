@@ -8,8 +8,7 @@ class MeetingEvent extends Event {
     required super.title,
     super.description,
     required super.priority,
-    super.date,
-    super.time,
+    super.dateTime,
     super.hasNotification,
     required super.userId,
     this.location,
@@ -22,10 +21,7 @@ class MeetingEvent extends Event {
       description: json['description'],
       priority:
           PriorityConverter.stringToPriority(json['priority']),
-      date: json['date'] != null
-          ? DateTime.tryParse(json['date'])
-          : null,
-      time: json['time'],
+      dateTime: json['dateTime'],
       hasNotification: json['hasNotification'],
       location: json['location'],
     );

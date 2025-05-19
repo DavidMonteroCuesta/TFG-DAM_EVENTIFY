@@ -2,6 +2,7 @@ import 'package:eventify/auth/presentation/screen/sign_in_screen.dart';
 import 'package:eventify/auth/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/auth/presentation/view_model/sign_up_view_model.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/widgets/chat/widgets/chat_screen.dart';
 import 'package:eventify/common/widgets/profile/widgets/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,7 @@ import 'di/service_locator.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => di.sl<SignInViewModel>()),
         ChangeNotifierProvider(create: (_) => di.sl<SignUpViewModel>()),
+        ChangeNotifierProvider(create: (_) => di.sl<EventViewModel>()),
       ],
       child: MaterialApp(
         title: 'Eventify Auth',
@@ -70,13 +71,12 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: Colors.white),
           ),
         ),
-        // Use a builder to get the context and check the user
         home: Builder(
           builder: (context) {
             final auth = FirebaseAuth.instance;
             final user = auth.currentUser;
             if (user != null) {
-              return const CalendarScreen(); // Or any other screen you want to show when logged in
+              return const CalendarScreen();
             } else {
               return const SignInScreen();
             }
@@ -92,4 +92,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

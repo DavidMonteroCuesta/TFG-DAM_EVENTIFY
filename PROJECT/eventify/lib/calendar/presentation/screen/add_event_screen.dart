@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
@@ -23,6 +24,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   bool _hasNotification = false;
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
+  Timestamp? _selectedDateTime; // Use Timestamp
   EventType _selectedEventType = EventType.task;
   final _locationController = TextEditingController();
   final _subjectController = TextEditingController();
@@ -34,7 +36,27 @@ class _AddEventScreenState extends State<AddEventScreen> {
   void initState() {
     super.initState();
     _eventViewModel = EventViewModel();
-    _selectedDate = DateTime.now(); // Establecer la fecha actual
+    _selectedDate = DateTime.now();
+    _selectedTime = const TimeOfDay(hour: 1, minute: 0); // Initialize to 1:00 AM
+    _updateDateTime();
+  }
+
+  void _updateDateTime() {
+    if (_selectedDate != null) {
+      if (_selectedTime != null) {
+        _selectedDateTime = Timestamp.fromDate(
+          DateTime(
+            _selectedDate!.year,
+            _selectedDate!.month,
+            _selectedDate!.day,
+            _selectedTime!.hour,
+            _selectedTime!.minute,
+          ),
+        );
+      } else {
+        _selectedDateTime = Timestamp.fromDate(_selectedDate!);
+      }
+    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -48,10 +70,12 @@ class _AddEventScreenState extends State<AddEventScreen> {
           data: ThemeData.dark().copyWith(
             primaryColor: AppColors.primaryContainer,
             hintColor: AppColors.secondary,
-            colorScheme: ColorScheme.dark(primary: AppColors.primaryContainer)
-                .copyWith(secondary: AppColors.secondary),
-            buttonTheme:
-                const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            colorScheme: ColorScheme.dark(
+              primary: AppColors.primaryContainer,
+            ).copyWith(secondary: AppColors.secondary),
+            buttonTheme: const ButtonThemeData(
+              textTheme: ButtonTextTheme.primary,
+            ),
           ),
           child: child!,
         );
@@ -60,6 +84,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
+        _updateDateTime();
       });
     }
   }
@@ -73,15 +98,15 @@ class _AddEventScreenState extends State<AddEventScreen> {
           data: ThemeData.dark().copyWith(
             primaryColor: AppColors.primaryContainer,
             hintColor: AppColors.secondary,
-            colorScheme: ColorScheme.dark(primary: AppColors.primaryContainer)
-                .copyWith(secondary: AppColors.secondary),
-            buttonTheme:
-                const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            colorScheme: ColorScheme.dark(
+              primary: AppColors.primaryContainer,
+            ).copyWith(secondary: AppColors.secondary),
+            buttonTheme: const ButtonThemeData(
+              textTheme: ButtonTextTheme.primary,
+            ),
             timePickerTheme: const TimePickerThemeData(
               dayPeriodTextColor: Colors.white,
-              dayPeriodTextStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              dayPeriodTextStyle: const TextStyle(fontWeight: FontWeight.bold),
               dayPeriodColor: Colors.transparent,
             ),
           ),
@@ -92,6 +117,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     if (picked != null && picked != _selectedTime) {
       setState(() {
         _selectedTime = picked;
+        _updateDateTime();
       });
     }
   }
@@ -110,53 +136,42 @@ class _AddEventScreenState extends State<AddEventScreen> {
     return null;
   }
 
-  String? _validateDate(DateTime? value) {
-    if (value == null) {
-      return 'Please select the event date';
-    }
-    return null;
-  }
-
   void _saveEvent() {
-    // Primero, valida el formulario.
-    if (_formKey.currentState!.validate() && _selectedDate != null) {
-      _eventViewModel.addEvent(
-        _selectedEventType,
-        _titleController.text,
-        _descriptionController.text,
-        _selectedPriority,
-        _selectedDate,
-        _selectedTime?.toString(),
-        _hasNotification,
-        _locationController.text,
-        _subjectController.text,
-        _withPersonController.text,
-        _withPersonYesNo,
-        context,
-      ).then((_) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const CalendarScreen(),
-          ),
-        );
-      }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to save event: $error'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      });
+    if (_formKey.currentState!.validate() && _selectedDateTime != null) {
+      _eventViewModel
+          .addEvent(
+            _selectedEventType,
+            _titleController.text,
+            _descriptionController.text,
+            _selectedPriority,
+            _selectedDateTime,
+            _hasNotification,
+            _locationController.text,
+            _subjectController.text,
+            _withPersonController.text,
+            _withPersonYesNo,
+            context,
+          )
+          .then((_) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const CalendarScreen()),
+            );
+          })
+          .catchError((error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to save event: $error'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          });
     } else {
-      // Muestra el mensaje de error si la fecha no está seleccionada.
-      if (_selectedDate == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please select the event date'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select the event date and time'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -183,13 +198,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const CalendarScreen(),
-              ),
+              MaterialPageRoute(builder: (context) => const CalendarScreen()),
             );
           },
         ),
-        title:  ShiningTextAnimation(
+        title: ShiningTextAnimation(
           text: "CREATE NEW EVENT",
           style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
           shineColor: AppColors.textPrimary,
@@ -210,10 +223,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
               const SizedBox(height: 30.0),
               TextFormField(
                 controller: _titleController,
-                style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: AppColors.textPrimary,
+                ),
                 decoration: InputDecoration(
                   labelText: 'Event Title',
-                  labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
+                  labelStyle: TextStyle(
+                    color: outlineColor,
+                    fontWeight: FontWeight.w500,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -226,7 +245,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
                 ),
                 validator: _validateTitle,
               ),
@@ -234,10 +256,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
               TextFormField(
                 controller: _descriptionController,
                 maxLines: 3,
-                style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: AppColors.textPrimary,
+                ),
                 decoration: InputDecoration(
                   labelText: 'Description',
-                  labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
+                  labelStyle: TextStyle(
+                    color: outlineColor,
+                    fontWeight: FontWeight.w500,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -250,41 +278,55 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
                 ),
-                 validator: _validateDescription,
+                validator: _validateDescription,
               ),
               const SizedBox(height: 22.0),
-              Text('Priority',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16.0,
-                      color: const Color.fromARGB(221, 255, 255, 255)
-                          .withOpacity(0.8))),
+              Text(
+                'Priority',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16.0,
+                  color: const Color.fromARGB(
+                    221,
+                    255,
+                    255,
+                    255,
+                  ).withOpacity(0.8),
+                ),
+              ),
               const SizedBox(height: 8.0),
               Wrap(
                 spacing: 8.0,
                 children: [
                   _buildPriorityOption(
-                      'CRITICAL',
-                      Priority.critical,
-                      const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
-                      onSecondaryColor),
+                    'CRITICAL',
+                    Priority.critical,
+                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                    onSecondaryColor,
+                  ),
                   _buildPriorityOption(
-                      'HIGH',
-                      Priority.high,
-                      secondaryColor.withOpacity(0.8),
-                      onSecondaryColor),
+                    'HIGH',
+                    Priority.high,
+                    secondaryColor.withOpacity(0.8),
+                    onSecondaryColor,
+                  ),
                   _buildPriorityOption(
-                      'MEDIUM',
-                      Priority.medium,
-                      secondaryColor.withOpacity(0.8),
-                      onSecondaryColor),
+                    'MEDIUM',
+                    Priority.medium,
+                    secondaryColor.withOpacity(0.8),
+                    onSecondaryColor,
+                  ),
                   _buildPriorityOption(
-                      'LOW',
-                      Priority.low,
-                      secondaryColor.withOpacity(0.8),
-                      onSecondaryColor),
+                    'LOW',
+                    Priority.low,
+                    secondaryColor.withOpacity(0.8),
+                    onSecondaryColor,
+                  ),
                 ],
               ),
               const SizedBox(height: 22.0),
@@ -303,12 +345,19 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   ),
                   const SizedBox(width: 8.0),
                   Expanded(
-                    child: Text('Notification',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16.0,
-                            color: const Color.fromARGB(221, 255, 255, 255)
-                                .withOpacity(0.8))),
+                    child: Text(
+                      'Notification',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.0,
+                        color: const Color.fromARGB(
+                          221,
+                          255,
+                          255,
+                          255,
+                        ).withOpacity(0.8),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -322,27 +371,35 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         decoration: InputDecoration(
                           labelText: 'Date',
                           labelStyle: TextStyle(
-                              color: outlineColor, fontWeight: FontWeight.w500),
+                            color: outlineColor,
+                            fontWeight: FontWeight.w500,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide.none,
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
-                            borderSide:
-                                BorderSide(color: secondaryColor, width: 1.5),
+                            borderSide: BorderSide(
+                              color: secondaryColor,
+                              width: 1.5,
+                            ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide.none,
                           ),
-                          errorText: _selectedDate == null ? _validateDate(_selectedDate) : null,
+                          errorText: _selectedDate == null
+                              ? 'Please select the event date' // Usa un mensaje de error claro
+                              : null,
                           contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 12.0),
+                            horizontal: 16.0,
+                            vertical: 12.0,
+                          ),
                         ),
                         child: Text(
                           _selectedDate != null
-                              ? DateFormat('yyyy/MM/dd').format(_selectedDate!) // Cambiado el formato aquí
+                              ? DateFormat('yyyy/MM/dd').format(_selectedDate!)
                               : 'Select Date',
                           style: const TextStyle(fontSize: 16.0),
                         ),
@@ -356,27 +413,45 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       child: InputDecorator(
                         decoration: InputDecoration(
                           labelText: 'Time',
-                          labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
+                          labelStyle: TextStyle(
+                            color: outlineColor,
+                            fontWeight: FontWeight.w500,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide.none,
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
-                            borderSide:
-                                BorderSide(color: secondaryColor, width: 1.5),
+                            borderSide: BorderSide(
+                              color: secondaryColor,
+                              width: 1.5,
+                            ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide.none,
                           ),
+                          errorText: _selectedTime == null
+                              ? 'Select Time'
+                              : null, // Muestra Select Time si no hay tiempo
                           contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 12.0),
+                            horizontal: 16.0,
+                            vertical: 12.0,
+                          ),
                         ),
                         child: Text(
                           _selectedTime != null
-                              ? DateFormat('h:mm a').format(DateTime(2024, 1, 1, _selectedTime!.hour, _selectedTime!.minute)) // Formato de 12 horas
-                              : 'Select Time',
+                              ? DateFormat('hh:mm a').format(
+                                  DateTime(
+                                    2024,
+                                    1,
+                                    1,
+                                    _selectedTime!.hour,
+                                    _selectedTime!.minute,
+                                  ),
+                                ) // Formato 12hr AM/PM
+                              : '01:00 AM',
                           style: const TextStyle(fontSize: 16.0),
                         ),
                       ),
@@ -394,20 +469,30 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     });
                   }
                 },
-                items: EventType.values
-                    .where((type) => type != EventType.all) // Exclude EventType.all
-                    .map<DropdownMenuItem<EventType>>((EventType value) {
-                  return DropdownMenuItem<EventType>(
-                    value: value,
-                    child: Text(
-                      value.toString().split('.').last.toUpperCase(),
-                      style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
-                    ),
-                  );
-                }).toList(),
+                items:
+                    EventType.values
+                        .where(
+                          (type) => type != EventType.all,
+                        ) // Exclude EventType.all from the dropdown
+                        .map<DropdownMenuItem<EventType>>((EventType value) {
+                          return DropdownMenuItem<EventType>(
+                            value: value,
+                            child: Text(
+                              value.toString().split('.').last.toUpperCase(),
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          );
+                        })
+                        .toList(),
                 decoration: InputDecoration(
                   labelText: 'Event Type',
-                  labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
+                  labelStyle: TextStyle(
+                    color: outlineColor,
+                    fontWeight: FontWeight.w500,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -420,11 +505,17 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
                   filled: true,
                   fillColor: const Color(0xFF1F1F1F),
                 ),
-                style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: AppColors.textPrimary,
+                ),
               ),
               const SizedBox(height: 22.0),
               if (_selectedEventType == EventType.meeting ||
@@ -432,10 +523,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   _selectedEventType == EventType.appointment)
                 TextFormField(
                   controller: _locationController,
-                  style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    color: AppColors.textPrimary,
+                  ),
                   decoration: InputDecoration(
                     labelText: 'Location',
-                    labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
+                    labelStyle: TextStyle(
+                      color: outlineColor,
+                      fontWeight: FontWeight.w500,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
@@ -448,29 +545,41 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 12.0,
+                    ),
                   ),
                 ),
               if (_selectedEventType == EventType.exam)
                 TextFormField(
                   controller: _subjectController,
-                  style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    color: AppColors.textPrimary,
+                  ),
                   decoration: InputDecoration(
                     labelText: 'Subject',
-                    labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
+                    labelStyle: TextStyle(
+                      color: outlineColor,
+                      fontWeight: FontWeight.w500,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide.none,
+                      borderSide: BorderSide(color: secondaryColor, width: 1.5),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 12.0,
+                    ),
                   ),
                 ),
               if (_selectedEventType == EventType.appointment)
@@ -482,7 +591,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       children: [
                         const Text(
                           "With Person (Yes/No):",
-                          style: TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                         const SizedBox(width: 8.0),
                         Checkbox(
@@ -504,10 +616,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         visible: _withPersonYesNo,
                         child: TextFormField(
                           controller: _withPersonController,
-                          style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            color: AppColors.textPrimary,
+                          ),
                           decoration: InputDecoration(
                             labelText: 'With Person',
-                            labelStyle: TextStyle(color: outlineColor, fontWeight: FontWeight.w500),
+                            labelStyle: TextStyle(
+                              color: outlineColor,
+                              fontWeight: FontWeight.w500,
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
@@ -520,7 +638,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 12.0,
+                            ),
                           ),
                         ),
                       ),
@@ -540,7 +661,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     textStyle: const TextStyle(
-                        fontSize: 18.0, fontWeight: FontWeight.w600),
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w600,
+                    ),
                     elevation: 2,
                   ),
                   child: const Text('Save Event'),
@@ -553,13 +676,20 @@ class _AddEventScreenState extends State<AddEventScreen> {
     );
   }
 
-  Widget _buildPriorityOption(String label, Priority priority,
-      Color backgroundColor, Color textColor) {
+  Widget _buildPriorityOption(
+    String label,
+    Priority priority,
+    Color backgroundColor,
+    Color textColor,
+  ) {
     final isSelected = _selectedPriority == priority;
     return ChoiceChip(
-      label: Text(label,
-          style: TextStyle(
-              color: isSelected ? textColor : Colors.black87.withOpacity(0.8))),
+      label: Text(
+        label,
+        style: TextStyle(
+          color: isSelected ? textColor : Colors.black87.withOpacity(0.8),
+        ),
+      ),
       selected: isSelected,
       onSelected: (bool selected) {
         setState(() {
@@ -570,12 +700,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
       },
       backgroundColor: backgroundColor.withOpacity(0.3),
       selectedColor: backgroundColor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0)),
-      side: BorderSide(
-          color: isSelected ? backgroundColor : Colors.grey[300]!),
-      labelPadding: const EdgeInsets.symmetric(
-          horizontal: 12, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      side: BorderSide(color: isSelected ? backgroundColor : Colors.grey[300]!),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     );
   }
 }

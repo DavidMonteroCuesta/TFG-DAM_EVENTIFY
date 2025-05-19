@@ -10,8 +10,7 @@ class AppointmentEvent extends Event {
     required super.title,
     super.description,
     required super.priority,
-    super.date,
-    super.time,
+    super.dateTime,
     super.hasNotification,
     required super.userId,
     this.withPerson,
@@ -25,12 +24,10 @@ class AppointmentEvent extends Event {
       title: json['title'] ?? '',
       description: json['description'],
       priority: PriorityConverter.stringToPriority(json['priority']),
-      date: json['date'] != null ? DateTime.tryParse(json['date']) : null,
-      time: json['time'],
+      dateTime: json['dateTime'],
       hasNotification: json['hasNotification'],
       withPerson: json['withPerson'],
-      withPersonYesNo: json['withPersonYesNo'] ??
-          false,
+      withPersonYesNo: json['withPersonYesNo'] ?? false,
       location: json['location'],
     );
   }
@@ -43,7 +40,7 @@ class AppointmentEvent extends Event {
       'withPerson': withPerson,
       'withPersonYesNo': withPersonYesNo,
       'location': location,
-       'priority': priority.toFormattedString(),
+      'priority': priority.toFormattedString(),
     };
   }
 }

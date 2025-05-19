@@ -6,8 +6,7 @@ class TaskEvent extends Event {
     required super.title,
     super.description,
     required super.priority,
-    super.date,
-    super.time,
+    super.dateTime,
     super.hasNotification,
     required super.userId,
   }) : super();
@@ -18,8 +17,7 @@ class TaskEvent extends Event {
       title: json['title'] ?? '',
       description: json['description'],
       priority: PriorityConverter.stringToPriority(json['priority']),
-      date: json['date'] != null ? DateTime.tryParse(json['date']) : null,
-      time: json['time'],
+      dateTime: json['dateTime'],
       hasNotification: json['hasNotification'],
     );
   }
@@ -29,7 +27,7 @@ class TaskEvent extends Event {
     return {
       ...super.toJson(),
       'type': 'task',
-       'priority': priority.toFormattedString(),
+      'priority': priority.toFormattedString(),
     };
   }
 }

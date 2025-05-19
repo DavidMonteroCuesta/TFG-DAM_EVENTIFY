@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 
 class Event {
@@ -5,8 +6,7 @@ class Event {
   final String title;
   final String? description;
   final Priority priority;
-  final DateTime? date;
-  final String? time;
+  final Timestamp? dateTime;
   final bool? hasNotification;
 
   Event({
@@ -14,8 +14,7 @@ class Event {
     required this.title,
     this.description,
     required this.priority,
-    this.date,
-    this.time,
+    this.dateTime,
     this.hasNotification,
   });
 
@@ -24,14 +23,15 @@ class Event {
         'Event.fromJson: Cannot create instance of Event directly.  Use a specific subclass (e.g., MeetingEvent, TaskEvent).');
   }
 
+  get type => null;
+
   Map<String, dynamic> toJson() {
     return {
       'userId': userId,
       'title': title,
       'description': description,
       'priority': priority.toFormattedString(),
-      'date': date?.toIso8601String(),
-      'time': time,
+      'dateTime': dateTime,
       'hasNotification': hasNotification,
     };
   }

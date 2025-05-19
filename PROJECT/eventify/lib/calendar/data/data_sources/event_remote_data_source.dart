@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer';
+
 class EventRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String _tag = 'EventRemoteDataSource';
@@ -65,4 +66,37 @@ class EventRemoteDataSource {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>?> getNearestEventForUser(String userId) async {
+    try {
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('events')
+          .orderBy('dateTime') // Order by dateTime
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        return null;
+      }
+
+      Timestamp now = Timestamp.now();
+      for (final doc in snapshot.docs) {
+        final eventData = doc.data();
+        final Timestamp? eventDateTime = eventData['dateTime']; // Get the Timestamp
+
+        if (eventDateTime != null &&
+            (eventDateTime.compareTo(now) >=
+                0)) { // Compare Timestamps using compareTo
+          return eventData;
+        }
+      }
+      return null;
+    } catch (e) {
+      log('Error while fetching the nearest event from Firestore for user: $userId',
+          name: _tag, error: e);
+      rethrow;
+    }
+  }
 }
+
