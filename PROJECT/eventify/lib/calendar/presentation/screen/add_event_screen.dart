@@ -206,7 +206,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
         ),
         title: ShiningTextAnimation(
           text: "CREATE NEW EVENT",
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
+          style: TextStyles.urbanistBody1,
           shineColor: AppColors.textPrimary,
         ),
         backgroundColor: headerColor,

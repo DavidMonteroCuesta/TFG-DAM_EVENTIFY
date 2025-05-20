@@ -1,3 +1,4 @@
+import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/widgets/chat/widgets/chat_message.dart';
@@ -20,8 +21,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final Color _cardBackgroundColor = const Color(0xFF1F1F1F);
   final Color _headerBackgroundColor = Colors.grey[800]!;
   final Color _inputBackgroundColor = const Color(0xFF1F1F1F);
-
-  //final String _agentId = 'ag:b9c70aec:20250425:agente-de-eventify:5b623f1b';
 
   @override
   void initState() {
@@ -135,8 +134,11 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat with Eventify'),
-        titleTextStyle: TextStyles.urbanistH6,
+        title: ShiningTextAnimation(
+          text: 'Chat with Eventify',
+          style: TextStyles.urbanistBody1,
+        ),
+        titleTextStyle: TextStyles.urbanistBody1,
         backgroundColor: _headerBackgroundColor,
         foregroundColor:
             AppColors.outline,
@@ -175,4 +177,3 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
