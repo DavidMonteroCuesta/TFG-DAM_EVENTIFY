@@ -1,10 +1,12 @@
+import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class MonthItem extends StatelessWidget {
   final String monthName;
   final int notificationCount;
 
-  const MonthItem({super.key, required this.monthName, required this.notificationCount});
+  const MonthItem(
+      {super.key, required this.monthName, required this.notificationCount});
 
   Color? _getNotificationColor(int count) {
     if (count == 1) {
@@ -44,17 +46,13 @@ class MonthItem extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 monthName.toUpperCase(),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  letterSpacing: 1.2,
-                ),
+                style: TextStyles.plusJakartaSansBody1, // Usa TextStyles
                 textAlign: TextAlign.center,
               ),
             ),
           ),
-          if (notificationColor != null) // Mostrar solo si notificationColor no es null
+          if (notificationColor !=
+              null) // Mostrar solo si notificationColor no es null
             Positioned(
               top: 5,
               right: 5,
@@ -73,11 +71,11 @@ class MonthItem extends StatelessWidget {
                 ),
                 child: Text(
                   notificationCount.toString(),
-                  style: const TextStyle(
+                  style: TextStyles.plusJakartaSansButton.copyWith(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
-                  ),
+                  ), // Usa TextStyles
                 ),
               ),
             ),

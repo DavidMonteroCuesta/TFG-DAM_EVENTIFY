@@ -1,8 +1,8 @@
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
+import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/utils/auth/logout_service.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:eventify/common/utils/dates/date_formatter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -29,9 +29,9 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final errorColor = theme.colorScheme.error;
-    final listBackgroundColor = const Color(0xFF1F1F1F);
-    final mediumGreyColor = const Color.fromARGB(255, 70, 70, 70);
-    final headerBackgroundColor = const Color.fromARGB(255, 49, 49, 49);
+    const listBackgroundColor = Color(0xFF1F1F1F);
+    const mediumGreyColor = Color.fromARGB(255, 70, 70, 70);
+    const headerBackgroundColor = Color.fromARGB(255, 49, 49, 49);
     final currentDate = DateFormatter.getCurrentDateFormatted();
 
     final user = FirebaseAuth.instance.currentUser;
@@ -39,12 +39,10 @@ class ProfileScreen extends StatelessWidget {
     final username = user?.displayName ?? 'Usuario';
     final email = user?.email ?? 'email@dominio.com';
 
-    // Determina si la aplicación se está ejecutando en un dispositivo móvil
     final bool isMobile = Theme.of(context).platform == TargetPlatform.android ||
         Theme.of(context).platform == TargetPlatform.iOS;
 
-    // Ajusta el relleno superior basado en si es un dispositivo móvil
-    final double topPadding = isMobile ? 120.0 : 80.0; // Ajusta estos valores según sea necesario
+    final double topPadding = isMobile ? 120.0 : 80.0;
     final double usernameTopPadding = isMobile ? 56.0 : 16.0;
 
     return Scaffold(
@@ -59,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 120, // Increased height of the header
+                    height: 120,
                     color: headerBackgroundColor,
                   ),
                   Align(
@@ -77,11 +75,7 @@ class ProfileScreen extends StatelessWidget {
                     // Usa el padding superior calculado
                     child: ShiningTextAnimation(
                       text: currentDate,
-                      style: GoogleFonts.urbanist(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                        color: const Color.fromARGB(255, 131, 131, 131),
-                      ),
+                      style: TextStyles.urbanistBody1,
                     ),
                   ),
                 ],
@@ -89,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(
                   left: 96.0,
-                  top: usernameTopPadding, // Ajusta el padding superior basado en la plataforma
+                  top: usernameTopPadding,
                   right: 16.0,
                 ),
                 child: Column(
@@ -97,19 +91,11 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     Text(
                       username,
-                      style: GoogleFonts.urbanist(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 24,
-                        color: Colors.white,
-                      ),
+                      style: TextStyles.urbanistH6,
                     ),
                     Text(
-                      email, // Use the user's email
-                      style: GoogleFonts.plusJakartaSans(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        color: Colors.grey.shade500,
-                      ),
+                      email,
+                      style: TextStyles.plusJakartaSansBody2,
                     ),
                   ],
                 ),
@@ -119,11 +105,7 @@ class ProfileScreen extends StatelessWidget {
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 0, 0),
                 child: Text(
                   'Your Account',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: Colors.grey.shade500,
-                  ),
+                  style: TextStyles.plusJakartaSansSubtitle2,
                 ),
               ),
               Padding(
@@ -145,16 +127,12 @@ class ProfileScreen extends StatelessWidget {
                           color: Colors.grey.shade500,
                           size: 24,
                         ),
-                        const Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              12, 0, 0, 0),
                           child: Text(
                             'Edit Profile',
-                            style: TextStyle(
-                              fontFamily: 'Plus Jakarta Sans',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
+                            style: TextStyles.plusJakartaSansBody1,
                           ),
                         ),
                         const Expanded(
@@ -191,16 +169,12 @@ class ProfileScreen extends StatelessWidget {
                           color: Colors.grey.shade500,
                           size: 24,
                         ),
-                        const Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              12, 0, 0, 0),
                           child: Text(
                             'Notification Settings',
-                            style: TextStyle(
-                              fontFamily: 'Plus Jakarta Sans',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
+                            style: TextStyles.plusJakartaSansBody1,
                           ),
                         ),
                         const Expanded(
@@ -222,11 +196,7 @@ class ProfileScreen extends StatelessWidget {
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 16, 0, 0),
                 child: Text(
                   'App Settings',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: Colors.grey.shade500,
-                  ),
+                  style: TextStyles.plusJakartaSansSubtitle2,
                 ),
               ),
               Padding(
@@ -248,16 +218,12 @@ class ProfileScreen extends StatelessWidget {
                           color: Colors.grey.shade500,
                           size: 24,
                         ),
-                        const Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              12, 0, 0, 0),
                           child: Text(
                             'Support',
-                            style: TextStyle(
-                              fontFamily: 'Plus Jakarta Sans',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
+                            style: TextStyles.plusJakartaSansBody1,
                           ),
                         ),
                         const Expanded(
@@ -294,16 +260,12 @@ class ProfileScreen extends StatelessWidget {
                           color: Colors.grey.shade500,
                           size: 24,
                         ),
-                        const Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              12, 0, 0, 0),
                           child: Text(
                             'Terms of Service',
-                            style: TextStyle(
-                              fontFamily: 'Plus Jakarta Sans',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
+                            style: TextStyles.plusJakartaSansBody1,
                           ),
                         ),
                         const Expanded(
@@ -341,11 +303,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     child: Text(
                       'Log Out',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
+                      style: TextStyles.plusJakartaSansButton,
                     ),
                   ),
                 ),
@@ -353,7 +311,7 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: topPadding, // Usa el padding superior calculado
+            top: topPadding,
             left: 16,
             child: CircleAvatar(
               radius: 40,
@@ -361,11 +319,7 @@ class ProfileScreen extends StatelessWidget {
               child: Center(
                 child: Text(
                   _firstLetter,
-                  style: GoogleFonts.urbanist(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey.shade300,
-                  ),
+                  style: TextStyles.urbanistSubtitle1,
                 ),
               ),
             ),

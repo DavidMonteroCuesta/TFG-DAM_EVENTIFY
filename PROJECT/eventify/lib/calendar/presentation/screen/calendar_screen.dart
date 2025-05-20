@@ -4,6 +4,7 @@ import 'package:eventify/calendar/presentation/screen/widgets/header.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/monthly_calendar.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/upcoming_event_card.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
+import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void initState() {
     super.initState();
     _eventViewModel = Provider.of<EventViewModel>(context, listen: false);
-    //  IMPORTANT: Move the call to load data to a post-frame callback
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _eventViewModel.loadNearestEvent();
     });
@@ -90,18 +90,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       SizedBox(
                                           height:
                                               spacingBetweenCalendarAndEvent),
-                                      // Usa los datos del ViewModel directamente
                                       if (eventViewModel.isLoading)
                                         const CircularProgressIndicator()
                                       else if (eventViewModel.errorMessage !=
                                           null)
-                                        Text(eventViewModel.errorMessage!)
+                                        Text(
+                                          eventViewModel.errorMessage!,
+                                          style: TextStyles.urbanistBody1,
+                                        )
                                       else if (eventViewModel.nearestEvent != null)
                                         UpcomingEventCard(
                                           title:
                                               eventViewModel.nearestEvent!.title,
-                                          type: eventViewModel.nearestEvent!.type.toString(), // Use toString()
-                                          date: eventViewModel.nearestEvent!.dateTime is DateTime ? eventViewModel.nearestEvent!.dateTime as DateTime : DateTime.now(),
+                                          type: eventViewModel
+                                              .nearestEvent!.type
+                                              .toString(),
+                                          date: eventViewModel.nearestEvent!.dateTime!.toDate(),
                                           priority: eventViewModel
                                               .nearestEvent!.priority
                                               .toString(),
@@ -110,7 +114,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                               '',
                                         )
                                       else
-                                        const Text('No hay eventos próximos.'),
+                                        Text(
+                                          'No hay eventos próximos.',
+                                          style: TextStyles.urbanistBody1,
+                                        ),
                                     ],
                                   ],
                                 ),
@@ -134,18 +141,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     SizedBox(
                                         height:
                                             spacingBetweenCalendarAndEvent),
-                                    // Usa los datos del ViewModel directamente
                                     if (eventViewModel.isLoading)
                                       const CircularProgressIndicator()
                                     else if (eventViewModel.errorMessage !=
                                         null)
-                                      Text(eventViewModel.errorMessage!)
+                                      Text(
+                                        eventViewModel.errorMessage!,
+                                        style: TextStyles.urbanistBody1,
+                                      )
                                     else if (eventViewModel.nearestEvent != null)
                                       UpcomingEventCard(
                                         title:
                                             eventViewModel.nearestEvent!.title,
-                                         type: eventViewModel.nearestEvent!.type.toString(),  // Use toString()
-                                        date: eventViewModel.nearestEvent!.dateTime is DateTime ? eventViewModel.nearestEvent!.dateTime as DateTime : DateTime.now(),
+                                        type: eventViewModel
+                                            .nearestEvent!.type
+                                            .toString(),
+                                        date: eventViewModel.nearestEvent!.dateTime!.toDate(),
                                         priority: eventViewModel
                                             .nearestEvent!.priority
                                             .toString(),
@@ -154,7 +165,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             '',
                                       )
                                     else
-                                      const Text('No hay eventos próximos.'),
+                                      Text(
+                                        'No hay eventos próximos.',
+                                        style: TextStyles.urbanistBody1,
+                                      ),
                                   ],
                                 ],
                               ),
@@ -179,4 +193,3 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 }
-

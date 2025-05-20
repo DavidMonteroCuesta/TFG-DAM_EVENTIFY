@@ -7,6 +7,7 @@ import 'package:eventify/calendar/presentation/view_model/event_view_model.dart'
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
+import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -203,8 +204,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           },
         ),
         title: ShiningTextAnimation(
-          text: "Search Events",
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
+          text: "SEARCH EVENTS",
+          style: TextStyles.urbanistBody1,
           shineColor: const Color(0xFFCBCBCB),
         ),
         backgroundColor: headerColor,
@@ -251,7 +252,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                       value == EventType.all
                           ? "ALL"
                           : value.toString().split('.').last.toUpperCase(),
-                      style: const TextStyle(fontSize: 16.0, color: Color(0xFFCBCBCB)),
+                      style: TextStyles.plusJakartaSansBody2,
                     ),
                   );
                 }).toList(),
@@ -272,17 +273,12 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 ),
               if (_selectedEventType == EventType.appointment)
                 _buildWithPersonField(),
-              //const SizedBox(height: 30.0), // Eliminado para reducir el espacio
-              // Mover resultados aquí
+
               if (_searchResults.isNotEmpty) ...[
-                const SizedBox(height: 10.0), // Espacio reducido
+                const SizedBox(height: 10.0),
                 Text(
                   'Search Results (${_searchResults.length})',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18.0,
-                    color: Color(0xFFCBCBCB),
-                  ),
+                  style: TextStyles.urbanistSubtitle1.copyWith(fontSize: 18),
                 ),
                 const SizedBox(height: 10.0),
                 Column(
@@ -300,7 +296,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                     } else {
                       eventTypeString = 'Task';
                     }
-                    String formattedDateTime = event.dateTime != null 
+                    String formattedDateTime = event.dateTime != null
                         ? DateFormat('yyyy/MM/dd HH:mm').format(event.dateTime!.toDate())
                         : 'N/A';
 
@@ -321,35 +317,28 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                             children: [
                               Text(
                                 event.title,
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFFCBCBCB),
-                                ),
+                                style: TextStyles.plusJakartaSansBody1
+                                    .copyWith(fontSize: 18),
                               ),
                               const SizedBox(height: 4.0),
                               Text(
                                 'Date and Time: $formattedDateTime', // Changed to dateTime
-                                style: const TextStyle(
-                                    fontSize: 14.0, color: Colors.grey),
+                                style: TextStyles.plusJakartaSansBody2,
                               ),
                               const SizedBox(height: 4.0),
                               Text(
                                 'Type: $eventTypeString',
-                                style: const TextStyle(
-                                    fontSize: 14.0, color: Colors.grey),
+                                style: TextStyles.plusJakartaSansBody2,
                               ),
                               const SizedBox(height: 4.0),
                               Text(
                                 'Description: ${event.description ?? 'N/A'}',
-                                style: const TextStyle(
-                                    fontSize: 14.0,
-                                    color: const Color(0xFFCBCBCB)),
+                                style: TextStyles.plusJakartaSansBody2,
                               ),
                               Text(
                                 'Priority: ${event.priority.toString().split('.').last.toUpperCase()}',
-                                style: const TextStyle(
-                                    fontSize: 14.0, color: Colors.yellow),
+                                style: TextStyles.plusJakartaSansBody2
+                                    .copyWith(color: Colors.yellow),
                               ),
                             ],
                           ),
@@ -374,11 +363,10 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
-        style: const TextStyle(fontSize: 16.0, color: const Color(0xFFCBCBCB)),
+        style: TextStyles.plusJakartaSansBody1,
         decoration: InputDecoration(
           labelText: labelText,
-          labelStyle: const TextStyle(
-              color: Color(0xFFE0E0E0), fontWeight: FontWeight.w500),
+          labelStyle: TextStyles.plusJakartaSansSubtitle2,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
@@ -415,8 +403,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         items: items,
         decoration: InputDecoration(
           labelText: labelText,
-          labelStyle: const TextStyle(
-              color: Color(0xFFE0E0E0), fontWeight: FontWeight.w500),
+          labelStyle: TextStyles.plusJakartaSansSubtitle2,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
@@ -424,7 +411,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide:
-                const BorderSide(color: Color(0xFF6750A4), width: 1.5),
+                const BorderSide(color: Color.fromRGBO(105, 240, 174, 1), width: 1.5),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -435,7 +422,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           filled: true,
           fillColor: const Color(0xFF1F1F1F),
         ),
-        style: const TextStyle(fontSize: 16.0, color: const Color(0xFFCBCBCB)),
+        style: TextStyles.plusJakartaSansBody2,
       ),
     );
   }
@@ -448,12 +435,9 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         children: [
           Row(
             children: [
-              const Text(
+              Text(
                 'Priority',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16.0,
-                    color: Color(0xFFCBCBCB)),
+                style: TextStyles.plusJakartaSansSubtitle2,
               ),
               const SizedBox(width: 10),
               Switch(
@@ -547,9 +531,9 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         children: [
           Row(
             children: [
-              const Text(
+              Text(
                 "With Person (Yes/No):",
-                style: TextStyle(fontSize: 16.0, color: Color(0xFFCBCBCB)),
+                style: TextStyles.plusJakartaSansBody2,
               ),
               const SizedBox(width: 8.0),
               Checkbox(
@@ -572,12 +556,10 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               visible: _withPersonYesNoSearch,
               child: TextFormField(
                 controller: _withPersonSearchController,
-                style: const TextStyle(
-                    fontSize: 16.0, color: const Color(0xFFCBCBCB)),
+                style: TextStyles.plusJakartaSansBody1,
                 decoration: InputDecoration(
                   labelText: 'With Person',
-                  labelStyle: TextStyle(
-                      color: outlineColor, fontWeight: FontWeight.w500),
+                  labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,

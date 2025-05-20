@@ -1,3 +1,4 @@
+import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -28,7 +29,7 @@ class UpcomingEventCard extends StatelessWidget {
       case 'crítica':
         return Colors.red;
       default:
-        return Colors.orangeAccent; // Un color por defecto si la prioridad no coincide
+        return Colors.orangeAccent;
     }
   }
 
@@ -60,32 +61,26 @@ class UpcomingEventCard extends StatelessWidget {
             children: [
               Text(
                 _truncateText(title, 25),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
+                style: TextStyles.urbanistH6,
               ),
               Text(
                 type.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[400],
-                ),
+                style: TextStyles.plusJakartaSansBody2,
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             formattedDate,
-            style: TextStyle(color: Colors.grey[500]),
+            style: TextStyles.plusJakartaSansBody2,
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              const Text(
+              Text(
                 'Priority: ',
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white70),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.white70),
               ),
               Text(
                 priority,
@@ -96,14 +91,13 @@ class UpcomingEventCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             _truncateText(description, 60),
-            style: const TextStyle(color: Colors.white60),
+            style: TextStyles.plusJakartaSansBody2,
           ),
         ],
       ),
     );
   }
 
-  // Función para truncar el texto y añadir "..." si es necesario
   String _truncateText(String text, int maxLength) {
     if (text.length <= maxLength) {
       return text;

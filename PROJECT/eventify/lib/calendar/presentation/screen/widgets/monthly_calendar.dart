@@ -1,4 +1,5 @@
 import 'package:eventify/calendar/presentation/screen/widgets/upcoming_event_card.dart';
+import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -54,11 +55,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
         children: [
           Text(
             DateFormat('MMMM yyyy').format(_focusedDay),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyles.urbanistH6,
           ),
           const SizedBox(height: 12),
           Row(
@@ -98,7 +95,8 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                       '${day.day}',
                       style: TextStyle(
                         color: Colors.white,
-                        fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                        fontWeight:
+                            isToday ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                   ),

@@ -19,7 +19,7 @@ class CalendarToggleButton extends StatelessWidget {
         color: Colors.white,
         size: 24.0,
       ),
-      tooltip: 'Altern calendar',
+      tooltip: isMonthlyView ? 'Show yearly view' : 'Show monthly view',
     );
   }
 }

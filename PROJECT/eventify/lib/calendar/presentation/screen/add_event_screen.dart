@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
-import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
+import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 
 class AddEventScreen extends StatefulWidget {
   const AddEventScreen({super.key});
@@ -24,7 +26,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   bool _hasNotification = false;
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
-  Timestamp? _selectedDateTime; // Use Timestamp
+  Timestamp? _selectedDateTime;
   EventType _selectedEventType = EventType.task;
   final _locationController = TextEditingController();
   final _subjectController = TextEditingController();
@@ -229,10 +231,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ),
                 decoration: InputDecoration(
                   labelText: 'Event Title',
-                  labelStyle: TextStyle(
-                    color: outlineColor,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -249,6 +248,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     horizontal: 16.0,
                     vertical: 12.0,
                   ),
+                  filled: true,
+                  fillColor: const Color(0xFF1F1F1F),
                 ),
                 validator: _validateTitle,
               ),
@@ -262,10 +263,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ),
                 decoration: InputDecoration(
                   labelText: 'Description',
-                  labelStyle: TextStyle(
-                    color: outlineColor,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -282,22 +280,15 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     horizontal: 16.0,
                     vertical: 12.0,
                   ),
+                  filled: true,
+                  fillColor: const Color(0xFF1F1F1F),
                 ),
                 validator: _validateDescription,
               ),
               const SizedBox(height: 22.0),
               Text(
                 'Priority',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
-                  color: const Color.fromARGB(
-                    221,
-                    255,
-                    255,
-                    255,
-                  ).withOpacity(0.8),
-                ),
+                style:  TextStyles.plusJakartaSansSubtitle2,
               ),
               const SizedBox(height: 8.0),
               Wrap(
@@ -347,16 +338,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   Expanded(
                     child: Text(
                       'Notification',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16.0,
-                        color: const Color.fromARGB(
-                          221,
-                          255,
-                          255,
-                          255,
-                        ).withOpacity(0.8),
-                      ),
+                      style: TextStyles.plusJakartaSansSubtitle2,
                     ),
                   ),
                 ],
@@ -370,10 +352,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       child: InputDecorator(
                         decoration: InputDecoration(
                           labelText: 'Date',
-                          labelStyle: TextStyle(
-                            color: outlineColor,
-                            fontWeight: FontWeight.w500,
-                          ),
+                           labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide.none,
@@ -401,7 +380,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           _selectedDate != null
                               ? DateFormat('yyyy/MM/dd').format(_selectedDate!)
                               : 'Select Date',
-                          style: const TextStyle(fontSize: 16.0),
+                          style: TextStyles.plusJakartaSansBody1,
                         ),
                       ),
                     ),
@@ -413,10 +392,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       child: InputDecorator(
                         decoration: InputDecoration(
                           labelText: 'Time',
-                          labelStyle: TextStyle(
-                            color: outlineColor,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide.none,
@@ -452,7 +428,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                   ),
                                 ) // Formato 12hr AM/PM
                               : '01:00 AM',
-                          style: const TextStyle(fontSize: 16.0),
+                          style: TextStyles.plusJakartaSansBody1,
                         ),
                       ),
                     ),
@@ -469,30 +445,23 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     });
                   }
                 },
-                items:
-                    EventType.values
-                        .where(
-                          (type) => type != EventType.all,
-                        ) // Exclude EventType.all from the dropdown
-                        .map<DropdownMenuItem<EventType>>((EventType value) {
-                          return DropdownMenuItem<EventType>(
-                            value: value,
-                            child: Text(
-                              value.toString().split('.').last.toUpperCase(),
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                          );
-                        })
-                        .toList(),
+                items: EventType.values
+                    .where(
+                      (type) => type != EventType.all,
+                    ) // Exclude EventType.all from the dropdown
+                    .map<DropdownMenuItem<EventType>>((EventType value) {
+                      return DropdownMenuItem<EventType>(
+                        value: value,
+                        child: Text(
+                          value.toString().split('.').last.toUpperCase(),
+                          style: TextStyles.plusJakartaSansBody1,
+                        ),
+                      );
+                    })
+                    .toList(),
                 decoration: InputDecoration(
                   labelText: 'Event Type',
-                  labelStyle: TextStyle(
-                    color: outlineColor,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -512,10 +481,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   filled: true,
                   fillColor: const Color(0xFF1F1F1F),
                 ),
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  color: AppColors.textPrimary,
-                ),
+                style: TextStyles.plusJakartaSansBody1,
               ),
               const SizedBox(height: 22.0),
               if (_selectedEventType == EventType.meeting ||
@@ -529,10 +495,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   ),
                   decoration: InputDecoration(
                     labelText: 'Location',
-                    labelStyle: TextStyle(
-                      color: outlineColor,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
@@ -560,10 +523,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   ),
                   decoration: InputDecoration(
                     labelText: 'Subject',
-                    labelStyle: TextStyle(
-                      color: outlineColor,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
@@ -622,10 +582,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           ),
                           decoration: InputDecoration(
                             labelText: 'With Person',
-                            labelStyle: TextStyle(
-                              color: outlineColor,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
