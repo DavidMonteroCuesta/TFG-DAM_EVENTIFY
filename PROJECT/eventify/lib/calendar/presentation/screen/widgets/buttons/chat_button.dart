@@ -1,5 +1,5 @@
 import 'package:eventify/common/theme/colors/colors.dart';
-import 'package:eventify/common/widgets/chat/widgets/chat_screen.dart';
+import 'package:eventify/chat/presentation/screen/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class ChatButton extends StatelessWidget {

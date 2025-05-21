@@ -1,3 +1,4 @@
+import 'package:eventify/chat/presentation/screen/markdown_text.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,9 @@ class ChatMessage extends StatelessWidget {
     String userDisplayName = user?.displayName ?? "Tú";
     final String firstLetter =
         userDisplayName.isNotEmpty ? userDisplayName[0].toUpperCase() : '';
-    final String aiFirstLetters = "EV";
-    final Color userColor =Colors.grey[700]!;
+    final String aiFirstLetters = "EV"; // Define AI's profile letters
+    final Color userColor =
+        Colors.grey[700]!;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -38,9 +40,9 @@ class ChatMessage extends StatelessWidget {
                   color: userColor,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Text(
-                  text,
-                  style: TextStyles.plusJakartaSansBody1.copyWith(
+                child: MarkdownText(
+                  text: text,
+                  baseStyle: TextStyles.plusJakartaSansBody1.copyWith(
                       color: Colors.white),
                 ),
               ),
@@ -77,9 +79,9 @@ class ChatMessage extends StatelessWidget {
                   color: AppColors.botMessageBackground,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Text(
-                  text,
-                  style: TextStyles.urbanistBody1.copyWith(
+                child: MarkdownText(
+                  text: text,
+                  baseStyle: TextStyles.urbanistBody1.copyWith(
                       color: Colors.black),
                 ),
               ),
@@ -90,4 +92,3 @@ class ChatMessage extends StatelessWidget {
     );
   }
 }
-
