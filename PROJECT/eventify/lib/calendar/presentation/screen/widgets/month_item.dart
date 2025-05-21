@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 class MonthItem extends StatelessWidget {
   final String monthName;
   final int notificationCount;
-
-  const MonthItem(
-      {super.key, required this.monthName, required this.notificationCount});
+  final VoidCallback? onTap;
+  const MonthItem({
+    super.key,
+    required this.monthName,
+    required this.notificationCount,
+    this.onTap,
+  });
 
   Color? _getNotificationColor(int count) {
     if (count == 1) {
@@ -25,61 +29,63 @@ class MonthItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final notificationColor = _getNotificationColor(notificationCount);
 
-    return Container(
-      height: 120,
-      margin: const EdgeInsets.symmetric(horizontal: 5),
-      decoration: BoxDecoration(
-        color: Colors.grey[850],
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black45,
-            offset: Offset(0, 4),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                monthName.toUpperCase(),
-                style: TextStyles.plusJakartaSansBody1, // Usa TextStyles
-                textAlign: TextAlign.center,
-              ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 120,
+        margin: const EdgeInsets.symmetric(horizontal: 5),
+        decoration: BoxDecoration(
+          color: Colors.grey[850],
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black45,
+              offset: Offset(0, 4),
+              blurRadius: 6,
             ),
-          ),
-          if (notificationColor !=
-              null) // Mostrar solo si notificationColor no es null
-            Positioned(
-              top: 5,
-              right: 5,
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: notificationColor,
-                  shape: BoxShape.circle,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black45,
-                      offset: Offset(0, 1),
-                      blurRadius: 3,
-                    ),
-                  ],
-                ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  notificationCount.toString(),
-                  style: TextStyles.plusJakartaSansButton.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ), // Usa TextStyles
+                  monthName.toUpperCase(),
+                  style: TextStyles.plusJakartaSansBody1,
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
-        ],
+            if (notificationColor != null)
+              Positioned(
+                top: 5,
+                right: 5,
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: notificationColor,
+                    shape: BoxShape.circle,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black45,
+                        offset: Offset(0, 1),
+                        blurRadius: 3,
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    notificationCount.toString(),
+                    style: TextStyles.plusJakartaSansButton.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

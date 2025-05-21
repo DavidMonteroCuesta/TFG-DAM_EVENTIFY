@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_nearest_event_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_month_use_case.dart';
-import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_year_use_case.dart'; // NUEVO
+import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_year_use_case.dart';
 
 class EventViewModel extends ChangeNotifier {
   bool _isLoading = false;
@@ -25,12 +25,14 @@ class EventViewModel extends ChangeNotifier {
   Event? _nearestEvent;
   Event? get nearestEvent => _nearestEvent;
 
+  bool _isNearestEventLoaded = false; // Bandera para controlar la carga inicial
+
   final EventRepository _eventRepository;
   late final AddEventUseCase _addEventUseCase;
   late final GetEventsForUserUseCase _getEventsForUserUseCase;
   late final GetNearestEventUseCase _getNearestEventUseCase;
   late final GetEventsForUserAndMonthUseCase _getEventsForUserAndMonthUseCase;
-  late final GetEventsForUserAndYearUseCase _getEventsForUserAndYearUseCase; // NUEVO
+  late final GetEventsForUserAndYearUseCase _getEventsForUserAndYearUseCase;
 
   EventViewModel()
       : _eventRepository = EventRepositoryImpl(
@@ -39,12 +41,20 @@ class EventViewModel extends ChangeNotifier {
     _getEventsForUserUseCase = GetEventsForUserUseCase(_eventRepository);
     _getNearestEventUseCase = GetNearestEventUseCase(_eventRepository);
     _getEventsForUserAndMonthUseCase = GetEventsForUserAndMonthUseCase(_eventRepository);
-    _getEventsForUserAndYearUseCase = GetEventsForUserAndYearUseCase(_eventRepository); // NUEVO
+    _getEventsForUserAndYearUseCase = GetEventsForUserAndYearUseCase(_eventRepository);
+  }
+
+  void _safeNotifyListeners() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (hasListeners) {
+        notifyListeners();
+      }
+    });
   }
 
   void setLoading(bool value) {
     _isLoading = value;
-    notifyListeners();
+    _safeNotifyListeners();
   }
 
   Future<void> addEvent(
@@ -62,12 +72,12 @@ class EventViewModel extends ChangeNotifier {
   ) async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         _errorMessage = 'Usuario no autenticado. No se puede guardar el evento.';
-        notifyListeners();
+        _safeNotifyListeners();
         return;
       }
 
@@ -94,11 +104,13 @@ class EventViewModel extends ChangeNotifier {
       await _addEventUseCase.execute(userId, newEvent);
 
       _isLoading = false;
-      notifyListeners();
+      _isNearestEventLoaded = false;
+      await loadNearestEvent();
+      _safeNotifyListeners();
     } catch (error) {
       _isLoading = false;
       _errorMessage = 'Error al guardar el evento: $error';
-      notifyListeners();
+      _safeNotifyListeners();
     }
   }
 
@@ -117,128 +129,137 @@ class EventViewModel extends ChangeNotifier {
       BuildContext context) async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         _errorMessage = 'User not authenticated';
-        notifyListeners();
+        _safeNotifyListeners();
         return;
       }
       _isLoading = false;
-      notifyListeners();
+      _isNearestEventLoaded = false;
+      await loadNearestEvent();
+      _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to update event: $e';
-      notifyListeners();
+      _safeNotifyListeners();
     }
   }
 
   Future<void> deleteEvent(String eventId) async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         _errorMessage = 'Usuario no autenticado';
-        notifyListeners();
+        _safeNotifyListeners();
         return;
       }
+      // await _deleteEventUseCase.execute(userId, eventId);
       _isLoading = false;
-      notifyListeners();
+      _isNearestEventLoaded = false;
+      await loadNearestEvent();
+      _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to delete event: $e';
-      notifyListeners();
+      _safeNotifyListeners();
     }
   }
 
   Future<void> getEventsForCurrentUser() async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         _errorMessage = 'Usuario no autenticado';
-        notifyListeners();
+        _safeNotifyListeners();
         return;
       }
       _events = await _getEventsForUserUseCase.execute(userId);
       _isLoading = false;
-      notifyListeners();
+      _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events: $e';
-      notifyListeners();
+      _safeNotifyListeners();
     }
   }
 
-  Future<void> loadNearestEvent() async {
+  Future<void> loadNearestEvent({bool force = false}) async {
+    if (_isNearestEventLoaded && !force) {
+      return;
+    }
+
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         _errorMessage = 'Usuario no autenticado';
         _isLoading = false;
-        notifyListeners();
+        _safeNotifyListeners();
         return;
       }
       _nearestEvent = await _getNearestEventUseCase.execute(userId);
+      _isNearestEventLoaded = true;
       _isLoading = false;
-      notifyListeners();
+      _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch nearest event: $e';
-      notifyListeners();
+      _safeNotifyListeners();
     }
   }
 
   Future<void> getEventsForCurrentUserAndMonth(int year, int month) async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         _errorMessage = 'Usuario no autenticado';
         _isLoading = false;
-        notifyListeners();
+        _safeNotifyListeners();
         return;
       }
       _events = await _getEventsForUserAndMonthUseCase.execute(userId, year, month);
       _isLoading = false;
-      notifyListeners();
+      _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events for month: $e';
-      notifyListeners();
+      _safeNotifyListeners();
     }
   }
 
-  // NUEVO: Método para obtener todos los eventos del año
   Future<void> getEventsForCurrentUserAndYear(int year) async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         _errorMessage = 'Usuario no autenticado';
         _isLoading = false;
-        notifyListeners();
+        _safeNotifyListeners();
         return;
       }
       _events = await _getEventsForUserAndYearUseCase.execute(userId, year);
       _isLoading = false;
-      notifyListeners();
+      _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events for year: $e';
-      notifyListeners();
+      _safeNotifyListeners();
     }
   }
 }

@@ -5,7 +5,10 @@ import 'package:eventify/calendar/presentation/view_model/event_view_model.dart'
 import 'package:eventify/calendar/domain/entities/event.dart';
 
 class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+  final Function(int monthIndex)? onMonthSelected;
+  final int currentYear; // Nuevo: Año actual pasado desde CalendarScreen
+
+  const Calendar({super.key, this.onMonthSelected, required this.currentYear});
 
   @override
   State<Calendar> createState() => _CalendarState();
@@ -27,15 +30,25 @@ class _CalendarState extends State<Calendar> {
     super.initState();
     _eventViewModel = Provider.of<EventViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadMonthlyEventCounts();
+      _loadMonthlyEventCounts(); // Carga inicial con el año actual
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant Calendar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Si el año actual cambia, recarga los conteos de eventos
+    if (widget.currentYear != oldWidget.currentYear) {
+      _loadMonthlyEventCounts();
+    }
   }
 
   Future<void> _loadMonthlyEventCounts() async {
     if (!mounted) return;
 
-    final int currentYear = DateTime.now().year;
-    Map<int, int> counts = { for (var i = 1; i <= 12; i++) i : 0 }; // Inicializa todos los meses a 0
+    // Usa el año pasado por el widget
+    final int yearToLoad = widget.currentYear;
+    Map<int, int> counts = { for (var i = 1; i <= 12; i++) i : 0 };
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -44,13 +57,11 @@ class _CalendarState extends State<Calendar> {
     });
 
     try {
-      // NUEVO: Obtener todos los eventos del año en una sola llamada
-      await _eventViewModel.getEventsForCurrentUserAndYear(currentYear);
+      await _eventViewModel.getEventsForCurrentUserAndYear(yearToLoad);
       if (!mounted) return;
 
       final List<Event> allEventsForYear = _eventViewModel.events;
 
-      // Procesar los eventos localmente para contar por mes
       for (final event in allEventsForYear) {
         if (event.dateTime != null) {
           final int month = event.dateTime!.toDate().month;
@@ -62,8 +73,7 @@ class _CalendarState extends State<Calendar> {
         _monthlyEventCounts = counts;
       });
     } catch (e) {
-      print('Error loading monthly event counts: $e');
-      // El errorMessage ya se maneja en el ViewModel, aquí podrías mostrar un SnackBar si es necesario
+      print('Error loading monthly event counts for year $yearToLoad: $e');
     } finally {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
@@ -106,7 +116,11 @@ class _CalendarState extends State<Calendar> {
       final rowMonths = months.sublist(i, end);
       final rowNotifications = notifications.sublist(i, end);
       rows.add(
-        MonthRow(rowMonths: rowMonths, rowNotifications: rowNotifications),
+        MonthRow(
+          rowMonths: rowMonths,
+          rowNotifications: rowNotifications,
+          onMonthTap: widget.onMonthSelected,
+        ),
       );
     }
     return rows;
