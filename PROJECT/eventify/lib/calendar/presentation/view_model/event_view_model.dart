@@ -10,7 +10,6 @@ import 'package:eventify/calendar/domain/use_cases/add_event_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_use_case.dart';
-import 'package:eventify/calendar/domain/use_cases/get_nearest_event_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_month_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_year_use_case.dart';
 
@@ -30,7 +29,6 @@ class EventViewModel extends ChangeNotifier {
   final EventRepository _eventRepository;
   late final AddEventUseCase _addEventUseCase;
   late final GetEventsForUserUseCase _getEventsForUserUseCase;
-  late final GetNearestEventUseCase _getNearestEventUseCase;
   late final GetEventsForUserAndMonthUseCase _getEventsForUserAndMonthUseCase;
   late final GetEventsForUserAndYearUseCase _getEventsForUserAndYearUseCase;
 
@@ -39,7 +37,6 @@ class EventViewModel extends ChangeNotifier {
             remoteDataSource: EventRemoteDataSource()) {
     _addEventUseCase = AddEventUseCase();
     _getEventsForUserUseCase = GetEventsForUserUseCase(_eventRepository);
-    _getNearestEventUseCase = GetNearestEventUseCase(_eventRepository);
     _getEventsForUserAndMonthUseCase = GetEventsForUserAndMonthUseCase(_eventRepository);
     _getEventsForUserAndYearUseCase = GetEventsForUserAndYearUseCase(_eventRepository);
   }
@@ -259,8 +256,6 @@ class EventViewModel extends ChangeNotifier {
         return 2;
       case Priority.low:
         return 1;
-      default:
-        return 0;
     }
   }
 

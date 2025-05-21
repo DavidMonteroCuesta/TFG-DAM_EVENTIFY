@@ -1,11 +1,9 @@
-import 'package:eventify/calendar/presentation/screen/widgets/upcoming_event_card.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart'; // Importa Provider
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart'; // Importa el ViewModel
 import 'package:eventify/calendar/domain/entities/event.dart'; // Importa la entidad Event
-import 'package:cloud_firestore/cloud_firestore.dart'; // Importa Timestamp para toDate()
 
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;

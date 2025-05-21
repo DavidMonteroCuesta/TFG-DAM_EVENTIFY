@@ -20,13 +20,13 @@ class UpcomingEventCard extends StatelessWidget {
 
   Color? _getPriorityColor(String priority) {
     switch (priority.toLowerCase()) {
-      case 'baja':
+      case 'low':
         return Colors.green;
-      case 'media':
+      case 'medium':
         return Colors.orangeAccent;
-      case 'alta':
+      case 'high':
         return Colors.orange;
-      case 'crítica':
+      case 'critical':
         return Colors.red;
       default:
         return Colors.orangeAccent;
