@@ -11,6 +11,7 @@ import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:eventify/common/theme/colors/colors.dart';
 
 class EventSearchScreen extends StatefulWidget {
   const EventSearchScreen({super.key});
@@ -23,7 +24,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleSearchController = TextEditingController();
   final _descriptionSearchController = TextEditingController();
-  final _dateTimeSearchController = TextEditingController();
+  DateTime? _selectedSearchDate;
   EventType _selectedEventType = EventType.all;
   final _locationSearchController = TextEditingController();
   final _subjectSearchController = TextEditingController();
@@ -41,11 +42,11 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     _loadEvents();
     _titleSearchController.addListener(_searchEvents);
     _descriptionSearchController.addListener(_searchEvents);
-    _dateTimeSearchController.addListener(_searchEvents);
+    // No necesitamos un listener para _dateTimeSearchController, ya que usaremos un DatePicker
     _locationSearchController.addListener(_searchEvents);
     _subjectSearchController.addListener(_searchEvents);
     _withPersonSearchController.addListener(_searchEvents);
-    _searchEvents();
+    _searchEvents(); // Llamada inicial para mostrar todos los eventos
   }
 
   @override
@@ -59,10 +60,48 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       setState(() => _searchResults = _eventViewModel.events);
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Failed to load events: ${e.toString()}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load events: ${e.toString()}')),
+        );
       }
     }
+  }
+
+  Future<void> _selectSearchDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedSearchDate ?? DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2026),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            primaryColor: AppColors.primaryContainer,
+            hintColor: AppColors.secondary,
+            colorScheme: ColorScheme.dark(
+              primary: AppColors.primaryContainer,
+            ).copyWith(secondary: AppColors.secondary),
+            buttonTheme: const ButtonThemeData(
+              textTheme: ButtonTextTheme.primary,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != _selectedSearchDate) {
+      setState(() {
+        _selectedSearchDate = picked;
+        _searchEvents(); // Vuelve a buscar al seleccionar una fecha
+      });
+    }
+  }
+
+  void _clearSearchDate() {
+    setState(() {
+      _selectedSearchDate = null;
+      _searchEvents(); // Vuelve a buscar al borrar la fecha
+    });
   }
 
   void _searchEvents() {
@@ -72,105 +111,129 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
 
       final title = _titleSearchController.text;
       final description = _descriptionSearchController.text;
-      final dateTime = _dateTimeSearchController.text; // Changed to dateTime
 
       if (title.isNotEmpty) {
-        results = results
-            .where((event) =>
-                event.title.toLowerCase().contains(title.toLowerCase()))
-            .toList();
+        results =
+            results
+                .where(
+                  (event) =>
+                      event.title.toLowerCase().contains(title.toLowerCase()),
+                )
+                .toList();
       }
       if (description.isNotEmpty) {
-        results = results
-            .where((event) => event.description?.toLowerCase().contains(description.toLowerCase()) ?? false)
-            .toList();
-      }
-      if (dateTime.isNotEmpty) { // Changed to dateTime
-        DateTime? parsedDateTime = DateTime.tryParse(dateTime);
-        results = results.where((event) {
-          if (event.dateTime != null && parsedDateTime != null) {
-            return DateFormat('yyyy/MM/dd HH:mm').format(event.dateTime!.toDate()) ==
-                DateFormat('yyyy/MM/dd HH:mm').format(parsedDateTime);
-          }
-          return false;
-        }).toList();
-      }
-      if (_selectedEventType != EventType.task) {
-        results = results.where((event) {
-          if (_selectedEventType == EventType.meeting &&
-              event is MeetingEvent) {
-            return true;
-          } else if (_selectedEventType == EventType.exam &&
-              event is ExamEvent) {
-            return true;
-          } else if (_selectedEventType == EventType.conference &&
-              event is ConferenceEvent) {
-            return true;
-          } else if (_selectedEventType == EventType.appointment &&
-              event is AppointmentEvent) {
-            return true;
-          } else if (_selectedEventType == EventType.all) {
-            return true;
-          } else if (_selectedEventType == EventType.task &&
-              event is! MeetingEvent &&
-              event is! ExamEvent &&
-              event is! ConferenceEvent &&
-              event is! AppointmentEvent) {
-            return true;
-          }
-          return false;
-        }).toList();
-      }
-      if (_enablePriorityFilter &&
-          _selectedPriority != null) { // Usa _enablePriorityFilter
         results =
-            results.where((event) => event.priority == _selectedPriority).toList();
+            results
+                .where(
+                  (event) =>
+                      event.description?.toLowerCase().contains(
+                        description.toLowerCase(),
+                      ) ??
+                      false,
+                )
+                .toList();
+      }
+      if (_selectedSearchDate != null) {
+        // Filtra por la fecha seleccionada
+        results =
+            results.where((event) {
+              if (event.dateTime != null) {
+                // Compara solo la fecha (año, mes, día), ignorando la hora
+                return event.dateTime!.toDate().year ==
+                        _selectedSearchDate!.year &&
+                    event.dateTime!.toDate().month ==
+                        _selectedSearchDate!.month &&
+                    event.dateTime!.toDate().day == _selectedSearchDate!.day;
+              }
+              return false;
+            }).toList();
+      }
+      if (_selectedEventType != EventType.all) {
+        // Cambiado de EventType.task a EventType.all para incluir todos los tipos
+        results =
+            results.where((event) {
+              if (_selectedEventType == EventType.meeting &&
+                  event is MeetingEvent) {
+                return true;
+              } else if (_selectedEventType == EventType.exam &&
+                  event is ExamEvent) {
+                return true;
+              } else if (_selectedEventType == EventType.conference &&
+                  event is ConferenceEvent) {
+                return true;
+              } else if (_selectedEventType == EventType.appointment &&
+                  event is AppointmentEvent) {
+                return true;
+              } else if (_selectedEventType ==
+                      EventType.task && // Maneja el caso de Task explícitamente
+                  event is! MeetingEvent &&
+                  event is! ExamEvent &&
+                  event is! ConferenceEvent &&
+                  event is! AppointmentEvent) {
+                return true;
+              }
+              return false;
+            }).toList();
+      }
+      if (_enablePriorityFilter && _selectedPriority != null) {
+        results =
+            results
+                .where((event) => event.priority == _selectedPriority)
+                .toList();
       }
       if (_selectedEventType == EventType.meeting ||
           _selectedEventType == EventType.conference ||
           _selectedEventType == EventType.appointment) {
         if (_locationSearchController.text.isNotEmpty) {
-          results = results.where((event) {
-            if (event is MeetingEvent) {
-              return event.location?.toLowerCase().contains(
-                      _locationSearchController.text.toLowerCase()) ??
-                  false;
-            } else if (event is ConferenceEvent) {
-              return event.location?.toLowerCase().contains(
-                      _locationSearchController.text.toLowerCase()) ??
-                  false;
-            } else if (event is AppointmentEvent) {
-              return event.location?.toLowerCase().contains(
-                      _locationSearchController.text.toLowerCase()) ??
-                  false;
-            }
-            return false;
-          }).toList();
+          results =
+              results.where((event) {
+                if (event is MeetingEvent) {
+                  return event.location?.toLowerCase().contains(
+                        _locationSearchController.text.toLowerCase(),
+                      ) ??
+                      false;
+                } else if (event is ConferenceEvent) {
+                  return event.location?.toLowerCase().contains(
+                        _locationSearchController.text.toLowerCase(),
+                      ) ??
+                      false;
+                } else if (event is AppointmentEvent) {
+                  return event.location?.toLowerCase().contains(
+                        _locationSearchController.text.toLowerCase(),
+                      ) ??
+                      false;
+                }
+                return false;
+              }).toList();
         }
       }
       if (_selectedEventType == EventType.exam) {
         if (_subjectSearchController.text.isNotEmpty) {
-          results = results.where((event) {
-            if (event is ExamEvent) {
-              return event.subject?.toLowerCase().contains(
-                      _subjectSearchController.text.toLowerCase()) ??
-                  false;
-            }
-            return false;
-          }).toList();
+          results =
+              results.where((event) {
+                if (event is ExamEvent) {
+                  return event.subject?.toLowerCase().contains(
+                        _subjectSearchController.text.toLowerCase(),
+                      ) ??
+                      false;
+                }
+                return false;
+              }).toList();
         }
       }
       if (_selectedEventType == EventType.appointment) {
         if (_withPersonYesNoSearch) {
-          results = results.where((event) {
-            if (event is AppointmentEvent) {
-              return event.withPersonYesNo &&
-                  (event.withPerson?.toLowerCase().contains(
-                          _withPersonSearchController.text.toLowerCase()) ??
-                      false);
-            }
-            return false;
-          }).toList();
+          results =
+              results.where((event) {
+                if (event is AppointmentEvent) {
+                  return event.withPersonYesNo &&
+                      (event.withPerson?.toLowerCase().contains(
+                            _withPersonSearchController.text.toLowerCase(),
+                          ) ??
+                          false);
+                }
+                return false;
+              }).toList();
         }
       }
       _searchResults = results;
@@ -181,7 +244,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   void dispose() {
     _titleSearchController.dispose();
     _descriptionSearchController.dispose();
-    _dateTimeSearchController.dispose(); // Changed to dateTime
     _locationSearchController.dispose();
     _subjectSearchController.dispose();
     _withPersonSearchController.dispose();
@@ -228,9 +290,65 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 controller: _descriptionSearchController,
                 labelText: 'Description',
               ),
-              _buildSearchField(
-                controller: _dateTimeSearchController, // Changed to dateTime
-                labelText: 'Date and Time (YYYY-MM-DD HH:MM)',
+              // Nuevo campo de selección de fecha
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: InkWell(
+                  onTap: () => _selectSearchDate(context),
+                  child: InputDecorator(
+                    decoration: InputDecoration(
+                      labelText: 'Date (YYYY-MM-DD)',
+                      labelStyle: TextStyles.plusJakartaSansSubtitle2,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: Color.fromRGBO(105, 240, 174, 1),
+                          width: 1.5,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0,
+                      ),
+                      filled: true,
+                      fillColor: const Color(0xFF1F1F1F),
+                      suffixIcon:
+                          _selectedSearchDate != null
+                              ? IconButton(
+                                icon: const Icon(
+                                  Icons.clear,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: _clearSearchDate,
+                              )
+                              : const Icon(
+                                Icons.calendar_today,
+                                color: Colors.grey,
+                              ),
+                    ),
+                    child: Text(
+                      _selectedSearchDate != null
+                          ? DateFormat(
+                            'yyyy-MM-dd',
+                          ).format(_selectedSearchDate!)
+                          : 'Select Date',
+                      // Aplica el estilo de subtítulo si no hay fecha seleccionada,
+                      // de lo contrario, aplica el estilo de cuerpo principal.
+                      style:
+                          _selectedSearchDate != null
+                              ? TextStyles.plusJakartaSansBody1
+                              : TextStyles.plusJakartaSansSubtitle2,
+                    ),
+                  ),
+                ),
               ),
               _buildDropdownField(
                 value: _selectedEventType,
@@ -242,19 +360,20 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                     });
                   }
                 },
-                items: EventType.values.map<DropdownMenuItem<EventType>>((
-                  EventType value,
-                ) {
-                  return DropdownMenuItem<EventType>(
-                    value: value,
-                    child: Text(
-                      value == EventType.all
-                          ? "ALL"
-                          : value.toString().split('.').last.toUpperCase(),
-                      style: TextStyles.plusJakartaSansBody2,
-                    ),
-                  );
-                }).toList(),
+                items:
+                    EventType.values.map<DropdownMenuItem<EventType>>((
+                      EventType value,
+                    ) {
+                      return DropdownMenuItem<EventType>(
+                        value: value,
+                        child: Text(
+                          value == EventType.all
+                              ? "ALL"
+                              : value.toString().split('.').last.toUpperCase(),
+                          style: TextStyles.plusJakartaSansBody2,
+                        ),
+                      );
+                    }).toList(),
                 labelText: 'Event Type',
               ),
               _buildPrioritySelector(),
@@ -282,69 +401,74 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 const SizedBox(height: 10.0),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _searchResults.map((event) {
-                    String eventTypeString = 'N/A';
-                    if (event is MeetingEvent) {
-                      eventTypeString = 'Meeting';
-                    } else if (event is ExamEvent) {
-                      eventTypeString = 'Exam';
-                    } else if (event is ConferenceEvent) {
-                      eventTypeString = 'Conference';
-                    } else if (event is AppointmentEvent) {
-                      eventTypeString = 'Appointment';
-                    } else {
-                      eventTypeString = 'Task';
-                    }
-                    String formattedDateTime = event.dateTime != null
-                        ? DateFormat('yyyy/MM/dd HH:mm').format(event.dateTime!.toDate())
-                        : 'N/A';
+                  children:
+                      _searchResults.map((event) {
+                        String eventTypeString = 'N/A';
+                        if (event is MeetingEvent) {
+                          eventTypeString = 'Meeting';
+                        } else if (event is ExamEvent) {
+                          eventTypeString = 'Exam';
+                        } else if (event is ConferenceEvent) {
+                          eventTypeString = 'Conference';
+                        } else if (event is AppointmentEvent) {
+                          eventTypeString = 'Appointment';
+                        } else {
+                          eventTypeString = 'Task';
+                        }
+                        String formattedDateTime =
+                            event.dateTime != null
+                                ? DateFormat(
+                                  'yyyy/MM/dd HH:mm',
+                                ).format(event.dateTime!.toDate())
+                                : 'N/A';
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: SizedBox(
-                        width: screenWidth * 0.9,
-                        child: Container(
-                          padding: const EdgeInsets.all(12.0),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1F1F1F),
-                            borderRadius: BorderRadius.circular(8.0),
-                            border:
-                                Border.all(color: outlineColor.withOpacity(0.3)),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: SizedBox(
+                            width: screenWidth * 0.9,
+                            child: Container(
+                              padding: const EdgeInsets.all(12.0),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1F1F1F),
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(
+                                  color: outlineColor.withOpacity(0.3),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    event.title,
+                                    style: TextStyles.plusJakartaSansBody1
+                                        .copyWith(fontSize: 18),
+                                  ),
+                                  const SizedBox(height: 4.0),
+                                  Text(
+                                    'Date and Time: $formattedDateTime',
+                                    style: TextStyles.plusJakartaSansBody2,
+                                  ),
+                                  const SizedBox(height: 4.0),
+                                  Text(
+                                    'Type: $eventTypeString',
+                                    style: TextStyles.plusJakartaSansBody2,
+                                  ),
+                                  const SizedBox(height: 4.0),
+                                  Text(
+                                    'Description: ${event.description ?? 'N/A'}',
+                                    style: TextStyles.plusJakartaSansBody2,
+                                  ),
+                                  Text(
+                                    'Priority: ${event.priority.toString().split('.').last.toUpperCase()}',
+                                    style: TextStyles.plusJakartaSansBody2
+                                        .copyWith(color: Colors.yellow),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                event.title,
-                                style: TextStyles.plusJakartaSansBody1
-                                    .copyWith(fontSize: 18),
-                              ),
-                              const SizedBox(height: 4.0),
-                              Text(
-                                'Date and Time: $formattedDateTime', // Changed to dateTime
-                                style: TextStyles.plusJakartaSansBody2,
-                              ),
-                              const SizedBox(height: 4.0),
-                              Text(
-                                'Type: $eventTypeString',
-                                style: TextStyles.plusJakartaSansBody2,
-                              ),
-                              const SizedBox(height: 4.0),
-                              Text(
-                                'Description: ${event.description ?? 'N/A'}',
-                                style: TextStyles.plusJakartaSansBody2,
-                              ),
-                              Text(
-                                'Priority: ${event.priority.toString().split('.').last.toUpperCase()}',
-                                style: TextStyles.plusJakartaSansBody2
-                                    .copyWith(color: Colors.yellow),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                        );
+                      }).toList(),
                 ),
               ],
             ],
@@ -372,15 +496,19 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide:
-                const BorderSide(color: Color.fromRGBO(105, 240, 174, 1), width: 1.5),
+            borderSide: const BorderSide(
+              color: Color.fromRGBO(105, 240, 174, 1),
+              width: 1.5,
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
           ),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 12.0,
+          ),
           filled: true,
           fillColor: const Color(0xFF1F1F1F),
         ),
@@ -409,15 +537,19 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide:
-                const BorderSide(color: Color.fromRGBO(105, 240, 174, 1), width: 1.5),
+            borderSide: const BorderSide(
+              color: Color.fromRGBO(105, 240, 174, 1),
+              width: 1.5,
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
           ),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 12.0,
+          ),
           filled: true,
           fillColor: const Color(0xFF1F1F1F),
         ),
@@ -434,10 +566,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         children: [
           Row(
             children: [
-              Text(
-                'Priority',
-                style: TextStyles.plusJakartaSansSubtitle2,
-              ),
+              Text('Priority', style: TextStyles.plusJakartaSansSubtitle2),
               const SizedBox(width: 10),
               Switch(
                 value: _enablePriorityFilter,
@@ -451,8 +580,12 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                     _searchEvents();
                   });
                 },
-                activeColor:
-                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                activeColor: const Color.fromRGBO(
+                  105,
+                  240,
+                  174,
+                  1,
+                ).withOpacity(0.8),
                 inactiveTrackColor: Colors.grey[600],
                 inactiveThumbColor: Colors.grey[350],
               ),
@@ -465,25 +598,29 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               spacing: 8.0,
               children: [
                 _buildPriorityOption(
-                    'CRITICAL',
-                    Priority.critical,
-                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
-                    const Color(0xFF0F0F0F)),
+                  'CRITICAL',
+                  Priority.critical,
+                  const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                  const Color(0xFF0F0F0F),
+                ),
                 _buildPriorityOption(
-                    'HIGH',
-                    Priority.high,
-                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
-                    const Color(0xFF0F0F0F)),
+                  'HIGH',
+                  Priority.high,
+                  const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                  const Color(0xFF0F0F0F),
+                ),
                 _buildPriorityOption(
-                    'MEDIUM',
-                    Priority.medium,
-                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
-                    const Color(0xFF0F0F0F)),
+                  'MEDIUM',
+                  Priority.medium,
+                  const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                  const Color(0xFF0F0F0F),
+                ),
                 _buildPriorityOption(
-                    'LOW',
-                    Priority.low,
-                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
-                    const Color(0xFF0F0F0F)),
+                  'LOW',
+                  Priority.low,
+                  const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                  const Color(0xFF0F0F0F),
+                ),
               ],
             ),
           ),
@@ -492,31 +629,34 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     );
   }
 
-  Widget _buildPriorityOption(String label, Priority priority,
-      Color backgroundColor, Color textColor) {
+  Widget _buildPriorityOption(
+    String label,
+    Priority priority,
+    Color backgroundColor,
+    Color textColor,
+  ) {
     final isSelected = _selectedPriority == priority;
     return ChoiceChip(
-      label: Text(label,
-          style: TextStyle(
-              color: isSelected ? textColor : Colors.black87.withOpacity(0.8))),
+      label: Text(
+        label,
+        style: TextStyle(
+          color: isSelected ? textColor : Colors.black87.withOpacity(0.8),
+        ),
+      ),
       selected: isSelected,
       onSelected: (bool selected) {
         setState(() {
           if (selected) {
-            _selectedPriority =
-                _selectedPriority == priority ? null : priority;
+            _selectedPriority = _selectedPriority == priority ? null : priority;
             _searchEvents();
           }
         });
       },
       backgroundColor: backgroundColor.withOpacity(0.3),
       selectedColor: backgroundColor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0)),
-      side: BorderSide(
-          color: isSelected ? backgroundColor : Colors.grey[300]!),
-      labelPadding:
-          const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      side: BorderSide(color: isSelected ? backgroundColor : Colors.grey[300]!),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     );
   }
 
@@ -565,15 +705,19 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide:
-                        const BorderSide(color: secondaryColor, width: 1.5),
+                    borderSide: const BorderSide(
+                      color: secondaryColor,
+                      width: 1.5,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
                   ),
                   contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 12.0),
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
                   filled: true,
                   fillColor: const Color(0xFF1F1F1F),
                 ),
@@ -585,4 +729,3 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     );
   }
 }
-
