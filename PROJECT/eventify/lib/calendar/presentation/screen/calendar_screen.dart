@@ -9,26 +9,33 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CalendarScreen extends StatefulWidget {
-  const CalendarScreen({super.key});
   static const String routeName = '/calendar';
+  final bool showMonthlyView;
+
+  const CalendarScreen({
+    super.key,
+    this.showMonthlyView = false,
+  });
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  final _pageController = PageController(initialPage: 0);
-  bool _isMonthlyView = false;
+  late PageController _pageController;
+  late bool _isMonthlyView;
   late EventViewModel _eventViewModel;
   DateTime _focusedMonthForMonthlyView = DateTime.now();
-  int _currentYear = DateTime.now().year; // Estado para el año actual
+  int _currentYear = DateTime.now().year;
+  Key _monthlyCalendarKey = UniqueKey(); // Key para forzar la reconstrucción del MonthlyCalendar
 
   @override
   void initState() {
     super.initState();
+    _isMonthlyView = widget.showMonthlyView;
+    _pageController = PageController(initialPage: _isMonthlyView ? 1 : 0);
+
     _eventViewModel = Provider.of<EventViewModel>(context, listen: false);
-    // Llama a loadNearestEvent aquí para la carga inicial
-    // El ViewModel se encargará de no recargar si ya está cargado (gracias a _isNearestEventLoaded)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _eventViewModel.loadNearestEvent();
     });
@@ -60,9 +67,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void _handleYearChanged(int year) {
     setState(() {
       _currentYear = year;
-      // Opcional: Si quieres que al cambiar el año en el Header, la vista mensual
-      // también se actualice al mes actual de ese nuevo año (si no estás en vista mensual)
       _focusedMonthForMonthlyView = DateTime(year, DateTime.now().month, 1);
+    });
+  }
+
+  void _resetCalendarToCurrent() {
+    setState(() {
+      _currentYear = DateTime.now().year;
+      _focusedMonthForMonthlyView = DateTime.now();
+      _eventViewModel.loadNearestEvent();
+      // CLAVE: Cambia la Key del MonthlyCalendar para forzar su reconstrucción
+      _monthlyCalendarKey = UniqueKey();
     });
   }
 
@@ -95,7 +110,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
               SizedBox(
                 height:
                     kToolbarHeight + MediaQuery.of(context).padding.top,
-                child: Header(onYearChanged: _handleYearChanged), // Pasa el callback
+                child: Header(
+                  onYearChanged: _handleYearChanged,
+                  currentYear: _currentYear,
+                ),
               ),
               SizedBox(height: spacingBetweenHeaderAndCalendar),
               Expanded(
@@ -111,19 +129,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   Expanded(
                                       child: Calendar(
                                         onMonthSelected: _handleMonthSelected,
-                                        currentYear: _currentYear, // Pasa el año actual
+                                        currentYear: _currentYear,
                                       )),
                                   if (showEventCard) ...[
                                     SizedBox(
                                         height:
                                             spacingBetweenCalendarAndEvent),
-                                    // Usa Consumer para escuchar cambios en EventViewModel
                                     Consumer<EventViewModel>(
                                       builder: (context, eventViewModel, child) {
-                                        // NO LLAMAR eventViewModel.loadNearestEvent() AQUÍ.
-                                        // Ya se llama en initState y se actualiza en el ViewModel
-                                        // cuando los eventos cambian (add/update/delete).
-
                                         if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
                                           return const CircularProgressIndicator();
                                         } else if (eventViewModel.errorMessage != null) {
@@ -135,7 +148,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           return UpcomingEventCard(
                                             title: eventViewModel.nearestEvent!.title,
                                             type: eventViewModel.nearestEvent!.type.toString(),
-                                            date: eventViewModel.nearestEvent!.dateTime!.toDate(), // Asegúrate de convertir Timestamp a DateTime
+                                            date: eventViewModel.nearestEvent!.dateTime!.toDate(),
                                             priority: eventViewModel.nearestEvent!.priority.toString(),
                                             description: eventViewModel.nearestEvent!.description ?? '',
                                           );
@@ -155,6 +168,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             Expanded(
                               flex: 1,
                               child: MonthlyCalendar(
+                                key: _monthlyCalendarKey, // Asigna la Key aquí
                                 initialFocusedDay: _focusedMonthForMonthlyView,
                               ),
                             ),
@@ -170,19 +184,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 Expanded(
                                     child: Calendar(
                                       onMonthSelected: _handleMonthSelected,
-                                      currentYear: _currentYear, // Pasa el año actual
+                                      currentYear: _currentYear,
                                     )),
                                 if (showEventCard) ...[
                                   SizedBox(
                                       height:
                                           spacingBetweenCalendarAndEvent),
-                                  // Usa Consumer para escuchar cambios en EventViewModel
                                   Consumer<EventViewModel>(
                                     builder: (context, eventViewModel, child) {
-                                      // NO LLAMAR eventViewModel.loadNearestEvent() AQUÍ.
-                                      // Ya se llama en initState y se actualiza en el ViewModel
-                                      // cuando los eventos cambian (add/update/delete).
-
+                                      // **CORRECCIÓN AQUÍ**: Asegura la sintaxis correcta del if/else if/else
                                       if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
                                         return const CircularProgressIndicator();
                                       } else if (eventViewModel.errorMessage != null) {
@@ -194,7 +204,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         return UpcomingEventCard(
                                           title: eventViewModel.nearestEvent!.title,
                                           type: eventViewModel.nearestEvent!.type.toString(),
-                                          date: eventViewModel.nearestEvent!.dateTime!.toDate(), // Asegúrate de convertir Timestamp a DateTime
+                                          date: eventViewModel.nearestEvent!.dateTime!.toDate(),
                                           priority: eventViewModel.nearestEvent!.priority.toString(),
                                           description: eventViewModel.nearestEvent!.description ?? '',
                                         );
@@ -210,6 +220,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               ],
                             ),
                             MonthlyCalendar(
+                              key: _monthlyCalendarKey, // Asigna la Key aquí
                               initialFocusedDay: _focusedMonthForMonthlyView,
                             ),
                           ],
@@ -222,6 +233,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 child: Footer(
                   onToggleCalendar: _toggleCalendarView,
                   isMonthlyView: _isMonthlyView,
+                  onResetToCurrent: _resetCalendarToCurrent,
                 ),
               ),
             ],

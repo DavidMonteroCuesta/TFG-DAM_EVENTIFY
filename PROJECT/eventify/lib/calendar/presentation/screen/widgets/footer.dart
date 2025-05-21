@@ -9,6 +9,7 @@ class Footer extends StatelessWidget {
   final bool isMonthlyView;
   final VoidCallback? onProfileTap;
   final VoidCallback? onChatTap;
+  final VoidCallback onResetToCurrent;
 
   const Footer({
     super.key,
@@ -16,6 +17,7 @@ class Footer extends StatelessWidget {
     required this.isMonthlyView,
     this.onProfileTap,
     this.onChatTap,
+    required this.onResetToCurrent,
   });
 
   @override
@@ -30,7 +32,11 @@ class Footer extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Icon(Icons.star_border, color: AppColors.footerIconColor, size: 24.0),
+          IconButton(
+            icon: const Icon(Icons.today, color: AppColors.footerIconColor, size: 24.0),
+            onPressed: onResetToCurrent,
+            tooltip: 'Return to actual month',
+          ),
           ChatButton(
             size: 32,
           ),

@@ -1,9 +1,9 @@
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart'; // Importa Provider
-import 'package:eventify/calendar/presentation/view_model/event_view_model.dart'; // Importa el ViewModel
-import 'package:eventify/calendar/domain/entities/event.dart'; // Importa la entidad Event
+import 'package:provider/provider.dart';
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
+import 'package:eventify/calendar/domain/entities/event.dart';
 
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;
@@ -19,26 +19,28 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   late DateTime _firstDayOfMonth;
   late DateTime _lastDayOfMonth;
   late List<DateTime> _daysInMonth;
-  late EventViewModel _eventViewModel; // Instancia del ViewModel
-  List<Event> _eventsForCurrentMonth = []; // Lista para eventos del mes actual
-  Set<DateTime> _datesWithEvents = {}; // Set para fechas con eventos
+  late EventViewModel _eventViewModel;
+  List<Event> _eventsForCurrentMonth = [];
+  Set<DateTime> _datesWithEvents = {};
 
   @override
   void initState() {
     super.initState();
     _focusedDay = widget.initialFocusedDay;
-    _eventViewModel = Provider.of<EventViewModel>(context, listen: false); // Inicializa el ViewModel
-    _loadEventsForMonth(); // Carga inicial de eventos
+    _eventViewModel = Provider.of<EventViewModel>(context, listen: false);
+    _loadEventsForMonth(); // Se llama aquí al inicio
   }
 
   @override
   void didUpdateWidget(covariant MonthlyCalendar oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // Vuelve a la comparación original, la Key forzará initState si es necesario
     if (widget.initialFocusedDay.year != oldWidget.initialFocusedDay.year ||
-        widget.initialFocusedDay.month != oldWidget.initialFocusedDay.month) {
+        widget.initialFocusedDay.month != oldWidget.initialFocusedDay.month ||
+        widget.initialFocusedDay.day != oldWidget.initialFocusedDay.day) {
       setState(() {
         _focusedDay = widget.initialFocusedDay;
-        _loadEventsForMonth(); // Recarga cuando la fecha inicial cambia
+        _loadEventsForMonth();
       });
     }
   }
@@ -55,21 +57,20 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   void _goToPreviousMonth() {
     setState(() {
       _focusedDay = DateTime(_focusedDay.year, _focusedDay.month - 1, 1);
-      _loadEventsForMonth(); // Recarga al cambiar de mes
+      _loadEventsForMonth();
     });
   }
 
   void _goToNextMonth() {
     setState(() {
       _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1, 1);
-      _loadEventsForMonth(); // Recarga al cambiar de mes
+      _loadEventsForMonth();
     });
   }
 
   Future<void> _loadEventsForMonth() async {
-    _updateCalendarDays(); // Asegura que los días del calendario estén actualizados
+    _updateCalendarDays();
     try {
-      // Ahora getEventsForCurrentUserAndMonth devuelve List<Event>
       final events = await _eventViewModel.getEventsForCurrentUserAndMonth(
         _focusedDay.year,
         _focusedDay.month,
@@ -113,7 +114,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 onPressed: _goToPreviousMonth,
               ),
               Text(
-                DateFormat('MMMM', 'es_ES').format(_focusedDay), // Formato completo con localización
+                DateFormat('MMMM', 'es_ES').format(_focusedDay),
                 style: TextStyles.urbanistH6,
               ),
               IconButton(
@@ -151,24 +152,22 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 final isToday = day.year == DateTime.now().year &&
                     day.month == DateTime.now().month &&
                     day.day == DateTime.now().day;
-                final hasEvent = _datesWithEvents.contains(day); // Comprueba si el día tiene eventos
+                final hasEvent = _datesWithEvents.contains(day);
 
                 return Container(
                   decoration: BoxDecoration(
                     color: isToday
-                        ? Colors.orangeAccent // Color para el día actual
-                        : null, // Sin color de fondo si no es hoy
-                    shape: BoxShape.circle,
+                        ? Colors.grey[300]!.withOpacity(0.2)
+                        : null,
+                    shape: isToday ? BoxShape.circle : BoxShape.rectangle,
                   ),
                   child: Center(
                     child: Text(
                       '${day.day}',
                       style: TextStyle(
-                        color: isToday
-                            ? Colors.white // Texto blanco para el día actual
-                            : hasEvent
-                                ? Colors.orangeAccent  // Color verde para días con eventos
-                                : Colors.white, // Texto blanco por defecto
+                        color: isToday || hasEvent
+                            ? Colors.orangeAccent
+                            : Colors.white,
                         fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
@@ -178,7 +177,6 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
             ),
           ),
           const SizedBox(height: 16),
-          // Muestra un mensaje basado en si hay eventos o no
           if (_eventsForCurrentMonth.isNotEmpty)
             Text(
               'Eventos para este mes: ${_eventsForCurrentMonth.length}',

@@ -6,7 +6,7 @@ import 'package:eventify/calendar/domain/entities/event.dart';
 
 class Calendar extends StatefulWidget {
   final Function(int monthIndex)? onMonthSelected;
-  final int currentYear; // Nuevo: Año actual pasado desde CalendarScreen
+  final int currentYear;
 
   const Calendar({super.key, this.onMonthSelected, required this.currentYear});
 
@@ -30,14 +30,13 @@ class _CalendarState extends State<Calendar> {
     super.initState();
     _eventViewModel = Provider.of<EventViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadMonthlyEventCounts(); // Carga inicial con el año actual
+      _loadMonthlyEventCounts();
     });
   }
 
   @override
   void didUpdateWidget(covariant Calendar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Si el año actual cambia, recarga los conteos de eventos
     if (widget.currentYear != oldWidget.currentYear) {
       _loadMonthlyEventCounts();
     }
@@ -46,7 +45,6 @@ class _CalendarState extends State<Calendar> {
   Future<void> _loadMonthlyEventCounts() async {
     if (!mounted) return;
 
-    // Usa el año pasado por el widget
     final int yearToLoad = widget.currentYear;
     Map<int, int> counts = { for (var i = 1; i <= 12; i++) i : 0 };
 

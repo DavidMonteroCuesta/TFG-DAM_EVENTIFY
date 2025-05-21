@@ -5,9 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 
 class Header extends StatefulWidget {
-  final Function(int year)? onYearChanged; // Nuevo: Callback para cuando el año cambia
+  final Function(int year)? onYearChanged;
+  final int currentYear; // Nuevo: Año actual pasado desde CalendarScreen
 
-  const Header({super.key, this.onYearChanged}); // Nuevo: Parámetro en el constructor
+  const Header({
+    super.key,
+    this.onYearChanged,
+    required this.currentYear, // Ahora es requerido
+  });
 
   @override
   State<Header> createState() => _HeaderState();
@@ -19,21 +24,33 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     super.initState();
-    _currentYear = DateTime.now().year; // Inicializa con el año actual
+    // Inicializa _currentYear con el valor pasado por el widget
+    _currentYear = widget.currentYear;
+  }
+
+  @override
+  void didUpdateWidget(covariant Header oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Si el año pasado por el widget cambia, actualiza el estado interno
+    if (widget.currentYear != oldWidget.currentYear) {
+      setState(() {
+        _currentYear = widget.currentYear;
+      });
+    }
   }
 
   void _goToPreviousYear() {
     setState(() {
       _currentYear--;
     });
-    widget.onYearChanged?.call(_currentYear); // Llama al callback con el nuevo año
+    widget.onYearChanged?.call(_currentYear);
   }
 
   void _goToNextYear() {
     setState(() {
       _currentYear++;
     });
-    widget.onYearChanged?.call(_currentYear); // Llama al callback con el nuevo año
+    widget.onYearChanged?.call(_currentYear);
   }
 
   @override
@@ -44,7 +61,6 @@ class _HeaderState extends State<Header> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Botones de navegación por año a la izquierda
           Row(
             children: [
               IconButton(
@@ -62,7 +78,7 @@ class _HeaderState extends State<Header> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: ShiningTextAnimation(
-                  text: '$_currentYear',
+                  text: '$_currentYear', // Muestra el año del estado interno
                   style: TextStyles.urbanistBody1,
                 ),
               ),

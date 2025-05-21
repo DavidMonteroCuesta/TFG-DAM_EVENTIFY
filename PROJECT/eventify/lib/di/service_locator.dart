@@ -1,9 +1,16 @@
+import 'package:eventify/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:eventify/auth/data/repositories/auth_repository_impl.dart';
+import 'package:eventify/auth/domain/repositories/auth_repository.dart';
+import 'package:eventify/auth/domain/use_cases/google_sign_in_use_case.dart';
+import 'package:eventify/auth/domain/use_cases/login_use_case.dart';
+import 'package:eventify/auth/domain/use_cases/register_use_case.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/chat/data/data_sources/chat_remote_data_source.dart';
 import 'package:eventify/chat/data/repositories/chat_repository_impl.dart';
 import 'package:eventify/chat/domain/repositories/chat_repository.dart';
 import 'package:eventify/chat/domain/use_cases/send_message_use_case.dart';
 import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:eventify/auth/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/auth/presentation/view_model/sign_up_view_model.dart';
@@ -18,8 +25,15 @@ import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_year_
 final sl = GetIt.instance;
 
 void setupLocator() {
-  
-// Auth feature
+
+  // Auth feature
+  // Register Firebase Auth
+  sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(remoteDataSource: sl()));
+  sl.registerLazySingleton(() => LoginUseCase(repository: sl<AuthRepository>()));
+  sl.registerLazySingleton(() => RegisterUseCase(authRepository: sl<AuthRepository>()));
+  sl.registerLazySingleton(() => GoogleSignInUseCase(authRepository: sl<AuthRepository>()));
+  sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSource());
   sl.registerFactory(() => SignInViewModel(loginUseCase: sl()));
   sl.registerFactory(() => SignUpViewModel(
         registerUseCase: sl(),
