@@ -49,11 +49,11 @@ class _HeaderState extends State<Header> {
             children: [
               IconButton(
                 onPressed: _goToPreviousYear,
-                icon: const Icon(Icons.arrow_upward, color: Colors.white),
+                icon: const Icon(Icons.arrow_downward, color: Colors.white),
               ),
               IconButton(
                 onPressed: _goToNextYear,
-                icon: const Icon(Icons.arrow_downward, color: Colors.white),
+                icon: const Icon(Icons.arrow_upward, color: Colors.white),
               ),
             ],
           ),
@@ -62,7 +62,7 @@ class _HeaderState extends State<Header> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: ShiningTextAnimation(
-                  text: '$_currentYear', // Muestra solo el año actual
+                  text: '$_currentYear',
                   style: TextStyles.urbanistBody1,
                 ),
               ),

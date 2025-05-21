@@ -93,25 +93,43 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
-            child: CustomTextField(hintText: 'Email', controller: _emailController),
+            child: CustomTextField(
+              hintText: 'Email',
+              controller: _emailController,
+              textStyle: const TextStyle(),
+            ),
           ),
           const SizedBox(height: 16),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            transform: Matrix4.translationValues(_usernameOffset, 0.0, 0.0), // Campo para el nombre de usuario
-            child: CustomTextField(hintText: 'Username', controller: _usernameController),
+            transform: Matrix4.translationValues(_usernameOffset, 0.0, 0.0),
+            child: CustomTextField(
+              hintText: 'Username',
+              controller: _usernameController,
+              textStyle: const TextStyle(),
+            ),
           ),
           const SizedBox(height: 16),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
-            child: CustomTextField(hintText: 'Password', obscure: true, controller: _passwordController),
+            child: CustomTextField(
+              hintText: 'Password',
+              obscure: true,
+              controller: _passwordController,
+              textStyle: const TextStyle(),
+            ),
           ),
           const SizedBox(height: 16),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_confirmPasswordOffset, 0.0, 0.0),
-            child: CustomTextField(hintText: 'Confirm Password', obscure: true, controller: _confirmPasswordController),
+            child: CustomTextField(
+              hintText: 'Confirm Password',
+              obscure: true,
+              controller: _confirmPasswordController,
+              textStyle: const TextStyle(),
+            ),
           ),
           const SizedBox(height: 16),
           AnimatedContainer(

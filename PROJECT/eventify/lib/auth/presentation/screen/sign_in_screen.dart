@@ -1,4 +1,3 @@
-import 'package:eventify/auth/presentation/screen/sign_up_screen.dart';
 import 'package:eventify/auth/presentation/screen/widgets/auth_subtitle.dart';
 import 'package:eventify/auth/presentation/screen/widgets/auth_title.dart';
 import 'package:eventify/auth/presentation/screen/widgets/custom_text_field.dart';
@@ -10,6 +9,9 @@ import 'package:eventify/common/animations/ani_left_to_right.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_in_view_model.dart';
+// Importa la clase abstracta TextStyles
+import 'package:eventify/common/theme/fonts/text_styles.dart';
+
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -58,19 +60,25 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     final signInViewModel = Provider.of<SignInViewModel>(context);
 
     return EventifyAuthLayout(
-      leftFooterText: 'Create Account',
-      rightFooterText: 'Log In',
-      onLeftFooterTap: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => SignUpScreen()),
-        );
-      },
-      onRightFooterTap: () {},
+      // Comentado para que el texto "Create Account" no aparezca en la pantalla
+      // leftFooterText: 'Create Account',
+      // Comentado para que el texto "Log In" no aparezca en la pantalla
+      // rightFooterText: 'Log In',
+      // Comentado para deshabilitar la navegación al tocar "Create Account"
+      // onLeftFooterTap: () {
+      //   Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(builder: (_) => SignUpScreen()),
+      //   );
+      // },
+      // Comentado para deshabilitar cualquier acción al tocar "Log In"
+      // onRightFooterTap: () {},
+      leftFooterText: '',
+      rightFooterText: '',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AuthTitle(text: 'Welcome Back'),
+          AuthTitle(text: 'Welcome to Eventify'),
           const SizedBox(height: 8),
           AuthSubtitle(
               text:
@@ -82,6 +90,9 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             child: CustomTextField(
               hintText: 'Email',
               controller: _emailController,
+              // Aplica TextStyles.plusJakartaSansBody1 para el estilo del texto de entrada
+              textStyle: TextStyles.plusJakartaSansBody1,
+              // Aplica TextStyles.plusJakartaSansSubtitle2 para el estilo del hintText
             ),
           ),
           const SizedBox(height: 16),
@@ -92,6 +103,9 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
               hintText: 'Password',
               obscure: true,
               controller: _passwordController,
+              // Aplica TextStyles.plusJakartaSansBody1 para el estilo del texto de entrada
+              textStyle: TextStyles.plusJakartaSansBody1,
+              // Aplica TextStyles.plusJakartaSansSubtitle2 para el estilo del hintText
             ),
           ),
           const SizedBox(height: 16),
@@ -115,16 +129,15 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 signInViewModel.errorMessage!,
-                style: const TextStyle(color: Colors.red),
+                // Aplica TextStyles.plusJakartaSansBody1 o similar, ajustando el color
+                style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.red),
               ),
             ),
           const SizedBox(height: 16),
           Text(
             'Or sign in with',
-            style: TextStyle(
-              color: Colors.grey[500],
-              fontSize: 14,
-            ),
+            // Aplica TextStyles.plusJakartaSansBody2 o similar
+            style: TextStyles.plusJakartaSansBody2,
           ),
           const SizedBox(height: 16),
           const SocialSignInButtons(),

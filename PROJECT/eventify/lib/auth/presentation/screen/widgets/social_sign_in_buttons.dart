@@ -23,7 +23,7 @@ class SocialSignInButtons extends StatelessWidget {
         SocialSignInButton(
           icon: const Icon(Icons.apple),
           text: 'Continue with Apple',
-          onPressed: null, // Implement Apple Sign-in similarly
+          onPressed: null,
         ),
       ],
     );
