@@ -21,7 +21,8 @@
     </content>
     <content url="file://$MODULE_DIR$/../../../PROJECT/eventify/build/tflite_flutter/generated/ap_generated_sources/debug/out" />
     <content url="file://$MODULE_DIR$/../../../PROJECT/eventify/build/tflite_flutter/generated/res/resValues/debug">
-      <sourceFolder url="file://$MODULE_DIR$/../../../PROJECT/eventify/build/tflite_flutter/generated/res/resValues/debug" type="java-resource" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../PROJECT/eventify/build/tflite_flutter/generated/res/resValues/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../PROJECT/eventify/build/tflite_flutter/generated/res/resValues/debug" type="java-resource" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

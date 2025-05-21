@@ -10,39 +10,39 @@ import 'package:eventify/calendar/domain/use_cases/add_event_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_use_case.dart';
-import 'package:eventify/calendar/domain/use_cases/get_nearest_event_use_case.dart'; // Importa el UseCase
+import 'package:eventify/calendar/domain/use_cases/get_nearest_event_use_case.dart';
+import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_month_use_case.dart'; // Importa el nuevo UseCase
 
 class EventViewModel extends ChangeNotifier {
-  // final AddEventUseCase addEventUseCase;
-  // Agrega los UseCases para actualizar y eliminar
-  //final UpdateEventUseCase updateEventUseCase;
-  //final DeleteEventUseCase deleteEventUseCase;
-  // final GetEventsForUserUseCase getEventsForUserUseCase; // Add the new use case
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
-  List<Event> _events = []; // Add a list to hold the events
-  List<Event> get events => _events; // Expose the list
+  List<Event> _events = []; // Lista para almacenar los eventos
+  List<Event> get events => _events; // Expone la lista
+
+  Event? _nearestEvent;
+  Event? get nearestEvent => _nearestEvent;
+
   final EventRepository _eventRepository;
   late final AddEventUseCase _addEventUseCase;
-  //late final UpdateEventUseCase _updateEventUseCase;
-  //late final DeleteEventUseCase _deleteEventUseCase;
   late final GetEventsForUserUseCase _getEventsForUserUseCase;
-  late final GetNearestEventUseCase _getNearestEventUseCase; // Agrega el UseCase de nearest event
+  late final GetNearestEventUseCase _getNearestEventUseCase;
+  late final GetEventsForUserAndMonthUseCase _getEventsForUserAndMonthUseCase; // Nuevo UseCase
 
-  Event? _nearestEvent; // Agrega esto
-  Event? get nearestEvent => _nearestEvent; // Exponlo
-
-  
   EventViewModel()
       : _eventRepository = EventRepositoryImpl(
             remoteDataSource: EventRemoteDataSource()) {
     _addEventUseCase = AddEventUseCase();
-    //_updateEventUseCase = UpdateEventUseCase(_eventRepository);
-    //_deleteEventUseCase = DeleteEventUseCase(_eventRepository);
     _getEventsForUserUseCase = GetEventsForUserUseCase(_eventRepository);
-    _getNearestEventUseCase = GetNearestEventUseCase(_eventRepository); // Inicializa el UseCase
+    _getNearestEventUseCase = GetNearestEventUseCase(_eventRepository);
+    _getEventsForUserAndMonthUseCase = GetEventsForUserAndMonthUseCase(_eventRepository); // Inicializa el nuevo UseCase
+  }
+
+  // Método para actualizar el estado de carga (necesario para Calendar widget)
+  void setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
   }
 
   Future<void> addEvent(
@@ -50,7 +50,7 @@ class EventViewModel extends ChangeNotifier {
     String title,
     String? description,
     Priority priority,
-    Timestamp? dateTime,
+    Timestamp? dateTime, // Cambiado a Timestamp
     bool hasNotification,
     String? location,
     String? subject,
@@ -62,7 +62,6 @@ class EventViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         _errorMessage = 'Usuario no autenticado. No se puede guardar el evento.';
@@ -74,9 +73,10 @@ class EventViewModel extends ChangeNotifier {
         'id': UniqueKey().toString(),
         'title': title,
         'description': description,
-        'priority': priority,
+        'priority': priority, // ¡Corregido! Pasa la enumeración directamente
         'dateTime': dateTime,
         'hasNotification': hasNotification,
+        'type': type.toString().split('.').last, // Guarda el tipo de evento como String
         if (type == EventType.meeting ||
             type == EventType.conference ||
             type == EventType.appointment)
@@ -106,7 +106,7 @@ class EventViewModel extends ChangeNotifier {
       String title,
       String? description,
       Priority priority,
-      Timestamp? dateTime,
+      Timestamp? dateTime, // Cambiado a Timestamp
       bool hasNotification,
       String? location,
       String? subject,
@@ -127,9 +127,10 @@ class EventViewModel extends ChangeNotifier {
         'id': eventId,
         'title': title,
         'description': description,
-        'priority': priority,
+        'priority': priority, // ¡Corregido! Pasa la enumeración directamente
         'dateTime': dateTime,
         'hasNotification': hasNotification,
+        'type': type.toString().split('.').last, // Guarda el tipo de evento como String
         if (type == EventType.meeting ||
             type == EventType.conference ||
             type == EventType.appointment)
@@ -138,7 +139,9 @@ class EventViewModel extends ChangeNotifier {
         if (type == EventType.appointment) 'withPerson': withPerson,
         if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
       };
-      EventFactory.createEvent(type, eventData, userId, context);
+      // Aquí deberías llamar a un use case de actualización
+      // EventFactory.createEvent(type, eventData, userId, context); // Esto crea un nuevo evento, no actualiza
+      // await _updateEventUseCase.execute(userId, eventId, updatedEvent); // Descomentar y usar el UseCase de actualización
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -159,6 +162,7 @@ class EventViewModel extends ChangeNotifier {
         notifyListeners();
         return;
       }
+      // await _deleteEventUseCase.execute(userId, eventId); // Descomentar y usar el UseCase de eliminación
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -189,7 +193,7 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> loadNearestEvent() async { // Cambiado a loadNearestEvent
+  Future<void> loadNearestEvent() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -210,5 +214,27 @@ class EventViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-}
 
+  // Nuevo método para obtener eventos por usuario y mes
+  Future<void> getEventsForCurrentUserAndMonth(int year, int month) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) {
+        _errorMessage = 'Usuario no autenticado';
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+      _events = await _getEventsForUserAndMonthUseCase.execute(userId, year, month);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = 'Failed to fetch events for month: $e';
+      notifyListeners();
+    }
+  }
+}

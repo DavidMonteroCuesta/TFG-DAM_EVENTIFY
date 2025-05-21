@@ -523,7 +523,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   ),
                   decoration: InputDecoration(
                     labelText: 'Subject',
-                    labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
+                    labelStyle: TextStyles.plusJakartaSansSubtitle2,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,

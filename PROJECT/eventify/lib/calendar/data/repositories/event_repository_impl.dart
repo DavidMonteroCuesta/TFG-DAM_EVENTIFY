@@ -33,7 +33,7 @@ class EventRepositoryImpl implements EventRepository {
         await remoteDataSource.getEventsForUser(userId);
 
     return eventDataList.map((eventData) {
-      final String eventType = eventData['type'] ?? 'task'; 
+      final String eventType = eventData['type'] ?? 'task';
       switch (eventType) {
         case 'meeting':
           return MeetingEvent.fromJson(eventData);
@@ -49,7 +49,7 @@ class EventRepositoryImpl implements EventRepository {
       }
     }).toList();
   }
-  
+
   @override
   Future<Event?> getNearestEventForUser(String userId) async {
     final Map<String, dynamic>? eventData =
@@ -57,7 +57,29 @@ class EventRepositoryImpl implements EventRepository {
     if (eventData == null) {
       return null;
     }
-     final String eventType = eventData['type'] ?? 'task'; 
+    final String eventType = eventData['type'] ?? 'task';
+    switch (eventType) {
+      case 'meeting':
+        return MeetingEvent.fromJson(eventData);
+      case 'exam':
+        return ExamEvent.fromJson(eventData);
+      case 'conference':
+        return ConferenceEvent.fromJson(eventData);
+      case 'appointment':
+        return AppointmentEvent.fromJson(eventData);
+      case 'task':
+      default:
+        return TaskEvent.fromJson(eventData);
+    }
+  }
+
+  @override
+  Future<List<Event>> getEventsForUserAndMonth(String userId, int year, int month) async {
+    final List<Map<String, dynamic>> eventDataList =
+        await remoteDataSource.getEventsForUserAndMonth(userId, year, month);
+
+    return eventDataList.map((eventData) {
+      final String eventType = eventData['type'] ?? 'task';
       switch (eventType) {
         case 'meeting':
           return MeetingEvent.fromJson(eventData);
@@ -71,5 +93,6 @@ class EventRepositoryImpl implements EventRepository {
         default:
           return TaskEvent.fromJson(eventData);
       }
+    }).toList();
   }
 }

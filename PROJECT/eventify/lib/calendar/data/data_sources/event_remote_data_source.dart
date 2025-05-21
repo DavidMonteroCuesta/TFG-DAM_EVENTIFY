@@ -98,5 +98,24 @@ class EventRemoteDataSource {
       rethrow;
     }
   }
-}
 
+
+  Future<List<Map<String, dynamic>>> getEventsForUserAndMonth(String userId, int year, int month) async {
+    try {
+      final DateTime startOfMonth = DateTime(year, month, 1);
+      final DateTime endOfMonth = DateTime(year, month + 1, 0, 23, 59, 59);
+
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('events')
+          .where('dateTime', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfMonth))
+          .where('dateTime', isLessThanOrEqualTo: Timestamp.fromDate(endOfMonth))
+          .get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      log('Error al obtener eventos por usuario y mes de Firestore: $e', name: _tag, error: e);
+      rethrow;
+    }
+  }
+}

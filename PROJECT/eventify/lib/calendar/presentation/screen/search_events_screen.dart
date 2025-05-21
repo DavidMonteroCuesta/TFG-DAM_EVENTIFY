@@ -14,7 +14,6 @@ import 'package:intl/intl.dart';
 
 class EventSearchScreen extends StatefulWidget {
   const EventSearchScreen({super.key});
-  static const String routeName = '/event-search';
 
   @override
   State<EventSearchScreen> createState() => _EventSearchScreenState();
@@ -24,7 +23,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleSearchController = TextEditingController();
   final _descriptionSearchController = TextEditingController();
-  final _dateTimeSearchController = TextEditingController(); // Changed to dateTime
+  final _dateTimeSearchController = TextEditingController();
   EventType _selectedEventType = EventType.all;
   final _locationSearchController = TextEditingController();
   final _subjectSearchController = TextEditingController();
@@ -42,7 +41,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     _loadEvents();
     _titleSearchController.addListener(_searchEvents);
     _descriptionSearchController.addListener(_searchEvents);
-    _dateTimeSearchController.addListener(_searchEvents); // Changed to dateTime
+    _dateTimeSearchController.addListener(_searchEvents);
     _locationSearchController.addListener(_searchEvents);
     _subjectSearchController.addListener(_searchEvents);
     _withPersonSearchController.addListener(_searchEvents);
