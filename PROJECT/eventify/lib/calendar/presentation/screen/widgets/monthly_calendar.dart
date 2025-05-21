@@ -2,11 +2,15 @@ import 'package:eventify/calendar/presentation/screen/widgets/upcoming_event_car
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart'; // Importa Provider
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart'; // Importa el ViewModel
+import 'package:eventify/calendar/domain/entities/event.dart'; // Importa la entidad Event
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importa Timestamp para toDate()
 
 class MonthlyCalendar extends StatefulWidget {
-  final DateTime initialFocusedDay; // Nuevo parámetro
+  final DateTime initialFocusedDay;
 
-  const MonthlyCalendar({super.key, required this.initialFocusedDay}); // Constructor actualizado
+  const MonthlyCalendar({super.key, required this.initialFocusedDay});
 
   @override
   State<MonthlyCalendar> createState() => _MonthlyCalendarState();
@@ -17,39 +21,32 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   late DateTime _firstDayOfMonth;
   late DateTime _lastDayOfMonth;
   late List<DateTime> _daysInMonth;
-
-  // TODO: Este UpcomingEventCard es un placeholder. Deberías cargar los eventos del mes actual.
-  final upcomingEvent = const {
-    'title': 'Evento del mes',
-    'type': 'Recordatorio',
-    'date': '2025-04-18 15:00:00',
-    'priority': 'Normal',
-    'description': 'Este es un evento de ejemplo en el calendario mensual.',
-  };
+  late EventViewModel _eventViewModel; // Instancia del ViewModel
+  List<Event> _eventsForCurrentMonth = []; // Lista para eventos del mes actual
+  Set<DateTime> _datesWithEvents = {}; // Set para fechas con eventos
 
   @override
   void initState() {
     super.initState();
-    _focusedDay = widget.initialFocusedDay; // Usa el parámetro inicial
-    _updateCalendarDays();
+    _focusedDay = widget.initialFocusedDay;
+    _eventViewModel = Provider.of<EventViewModel>(context, listen: false); // Inicializa el ViewModel
+    _loadEventsForMonth(); // Carga inicial de eventos
   }
 
   @override
   void didUpdateWidget(covariant MonthlyCalendar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Solo actualiza si la fecha inicial ha cambiado para evitar reconstrucciones innecesarias
     if (widget.initialFocusedDay.year != oldWidget.initialFocusedDay.year ||
         widget.initialFocusedDay.month != oldWidget.initialFocusedDay.month) {
       setState(() {
         _focusedDay = widget.initialFocusedDay;
-        _updateCalendarDays();
+        _loadEventsForMonth(); // Recarga cuando la fecha inicial cambia
       });
     }
   }
 
   void _updateCalendarDays() {
     _firstDayOfMonth = DateTime(_focusedDay.year, _focusedDay.month, 1);
-    // El día 0 del mes siguiente es el último día del mes actual
     _lastDayOfMonth = DateTime(_focusedDay.year, _focusedDay.month + 1, 0);
     _daysInMonth = List.generate(
       _lastDayOfMonth.day,
@@ -60,20 +57,45 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   void _goToPreviousMonth() {
     setState(() {
       _focusedDay = DateTime(_focusedDay.year, _focusedDay.month - 1, 1);
-      _updateCalendarDays();
+      _loadEventsForMonth(); // Recarga al cambiar de mes
     });
   }
 
   void _goToNextMonth() {
     setState(() {
       _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1, 1);
-      _updateCalendarDays();
+      _loadEventsForMonth(); // Recarga al cambiar de mes
     });
+  }
+
+  Future<void> _loadEventsForMonth() async {
+    _updateCalendarDays(); // Asegura que los días del calendario estén actualizados
+    try {
+      // Ahora getEventsForCurrentUserAndMonth devuelve List<Event>
+      final events = await _eventViewModel.getEventsForCurrentUserAndMonth(
+        _focusedDay.year,
+        _focusedDay.month,
+      );
+      setState(() {
+        _eventsForCurrentMonth = events;
+        _datesWithEvents = events
+            .where((event) => event.dateTime != null)
+            .map((event) => DateTime(
+                event.dateTime!.toDate().year,
+                event.dateTime!.toDate().month,
+                event.dateTime!.toDate().day))
+            .toSet();
+      });
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Error loading events for month: ${e.toString()}')));
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Para que la semana empiece en lunes (1 = lunes, ..., 7 = domingo)
     final daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     return Container(
@@ -93,7 +115,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 onPressed: _goToPreviousMonth,
               ),
               Text(
-                DateFormat('MMMM yyyy', 'es_ES').format(_focusedDay), // Formato completo con localización
+                DateFormat('MMMM', 'es_ES').format(_focusedDay), // Formato completo con localización
                 style: TextStyles.urbanistH6,
               ),
               IconButton(
@@ -117,15 +139,11 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              // Calcula el offset para que el primer día del mes se alinee correctamente con el lunes
               itemCount: _daysInMonth.length + (_firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 7,
               ),
               itemBuilder: (context, index) {
-                // Ajuste para que el primer día de la semana sea lunes (weekday de DateTime es 1=lunes, 7=domingo)
-                // Si el primer día del mes es domingo (7), necesitamos 6 espacios en blanco antes.
-                // Si es lunes (1), necesitamos 0 espacios en blanco.
                 final int weekdayOffset = _firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1;
 
                 if (index < weekdayOffset) {
@@ -135,19 +153,25 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 final isToday = day.year == DateTime.now().year &&
                     day.month == DateTime.now().month &&
                     day.day == DateTime.now().day;
+                final hasEvent = _datesWithEvents.contains(day); // Comprueba si el día tiene eventos
 
                 return Container(
                   decoration: BoxDecoration(
-                    color: isToday ? Colors.orangeAccent : null,
+                    color: isToday
+                        ? Colors.orangeAccent // Color para el día actual
+                        : null, // Sin color de fondo si no es hoy
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: Text(
                       '${day.day}',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight:
-                            isToday ? FontWeight.bold : FontWeight.normal,
+                        color: isToday
+                            ? Colors.white // Texto blanco para el día actual
+                            : hasEvent
+                                ? Colors.orangeAccent  // Color verde para días con eventos
+                                : Colors.white, // Texto blanco por defecto
+                        fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                   ),
@@ -156,15 +180,17 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
             ),
           ),
           const SizedBox(height: 16),
-          // El UpcomingEventCard aquí es un placeholder.
-          // Deberías usar el EventViewModel para cargar eventos del mes actual.
-          UpcomingEventCard(
-            title: upcomingEvent['title'] as String,
-            type: upcomingEvent['type'] as String,
-            date: DateTime.parse(upcomingEvent['date'] as String),
-            priority: upcomingEvent['priority'] as String,
-            description: upcomingEvent['description'] as String,
-          ),
+          // Muestra un mensaje basado en si hay eventos o no
+          if (_eventsForCurrentMonth.isNotEmpty)
+            Text(
+              'Eventos para este mes: ${_eventsForCurrentMonth.length}',
+              style: TextStyles.plusJakartaSansBody1,
+            )
+          else
+            Text(
+              'No hay eventos para este mes.',
+              style: TextStyles.plusJakartaSansBody1,
+            ),
         ],
       ),
     );

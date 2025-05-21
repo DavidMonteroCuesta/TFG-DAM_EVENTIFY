@@ -44,9 +44,10 @@ class EventViewModel extends ChangeNotifier {
     _getEventsForUserAndYearUseCase = GetEventsForUserAndYearUseCase(_eventRepository);
   }
 
+  // Centraliza la llamada a notifyListeners para asegurar que siempre sea post-frame
   void _safeNotifyListeners() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (hasListeners) {
+      if (hasListeners) { // Asegura que el widget aún está montado y tiene listeners
         notifyListeners();
       }
     });
@@ -72,7 +73,7 @@ class EventViewModel extends ChangeNotifier {
   ) async {
     _isLoading = true;
     _errorMessage = null;
-    _safeNotifyListeners();
+    _safeNotifyListeners(); // Notifica el estado de carga inicial
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
@@ -104,13 +105,13 @@ class EventViewModel extends ChangeNotifier {
       await _addEventUseCase.execute(userId, newEvent);
 
       _isLoading = false;
-      _isNearestEventLoaded = false;
-      await loadNearestEvent();
-      _safeNotifyListeners();
+      _isNearestEventLoaded = false; // Resetea la bandera para forzar recarga
+      await loadNearestEvent(); // Recarga el evento más cercano después de añadir
+      _safeNotifyListeners(); // Notifica el estado final de éxito
     } catch (error) {
       _isLoading = false;
       _errorMessage = 'Error al guardar el evento: $error';
-      _safeNotifyListeners();
+      _safeNotifyListeners(); // Notifica el estado final de error
     }
   }
 
@@ -124,8 +125,8 @@ class EventViewModel extends ChangeNotifier {
       bool hasNotification,
       String? location,
       String? subject,
-      String? withPerson,
       bool withPersonYesNo,
+      String? withPerson,
       BuildContext context) async {
     _isLoading = true;
     _errorMessage = null;
@@ -137,6 +138,9 @@ class EventViewModel extends ChangeNotifier {
         _safeNotifyListeners();
         return;
       }
+      // Aquí deberías llamar a un use case de actualización
+      // final updatedEvent = EventFactory.createEvent(type, eventData, userId, context);
+      // await _updateEventUseCase.execute(userId, eventId, updatedEvent);
       _isLoading = false;
       _isNearestEventLoaded = false;
       await loadNearestEvent();
@@ -171,7 +175,7 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getEventsForCurrentUser() async {
+  Future<List<Event>> getEventsForCurrentUser() async {
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
@@ -179,16 +183,19 @@ class EventViewModel extends ChangeNotifier {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         _errorMessage = 'Usuario no autenticado';
+        _isLoading = false;
         _safeNotifyListeners();
-        return;
+        return [];
       }
       _events = await _getEventsForUserUseCase.execute(userId);
       _isLoading = false;
       _safeNotifyListeners();
+      return _events;
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events: $e';
       _safeNotifyListeners();
+      return [];
     }
   }
 
@@ -208,7 +215,29 @@ class EventViewModel extends ChangeNotifier {
         _safeNotifyListeners();
         return;
       }
-      _nearestEvent = await _getNearestEventUseCase.execute(userId);
+
+      // Obtener todos los eventos del usuario
+      final allEvents = await _getEventsForUserUseCase.execute(userId);
+
+      // Filtrar eventos pasados y los que no tienen fecha/hora
+      final now = DateTime.now();
+      final futureEvents = allEvents.where((event) {
+        return event.dateTime != null && event.dateTime!.toDate().isAfter(now.subtract(const Duration(minutes: 1)));
+      }).toList();
+
+      // Ordenar eventos: primero por fecha/hora ascendente, luego por prioridad (Critical > High > Medium > Low)
+      futureEvents.sort((a, b) {
+        // Ordenar por fecha/hora
+        final dateComparison = a.dateTime!.toDate().compareTo(b.dateTime!.toDate());
+        if (dateComparison != 0) {
+          return dateComparison;
+        }
+
+        // Si las fechas son iguales, ordenar por prioridad
+        return _getPriorityValue(b.priority).compareTo(_getPriorityValue(a.priority));
+      });
+
+      _nearestEvent = futureEvents.isNotEmpty ? futureEvents.first : null;
       _isNearestEventLoaded = true;
       _isLoading = false;
       _safeNotifyListeners();
@@ -219,7 +248,23 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getEventsForCurrentUserAndMonth(int year, int month) async {
+  // Helper para obtener un valor numérico de la prioridad para la ordenación
+  int _getPriorityValue(Priority priority) {
+    switch (priority) {
+      case Priority.critical:
+        return 4;
+      case Priority.high:
+        return 3;
+      case Priority.medium:
+        return 2;
+      case Priority.low:
+        return 1;
+      default:
+        return 0;
+    }
+  }
+
+  Future<List<Event>> getEventsForCurrentUserAndMonth(int year, int month) async { // Cambiado el tipo de retorno
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
@@ -229,19 +274,21 @@ class EventViewModel extends ChangeNotifier {
         _errorMessage = 'Usuario no autenticado';
         _isLoading = false;
         _safeNotifyListeners();
-        return;
+        return []; // Retorna una lista vacía en caso de error
       }
       _events = await _getEventsForUserAndMonthUseCase.execute(userId, year, month);
       _isLoading = false;
       _safeNotifyListeners();
+      return _events; // Retorna la lista de eventos
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events for month: $e';
       _safeNotifyListeners();
+      return []; // Retorna una lista vacía en caso de error
     }
   }
 
-  Future<void> getEventsForCurrentUserAndYear(int year) async {
+  Future<List<Event>> getEventsForCurrentUserAndYear(int year) async { // Cambiado el tipo de retorno
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
@@ -251,15 +298,17 @@ class EventViewModel extends ChangeNotifier {
         _errorMessage = 'Usuario no autenticado';
         _isLoading = false;
         _safeNotifyListeners();
-        return;
+        return []; // Retorna una lista vacía en caso de error
       }
       _events = await _getEventsForUserAndYearUseCase.execute(userId, year);
       _isLoading = false;
       _safeNotifyListeners();
+      return _events; // Retorna la lista de eventos
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events for year: $e';
       _safeNotifyListeners();
+      return []; // Retorna una lista vacía en caso de error
     }
   }
 }
