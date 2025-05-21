@@ -6,5 +6,6 @@ abstract class EventRepository {
   Future<void> deleteEvent(String userId, String eventId);
   Future<List<Event>> getEventsForUser(String userId);
   Future<Event?> getNearestEventForUser(String userId);
-  Future<List<Event>> getEventsForUserAndMonth(String userId, int year, int month); // Nuevo método
+  Future<List<Event>> getEventsForUserAndMonth(String userId, int year, int month);
+  Future<List<Event>> getEventsForUserAndYear(String userId, int year);
 }

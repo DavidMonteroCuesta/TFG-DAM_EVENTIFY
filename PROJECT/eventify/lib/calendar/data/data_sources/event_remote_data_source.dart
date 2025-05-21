@@ -12,9 +12,9 @@ class EventRemoteDataSource {
           .doc(userId)
           .collection('events')
           .add(eventData);
-      log('Evento añadido a Firestore para el usuario: $userId', name: _tag);
+      log('Event added to Firestore for user: $userId', name: _tag);
     } catch (e) {
-      log('Error al añadir evento a Firestore: $e', name: _tag, error: e);
+      log('Error adding event to Firestore: $e', name: _tag, error: e);
       rethrow;
     }
   }
@@ -28,10 +28,10 @@ class EventRemoteDataSource {
           .collection('events')
           .doc(eventId)
           .update(eventData);
-      log('Evento actualizado en Firestore para el usuario: $userId y evento: $eventId',
+      log('Event updated in Firestore for user: $userId and event: $eventId',
           name: _tag);
     } catch (e) {
-      log('Error al actualizar evento en Firestore: $e', name: _tag, error: e);
+      log('Error updating event in Firestore: $e', name: _tag, error: e);
       rethrow;
     }
   }
@@ -44,10 +44,10 @@ class EventRemoteDataSource {
           .collection('events')
           .doc(eventId)
           .delete();
-      log('Evento borrado de Firestore para el usuario: $userId y evento: $eventId',
+      log('Event deleted from Firestore for user: $userId and event: $eventId',
           name: _tag);
     } catch (e) {
-      log('Error al borrar evento de Firestore: $e', name: _tag, error: e);
+      log('Error deleting event from Firestore: $e', name: _tag, error: e);
       rethrow;
     }
   }
@@ -61,7 +61,7 @@ class EventRemoteDataSource {
           .get();
       return snapshot.docs.map((doc) => doc.data()).toList();
     } catch (e) {
-      log('Error al obtener eventos de Firestore para el usuario: $userId',
+      log('Error fetching events from Firestore for user: $userId',
           name: _tag, error: e);
       rethrow;
     }
@@ -73,7 +73,7 @@ class EventRemoteDataSource {
           .collection('users')
           .doc(userId)
           .collection('events')
-          .orderBy('dateTime') // Order by dateTime
+          .orderBy('dateTime')
           .get();
 
       if (snapshot.docs.isEmpty) {
@@ -99,7 +99,7 @@ class EventRemoteDataSource {
     }
   }
 
-
+  // Método para obtener eventos por usuario y mes (mantener para compatibilidad si se usa en otro lado)
   Future<List<Map<String, dynamic>>> getEventsForUserAndMonth(String userId, int year, int month) async {
     try {
       final DateTime startOfMonth = DateTime(year, month, 1);
@@ -114,7 +114,28 @@ class EventRemoteDataSource {
           .get();
       return snapshot.docs.map((doc) => doc.data()).toList();
     } catch (e) {
-      log('Error al obtener eventos por usuario y mes de Firestore: $e', name: _tag, error: e);
+      log('Error fetching events by user and month from Firestore: $e', name: _tag, error: e);
+      rethrow;
+    }
+  }
+
+  // NUEVO: Método para obtener todos los eventos de un año específico
+  Future<List<Map<String, dynamic>>> getEventsForUserAndYear(String userId, int year) async {
+    try {
+      final DateTime startOfYear = DateTime(year, 1, 1);
+      final DateTime endOfYear = DateTime(year, 12, 31, 23, 59, 59);
+
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('events')
+          .where('dateTime', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfYear))
+          .where('dateTime', isLessThanOrEqualTo: Timestamp.fromDate(endOfYear))
+          .get();
+      log('Events fetched for year $year for user $userId: ${snapshot.docs.length}', name: _tag);
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      log('Error fetching events by user and year from Firestore: $e', name: _tag, error: e);
       rethrow;
     }
   }

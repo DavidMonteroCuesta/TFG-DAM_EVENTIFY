@@ -11,15 +11,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_nearest_event_use_case.dart';
-import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_month_use_case.dart'; // Importa el nuevo UseCase
+import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_month_use_case.dart';
+import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_year_use_case.dart'; // NUEVO
 
 class EventViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
-  List<Event> _events = []; // Lista para almacenar los eventos
-  List<Event> get events => _events; // Expone la lista
+  List<Event> _events = [];
+  List<Event> get events => _events;
 
   Event? _nearestEvent;
   Event? get nearestEvent => _nearestEvent;
@@ -28,7 +29,8 @@ class EventViewModel extends ChangeNotifier {
   late final AddEventUseCase _addEventUseCase;
   late final GetEventsForUserUseCase _getEventsForUserUseCase;
   late final GetNearestEventUseCase _getNearestEventUseCase;
-  late final GetEventsForUserAndMonthUseCase _getEventsForUserAndMonthUseCase; // Nuevo UseCase
+  late final GetEventsForUserAndMonthUseCase _getEventsForUserAndMonthUseCase;
+  late final GetEventsForUserAndYearUseCase _getEventsForUserAndYearUseCase; // NUEVO
 
   EventViewModel()
       : _eventRepository = EventRepositoryImpl(
@@ -36,10 +38,10 @@ class EventViewModel extends ChangeNotifier {
     _addEventUseCase = AddEventUseCase();
     _getEventsForUserUseCase = GetEventsForUserUseCase(_eventRepository);
     _getNearestEventUseCase = GetNearestEventUseCase(_eventRepository);
-    _getEventsForUserAndMonthUseCase = GetEventsForUserAndMonthUseCase(_eventRepository); // Inicializa el nuevo UseCase
+    _getEventsForUserAndMonthUseCase = GetEventsForUserAndMonthUseCase(_eventRepository);
+    _getEventsForUserAndYearUseCase = GetEventsForUserAndYearUseCase(_eventRepository); // NUEVO
   }
 
-  // Método para actualizar el estado de carga (necesario para Calendar widget)
   void setLoading(bool value) {
     _isLoading = value;
     notifyListeners();
@@ -50,7 +52,7 @@ class EventViewModel extends ChangeNotifier {
     String title,
     String? description,
     Priority priority,
-    Timestamp? dateTime, // Cambiado a Timestamp
+    Timestamp? dateTime,
     bool hasNotification,
     String? location,
     String? subject,
@@ -73,10 +75,10 @@ class EventViewModel extends ChangeNotifier {
         'id': UniqueKey().toString(),
         'title': title,
         'description': description,
-        'priority': priority, // ¡Corregido! Pasa la enumeración directamente
+        'priority': priority,
         'dateTime': dateTime,
         'hasNotification': hasNotification,
-        'type': type.toString().split('.').last, // Guarda el tipo de evento como String
+        'type': type.toString().split('.').last,
         if (type == EventType.meeting ||
             type == EventType.conference ||
             type == EventType.appointment)
@@ -106,7 +108,7 @@ class EventViewModel extends ChangeNotifier {
       String title,
       String? description,
       Priority priority,
-      Timestamp? dateTime, // Cambiado a Timestamp
+      Timestamp? dateTime,
       bool hasNotification,
       String? location,
       String? subject,
@@ -123,25 +125,6 @@ class EventViewModel extends ChangeNotifier {
         notifyListeners();
         return;
       }
-      final eventData = {
-        'id': eventId,
-        'title': title,
-        'description': description,
-        'priority': priority, // ¡Corregido! Pasa la enumeración directamente
-        'dateTime': dateTime,
-        'hasNotification': hasNotification,
-        'type': type.toString().split('.').last, // Guarda el tipo de evento como String
-        if (type == EventType.meeting ||
-            type == EventType.conference ||
-            type == EventType.appointment)
-          'location': location,
-        if (type == EventType.exam) 'subject': subject,
-        if (type == EventType.appointment) 'withPerson': withPerson,
-        if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
-      };
-      // Aquí deberías llamar a un use case de actualización
-      // EventFactory.createEvent(type, eventData, userId, context); // Esto crea un nuevo evento, no actualiza
-      // await _updateEventUseCase.execute(userId, eventId, updatedEvent); // Descomentar y usar el UseCase de actualización
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -162,7 +145,6 @@ class EventViewModel extends ChangeNotifier {
         notifyListeners();
         return;
       }
-      // await _deleteEventUseCase.execute(userId, eventId); // Descomentar y usar el UseCase de eliminación
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -215,7 +197,6 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
-  // Nuevo método para obtener eventos por usuario y mes
   Future<void> getEventsForCurrentUserAndMonth(int year, int month) async {
     _isLoading = true;
     _errorMessage = null;
@@ -234,6 +215,29 @@ class EventViewModel extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events for month: $e';
+      notifyListeners();
+    }
+  }
+
+  // NUEVO: Método para obtener todos los eventos del año
+  Future<void> getEventsForCurrentUserAndYear(int year) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) {
+        _errorMessage = 'Usuario no autenticado';
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+      _events = await _getEventsForUserAndYearUseCase.execute(userId, year);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = 'Failed to fetch events for year: $e';
       notifyListeners();
     }
   }

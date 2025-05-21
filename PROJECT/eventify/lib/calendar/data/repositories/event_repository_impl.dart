@@ -95,4 +95,28 @@ class EventRepositoryImpl implements EventRepository {
       }
     }).toList();
   }
+
+  // NUEVO: Implementación para obtener eventos por año
+  @override
+  Future<List<Event>> getEventsForUserAndYear(String userId, int year) async {
+    final List<Map<String, dynamic>> eventDataList =
+        await remoteDataSource.getEventsForUserAndYear(userId, year);
+
+    return eventDataList.map((eventData) {
+      final String eventType = eventData['type'] ?? 'task';
+      switch (eventType) {
+        case 'meeting':
+          return MeetingEvent.fromJson(eventData);
+        case 'exam':
+          return ExamEvent.fromJson(eventData);
+        case 'conference':
+          return ConferenceEvent.fromJson(eventData);
+        case 'appointment':
+          return AppointmentEvent.fromJson(eventData);
+        case 'task':
+        default:
+          return TaskEvent.fromJson(eventData);
+      }
+    }).toList();
+  }
 }

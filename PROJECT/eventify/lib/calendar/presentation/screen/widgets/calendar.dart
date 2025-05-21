@@ -1,7 +1,8 @@
 import 'package:eventify/calendar/presentation/screen/widgets/month_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/calendar/presentation/view_model/event_view_model.dart'; // Importa el ViewModel
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
+import 'package:eventify/calendar/domain/entities/event.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -18,53 +19,52 @@ class _CalendarState extends State<Calendar> {
     'OCTOBER', 'NOVEMBER', 'DECEMBER',
   ];
 
-  Map<int, int> _monthlyEventCounts = {}; // Mapa para almacenar el número de eventos por mes
+  Map<int, int> _monthlyEventCounts = {};
   late EventViewModel _eventViewModel;
 
   @override
   void initState() {
     super.initState();
-    // Inicializa el ViewModel. listen: false porque solo lo necesitamos para llamar métodos, no para reconstruir aquí.
     _eventViewModel = Provider.of<EventViewModel>(context, listen: false);
-
-    // Mueve la llamada a _loadMonthlyEventCounts a un post-frame callback
-    // para evitar setState() durante la fase de construcción.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadMonthlyEventCounts();
     });
   }
 
   Future<void> _loadMonthlyEventCounts() async {
-    // Check if the widget is still mounted before proceeding with async operations that might call setState
     if (!mounted) return;
 
     final int currentYear = DateTime.now().year;
-    Map<int, int> counts = {};
+    Map<int, int> counts = { for (var i = 1; i <= 12; i++) i : 0 }; // Inicializa todos los meses a 0
 
-    // Notifica que la carga ha comenzado, también en un post-frame callback
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         _eventViewModel.setLoading(true);
       }
     });
 
-
     try {
-      for (int month = 1; month <= 12; month++) {
-        await _eventViewModel.getEventsForCurrentUserAndMonth(currentYear, month);
-        // Ensure widget is still mounted before updating state after async call
-        if (!mounted) return;
-        counts[month] = _eventViewModel.events.length;
+      // NUEVO: Obtener todos los eventos del año en una sola llamada
+      await _eventViewModel.getEventsForCurrentUserAndYear(currentYear);
+      if (!mounted) return;
+
+      final List<Event> allEventsForYear = _eventViewModel.events;
+
+      // Procesar los eventos localmente para contar por mes
+      for (final event in allEventsForYear) {
+        if (event.dateTime != null) {
+          final int month = event.dateTime!.toDate().month;
+          counts[month] = (counts[month] ?? 0) + 1;
+        }
       }
+
       setState(() {
         _monthlyEventCounts = counts;
       });
     } catch (e) {
-      // El errorMessage ya se maneja en el ViewModel, aquí solo podrías loguear o mostrar un SnackBar si es necesario
       print('Error loading monthly event counts: $e');
+      // El errorMessage ya se maneja en el ViewModel, aquí podrías mostrar un SnackBar si es necesario
     } finally {
-      // Notifica que la carga ha terminado, incluso si hubo un error
-      // También en un post-frame callback
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           _eventViewModel.setLoading(false);
@@ -75,7 +75,6 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    // Escucha los cambios en isLoading y errorMessage del ViewModel
     final eventViewModel = Provider.of<EventViewModel>(context);
 
     if (eventViewModel.isLoading && _monthlyEventCounts.isEmpty) {
@@ -100,7 +99,6 @@ class _CalendarState extends State<Calendar> {
       itemsPerRow = 3;
     }
 
-    // Convertir el mapa de conteos a una lista de notificaciones en el orden correcto
     final List<int> notifications = List.generate(12, (index) => _monthlyEventCounts[index + 1] ?? 0);
 
     for (int i = 0; i < months.length; i += itemsPerRow) {
