@@ -278,7 +278,12 @@ class _AddEventScreenState extends State<AddEventScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop(true);
+            if (mounted) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const CalendarScreen()),
+                (Route<dynamic> route) => false,
+              );
+            }
           },
         ),
         title: ShiningTextAnimation(
@@ -531,7 +536,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         value: value,
                         child: Text(
                           value.toString().split('.').last.toUpperCase(),
-                          style: TextStyles.plusJakartaSansBody1, // *** CORRECCIÓN AQUÍ ***
+                          style: TextStyles.plusJakartaSansBody1,
                         ),
                       );
                     })
@@ -558,7 +563,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   filled: true,
                   fillColor: const Color(0xFF1F1F1F),
                 ),
-                style: TextStyles.plusJakartaSansBody1, // *** CORRECCIÓN AQUÍ ***
+                style: TextStyles.plusJakartaSansBody1,
               ),
               const SizedBox(height: 22.0),
               if (_selectedEventType == EventType.meeting ||
