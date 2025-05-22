@@ -96,7 +96,6 @@ class EventRepositoryImpl implements EventRepository {
     }).toList();
   }
 
-  // NUEVO: Implementación para obtener eventos por año
   @override
   Future<List<Event>> getEventsForUserAndYear(String userId, int year) async {
     final List<Map<String, dynamic>> eventDataList =

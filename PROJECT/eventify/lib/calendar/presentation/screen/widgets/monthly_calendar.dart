@@ -5,6 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/calendar/domain/entities/event.dart';
 
+// Import the DailiesEventScreen
+import 'package:eventify/calendar/presentation/screen/dailies_event_screen.dart';
+
+
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;
 
@@ -28,13 +32,12 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
     super.initState();
     _focusedDay = widget.initialFocusedDay;
     _eventViewModel = Provider.of<EventViewModel>(context, listen: false);
-    _loadEventsForMonth(); // Se llama aquí al inicio
+    _loadEventsForMonth();
   }
 
   @override
   void didUpdateWidget(covariant MonthlyCalendar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Vuelve a la comparación original, la Key forzará initState si es necesario
     if (widget.initialFocusedDay.year != oldWidget.initialFocusedDay.year ||
         widget.initialFocusedDay.month != oldWidget.initialFocusedDay.month ||
         widget.initialFocusedDay.day != oldWidget.initialFocusedDay.day) {
@@ -95,7 +98,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    final daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']; // Days of the week in English
 
     return Container(
       decoration: BoxDecoration(
@@ -114,7 +117,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 onPressed: _goToPreviousMonth,
               ),
               Text(
-                DateFormat('MMMM', 'es_ES').format(_focusedDay),
+                DateFormat('MMMM', 'en_US').format(_focusedDay), // Month format in English
                 style: TextStyles.urbanistH6,
               ),
               IconButton(
@@ -154,21 +157,33 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                     day.day == DateTime.now().day;
                 final hasEvent = _datesWithEvents.contains(day);
 
-                return Container(
-                  decoration: BoxDecoration(
-                    color: isToday
-                        ? Colors.grey[300]!.withOpacity(0.2)
-                        : null,
-                    shape: isToday ? BoxShape.circle : BoxShape.rectangle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      '${day.day}',
-                      style: TextStyle(
-                        color: isToday || hasEvent
-                            ? Colors.orangeAccent
-                            : Colors.white,
-                        fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
+                // *** Point 2: Access the new screen by clicking on a day ***
+                return GestureDetector( // Wrap the Container with GestureDetector
+                  onTap: () {
+                    // Navigate to DailiesEventScreen passing the date of the clicked day
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DailiesEventScreen(selectedDate: day),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isToday
+                          ? Colors.grey[300]!.withOpacity(0.2)
+                          : null,
+                      shape: isToday ? BoxShape.circle : BoxShape.rectangle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${day.day}',
+                        style: TextStyle(
+                          color: isToday || hasEvent
+                              ? Colors.orangeAccent
+                              : Colors.white,
+                          fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
+                        ),
                       ),
                     ),
                   ),
@@ -179,12 +194,12 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
           const SizedBox(height: 16),
           if (_eventsForCurrentMonth.isNotEmpty)
             Text(
-              'Eventos para este mes: ${_eventsForCurrentMonth.length}',
+              'Events for this month: ${_eventsForCurrentMonth.length}', // English
               style: TextStyles.plusJakartaSansBody1,
             )
           else
             Text(
-              'No hay eventos para este mes.',
+              'No events for this month.', // English
               style: TextStyles.plusJakartaSansBody1,
             ),
         ],

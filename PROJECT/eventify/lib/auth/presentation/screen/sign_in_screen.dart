@@ -1,3 +1,4 @@
+import 'package:eventify/auth/presentation/screen/sign_up_screen.dart';
 import 'package:eventify/auth/presentation/screen/widgets/auth_subtitle.dart';
 import 'package:eventify/auth/presentation/screen/widgets/auth_title.dart';
 import 'package:eventify/auth/presentation/screen/widgets/custom_text_field.dart';
@@ -60,21 +61,17 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     final signInViewModel = Provider.of<SignInViewModel>(context);
 
     return EventifyAuthLayout(
-      // Comentado para que el texto "Create Account" no aparezca en la pantalla
-      // leftFooterText: 'Create Account',
-      // Comentado para que el texto "Log In" no aparezca en la pantalla
-      // rightFooterText: 'Log In',
-      // Comentado para deshabilitar la navegación al tocar "Create Account"
-      // onLeftFooterTap: () {
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(builder: (_) => SignUpScreen()),
-      //   );
-      // },
-      // Comentado para deshabilitar cualquier acción al tocar "Log In"
-      // onRightFooterTap: () {},
-      leftFooterText: '',
-      rightFooterText: '',
+      leftFooterText: 'Create Account',
+      rightFooterText: 'Log In',
+      onLeftFooterTap: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => SignUpScreen()),
+        );
+      },
+      onRightFooterTap: () {},
+      //leftFooterText: '',
+      //rightFooterText: '',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
