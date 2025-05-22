@@ -1,11 +1,13 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
 
 abstract class EventRepository {
-  Future<void> addEvent(String userId, Event event);
+  // addEvent now returns the document ID
+  Future<String> addEvent(String userId, Event event);
   Future<void> updateEvent(String userId, String eventId, Event event);
   Future<void> deleteEvent(String userId, String eventId);
-  Future<List<Event>> getEventsForUser(String userId);
-  Future<Event?> getNearestEventForUser(String userId);
-  Future<List<Event>> getEventsForUserAndMonth(String userId, int year, int month);
-  Future<List<Event>> getEventsForUserAndYear(String userId, int year);
+  // Get methods now return List<Map<String, dynamic>>
+  Future<List<Map<String, dynamic>>> getEventsForUser(String userId);
+  Future<Map<String, dynamic>?> getNearestEventForUser(String userId);
+  Future<List<Map<String, dynamic>>> getEventsForUserAndMonth(String userId, int year, int month);
+  Future<List<Map<String, dynamic>>> getEventsForUserAndYear(String userId, int year);
 }

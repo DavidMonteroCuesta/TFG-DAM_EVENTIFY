@@ -1,12 +1,12 @@
-import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/repositories/event_repository.dart';
 
 class GetEventsForUserAndYearUseCase {
-  final EventRepository _eventRepository;
+  final EventRepository eventRepository;
 
-  GetEventsForUserAndYearUseCase(this._eventRepository);
+  GetEventsForUserAndYearUseCase(this.eventRepository);
 
-  Future<List<Event>> execute(String userId, int year) async {
-    return await _eventRepository.getEventsForUserAndYear(userId, year);
+  // Now returns List<Map<String, dynamic>>
+  Future<List<Map<String, dynamic>>> execute(String userId, int year) async {
+    return await eventRepository.getEventsForUserAndYear(userId, year);
   }
 }

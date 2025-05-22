@@ -2,6 +2,9 @@ import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 
 class MeetingEvent extends Event {
+  @override
+  String get type => 'meeting';
+
   final String? location;
 
   MeetingEvent({

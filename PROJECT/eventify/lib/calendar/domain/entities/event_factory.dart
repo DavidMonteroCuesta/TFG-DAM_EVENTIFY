@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/entities/events/appointment_event.dart';
 import 'package:eventify/calendar/domain/entities/events/conference_event.dart';
@@ -6,77 +5,71 @@ import 'package:eventify/calendar/domain/entities/events/exam_event.dart';
 import 'package:eventify/calendar/domain/entities/events/meeting_event.dart';
 import 'package:eventify/calendar/domain/entities/events/task_event.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
-import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
-import 'package:flutter/material.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart'; // Import Priority enum
+// *** ELIMINADO: import 'package:flutter/material.dart'; // No longer needed for BuildContext ***
 
 class EventFactory {
-  static Event createEvent(EventType type, Map<String, dynamic> data, String userId, BuildContext context) {
-    // Helper function to convert dynamic to Timestamp safely
-    Timestamp? _getTimestamp(dynamic value) {
-      if (value == null) return null;
-      if (value is Timestamp) return value;
-      //handle the string case
-      if(value is String){
-        return Timestamp.fromDate(DateTime.parse(value));
-      }
-      return null;
-    }
+  // Creates an Event object from a dynamic data map.
+  // The 'json' map is expected to contain all necessary event data, including the Firestore 'id'.
+  // 'userId' is passed separately for consistency, although it should also be in json.
+  // *** ELIMINADO: BuildContext context de la firma ***
+  static Event createEvent(EventType type, Map<String, dynamic> json, String userId) {
+    final String eventTypeString = json['type'] ?? 'task';
+    final Priority priority = PriorityConverter.stringToPriority(json['priority']);
 
-    switch (type) {
-      case EventType.task:
-        return TaskEvent(
-          title: data['title'] as String,
-          description: data['description'] as String?,
-          priority: data['priority'] as Priority,
-          dateTime: _getTimestamp(data['dateTime']),
-          hasNotification: data['hasNotification'] as bool? ?? false,
-          userId: userId,
-        );
-      case EventType.meeting:
+    switch (eventTypeString) {
+      case 'meeting':
         return MeetingEvent(
-          title: data['title'] as String,
-          description: data['description'] as String?,
-          priority: data['priority'] as Priority,
-          dateTime: _getTimestamp(data['dateTime']),
-          hasNotification: data['hasNotification'] as bool? ?? false,
           userId: userId,
-          location: data['location'] as String?,
+          title: json['title'] ?? '',
+          description: json['description'],
+          priority: priority,
+          dateTime: json['dateTime'],
+          hasNotification: json['hasNotification'],
+          location: json['location'],
         );
-      case EventType.exam:
+      case 'exam':
         return ExamEvent(
-          title: data['title'] as String,
-          description: data['description'] as String?,
-          priority: data['priority'] as Priority,
-          dateTime: _getTimestamp(data['dateTime']),
-          hasNotification: data['hasNotification'] as bool? ?? false,
           userId: userId,
-          subject: data['subject'] as String?,
+          title: json['title'] ?? '',
+          description: json['description'],
+          priority: priority,
+          dateTime: json['dateTime'],
+          hasNotification: json['hasNotification'],
+          subject: json['subject'],
         );
-      case EventType.appointment:
-        return AppointmentEvent(
-          title: data['title'] as String,
-          description: data['description'] as String?,
-          priority: data['priority'] as Priority,
-          dateTime: _getTimestamp(data['dateTime']),
-          hasNotification: data['hasNotification'] as bool? ?? false,
-          userId: userId,
-          withPerson: data['withPerson'] as String?,
-          withPersonYesNo: data['withPersonYesNo'] as bool? ?? false,
-          location: data['location'] as String?,
-        );
-      case EventType.conference:
+      case 'conference':
         return ConferenceEvent(
-          title: data['title'] as String,
-          description: data['description'] as String?,
-          priority: data['priority'] as Priority,
-          dateTime: _getTimestamp(data['dateTime']),
-          hasNotification: data['hasNotification'] as bool? ?? false,
           userId: userId,
-          location: data['location'] as String?,
+          title: json['title'] ?? '',
+          description: json['description'],
+          priority: priority,
+          dateTime: json['dateTime'],
+          hasNotification: json['hasNotification'],
+          location: json['location'],
         );
+      case 'appointment':
+        return AppointmentEvent(
+          userId: userId,
+          title: json['title'] ?? '',
+          description: json['description'],
+          priority: priority,
+          dateTime: json['dateTime'],
+          hasNotification: json['hasNotification'],
+          location: json['location'],
+          withPerson: json['withPerson'],
+          withPersonYesNo: json['withPersonYesNo'] ?? false,
+        );
+      case 'task':
       default:
-        throw Exception('Type event not supported');
+        return TaskEvent(
+          userId: userId,
+          title: json['title'] ?? '',
+          description: json['description'],
+          priority: priority,
+          dateTime: json['dateTime'],
+          hasNotification: json['hasNotification'],
+        );
     }
   }
 }
-

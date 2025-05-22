@@ -4,6 +4,9 @@ import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 class ConferenceEvent extends Event {
   final String? location;
 
+  @override
+  String get type => 'conference';
+  
   ConferenceEvent({
     required super.title,
     super.description,

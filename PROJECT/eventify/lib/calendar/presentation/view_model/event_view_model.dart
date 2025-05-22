@@ -7,8 +7,8 @@ import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/domain/repositories/event_repository.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/calendar/domain/use_cases/add_event_use_case.dart';
-import 'package:eventify/calendar/domain/use_cases/delete_event_use_case.dart'; // Import the new use case
-import 'package:eventify/calendar/domain/use_cases/update_event_use_case.dart'; // Import the new use case
+import 'package:eventify/calendar/domain/use_cases/delete_event_use_case.dart';
+import 'package:eventify/calendar/domain/use_cases/update_event_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_use_case.dart';
@@ -20,8 +20,8 @@ class EventViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
-  List<Event> _events = [];
-  List<Event> get events => _events;
+  List<Map<String, dynamic>> _events = [];
+  List<Map<String, dynamic>> get events => _events;
 
   Event? _nearestEvent;
   Event? get nearestEvent => _nearestEvent;
@@ -33,21 +33,20 @@ class EventViewModel extends ChangeNotifier {
   late final GetEventsForUserUseCase _getEventsForUserUseCase;
   late final GetEventsForUserAndMonthUseCase _getEventsForUserAndMonthUseCase;
   late final GetEventsForUserAndYearUseCase _getEventsForUserAndYearUseCase;
-  late final UpdateEventUseCase _updateEventUseCase; // Declare Update UseCase
-  late final DeleteEventUseCase _deleteEventUseCase; // Declare Delete UseCase
+  late final UpdateEventUseCase _updateEventUseCase;
+  late final DeleteEventUseCase _deleteEventUseCase;
 
   EventViewModel()
       : _eventRepository = EventRepositoryImpl(
             remoteDataSource: EventRemoteDataSource()) {
-    _addEventUseCase = AddEventUseCase();
+    _addEventUseCase = AddEventUseCase(eventRepository: _eventRepository);
     _getEventsForUserUseCase = GetEventsForUserUseCase(_eventRepository);
     _getEventsForUserAndMonthUseCase = GetEventsForUserAndMonthUseCase(_eventRepository);
     _getEventsForUserAndYearUseCase = GetEventsForUserAndYearUseCase(_eventRepository);
-    _updateEventUseCase = UpdateEventUseCase(eventRepository: _eventRepository); // Initialize Update UseCase
-    _deleteEventUseCase = DeleteEventUseCase(eventRepository: _eventRepository); // Initialize Delete UseCase
+    _updateEventUseCase = UpdateEventUseCase(eventRepository: _eventRepository);
+    _deleteEventUseCase = DeleteEventUseCase(eventRepository: _eventRepository);
   }
 
-  // Centralize the call to notifyListeners to ensure it's always post-frame
   void _safeNotifyListeners() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (hasListeners) { // Ensure the widget is still mounted and has listeners
@@ -72,7 +71,7 @@ class EventViewModel extends ChangeNotifier {
     String? subject,
     String? withPerson,
     bool withPersonYesNo,
-    BuildContext context,
+    // *** ELIMINADO: BuildContext context de aquí ***
   ) async {
     _isLoading = true;
     _errorMessage = null;
@@ -85,8 +84,7 @@ class EventViewModel extends ChangeNotifier {
         return;
       }
 
-      final eventData = {
-        'id': UniqueKey().toString(), // Generate a unique ID for new events
+      final Map<String, dynamic> eventDataPayload = {
         'title': title,
         'description': description,
         'priority': priority.toString().split('.').last, // Store as string
@@ -102,19 +100,28 @@ class EventViewModel extends ChangeNotifier {
         if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
       };
 
-      final Event newEvent =
-          EventFactory.createEvent(type, eventData, userId, context);
+      // Crea un objeto Event temporal para el use case (no tendrá ID aún)
+      // *** ELIMINADO: context de la llamada a EventFactory.createEvent ***
+      final Event newEvent = EventFactory.createEvent(type, eventDataPayload, userId);
 
-      await _addEventUseCase.execute(userId, newEvent);
+      final String generatedId = await _addEventUseCase.execute(userId, newEvent);
+
+      final Map<String, dynamic> eventDataWithId = {
+        ...eventDataPayload,
+        'id': generatedId,
+        'userId': userId, // Asegura que userId también esté presente para consistencia local
+      };
+
+      _events.add(eventDataWithId);
 
       _isLoading = false;
-      _isNearestEventLoaded = false; // Reset flag to force reload
-      await loadNearestEvent(); // Reload the nearest event after adding
-      _safeNotifyListeners(); // Notify final success state
+      _isNearestEventLoaded = false; // Resetea la bandera para forzar recarga
+      await loadNearestEvent(); // Recarga el evento más cercano después de añadir
+      _safeNotifyListeners(); // Notifica el estado final de éxito
     } catch (error) {
       _isLoading = false;
       _errorMessage = 'Failed to save event: $error';
-      _safeNotifyListeners(); // Notify final error state
+      _safeNotifyListeners(); // Notifica el estado final de error
     }
   }
 
@@ -130,7 +137,8 @@ class EventViewModel extends ChangeNotifier {
       String? subject,
       bool withPersonYesNo,
       String? withPerson,
-      BuildContext context) async {
+      // *** ELIMINADO: BuildContext context de aquí ***
+      ) async {
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
@@ -142,8 +150,7 @@ class EventViewModel extends ChangeNotifier {
         return;
       }
 
-      final eventData = {
-        'id': eventId, // Use the existing event ID for update
+      final Map<String, dynamic> eventDataPayload = {
         'title': title,
         'description': description,
         'priority': priority.toString().split('.').last, // Store as string
@@ -159,15 +166,21 @@ class EventViewModel extends ChangeNotifier {
         if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
       };
 
-      // Create an Event object from the updated data
-      final Event updatedEvent =
-          EventFactory.createEvent(type, eventData, userId, context);
+      // Crea un objeto Event a partir de los datos actualizados (no tendrá un campo ID en sí mismo)
+      // *** ELIMINADO: context de la llamada a EventFactory.createEvent ***
+      final Event updatedEvent = EventFactory.createEvent(type, eventDataPayload, userId);
 
       await _updateEventUseCase.execute(userId, eventId, updatedEvent);
 
+      // Actualiza la lista local
+      final int index = _events.indexWhere((e) => e['id'] == eventId);
+      if (index != -1) {
+        _events[index] = { ...eventDataPayload, 'id': eventId, 'userId': userId }; 
+      }
+
       _isLoading = false;
       _isNearestEventLoaded = false;
-      await loadNearestEvent(); // Reload nearest event after update
+      await loadNearestEvent(); // Recarga el evento más cercano después de la actualización
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
@@ -187,10 +200,14 @@ class EventViewModel extends ChangeNotifier {
         _safeNotifyListeners();
         return;
       }
-      await _deleteEventUseCase.execute(userId, eventId); // Call the delete use case
+      await _deleteEventUseCase.execute(userId, eventId); // Llama al use case de eliminación
+
+      // Elimina de la lista local
+      _events.removeWhere((event) => event['id'] == eventId);
+
       _isLoading = false;
       _isNearestEventLoaded = false;
-      await loadNearestEvent(); // Reload nearest event after deletion
+      await loadNearestEvent(); // Recarga el evento más cercano después de la eliminación
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
@@ -199,7 +216,7 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<Event>> getEventsForCurrentUser() async {
+  Future<void> getEventsForCurrentUser() async {
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
@@ -209,17 +226,18 @@ class EventViewModel extends ChangeNotifier {
         _errorMessage = 'User not authenticated';
         _isLoading = false;
         _safeNotifyListeners();
-        return [];
+        _events = []; // Limpia los eventos si no está autenticado
+        return;
       }
+      // Obtiene la lista de mapas (incluyendo 'id')
       _events = await _getEventsForUserUseCase.execute(userId);
       _isLoading = false;
       _safeNotifyListeners();
-      return _events;
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events: $e';
       _safeNotifyListeners();
-      return [];
+      _events = []; // Limpia los eventos en caso de error
     }
   }
 
@@ -237,27 +255,35 @@ class EventViewModel extends ChangeNotifier {
         _errorMessage = 'User not authenticated';
         _isLoading = false;
         _safeNotifyListeners();
+        _nearestEvent = null;
         return;
       }
 
-      // Get all user events
-      final allEvents = await _getEventsForUserUseCase.execute(userId);
+      // Obtiene todos los datos de eventos del usuario como List<Map<String, dynamic>>
+      final List<Map<String, dynamic>> allEventsData = await _getEventsForUserUseCase.execute(userId);
 
-      // Filter out past events and those without date/time
+      // Convierte los mapas a objetos Event para la lógica, ya que la entidad Event ya no contiene 'id'
+      // *** ELIMINADO: context de la llamada a EventFactory.createEvent ***
+      final List<Event> allEvents = allEventsData.map((data) => EventFactory.createEvent(
+        _getEventTypeFromString(data['type'] ?? 'task'), data, userId
+      )).toList();
+
+
+      // Filtra eventos pasados y aquellos sin fecha/hora
       final now = DateTime.now();
       final futureEvents = allEvents.where((event) {
         return event.dateTime != null && event.dateTime!.toDate().isAfter(now.subtract(const Duration(minutes: 1)));
       }).toList();
 
-      // Sort events: first by ascending date/time, then by priority (Critical > High > Medium > Low)
+      // Ordena eventos: primero por fecha/hora ascendente, luego por prioridad (Critical > High > Medium > Low)
       futureEvents.sort((a, b) {
-        // Sort by date/time
+        // Ordenar por fecha/hora
         final dateComparison = a.dateTime!.toDate().compareTo(b.dateTime!.toDate());
         if (dateComparison != 0) {
           return dateComparison;
         }
 
-        // If dates are equal, sort by priority
+        // Si las fechas son iguales, ordenar por prioridad
         return _getPriorityValue(b.priority).compareTo(_getPriorityValue(a.priority));
       });
 
@@ -269,10 +295,11 @@ class EventViewModel extends ChangeNotifier {
       _isLoading = false;
       _errorMessage = 'Failed to fetch nearest event: $e';
       _safeNotifyListeners();
+      _nearestEvent = null;
     }
   }
 
-  // Helper to get a numeric value for priority for sorting
+  // Helper para obtener un valor numérico de la prioridad para la ordenación
   int _getPriorityValue(Priority priority) {
     switch (priority) {
       case Priority.critical:
@@ -286,7 +313,24 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<Event>> getEventsForCurrentUserAndMonth(int year, int month) async {
+  // Helper para convertir string type a EventType enum
+  EventType _getEventTypeFromString(String typeString) {
+    switch (typeString.toLowerCase()) {
+      case 'meeting':
+        return EventType.meeting;
+      case 'exam':
+        return EventType.exam;
+      case 'conference':
+        return EventType.conference;
+      case 'appointment':
+        return EventType.appointment;
+      case 'task':
+      default:
+        return EventType.task;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getEventsForCurrentUserAndMonth(int year, int month) async {
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
@@ -296,21 +340,21 @@ class EventViewModel extends ChangeNotifier {
         _errorMessage = 'User not authenticated';
         _isLoading = false;
         _safeNotifyListeners();
-        return []; // Return an empty list in case of error
+        return []; // Retorna una lista vacía en caso de error
       }
       _events = await _getEventsForUserAndMonthUseCase.execute(userId, year, month);
       _isLoading = false;
       _safeNotifyListeners();
-      return _events; // Return the list of events
+      return _events; // Retorna la lista de mapas de eventos
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events for month: $e';
       _safeNotifyListeners();
-      return []; // Return an empty list in case of error
+      return []; // Retorna una lista vacía en caso de error
     }
   }
 
-  Future<List<Event>> getEventsForCurrentUserAndYear(int year) async {
+  Future<List<Map<String, dynamic>>> getEventsForCurrentUserAndYear(int year) async {
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
@@ -320,17 +364,17 @@ class EventViewModel extends ChangeNotifier {
         _errorMessage = 'User not authenticated';
         _isLoading = false;
         _safeNotifyListeners();
-        return []; // Return an empty list in case of error
+        return []; // Retorna una lista vacía en caso de error
       }
       _events = await _getEventsForUserAndYearUseCase.execute(userId, year);
       _isLoading = false;
       _safeNotifyListeners();
-      return _events; // Return the list of events
+      return _events; // Retorna la lista de mapas de eventos
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch events for year: $e';
       _safeNotifyListeners();
-      return []; // Return an empty list in case of error
+      return []; // Retorna una lista vacía en caso de error
     }
   }
 }

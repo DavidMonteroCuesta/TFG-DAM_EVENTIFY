@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/entities/events/appointment_event.dart';
 import 'package:eventify/calendar/domain/entities/events/conference_event.dart';
 import 'package:eventify/calendar/domain/entities/events/exam_event.dart';
@@ -12,6 +13,8 @@ import 'package:eventify/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:eventify/calendar/domain/entities/event_factory.dart';
 
 class EventSearchScreen extends StatefulWidget {
   const EventSearchScreen({super.key});
@@ -31,7 +34,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   final _withPersonSearchController = TextEditingController();
   bool _withPersonYesNoSearch = false;
   Priority? _selectedPriority;
-  List<Event> _searchResults = [];
+  // *** CAMBIO CLAVE AQUÍ: Cambiado a List<Map<String, dynamic>> ***
+  List<Map<String, dynamic>> _searchResults = [];
   late EventViewModel _eventViewModel;
   bool _enablePriorityFilter = false;
 
@@ -42,21 +46,34 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     _loadEvents();
     _titleSearchController.addListener(_searchEvents);
     _descriptionSearchController.addListener(_searchEvents);
-    // No necesitamos un listener para _dateTimeSearchController, ya que usaremos un DatePicker
-    _locationSearchController.addListener(_searchEvents);
-    _subjectSearchController.addListener(_searchEvents);
-    _withPersonSearchController.addListener(_searchEvents);
+    _locationSearchController.addListener(_searchEvents); // Added listener
+    _subjectSearchController.addListener(_searchEvents); // Added listener
+    _withPersonSearchController.addListener(_searchEvents); // Added listener
     _searchEvents(); // Llamada inicial para mostrar todos los eventos
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  // Helper to convert string type to EventType enum
+  EventType _getEventTypeFromString(String typeString) {
+    switch (typeString.toLowerCase()) {
+      case 'meeting':
+        return EventType.meeting;
+      case 'exam':
+        return EventType.exam;
+      case 'conference':
+        return EventType.conference;
+      case 'appointment':
+        return EventType.appointment;
+      case 'task':
+        return EventType.task;
+      default:
+        return EventType.all; // Default to all if type is unknown or not specified
+    }
   }
 
   Future<void> _loadEvents() async {
     try {
       await _eventViewModel.getEventsForCurrentUser();
+      // *** CAMBIO CLAVE AQUÍ: Asigna directamente la lista de mapas ***
       setState(() => _searchResults = _eventViewModel.events);
     } catch (e) {
       if (context.mounted) {
@@ -72,7 +89,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       context: context,
       initialDate: _selectedSearchDate ?? DateTime.now(),
       firstDate: DateTime(2023),
-      lastDate: DateTime(2026),
+      lastDate: DateTime(2100), // Adjusted to 2100 for wider range
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.dark().copyWith(
@@ -92,7 +109,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     if (picked != null && picked != _selectedSearchDate) {
       setState(() {
         _selectedSearchDate = picked;
-        _searchEvents(); // Vuelve a buscar al seleccionar una fecha
+        _searchEvents(); // Re-search upon date selection
       });
     }
   }
@@ -100,142 +117,103 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   void _clearSearchDate() {
     setState(() {
       _selectedSearchDate = null;
-      _searchEvents(); // Vuelve a buscar al borrar la fecha
+      _searchEvents(); // Re-search upon clearing date
     });
   }
 
   void _searchEvents() {
     setState(() {
-      List<Event> allEvents = _eventViewModel.events;
-      List<Event> results = allEvents;
+      // *** CAMBIO CLAVE AQUÍ: Trabaja con List<Map<String, dynamic>> ***
+      List<Map<String, dynamic>> allEventsData = _eventViewModel.events;
+      List<Map<String, dynamic>> results = allEventsData;
 
-      final title = _titleSearchController.text;
-      final description = _descriptionSearchController.text;
+      final title = _titleSearchController.text.toLowerCase();
+      final description = _descriptionSearchController.text.toLowerCase();
+      final location = _locationSearchController.text.toLowerCase();
+      final subject = _subjectSearchController.text.toLowerCase();
+      final withPerson = _withPersonSearchController.text.toLowerCase();
 
       if (title.isNotEmpty) {
-        results =
-            results
-                .where(
-                  (event) =>
-                      event.title.toLowerCase().contains(title.toLowerCase()),
-                )
-                .toList();
+        results = results
+            .where((eventData) =>
+                (eventData['title'] as String?)?.toLowerCase().contains(title) ?? false)
+            .toList();
       }
       if (description.isNotEmpty) {
-        results =
-            results
-                .where(
-                  (event) =>
-                      event.description?.toLowerCase().contains(
-                        description.toLowerCase(),
-                      ) ??
-                      false,
-                )
-                .toList();
+        results = results
+            .where((eventData) =>
+                (eventData['description'] as String?)?.toLowerCase().contains(description) ?? false)
+            .toList();
       }
       if (_selectedSearchDate != null) {
-        // Filtra por la fecha seleccionada
-        results =
-            results.where((event) {
-              if (event.dateTime != null) {
-                // Compara solo la fecha (año, mes, día), ignorando la hora
-                return event.dateTime!.toDate().year ==
-                        _selectedSearchDate!.year &&
-                    event.dateTime!.toDate().month ==
-                        _selectedSearchDate!.month &&
-                    event.dateTime!.toDate().day == _selectedSearchDate!.day;
-              }
-              return false;
-            }).toList();
+        results = results.where((eventData) {
+          final Timestamp? eventTimestamp = eventData['dateTime'];
+          if (eventTimestamp != null) {
+            // Compare only the date (year, month, day), ignoring time
+            return eventTimestamp.toDate().year == _selectedSearchDate!.year &&
+                   eventTimestamp.toDate().month == _selectedSearchDate!.month &&
+                   eventTimestamp.toDate().day == _selectedSearchDate!.day;
+          }
+          return false;
+        }).toList();
       }
       if (_selectedEventType != EventType.all) {
-        // Cambiado de EventType.task a EventType.all para incluir todos los tipos
-        results =
-            results.where((event) {
-              if (_selectedEventType == EventType.meeting &&
-                  event is MeetingEvent) {
-                return true;
-              } else if (_selectedEventType == EventType.exam &&
-                  event is ExamEvent) {
-                return true;
-              } else if (_selectedEventType == EventType.conference &&
-                  event is ConferenceEvent) {
-                return true;
-              } else if (_selectedEventType == EventType.appointment &&
-                  event is AppointmentEvent) {
-                return true;
-              } else if (_selectedEventType ==
-                      EventType.task && // Maneja el caso de Task explícitamente
-                  event is! MeetingEvent &&
-                  event is! ExamEvent &&
-                  event is! ConferenceEvent &&
-                  event is! AppointmentEvent) {
-                return true;
-              }
-              return false;
-            }).toList();
+        results = results.where((eventData) {
+          final eventTypeString = eventData['type'] as String?;
+          if (eventTypeString == null) return false;
+
+          final EventType eventType = _getEventTypeFromString(eventTypeString);
+          return eventType == _selectedEventType;
+        }).toList();
       }
       if (_enablePriorityFilter && _selectedPriority != null) {
-        results =
-            results
-                .where((event) => event.priority == _selectedPriority)
-                .toList();
+        results = results.where((eventData) {
+          final priorityString = eventData['priority'] as String?;
+          if (priorityString == null) return false;
+          return PriorityConverter.stringToPriority(priorityString) == _selectedPriority;
+        }).toList();
       }
-      if (_selectedEventType == EventType.meeting ||
-          _selectedEventType == EventType.conference ||
-          _selectedEventType == EventType.appointment) {
-        if (_locationSearchController.text.isNotEmpty) {
-          results =
-              results.where((event) {
-                if (event is MeetingEvent) {
-                  return event.location?.toLowerCase().contains(
-                        _locationSearchController.text.toLowerCase(),
-                      ) ??
-                      false;
-                } else if (event is ConferenceEvent) {
-                  return event.location?.toLowerCase().contains(
-                        _locationSearchController.text.toLowerCase(),
-                      ) ??
-                      false;
-                } else if (event is AppointmentEvent) {
-                  return event.location?.toLowerCase().contains(
-                        _locationSearchController.text.toLowerCase(),
-                      ) ??
-                      false;
-                }
-                return false;
-              }).toList();
-        }
+
+      // Filter by specific event type fields
+      // Show location filter if type is Meeting, Conference, Appointment, or ALL
+      if ((_selectedEventType == EventType.meeting ||
+              _selectedEventType == EventType.conference ||
+              _selectedEventType == EventType.appointment ||
+              _selectedEventType == EventType.all) &&
+          location.isNotEmpty) {
+        results = results.where((eventData) {
+          final eventTypeString = eventData['type'] as String?;
+          if (eventTypeString == 'meeting' || eventTypeString == 'conference' || eventTypeString == 'appointment') {
+            return (eventData['location'] as String?)?.toLowerCase().contains(location) ?? false;
+          }
+          return false;
+        }).toList();
       }
-      if (_selectedEventType == EventType.exam) {
-        if (_subjectSearchController.text.isNotEmpty) {
-          results =
-              results.where((event) {
-                if (event is ExamEvent) {
-                  return event.subject?.toLowerCase().contains(
-                        _subjectSearchController.text.toLowerCase(),
-                      ) ??
-                      false;
-                }
-                return false;
-              }).toList();
-        }
+      // Show subject filter if type is Exam or ALL
+      if ((_selectedEventType == EventType.exam || _selectedEventType == EventType.all) &&
+          subject.isNotEmpty) {
+        results = results.where((eventData) {
+          final eventTypeString = eventData['type'] as String?;
+          if (eventTypeString == 'exam') {
+            return (eventData['subject'] as String?)?.toLowerCase().contains(subject) ?? false;
+          }
+          return false;
+        }).toList();
       }
-      if (_selectedEventType == EventType.appointment) {
-        if (_withPersonYesNoSearch) {
-          results =
-              results.where((event) {
-                if (event is AppointmentEvent) {
-                  return event.withPersonYesNo &&
-                      (event.withPerson?.toLowerCase().contains(
-                            _withPersonSearchController.text.toLowerCase(),
-                          ) ??
-                          false);
-                }
-                return false;
-              }).toList();
-        }
+      // Show withPerson filter if type is Appointment or ALL
+      if ((_selectedEventType == EventType.appointment || _selectedEventType == EventType.all) &&
+          _withPersonYesNoSearch) {
+        results = results.where((eventData) {
+          final eventTypeString = eventData['type'] as String?;
+          if (eventTypeString == 'appointment') {
+            final bool withPersonYesNo = eventData['withPersonYesNo'] ?? false;
+            final String? eventWithPerson = eventData['withPerson'];
+            return withPersonYesNo && (eventWithPerson?.toLowerCase().contains(withPerson) ?? false);
+          }
+          return false;
+        }).toList();
       }
+
       _searchResults = results;
     });
   }
@@ -290,7 +268,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 controller: _descriptionSearchController,
                 labelText: 'Description',
               ),
-              // Nuevo campo de selección de fecha
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: InkWell(
@@ -340,8 +317,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                             'yyyy-MM-dd',
                           ).format(_selectedSearchDate!)
                           : 'Select Date',
-                      // Aplica el estilo de subtítulo si no hay fecha seleccionada,
-                      // de lo contrario, aplica el estilo de cuerpo principal.
                       style:
                           _selectedSearchDate != null
                               ? TextStyles.plusJakartaSansBody1
@@ -377,19 +352,23 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 labelText: 'Event Type',
               ),
               _buildPrioritySelector(),
+              // Muestra el campo de ubicación si el tipo de evento es Meeting, Conference, Appointment o ALL
               if (_selectedEventType == EventType.meeting ||
                   _selectedEventType == EventType.conference ||
-                  _selectedEventType == EventType.appointment)
+                  _selectedEventType == EventType.appointment ||
+                  _selectedEventType == EventType.all)
                 _buildSearchField(
                   controller: _locationSearchController,
                   labelText: 'Location',
                 ),
-              if (_selectedEventType == EventType.exam)
+              // Muestra el campo de asignatura si el tipo de evento es Exam o ALL
+              if (_selectedEventType == EventType.exam || _selectedEventType == EventType.all)
                 _buildSearchField(
                   controller: _subjectSearchController,
                   labelText: 'Subject',
                 ),
-              if (_selectedEventType == EventType.appointment)
+              // Muestra el campo "With Person" si el tipo de evento es Appointment o ALL
+              if (_selectedEventType == EventType.appointment || _selectedEventType == EventType.all)
                 _buildWithPersonField(),
 
               if (_searchResults.isNotEmpty) ...[
@@ -402,7 +381,18 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children:
-                      _searchResults.map((event) {
+                      _searchResults.map((eventData) {
+                        // *** CAMBIO CLAVE AQUÍ: Crea el objeto Event para la visualización ***
+                        final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+                        if (currentUserId == null) {
+                          return const SizedBox.shrink();
+                        }
+                        final Event event = EventFactory.createEvent(
+                          _getEventTypeFromString(eventData['type'] ?? 'task'),
+                          eventData,
+                          currentUserId,
+                        );
+
                         String eventTypeString = 'N/A';
                         if (event is MeetingEvent) {
                           eventTypeString = 'Meeting';
@@ -463,6 +453,22 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                                     style: TextStyles.plusJakartaSansBody2
                                         .copyWith(color: Colors.yellow),
                                   ),
+                                  // Mostrar campos específicos si están disponibles y no son nulos
+                                  if (event.location != null && event.location!.isNotEmpty)
+                                    Text(
+                                      'Location: ${event.location}',
+                                      style: TextStyles.plusJakartaSansBody2,
+                                    ),
+                                  if (event.subject != null && event.subject!.isNotEmpty)
+                                    Text(
+                                      'Subject: ${event.subject}',
+                                      style: TextStyles.plusJakartaSansBody2,
+                                    ),
+                                  if (event.withPerson != null && event.withPerson!.isNotEmpty)
+                                    Text(
+                                      'With Person: ${event.withPerson}',
+                                      style: TextStyles.plusJakartaSansBody2,
+                                    ),
                                 ],
                               ),
                             ),
@@ -487,6 +493,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       child: TextFormField(
         controller: controller,
         style: TextStyles.plusJakartaSansBody1,
+        onChanged: (value) => _searchEvents(), // Trigger search on text change
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyles.plusJakartaSansSubtitle2,
@@ -696,6 +703,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               child: TextFormField(
                 controller: _withPersonSearchController,
                 style: TextStyles.plusJakartaSansBody1,
+                onChanged: (value) => _searchEvents(), // Trigger search on text change
                 decoration: InputDecoration(
                   labelText: 'With Person',
                   labelStyle: TextStyles.plusJakartaSansSubtitle2,

@@ -8,10 +8,12 @@ import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:eventify/di/service_locator.dart';
 
 class AddEventScreen extends StatefulWidget {
-  const AddEventScreen({super.key});
+  final Map<String, dynamic>? eventToEdit; 
+
+  const AddEventScreen({super.key, this.eventToEdit});
   static const String routeName = '/add-event';
 
   @override
@@ -37,10 +39,53 @@ class _AddEventScreenState extends State<AddEventScreen> {
   @override
   void initState() {
     super.initState();
-    _eventViewModel = EventViewModel();
+    _eventViewModel = sl<EventViewModel>(); 
     _selectedDate = DateTime.now();
-    _selectedTime = const TimeOfDay(hour: 1, minute: 0); // Initialize to 1:00 AM
+    _selectedTime = const TimeOfDay(hour: 1, minute: 0);
     _updateDateTime();
+
+    if (widget.eventToEdit != null) {
+      final eventData = widget.eventToEdit!;
+      _titleController.text = eventData['title'] ?? '';
+      _descriptionController.text = eventData['description'] ?? '';
+      _selectedPriority = PriorityConverter.stringToPriority(eventData['priority']);
+      _hasNotification = eventData['hasNotification'] ?? false;
+      
+      final Timestamp? eventTimestamp = eventData['dateTime'];
+      if (eventTimestamp != null) {
+        _selectedDate = eventTimestamp.toDate();
+        _selectedTime = TimeOfDay.fromDateTime(eventTimestamp.toDate());
+      }
+      _selectedEventType = _getEventTypeFromString(eventData['type']); 
+      
+      if (eventData['type'] == 'meeting' || eventData['type'] == 'conference' || eventData['type'] == 'appointment') {
+        _locationController.text = eventData['location'] ?? '';
+      }
+      if (eventData['type'] == 'exam') {
+        _subjectController.text = eventData['subject'] ?? '';
+      }
+      if (eventData['type'] == 'appointment') {
+        _withPersonYesNo = eventData['withPersonYesNo'] ?? false;
+        _withPersonController.text = eventData['withPerson'] ?? '';
+      }
+      _updateDateTime();
+    }
+  }
+
+  EventType _getEventTypeFromString(String typeString) {
+    switch (typeString.toLowerCase()) {
+      case 'meeting':
+        return EventType.meeting;
+      case 'exam':
+        return EventType.exam;
+      case 'conference':
+        return EventType.conference;
+      case 'appointment':
+        return EventType.appointment;
+      case 'task':
+      default:
+        return EventType.task;
+    }
   }
 
   void _updateDateTime() {
@@ -58,6 +103,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
       } else {
         _selectedDateTime = Timestamp.fromDate(_selectedDate!);
       }
+    } else {
+      _selectedDateTime = null;
     }
   }
 
@@ -140,33 +187,65 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   void _saveEvent() {
     if (_formKey.currentState!.validate() && _selectedDateTime != null) {
-      _eventViewModel
-          .addEvent(
-            _selectedEventType,
-            _titleController.text,
-            _descriptionController.text,
-            _selectedPriority,
-            _selectedDateTime,
-            _hasNotification,
-            _locationController.text,
-            _subjectController.text,
-            _withPersonController.text,
-            _withPersonYesNo,
-            context,
-          )
-          .then((_) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const CalendarScreen()),
-            );
-          })
-          .catchError((error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Failed to save event: $error'),
-                backgroundColor: Colors.red,
-              ),
-            );
-          });
+      if (widget.eventToEdit == null) {
+        _eventViewModel
+            .addEvent(
+              _selectedEventType,
+              _titleController.text,
+              _descriptionController.text,
+              _selectedPriority,
+              _selectedDateTime,
+              _hasNotification,
+              _locationController.text,
+              _subjectController.text,
+              _withPersonController.text,
+              _withPersonYesNo,
+            )
+            .then((_) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const CalendarScreen()),
+                (Route<dynamic> route) => false,
+              );
+            })
+            .catchError((error) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Failed to save event: $error'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            });
+      } else {
+        final String eventId = widget.eventToEdit!['id'] as String;
+        _eventViewModel
+            .updateEvent(
+              eventId,
+              _selectedEventType,
+              _titleController.text,
+              _descriptionController.text,
+              _selectedPriority,
+              _selectedDateTime,
+              _hasNotification,
+              _locationController.text,
+              _subjectController.text,
+              _withPersonYesNo,
+              _withPersonController.text,
+            )
+            .then((_) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const CalendarScreen()),
+                (Route<dynamic> route) => false,
+              );
+            })
+            .catchError((error) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Failed to update event: $error'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            });
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -199,13 +278,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const CalendarScreen()),
-            );
+            Navigator.of(context).pop(true);
           },
         ),
         title: ShiningTextAnimation(
-          text: "CREATE NEW EVENT",
+          text: widget.eventToEdit == null ? "CREATE NEW EVENT" : "EDIT EVENT", 
           style: TextStyles.urbanistBody1,
           shineColor: AppColors.textPrimary,
         ),
@@ -231,7 +308,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ),
                 decoration: InputDecoration(
                   labelText: 'Event Title',
-                  labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
+                  labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -263,7 +340,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ),
                 decoration: InputDecoration(
                   labelText: 'Description',
-                  labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
+                  labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -352,7 +429,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       child: InputDecorator(
                         decoration: InputDecoration(
                           labelText: 'Date',
-                           labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
+                           labelStyle: TextStyles.plusJakartaSansSubtitle2,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide.none,
@@ -369,7 +446,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                             borderSide: BorderSide.none,
                           ),
                           errorText: _selectedDate == null
-                              ? 'Please select the event date' // Usa un mensaje de error claro
+                              ? 'Please select the event date'
                               : null,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16.0,
@@ -392,7 +469,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       child: InputDecorator(
                         decoration: InputDecoration(
                           labelText: 'Time',
-                          labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
+                          labelStyle: TextStyles.plusJakartaSansSubtitle2,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide.none,
@@ -410,7 +487,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           ),
                           errorText: _selectedTime == null
                               ? 'Select Time'
-                              : null, // Muestra Select Time si no hay tiempo
+                              : null,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16.0,
                             vertical: 12.0,
@@ -426,7 +503,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                     _selectedTime!.hour,
                                     _selectedTime!.minute,
                                   ),
-                                ) // Formato 12hr AM/PM
+                                )
                               : '01:00 AM',
                           style: TextStyles.plusJakartaSansBody1,
                         ),
@@ -448,20 +525,20 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 items: EventType.values
                     .where(
                       (type) => type != EventType.all,
-                    ) // Exclude EventType.all from the dropdown
+                    )
                     .map<DropdownMenuItem<EventType>>((EventType value) {
                       return DropdownMenuItem<EventType>(
                         value: value,
                         child: Text(
                           value.toString().split('.').last.toUpperCase(),
-                          style: TextStyles.plusJakartaSansBody1,
+                          style: TextStyles.plusJakartaSansBody1, // *** CORRECCIÓN AQUÍ ***
                         ),
                       );
                     })
                     .toList(),
                 decoration: InputDecoration(
                   labelText: 'Event Type',
-                  labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
+                  labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -481,7 +558,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   filled: true,
                   fillColor: const Color(0xFF1F1F1F),
                 ),
-                style: TextStyles.plusJakartaSansBody1,
+                style: TextStyles.plusJakartaSansBody1, // *** CORRECCIÓN AQUÍ ***
               ),
               const SizedBox(height: 22.0),
               if (_selectedEventType == EventType.meeting ||
@@ -495,7 +572,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   ),
                   decoration: InputDecoration(
                     labelText: 'Location',
-                    labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
+                    labelStyle: TextStyles.plusJakartaSansSubtitle2,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
@@ -582,7 +659,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           ),
                           decoration: InputDecoration(
                             labelText: 'With Person',
-                            labelStyle: TextStyles.plusJakartaSansSubtitle2, // Use Text Style
+                            labelStyle: TextStyles.plusJakartaSansSubtitle2,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
@@ -663,4 +740,3 @@ class _AddEventScreenState extends State<AddEventScreen> {
     );
   }
 }
-

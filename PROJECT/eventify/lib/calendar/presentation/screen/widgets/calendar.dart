@@ -2,7 +2,8 @@ import 'package:eventify/calendar/presentation/screen/widgets/month_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/calendar/domain/entities/event.dart';
+// import 'package:eventify/calendar/domain/entities/event.dart'; // No longer directly used for List type
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Timestamp
 
 class Calendar extends StatefulWidget {
   final Function(int monthIndex)? onMonthSelected;
@@ -58,11 +59,13 @@ class _CalendarState extends State<Calendar> {
       await _eventViewModel.getEventsForCurrentUserAndYear(yearToLoad);
       if (!mounted) return;
 
-      final List<Event> allEventsForYear = _eventViewModel.events;
+      // allEventsForYear is now List<Map<String, dynamic>>
+      final List<Map<String, dynamic>> allEventsForYear = _eventViewModel.events;
 
-      for (final event in allEventsForYear) {
-        if (event.dateTime != null) {
-          final int month = event.dateTime!.toDate().month;
+      for (final eventData in allEventsForYear) { // Iterate over maps
+        final Timestamp? eventTimestamp = eventData['dateTime']; // Access dateTime from map
+        if (eventTimestamp != null) {
+          final int month = eventTimestamp.toDate().month; // Convert Timestamp to DateTime
           counts[month] = (counts[month] ?? 0) + 1;
         }
       }

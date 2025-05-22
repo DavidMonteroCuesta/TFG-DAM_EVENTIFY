@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/calendar/domain/entities/event.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Timestamp
 
 // Import the DailiesEventScreen
 import 'package:eventify/calendar/presentation/screen/dailies_event_screen.dart';
@@ -24,7 +24,8 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   late DateTime _lastDayOfMonth;
   late List<DateTime> _daysInMonth;
   late EventViewModel _eventViewModel;
-  List<Event> _eventsForCurrentMonth = [];
+  // Now stores List<Map<String, dynamic>>
+  List<Map<String, dynamic>> _eventsForCurrentMonth = [];
   Set<DateTime> _datesWithEvents = {};
 
   @override
@@ -74,18 +75,23 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   Future<void> _loadEventsForMonth() async {
     _updateCalendarDays();
     try {
-      final events = await _eventViewModel.getEventsForCurrentUserAndMonth(
+      // getEventsForCurrentUserAndMonth now returns List<Map<String, dynamic>>
+      final eventsData = await _eventViewModel.getEventsForCurrentUserAndMonth(
         _focusedDay.year,
         _focusedDay.month,
       );
       setState(() {
-        _eventsForCurrentMonth = events;
-        _datesWithEvents = events
-            .where((event) => event.dateTime != null)
-            .map((event) => DateTime(
-                event.dateTime!.toDate().year,
-                event.dateTime!.toDate().month,
-                event.dateTime!.toDate().day))
+        _eventsForCurrentMonth = eventsData; // Assign directly the List<Map<String, dynamic>>
+        _datesWithEvents = eventsData
+            .where((eventData) => eventData['dateTime'] != null) // Filter by events with dateTime
+            .map((eventData) {
+              final Timestamp eventTimestamp = eventData['dateTime'] as Timestamp;
+              return DateTime(
+                eventTimestamp.toDate().year,
+                eventTimestamp.toDate().month,
+                eventTimestamp.toDate().day,
+              );
+            })
             .toSet();
       });
     } catch (e) {
@@ -137,59 +143,58 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 .toList(),
           ),
           const SizedBox(height: 10),
-          Expanded(
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _daysInMonth.length + (_firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 7,
-              ),
-              itemBuilder: (context, index) {
-                final int weekdayOffset = _firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1;
+          // Removed the Expanded widget here
+          GridView.builder(
+            shrinkWrap: true, // This is crucial for GridView inside SingleChildScrollView
+            physics: const NeverScrollableScrollPhysics(), // Prevents nested scrolling
+            itemCount: _daysInMonth.length + (_firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 7,
+            ),
+            itemBuilder: (context, index) {
+              final int weekdayOffset = _firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1;
 
-                if (index < weekdayOffset) {
-                  return const SizedBox();
-                }
-                final day = _daysInMonth[index - weekdayOffset];
-                final isToday = day.year == DateTime.now().year &&
-                    day.month == DateTime.now().month &&
-                    day.day == DateTime.now().day;
-                final hasEvent = _datesWithEvents.contains(day);
+              if (index < weekdayOffset) {
+                return const SizedBox();
+              }
+              final day = _daysInMonth[index - weekdayOffset];
+              final isToday = day.year == DateTime.now().year &&
+                  day.month == DateTime.now().month &&
+                  day.day == DateTime.now().day;
+              final hasEvent = _datesWithEvents.contains(day);
 
-                // *** Point 2: Access the new screen by clicking on a day ***
-                return GestureDetector( // Wrap the Container with GestureDetector
-                  onTap: () {
-                    // Navigate to DailiesEventScreen passing the date of the clicked day
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DailiesEventScreen(selectedDate: day),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isToday
-                          ? Colors.grey[300]!.withOpacity(0.2)
-                          : null,
-                      shape: isToday ? BoxShape.circle : BoxShape.rectangle,
+              // Access the new screen by clicking on a day
+              return GestureDetector( // Wrap the Container with GestureDetector
+                onTap: () {
+                  // Navigate to DailiesEventScreen passing the date of the clicked day
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DailiesEventScreen(selectedDate: day),
                     ),
-                    child: Center(
-                      child: Text(
-                        '${day.day}',
-                        style: TextStyle(
-                          color: isToday || hasEvent
-                              ? Colors.orangeAccent
-                              : Colors.white,
-                          fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
-                        ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isToday
+                        ? Colors.grey[300]!.withOpacity(0.2)
+                        : null,
+                    shape: isToday ? BoxShape.circle : BoxShape.rectangle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${day.day}',
+                      style: TextStyle(
+                        color: isToday || hasEvent
+                            ? Colors.orangeAccent
+                            : Colors.white,
+                        fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
           const SizedBox(height: 16),
           if (_eventsForCurrentMonth.isNotEmpty)
