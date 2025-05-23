@@ -5,7 +5,7 @@ import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/chat/presentation/screen/chat_screen.dart';
 import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
-import 'package:eventify/common/widgets/profile/widgets/profile_screen.dart';
+import 'package:eventify/auth/presentation/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'di/service_locator.dart' as di;

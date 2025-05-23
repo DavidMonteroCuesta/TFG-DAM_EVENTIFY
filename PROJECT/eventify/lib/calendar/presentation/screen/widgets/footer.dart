@@ -23,7 +23,7 @@ class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final footerHeightPercentage = 0.08;
+    final footerHeightPercentage = 0.12;
     final footerHeight = screenHeight * footerHeightPercentage;
 
     return Container(

@@ -1,18 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Timestamp
-
-// Import the DailiesEventScreen
-import 'package:eventify/calendar/presentation/screen/dailies_event_screen.dart';
-
 
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;
+  final ValueChanged<DateTime>? onDaySelected; // This property is correctly defined here
 
-  const MonthlyCalendar({super.key, required this.initialFocusedDay});
+  const MonthlyCalendar({
+    super.key,
+    required this.initialFocusedDay,
+    this.onDaySelected,
+  });
 
   @override
   State<MonthlyCalendar> createState() => _MonthlyCalendarState();
@@ -24,7 +25,6 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   late DateTime _lastDayOfMonth;
   late List<DateTime> _daysInMonth;
   late EventViewModel _eventViewModel;
-  // Now stores List<Map<String, dynamic>>
   List<Map<String, dynamic>> _eventsForCurrentMonth = [];
   Set<DateTime> _datesWithEvents = {};
 
@@ -41,7 +41,9 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
     super.didUpdateWidget(oldWidget);
     if (widget.initialFocusedDay.year != oldWidget.initialFocusedDay.year ||
         widget.initialFocusedDay.month != oldWidget.initialFocusedDay.month ||
-        widget.initialFocusedDay.day != oldWidget.initialFocusedDay.day) {
+        widget.initialFocusedDay.day != oldWidget.initialFocusedDay.day ||
+        widget.key != oldWidget.key // Added check for key to force rebuild on reset
+        ) {
       setState(() {
         _focusedDay = widget.initialFocusedDay;
         _loadEventsForMonth();
@@ -75,25 +77,26 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   Future<void> _loadEventsForMonth() async {
     _updateCalendarDays();
     try {
-      // getEventsForCurrentUserAndMonth now returns List<Map<String, dynamic>>
       final eventsData = await _eventViewModel.getEventsForCurrentUserAndMonth(
         _focusedDay.year,
         _focusedDay.month,
       );
-      setState(() {
-        _eventsForCurrentMonth = eventsData; // Assign directly the List<Map<String, dynamic>>
-        _datesWithEvents = eventsData
-            .where((eventData) => eventData['dateTime'] != null) // Filter by events with dateTime
-            .map((eventData) {
-              final Timestamp eventTimestamp = eventData['dateTime'] as Timestamp;
-              return DateTime(
-                eventTimestamp.toDate().year,
-                eventTimestamp.toDate().month,
-                eventTimestamp.toDate().day,
-              );
-            })
-            .toSet();
-      });
+      if (mounted) {
+        setState(() {
+          _eventsForCurrentMonth = eventsData;
+          _datesWithEvents = eventsData
+              .where((eventData) => eventData['dateTime'] != null)
+              .map((eventData) {
+                final Timestamp eventTimestamp = eventData['dateTime'] as Timestamp;
+                return DateTime(
+                  eventTimestamp.toDate().year,
+                  eventTimestamp.toDate().month,
+                  eventTimestamp.toDate().day,
+                );
+              })
+              .toSet();
+        });
+      }
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -104,7 +107,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    final daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']; // Days of the week in English
+    final daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     return Container(
       decoration: BoxDecoration(
@@ -123,7 +126,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 onPressed: _goToPreviousMonth,
               ),
               Text(
-                DateFormat('MMMM', 'en_US').format(_focusedDay), // Month format in English
+                DateFormat('MMMM', 'en_US').format(_focusedDay),
                 style: TextStyles.urbanistH6,
               ),
               IconButton(
@@ -143,68 +146,62 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 .toList(),
           ),
           const SizedBox(height: 10),
-          // Removed the Expanded widget here
-          GridView.builder(
-            shrinkWrap: true, // This is crucial for GridView inside SingleChildScrollView
-            physics: const NeverScrollableScrollPhysics(), // Prevents nested scrolling
-            itemCount: _daysInMonth.length + (_firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 7,
-            ),
-            itemBuilder: (context, index) {
-              final int weekdayOffset = _firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1;
+          Expanded(
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _daysInMonth.length + (_firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 7,
+              ),
+              itemBuilder: (context, index) {
+                final int weekdayOffset = _firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1;
 
-              if (index < weekdayOffset) {
-                return const SizedBox();
-              }
-              final day = _daysInMonth[index - weekdayOffset];
-              final isToday = day.year == DateTime.now().year &&
-                  day.month == DateTime.now().month &&
-                  day.day == DateTime.now().day;
-              final hasEvent = _datesWithEvents.contains(day);
+                if (index < weekdayOffset) {
+                  return const SizedBox();
+                }
+                final day = _daysInMonth[index - weekdayOffset];
+                final isToday = day.year == DateTime.now().year &&
+                    day.month == DateTime.now().month &&
+                    day.day == DateTime.now().day;
+                final hasEvent = _datesWithEvents.contains(day);
 
-              // Access the new screen by clicking on a day
-              return GestureDetector( // Wrap the Container with GestureDetector
-                onTap: () {
-                  // Navigate to DailiesEventScreen passing the date of the clicked day
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DailiesEventScreen(selectedDate: day),
+                return GestureDetector(
+                  onTap: () {
+                    widget.onDaySelected?.call(day);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isToday
+                          ? Colors.grey[300]!.withOpacity(0.2)
+                          : null,
+                      shape: isToday ? BoxShape.circle : BoxShape.rectangle,
                     ),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: isToday
-                        ? Colors.grey[300]!.withOpacity(0.2)
-                        : null,
-                    shape: isToday ? BoxShape.circle : BoxShape.rectangle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      '${day.day}',
-                      style: TextStyle(
-                        color: isToday || hasEvent
-                            ? Colors.orangeAccent
-                            : Colors.white,
-                        fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
+                    child: Center(
+                      child: Text(
+                        '${day.day}',
+                        style: TextStyle(
+                          color: isToday || hasEvent
+                              ? Colors.orangeAccent
+                              : Colors.white,
+                          fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
           const SizedBox(height: 16),
           if (_eventsForCurrentMonth.isNotEmpty)
             Text(
-              'Events for this month: ${_eventsForCurrentMonth.length}', // English
+              'Events for this month: ${_eventsForCurrentMonth.length}',
               style: TextStyles.plusJakartaSansBody1,
             )
           else
             Text(
-              'No events for this month.', // English
+              'No events for this month.',
               style: TextStyles.plusJakartaSansBody1,
             ),
         ],

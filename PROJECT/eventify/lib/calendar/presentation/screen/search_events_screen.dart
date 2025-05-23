@@ -15,9 +15,17 @@ import 'package:intl/intl.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
+import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
 
 class EventSearchScreen extends StatefulWidget {
-  const EventSearchScreen({super.key});
+  final DateTime? initialSelectedDate;
+  final String? initialSearchTitle; // Nuevo: Título de búsqueda inicial
+
+  const EventSearchScreen({
+    super.key,
+    this.initialSelectedDate,
+    this.initialSearchTitle, // Inicializar el nuevo parámetro
+  });
 
   @override
   State<EventSearchScreen> createState() => _EventSearchScreenState();
@@ -34,7 +42,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   final _withPersonSearchController = TextEditingController();
   bool _withPersonYesNoSearch = false;
   Priority? _selectedPriority;
-  // *** CAMBIO CLAVE AQUÍ: Cambiado a List<Map<String, dynamic>> ***
   List<Map<String, dynamic>> _searchResults = [];
   late EventViewModel _eventViewModel;
   bool _enablePriorityFilter = false;
@@ -43,16 +50,19 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   void initState() {
     super.initState();
     _eventViewModel = sl<EventViewModel>();
+    _selectedSearchDate = widget.initialSelectedDate;
+    // MODIFIED: Inicializa el controlador del título con el valor inicial
+    _titleSearchController.text = widget.initialSearchTitle ?? '';
+
     _loadEvents();
     _titleSearchController.addListener(_searchEvents);
     _descriptionSearchController.addListener(_searchEvents);
-    _locationSearchController.addListener(_searchEvents); // Added listener
-    _subjectSearchController.addListener(_searchEvents); // Added listener
-    _withPersonSearchController.addListener(_searchEvents); // Added listener
-    _searchEvents(); // Llamada inicial para mostrar todos los eventos
+    _locationSearchController.addListener(_searchEvents);
+    _subjectSearchController.addListener(_searchEvents);
+    _withPersonSearchController.addListener(_searchEvents);
+    _searchEvents();
   }
 
-  // Helper to convert string type to EventType enum
   EventType _getEventTypeFromString(String typeString) {
     switch (typeString.toLowerCase()) {
       case 'meeting':
@@ -66,17 +76,19 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       case 'task':
         return EventType.task;
       default:
-        return EventType.all; // Default to all if type is unknown or not specified
+        return EventType.all;
     }
   }
 
   Future<void> _loadEvents() async {
     try {
       await _eventViewModel.getEventsForCurrentUser();
-      // *** CAMBIO CLAVE AQUÍ: Asigna directamente la lista de mapas ***
-      setState(() => _searchResults = _eventViewModel.events);
+      if (mounted) {
+        setState(() => _searchResults = _eventViewModel.events);
+        _searchEvents();
+      }
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to load events: ${e.toString()}')),
         );
@@ -89,7 +101,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       context: context,
       initialDate: _selectedSearchDate ?? DateTime.now(),
       firstDate: DateTime(2023),
-      lastDate: DateTime(2100), // Adjusted to 2100 for wider range
+      lastDate: DateTime(2100),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.dark().copyWith(
@@ -109,7 +121,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     if (picked != null && picked != _selectedSearchDate) {
       setState(() {
         _selectedSearchDate = picked;
-        _searchEvents(); // Re-search upon date selection
+        _searchEvents();
       });
     }
   }
@@ -117,15 +129,14 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   void _clearSearchDate() {
     setState(() {
       _selectedSearchDate = null;
-      _searchEvents(); // Re-search upon clearing date
+      _searchEvents();
     });
   }
 
   void _searchEvents() {
     setState(() {
-      // *** CAMBIO CLAVE AQUÍ: Trabaja con List<Map<String, dynamic>> ***
       List<Map<String, dynamic>> allEventsData = _eventViewModel.events;
-      List<Map<String, dynamic>> results = allEventsData;
+      List<Map<String, dynamic>> results = List.from(allEventsData);
 
       final title = _titleSearchController.text.toLowerCase();
       final description = _descriptionSearchController.text.toLowerCase();
@@ -149,7 +160,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         results = results.where((eventData) {
           final Timestamp? eventTimestamp = eventData['dateTime'];
           if (eventTimestamp != null) {
-            // Compare only the date (year, month, day), ignoring time
             return eventTimestamp.toDate().year == _selectedSearchDate!.year &&
                    eventTimestamp.toDate().month == _selectedSearchDate!.month &&
                    eventTimestamp.toDate().day == _selectedSearchDate!.day;
@@ -174,8 +184,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         }).toList();
       }
 
-      // Filter by specific event type fields
-      // Show location filter if type is Meeting, Conference, Appointment, or ALL
       if ((_selectedEventType == EventType.meeting ||
               _selectedEventType == EventType.conference ||
               _selectedEventType == EventType.appointment ||
@@ -189,7 +197,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           return false;
         }).toList();
       }
-      // Show subject filter if type is Exam or ALL
       if ((_selectedEventType == EventType.exam || _selectedEventType == EventType.all) &&
           subject.isNotEmpty) {
         results = results.where((eventData) {
@@ -200,7 +207,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           return false;
         }).toList();
       }
-      // Show withPerson filter if type is Appointment or ALL
       if ((_selectedEventType == EventType.appointment || _selectedEventType == EventType.all) &&
           _withPersonYesNoSearch) {
         results = results.where((eventData) {
@@ -216,6 +222,67 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
 
       _searchResults = results;
     });
+  }
+
+  Future<void> _onEditEvent(Map<String, dynamic> eventData) async {
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AddEventScreen(eventToEdit: eventData),
+      ),
+    );
+
+    if (mounted) {
+      if (result == true) {
+        await _loadEvents();
+        _searchEvents();
+      }
+    }
+  }
+
+  Future<void> _onDeleteEvent(Map<String, dynamic> eventData) async {
+    final String eventId = eventData['id'] as String;
+    final String eventTitle = eventData['title'] as String;
+
+    final bool confirm = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.grey[900],
+              title: Text('Delete Event', style: TextStyles.urbanistSubtitle1.copyWith(color: Colors.white)),
+              content: Text('Are you sure you want to delete "$eventTitle"?', style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text('Cancel', style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.primaryContainer)),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text('Delete', style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.red)),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+
+    if (confirm) {
+      try {
+        await _eventViewModel.deleteEvent(eventId);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Event "$eventTitle" deleted successfully!')),
+          );
+          await _loadEvents();
+          _searchEvents();
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to delete event: ${e.toString()}')),
+          );
+        }
+      }
+    }
   }
 
   @override
@@ -352,7 +419,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 labelText: 'Event Type',
               ),
               _buildPrioritySelector(),
-              // Muestra el campo de ubicación si el tipo de evento es Meeting, Conference, Appointment o ALL
               if (_selectedEventType == EventType.meeting ||
                   _selectedEventType == EventType.conference ||
                   _selectedEventType == EventType.appointment ||
@@ -361,13 +427,11 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   controller: _locationSearchController,
                   labelText: 'Location',
                 ),
-              // Muestra el campo de asignatura si el tipo de evento es Exam o ALL
               if (_selectedEventType == EventType.exam || _selectedEventType == EventType.all)
                 _buildSearchField(
                   controller: _subjectSearchController,
                   labelText: 'Subject',
                 ),
-              // Muestra el campo "With Person" si el tipo de evento es Appointment o ALL
               if (_selectedEventType == EventType.appointment || _selectedEventType == EventType.all)
                 _buildWithPersonField(),
 
@@ -382,7 +446,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children:
                       _searchResults.map((eventData) {
-                        // *** CAMBIO CLAVE AQUÍ: Crea el objeto Event para la visualización ***
                         final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
                         if (currentUserId == null) {
                           return const SizedBox.shrink();
@@ -428,10 +491,30 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    event.title,
-                                    style: TextStyles.plusJakartaSansBody1
-                                        .copyWith(fontSize: 18),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          event.title,
+                                          style: TextStyles.plusJakartaSansBody1
+                                              .copyWith(fontSize: 18),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.edit, color: Colors.blueAccent),
+                                            onPressed: () => _onEditEvent(eventData),
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete, color: Colors.redAccent),
+                                            onPressed: () => _onDeleteEvent(eventData),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: 4.0),
                                   Text(
@@ -453,7 +536,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                                     style: TextStyles.plusJakartaSansBody2
                                         .copyWith(color: Colors.yellow),
                                   ),
-                                  // Mostrar campos específicos si están disponibles y no son nulos
                                   if (event.location != null && event.location!.isNotEmpty)
                                     Text(
                                       'Location: ${event.location}',
@@ -493,7 +575,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       child: TextFormField(
         controller: controller,
         style: TextStyles.plusJakartaSansBody1,
-        onChanged: (value) => _searchEvents(), // Trigger search on text change
+        onChanged: (value) => _searchEvents(),
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyles.plusJakartaSansSubtitle2,
@@ -581,8 +663,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   setState(() {
                     _enablePriorityFilter = newValue;
                     if (!newValue) {
-                      _selectedPriority =
-                          null; // Reset priority when switch is off
+                      _selectedPriority = null;
                     }
                     _searchEvents();
                   });
@@ -703,7 +784,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               child: TextFormField(
                 controller: _withPersonSearchController,
                 style: TextStyles.plusJakartaSansBody1,
-                onChanged: (value) => _searchEvents(), // Trigger search on text change
+                onChanged: (value) => _searchEvents(),
                 decoration: InputDecoration(
                   labelText: 'With Person',
                   labelStyle: TextStyles.plusJakartaSansSubtitle2,

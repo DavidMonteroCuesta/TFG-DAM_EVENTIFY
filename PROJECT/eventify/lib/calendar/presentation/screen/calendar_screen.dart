@@ -1,3 +1,4 @@
+import 'package:eventify/calendar/presentation/screen/search_events_screen.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/calendar.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/footer.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/header.dart';
@@ -7,6 +8,7 @@ import 'package:eventify/calendar/presentation/view_model/event_view_model.dart'
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:eventify/calendar/presentation/screen/add_event_screen.dart'; // Import AddEventScreen
 
 class CalendarScreen extends StatefulWidget {
   static const String routeName = '/calendar';
@@ -76,9 +78,70 @@ class _CalendarScreenState extends State<CalendarScreen> {
       _currentYear = DateTime.now().year;
       _focusedMonthForMonthlyView = DateTime.now();
       _eventViewModel.loadNearestEvent();
-      // CLAVE: Cambia la Key del MonthlyCalendar para forzar su reconstrucción
       _monthlyCalendarKey = UniqueKey();
     });
+  }
+
+  // Method to navigate to EventSearchScreen with selected date
+  Future<void> _navigateToSearchScreenWithDate(DateTime selectedDate) async {
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EventSearchScreen(initialSelectedDate: selectedDate),
+      ),
+    );
+
+    // If an event was added/edited/deleted in search, reload nearest event
+    if (result == true) {
+      _eventViewModel.loadNearestEvent();
+      _monthlyCalendarKey = UniqueKey(); // Force MonthlyCalendar to rebuild
+      setState(() {}); // Trigger a rebuild of the CalendarScreen
+    }
+  }
+
+  // New method to handle editing the nearest event
+  Future<void> _onEditNearestEvent(Map<String, dynamic> eventData) async {
+    // Create a mutable copy to modify and ensure all string fields are not null
+    Map<String, dynamic> safeEventData = Map.from(eventData);
+
+    // Provide empty string as fallback for potentially null string fields
+    safeEventData['title'] = safeEventData['title'] ?? '';
+    safeEventData['description'] = safeEventData['description'] ?? '';
+    safeEventData['location'] = safeEventData['location'] ?? '';
+    safeEventData['subject'] = safeEventData['subject'] ?? '';
+    safeEventData['withPerson'] = safeEventData['withPerson'] ?? '';
+    safeEventData['type'] = safeEventData['type']?.toString() ?? 'task';
+    safeEventData['priority'] = safeEventData['priority']?.toString() ?? 'low';
+
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AddEventScreen(eventToEdit: safeEventData),
+      ),
+    );
+
+    if (mounted) {
+      if (result == true) {
+        _eventViewModel.loadNearestEvent();
+      }
+    }
+  }
+
+  // Nuevo método para navegar a la pantalla de búsqueda con el evento más próximo
+  Future<void> _navigateToSearchScreenWithNearestEvent(String title, DateTime date) async {
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EventSearchScreen(
+          initialSearchTitle: title, // Pasa el título
+          initialSelectedDate: date, // Pasa la fecha
+        ),
+      ),
+    );
+
+    // Si se añadió/editó/eliminó un evento en la búsqueda, recarga el evento más próximo
+    if (result == true) {
+      _eventViewModel.loadNearestEvent();
+      _monthlyCalendarKey = UniqueKey(); // Fuerza la reconstrucción del MonthlyCalendar
+      setState(() {}); // Dispara una reconstrucción de CalendarScreen
+    }
   }
 
   @override
@@ -89,11 +152,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double spacingBetweenHeaderAndCalendar = 30.0;
-    const double spacingBetweenCalendarAndEvent = 20.0;
+    const double spacingBetweenHeaderAndCalendar = 20.0;
     const double spacingBetweenEventAndFooter = 20.0;
     final screenHeight = MediaQuery.of(context).size.height;
-    final footerHeight = screenHeight * 0.08;
+    final footerHeight = screenHeight * 0.10;
     final double heightThreshold = 865;
 
     return Scaffold(
@@ -124,104 +186,133 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           children: [
                             Expanded(
                               flex: 2,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                      child: Calendar(
-                                        onMonthSelected: _handleMonthSelected,
-                                        currentYear: _currentYear,
-                                      )),
-                                  if (showEventCard) ...[
-                                    SizedBox(
-                                        height:
-                                            spacingBetweenCalendarAndEvent),
-                                    Consumer<EventViewModel>(
-                                      builder: (context, eventViewModel, child) {
-                                        if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
-                                          return const CircularProgressIndicator();
-                                        } else if (eventViewModel.errorMessage != null) {
-                                          return Text(
-                                            eventViewModel.errorMessage!,
-                                            style: TextStyles.urbanistBody1,
-                                          );
-                                        } else if (eventViewModel.nearestEvent != null) {
-                                          return UpcomingEventCard(
-                                            title: eventViewModel.nearestEvent!.title,
-                                            type: eventViewModel.nearestEvent!.type.toString(),
-                                            date: eventViewModel.nearestEvent!.dateTime!.toDate(),
-                                            priority: eventViewModel.nearestEvent!.priority.toString(),
-                                            description: eventViewModel.nearestEvent!.description ?? '',
-                                          );
-                                        } else {
-                                          return Text(
-                                            'No hay eventos próximos.',
-                                            style: TextStyles.urbanistBody1,
-                                          );
-                                        }
-                                      },
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Calendar(
+                                      onMonthSelected: _handleMonthSelected,
+                                      currentYear: _currentYear,
                                     ),
+                                    if (showEventCard) ...[
+                                      const SizedBox(height: 16.0),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                        child: Consumer<EventViewModel>(
+                                          builder: (context, eventViewModel, child) {
+                                            if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
+                                              return const Center(child: CircularProgressIndicator());
+                                            } else if (eventViewModel.errorMessage != null) {
+                                              return Center(
+                                                child: Text(
+                                                  eventViewModel.errorMessage!,
+                                                  style: TextStyles.urbanistBody1,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+                                            } else if (eventViewModel.nearestEvent != null) {
+                                              return UpcomingEventCard(
+                                                title: eventViewModel.nearestEvent!.title,
+                                                type: eventViewModel.nearestEvent!.type.toString(),
+                                                date: eventViewModel.nearestEvent!.dateTime!.toDate(),
+                                                priority: eventViewModel.nearestEvent!.priority.toString(),
+                                                description: eventViewModel.nearestEvent!.description ?? '',
+                                                onEdit: () => _onEditNearestEvent(eventViewModel.nearestEvent!.toJson()),
+                                                // MODIFIED: Nuevo callback para onTapCard
+                                                onTapCard: () => _navigateToSearchScreenWithNearestEvent(
+                                                  eventViewModel.nearestEvent!.title,
+                                                  eventViewModel.nearestEvent!.dateTime!.toDate(),
+                                                ),
+                                              );
+                                            } else {
+                                              return Center(
+                                                child: Text(
+                                                  'No hay eventos próximos.',
+                                                  style: TextStyles.urbanistBody1,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ],
-                                ],
+                                ),
                               ),
                             ),
                             const SizedBox(width: 20.0),
                             Expanded(
                               flex: 1,
                               child: MonthlyCalendar(
-                                key: _monthlyCalendarKey, // Asigna la Key aquí
+                                key: _monthlyCalendarKey,
                                 initialFocusedDay: _focusedMonthForMonthlyView,
+                                onDaySelected: _navigateToSearchScreenWithDate,
                               ),
                             ),
                           ],
                         )
-                      : PageView(
+                      : PageView( // Mobile view
                           controller: _pageController,
                           physics:
                               const NeverScrollableScrollPhysics(),
                           children: [
-                            Column(
-                              children: [
-                                Expanded(
-                                    child: Calendar(
-                                      onMonthSelected: _handleMonthSelected,
-                                      currentYear: _currentYear,
-                                    )),
-                                if (showEventCard) ...[
-                                  SizedBox(
-                                      height:
-                                          spacingBetweenCalendarAndEvent),
-                                  Consumer<EventViewModel>(
-                                    builder: (context, eventViewModel, child) {
-                                      // **CORRECCIÓN AQUÍ**: Asegura la sintaxis correcta del if/else if/else
-                                      if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
-                                        return const CircularProgressIndicator();
-                                      } else if (eventViewModel.errorMessage != null) {
-                                        return Text(
-                                          eventViewModel.errorMessage!,
-                                          style: TextStyles.urbanistBody1,
-                                        );
-                                      } else if (eventViewModel.nearestEvent != null) {
-                                        return UpcomingEventCard(
-                                          title: eventViewModel.nearestEvent!.title,
-                                          type: eventViewModel.nearestEvent!.type.toString(),
-                                          date: eventViewModel.nearestEvent!.dateTime!.toDate(),
-                                          priority: eventViewModel.nearestEvent!.priority.toString(),
-                                          description: eventViewModel.nearestEvent!.description ?? '',
-                                        );
-                                      } else {
-                                        return Text(
-                                          'No hay eventos próximos.',
-                                          style: TextStyles.urbanistBody1,
-                                        );
-                                      }
-                                    },
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Calendar(
+                                    onMonthSelected: _handleMonthSelected,
+                                    currentYear: _currentYear,
                                   ),
+                                  if (showEventCard) ...[
+                                    const SizedBox(height: 16.0),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                      child: Consumer<EventViewModel>(
+                                        builder: (context, eventViewModel, child) {
+                                          if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
+                                            return const Center(child: CircularProgressIndicator());
+                                          } else if (eventViewModel.errorMessage != null) {
+                                            return Center(
+                                              child: Text(
+                                                eventViewModel.errorMessage!,
+                                                style: TextStyles.urbanistBody1,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            );
+                                          } else if (eventViewModel.nearestEvent != null) {
+                                            return UpcomingEventCard(
+                                              title: eventViewModel.nearestEvent!.title,
+                                              type: eventViewModel.nearestEvent!.type.toString(),
+                                              date: eventViewModel.nearestEvent!.dateTime!.toDate(),
+                                              priority: eventViewModel.nearestEvent!.priority.toString(),
+                                              description: eventViewModel.nearestEvent!.description ?? '',
+                                              onEdit: () => _onEditNearestEvent(eventViewModel.nearestEvent!.toJson()),
+                                              // MODIFIED: Nuevo callback para onTapCard
+                                              onTapCard: () => _navigateToSearchScreenWithNearestEvent(
+                                                eventViewModel.nearestEvent!.title,
+                                                eventViewModel.nearestEvent!.dateTime!.toDate(),
+                                              ),
+                                            );
+                                          } else {
+                                            return Center(
+                                              child: Text(
+                                                'No hay eventos próximos.',
+                                                style: TextStyles.urbanistBody1,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ],
-                              ],
+                              ),
                             ),
                             MonthlyCalendar(
-                              key: _monthlyCalendarKey, // Asigna la Key aquí
+                              key: _monthlyCalendarKey,
                               initialFocusedDay: _focusedMonthForMonthlyView,
+                              onDaySelected: _navigateToSearchScreenWithDate,
                             ),
                           ],
                         ),

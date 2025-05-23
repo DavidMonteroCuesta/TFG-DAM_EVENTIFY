@@ -1,6 +1,6 @@
-import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:eventify/common/theme/fonts/text_styles.dart'; // Assuming this import
 
 class UpcomingEventCard extends StatelessWidget {
   final String title;
@@ -8,6 +8,8 @@ class UpcomingEventCard extends StatelessWidget {
   final DateTime date;
   final String priority;
   final String description;
+  final VoidCallback? onEdit;
+  final VoidCallback? onTapCard; // Nuevo: Callback para tocar la tarjeta completa
 
   const UpcomingEventCard({
     super.key,
@@ -16,93 +18,94 @@ class UpcomingEventCard extends StatelessWidget {
     required this.date,
     required this.priority,
     required this.description,
+    this.onEdit,
+    this.onTapCard, // Inicializar el nuevo callback
   });
-
-  Color? _getPriorityColor(String priority) {
-    switch (priority.toLowerCase()) {
-      case 'low':
-        return Colors.green;
-      case 'medium':
-        return Colors.orangeAccent;
-      case 'high':
-        return Colors.orange;
-      case 'critical':
-        return Colors.red;
-      default:
-        return Colors.orangeAccent;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = DateFormat('EEE MMM d HH:mm', 'en_US').format(date);
-    final priorityColor = _getPriorityColor(priority);
+    const Color outlineColor = Color(0xFFE0E0E0);
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16.0),
-      margin: const EdgeInsets.only(top: 16.0),
-      decoration: BoxDecoration(
-        color: Colors.grey[800],
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black45,
-            offset: Offset(0, 2),
-            blurRadius: 4,
+    return InkWell( // Envuelve la tarjeta con InkWell para que sea clicable
+      onTap: onTapCard, // Asigna el callback onTapCard
+      borderRadius: BorderRadius.circular(12.0), // Asegura que el InkWell tenga bordes redondeados
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1F1F1F),
+          borderRadius: BorderRadius.circular(12.0),
+          border: Border.all(
+            color: outlineColor.withOpacity(0.3),
+            width: 1.0,
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                _truncateText(title, 25),
-                style: TextStyles.urbanistH6,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyles.plusJakartaSansBody1.copyWith(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                // MODIFIED: Moved event type here to be at the top right
+                Text(
+                  type.split('.').last.toUpperCase(), // Format type string
+                  style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[400]),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8.0), // Espacio consistente
+
+            Text(
+              'Date: ${DateFormat('yyyy/MM/dd HH:mm').format(date)}',
+              style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[400]),
+            ),
+            const SizedBox(height: 8.0), // Espacio consistente
+
+            // REMOVED: Original position of Event Type
+            // Text(
+            //   'Type: ${type.split('.').last.toUpperCase()}',
+            //   style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[400]),
+            // ),
+            // const SizedBox(height: 8.0), // Espacio consistente
+
+            Text(
+              'Priority: ${priority.split('.').last.toUpperCase()}',
+              style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.yellow),
+            ),
+            const SizedBox(height: 8.0), // Espacio consistente
+
+            Flexible(
+              child: Text(
+                'Description: ${description.isNotEmpty ? description : 'Nothing'}',
+                style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[300]),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              Text(
-                type.toUpperCase(),
-                style: TextStyles.plusJakartaSansBody2,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            formattedDate,
-            style: TextStyles.plusJakartaSansBody2,
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Text(
-                'Priority: ',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.white70),
-              ),
-              Text(
-                priority,
-                style: TextStyle(color: priorityColor),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            _truncateText(description, 60),
-            style: TextStyles.plusJakartaSansBody2,
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
-  }
-
-  String _truncateText(String text, int maxLength) {
-    if (text.length <= maxLength) {
-      return text;
-    } else {
-      return '${text.substring(0, maxLength - 3)}...';
-    }
   }
 }

@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 class MonthRow extends StatelessWidget {
   final List<String> rowMonths;
   final List<int> rowNotifications;
-  final Function(int monthIndex)? onMonthTap; // Nuevo callback
+  final Function(int monthIndex)? onMonthTap;
 
   const MonthRow({
     super.key,
     required this.rowMonths,
     required this.rowNotifications,
-    this.onMonthTap, // Nuevo parámetro
+    this.onMonthTap,
   });
 
   @override
@@ -22,7 +22,6 @@ class MonthRow extends StatelessWidget {
         children: rowMonths.asMap().entries.map((entry) {
           final index = entry.key;
           final month = entry.value;
-          // Calculamos el índice del mes (1-12) basado en su posición en la lista `months` global
           final int globalMonthIndex = _getGlobalMonthIndex(month);
 
           return Expanded(
@@ -39,7 +38,6 @@ class MonthRow extends StatelessWidget {
     );
   }
 
-  // Helper para obtener el índice global del mes (1-12)
   int _getGlobalMonthIndex(String monthName) {
     final List<String> allMonths = const [
       'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',

@@ -72,8 +72,12 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        // MODIFIED: Adjusted padding to push content to the top of the input box
+        // Reduced top padding to make elements appear higher.
+        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 35.0), // Left, Top, Right, Bottom
         child: Row(
+          // Align children to the start (top) of the row
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: TextField(
@@ -98,8 +102,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     borderSide:
                         BorderSide.none,
                   ),
+                  // Content padding for the TextField itself
                   contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                   filled: true,
                   fillColor:
                       _inputBackgroundColor,

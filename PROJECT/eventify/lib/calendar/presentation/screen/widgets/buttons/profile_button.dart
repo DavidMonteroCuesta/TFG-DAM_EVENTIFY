@@ -1,4 +1,4 @@
-import 'package:eventify/common/widgets/profile/widgets/profile_screen.dart';
+import 'package:eventify/auth/presentation/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileButton extends StatelessWidget {
