@@ -1,3 +1,4 @@
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart'; // Assuming this import
@@ -77,27 +78,20 @@ class UpcomingEventCard extends StatelessWidget {
             const SizedBox(height: 8.0), // Espacio consistente
 
             Text(
-              'Date: ${DateFormat('yyyy/MM/dd HH:mm').format(date)}',
+              '${AppStrings.upcomingEventDatePrefix}${DateFormat('yyyy/MM/dd HH:mm').format(date)}',
               style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[400]),
             ),
             const SizedBox(height: 8.0), // Espacio consistente
 
-            // REMOVED: Original position of Event Type
-            // Text(
-            //   'Type: ${type.split('.').last.toUpperCase()}',
-            //   style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[400]),
-            // ),
-            // const SizedBox(height: 8.0), // Espacio consistente
-
             Text(
-              'Priority: ${priority.split('.').last.toUpperCase()}',
+              '${AppStrings.upcomingEventPriorityPrefix}${priority.split('.').last.toUpperCase()}',
               style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.yellow),
             ),
             const SizedBox(height: 8.0), // Espacio consistente
 
             Flexible(
               child: Text(
-                'Description: ${description.isNotEmpty ? description : 'Nothing'}',
+                '${AppStrings.upcomingEventDescriptionPrefix}${description.isNotEmpty ? description : AppStrings.upcomingEventDescriptionEmpty}',
                 style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[300]),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

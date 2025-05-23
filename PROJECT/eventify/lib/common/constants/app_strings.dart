@@ -111,4 +111,87 @@ abstract class AppStrings {
   static const String dailiesConferenceDisplay = 'Conference';
   static const String dailiesAppointmentDisplay = 'Appointment';
   static const String dailiesTaskDisplay = 'Task';
+
+  // Calendar Screen Strings
+  static const String calendarNoUpcomingEvents = 'No hay eventos próximos.';
+
+  // Add Event Screen Strings
+  static const String addEventCreateTitle = 'CREATE NEW EVENT';
+  static const String addEventEditTitle = 'EDIT EVENT';
+  static const String addEventFieldTitle = 'Event Title';
+  static const String addEventValidationTitle = 'Please enter the event title';
+  static const String addEventFieldDescription = 'Description';
+  static const String addEventValidationDescription = 'Please enter the event description';
+  static const String addEventFieldPriority = 'Priority';
+  static const String addEventFieldNotification = 'Notification';
+  static const String addEventFieldDate = 'Date';
+  static const String addEventValidationDate = 'Please select the event date';
+  static const String addEventSelectDate = 'Select Date';
+  static const String addEventFieldTime = 'Time';
+  static const String addEventSelectTime = 'Select Time';
+  static const String addEventDefaultTime = '01:00 AM';
+  static const String addEventFieldEventType = 'Event Type';
+  static const String addEventFieldLocation = 'Location';
+  static const String addEventFieldSubject = 'Subject';
+  static const String addEventFieldWithPersonYesNo = 'With Person (Yes/No):';
+  static const String addEventFieldWithPerson = 'With Person';
+  static const String addEventSaveButton = 'Save Event';
+  static const String addEventFailedToSave = 'Failed to save event: ';
+  static const String addEventFailedToUpdate = 'Failed to update event: ';
+  static const String addEventValidationDateTime = 'Please select the event date and time';
+
+  // Upcoming Event Card Strings
+  static const String upcomingEventDatePrefix = 'Date: ';
+  static const String upcomingEventPriorityPrefix = 'Priority: ';
+  static const String upcomingEventDescriptionPrefix = 'Description: ';
+  static const String upcomingEventDescriptionEmpty = 'No description provided.';
+
+  // Monthly Calendar Strings
+  static const String monthlyCalendarMondayAbbr = 'Mon';
+  static const String monthlyCalendarTuesdayAbbr = 'Tue';
+  static const String monthlyCalendarWednesdayAbbr = 'Wed';
+  static const String monthlyCalendarThursdayAbbr = 'Thu';
+  static const String monthlyCalendarFridayAbbr = 'Fri';
+  static const String monthlyCalendarSaturdayAbbr = 'Sat';
+  static const String monthlyCalendarSundayAbbr = 'Sun';
+  static const String monthlyCalendarErrorLoadingEvents = 'Error loading events for month: ';
+  static const String monthlyCalendarEventsForMonthPrefix = 'Events for this month: ';
+  static const String monthlyCalendarNoEventsForMonth = 'No events for this month.';
+
+  // Month Row Strings
+  static const String monthJanuary = 'JANUARY';
+  static const String monthFebruary = 'FEBRUARY';
+  static const String monthMarch = 'MARCH';
+  static const String monthApril = 'APRIL';
+  static const String monthMay = 'MAY';
+  static const String monthJune = 'JUNE';
+  static const String monthJuly = 'JULY';
+  static const String monthAugust = 'AUGUST';
+  static const String monthSeptember = 'SEPTEMBER';
+  static const String monthOctober = 'OCTOBER';
+  static const String monthNovember = 'NOVEMBER';
+  static const String monthDecember = 'DECEMBER';
+
+  // Footer Strings
+  static const String footerReturnToCurrentMonthTooltip = 'Return to current month';
+
+  // Calendar Screen Specific Strings
+  static const String calendarErrorLoadingMonthlyCountsPrint = 'Error loading monthly event counts for year ';
+  static const String calendarErrorMessagePrefix = 'Error: ';
+
+  // Profile Button Strings
+  static const String profileButtonTooltip = 'Perfil';
+
+  // Chat Button Strings
+  static const String chatButtonTooltip = 'Chat';
+
+  // Calendar Toggle Button Strings
+  static const String calendarToggleShowYearlyViewTooltip = 'Show yearly view';
+  static const String calendarToggleShowMonthlyViewTooltip = 'Show monthly view';
+
+  // Priority Display Names (Capitalized for display)
+  static const String priorityDisplayCritical = 'critical';
+  static const String priorityDisplayHigh = 'high';
+  static const String priorityDisplayMedium = 'medium';
+  static const String priorityDisplayLow = 'low';
 }

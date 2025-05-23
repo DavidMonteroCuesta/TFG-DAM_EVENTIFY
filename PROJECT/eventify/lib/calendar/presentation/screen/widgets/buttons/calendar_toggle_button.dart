@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
 
 class CalendarToggleButton extends StatelessWidget {
   final VoidCallback onToggleCalendar;
@@ -19,7 +20,9 @@ class CalendarToggleButton extends StatelessWidget {
         color: Colors.white,
         size: 24.0,
       ),
-      tooltip: isMonthlyView ? 'Show yearly view' : 'Show monthly view',
+      tooltip: isMonthlyView
+          ? AppStrings.calendarToggleShowYearlyViewTooltip
+          : AppStrings.calendarToggleShowMonthlyViewTooltip,
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
+
 enum Priority {
   critical,
   high,
@@ -9,13 +11,13 @@ extension PriorityExtension on Priority {
   String get name {
     switch (this) {
       case Priority.critical:
-        return 'Critical';
+        return AppStrings.priorityDisplayCritical;
       case Priority.high:
-        return 'High';
+        return AppStrings.priorityDisplayHigh;
       case Priority.medium:
-        return 'Medium';
+        return AppStrings.priorityDisplayMedium;
       case Priority.low:
-        return 'Low';
+        return AppStrings.priorityDisplayLow;
     }
   }
 
@@ -40,17 +42,16 @@ extension PriorityExtension on Priority {
 class PriorityConverter {
   static Priority stringToPriority(String? priorityString) {
     final normalized = priorityString?.trim().toLowerCase();
-    switch (normalized) {
-      case 'critical':
-        return Priority.critical;
-      case 'high':
-        return Priority.high;
-      case 'medium':
-        return Priority.medium;
-      case 'low':
-        return Priority.low;
-      default:
-        return Priority.medium;
+    if (normalized == AppStrings.priorityDisplayCritical) {
+      return Priority.critical;
+    } else if (normalized == AppStrings.priorityDisplayHigh) {
+      return Priority.high;
+    } else if (normalized == AppStrings.priorityDisplayMedium) {
+      return Priority.medium;
+    } else if (normalized == AppStrings.priorityDisplayLow) {
+      return Priority.low;
+    } else {
+      return Priority.medium;
     }
   }
 }

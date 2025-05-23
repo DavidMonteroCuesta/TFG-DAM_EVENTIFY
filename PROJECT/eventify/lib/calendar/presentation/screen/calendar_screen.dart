@@ -5,6 +5,7 @@ import 'package:eventify/calendar/presentation/screen/widgets/header.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/monthly_calendar.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/upcoming_event_card.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -226,7 +227,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             } else {
                                               return Center(
                                                 child: Text(
-                                                  'No hay eventos próximos.',
+                                                  AppStrings.calendarNoUpcomingEvents,
                                                   style: TextStyles.urbanistBody1,
                                                   textAlign: TextAlign.center,
                                                 ),

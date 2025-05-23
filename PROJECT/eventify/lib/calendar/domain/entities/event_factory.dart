@@ -5,14 +5,9 @@ import 'package:eventify/calendar/domain/entities/events/exam_event.dart';
 import 'package:eventify/calendar/domain/entities/events/meeting_event.dart';
 import 'package:eventify/calendar/domain/entities/events/task_event.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
-import 'package:eventify/calendar/domain/enums/priorities_enum.dart'; // Import Priority enum
-// *** ELIMINADO: import 'package:flutter/material.dart'; // No longer needed for BuildContext ***
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 
 class EventFactory {
-  // Creates an Event object from a dynamic data map.
-  // The 'json' map is expected to contain all necessary event data, including the Firestore 'id'.
-  // 'userId' is passed separately for consistency, although it should also be in json.
-  // *** ELIMINADO: BuildContext context de la firma ***
   static Event createEvent(EventType type, Map<String, dynamic> json, String userId) {
     final String eventTypeString = json['type'] ?? 'task';
     final Priority priority = PriorityConverter.stringToPriority(json['priority']);

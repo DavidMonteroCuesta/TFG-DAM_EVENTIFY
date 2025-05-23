@@ -1,5 +1,6 @@
 import 'package:eventify/auth/presentation/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
 
 class ProfileButton extends StatelessWidget {
   final String? profileImageUrl;
@@ -47,7 +48,7 @@ class ProfileButton extends StatelessWidget {
         // ignore: deprecated_member_use
         highlightColor: Colors.grey.withOpacity(0.4),
       ),
-      tooltip: 'Perfil',
+      tooltip: AppStrings.profileButtonTooltip, // Using constant
     );
   }
 }

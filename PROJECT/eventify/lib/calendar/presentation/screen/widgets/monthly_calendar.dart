@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
 
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;
@@ -100,14 +101,22 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Error loading events for month: ${e.toString()}')));
+            content: Text('${AppStrings.monthlyCalendarErrorLoadingEvents}${e.toString()}'))); // Using constant
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final daysOfWeek = [
+      AppStrings.monthlyCalendarMondayAbbr, // Using constant
+      AppStrings.monthlyCalendarTuesdayAbbr, // Using constant
+      AppStrings.monthlyCalendarWednesdayAbbr, // Using constant
+      AppStrings.monthlyCalendarThursdayAbbr, // Using constant
+      AppStrings.monthlyCalendarFridayAbbr, // Using constant
+      AppStrings.monthlyCalendarSaturdayAbbr, // Using constant
+      AppStrings.monthlyCalendarSundayAbbr, // Using constant
+    ];
 
     return Container(
       decoration: BoxDecoration(
@@ -196,12 +205,12 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
           const SizedBox(height: 16),
           if (_eventsForCurrentMonth.isNotEmpty)
             Text(
-              'Events for this month: ${_eventsForCurrentMonth.length}',
+              '${AppStrings.monthlyCalendarEventsForMonthPrefix}${_eventsForCurrentMonth.length}', // Using constant
               style: TextStyles.plusJakartaSansBody1,
             )
           else
             Text(
-              'No events for this month.',
+              AppStrings.monthlyCalendarNoEventsForMonth, // Using constant
               style: TextStyles.plusJakartaSansBody1,
             ),
         ],

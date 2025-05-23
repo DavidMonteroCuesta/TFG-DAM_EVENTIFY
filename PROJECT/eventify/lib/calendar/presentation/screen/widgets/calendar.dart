@@ -2,8 +2,8 @@ import 'package:eventify/calendar/presentation/screen/widgets/month_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-// import 'package:eventify/calendar/domain/entities/event.dart'; // No longer directly used for List type
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Timestamp
+import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
 
 class Calendar extends StatefulWidget {
   final Function(int monthIndex)? onMonthSelected;
@@ -17,10 +17,18 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   final List<String> months = const [
-    'JANUARY', 'FEBRUARY', 'MARCH',
-    'APRIL', 'MAY', 'JUNE',
-    'JULY', 'AUGUST', 'SEPTEMBER',
-    'OCTOBER', 'NOVEMBER', 'DECEMBER',
+    AppStrings.monthJanuary, // Using constant
+    AppStrings.monthFebruary, // Using constant
+    AppStrings.monthMarch, // Using constant
+    AppStrings.monthApril, // Using constant
+    AppStrings.monthMay, // Using constant
+    AppStrings.monthJune, // Using constant
+    AppStrings.monthJuly, // Using constant
+    AppStrings.monthAugust, // Using constant
+    AppStrings.monthSeptember, // Using constant
+    AppStrings.monthOctober, // Using constant
+    AppStrings.monthNovember, // Using constant
+    AppStrings.monthDecember, // Using constant
   ];
 
   Map<int, int> _monthlyEventCounts = {};
@@ -74,7 +82,7 @@ class _CalendarState extends State<Calendar> {
         _monthlyEventCounts = counts;
       });
     } catch (e) {
-      print('Error loading monthly event counts for year $yearToLoad: $e');
+      print('${AppStrings.calendarErrorLoadingMonthlyCountsPrint}$yearToLoad: $e'); // Using constant
     } finally {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
@@ -93,7 +101,7 @@ class _CalendarState extends State<Calendar> {
     }
 
     if (eventViewModel.errorMessage != null) {
-      return Center(child: Text('Error: ${eventViewModel.errorMessage}'));
+      return Center(child: Text('${AppStrings.calendarErrorMessagePrefix}${eventViewModel.errorMessage}')); // Using constant
     }
 
     return Column(

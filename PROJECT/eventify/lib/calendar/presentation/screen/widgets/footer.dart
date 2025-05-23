@@ -3,6 +3,8 @@ import 'package:eventify/calendar/presentation/screen/widgets/buttons/chat_butto
 import 'package:eventify/calendar/presentation/screen/widgets/buttons/profile_button.dart';
 import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
+
 
 class Footer extends StatelessWidget {
   final VoidCallback onToggleCalendar;
@@ -35,7 +37,7 @@ class Footer extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.today, color: AppColors.footerIconColor, size: 24.0),
             onPressed: onResetToCurrent,
-            tooltip: 'Return to actual month',
+            tooltip: AppStrings.footerReturnToCurrentMonthTooltip, // Using constant
           ),
           ChatButton(
             size: 32,

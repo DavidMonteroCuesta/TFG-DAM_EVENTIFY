@@ -1,6 +1,7 @@
 import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/chat/presentation/screen/chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
 
 class ChatButton extends StatelessWidget {
   final double size;
@@ -31,7 +32,7 @@ class ChatButton extends StatelessWidget {
         // ignore: deprecated_member_use
         highlightColor: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.4),
       ),
-      tooltip: 'Chat',
+      tooltip: AppStrings.chatButtonTooltip, // Using constant
     );
   }
 }

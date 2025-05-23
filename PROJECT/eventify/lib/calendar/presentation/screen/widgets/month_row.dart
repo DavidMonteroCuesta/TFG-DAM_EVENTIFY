@@ -1,5 +1,6 @@
 import 'package:eventify/calendar/presentation/screen/widgets/month_item.dart';
 import 'package:flutter/material.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
 
 class MonthRow extends StatelessWidget {
   final List<String> rowMonths;
@@ -40,8 +41,18 @@ class MonthRow extends StatelessWidget {
 
   int _getGlobalMonthIndex(String monthName) {
     final List<String> allMonths = const [
-      'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
-      'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER',
+      AppStrings.monthJanuary, // Using constant
+      AppStrings.monthFebruary, // Using constant
+      AppStrings.monthMarch, // Using constant
+      AppStrings.monthApril, // Using constant
+      AppStrings.monthMay, // Using constant
+      AppStrings.monthJune, // Using constant
+      AppStrings.monthJuly, // Using constant
+      AppStrings.monthAugust, // Using constant
+      AppStrings.monthSeptember, // Using constant
+      AppStrings.monthOctober, // Using constant
+      AppStrings.monthNovember, // Using constant
+      AppStrings.monthDecember, // Using constant
     ];
     return allMonths.indexOf(monthName) + 1;
   }

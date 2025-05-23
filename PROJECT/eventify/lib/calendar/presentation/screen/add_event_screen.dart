@@ -9,9 +9,10 @@ import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eventify/di/service_locator.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
 
 class AddEventScreen extends StatefulWidget {
-  final Map<String, dynamic>? eventToEdit; 
+  final Map<String, dynamic>? eventToEdit;
 
   const AddEventScreen({super.key, this.eventToEdit});
   static const String routeName = '/add-event';
@@ -39,7 +40,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   @override
   void initState() {
     super.initState();
-    _eventViewModel = sl<EventViewModel>(); 
+    _eventViewModel = sl<EventViewModel>();
     _selectedDate = DateTime.now();
     _selectedTime = const TimeOfDay(hour: 1, minute: 0);
     _updateDateTime();
@@ -50,21 +51,24 @@ class _AddEventScreenState extends State<AddEventScreen> {
       _descriptionController.text = eventData['description'] ?? '';
       _selectedPriority = PriorityConverter.stringToPriority(eventData['priority']);
       _hasNotification = eventData['hasNotification'] ?? false;
-      
+
       final Timestamp? eventTimestamp = eventData['dateTime'];
       if (eventTimestamp != null) {
         _selectedDate = eventTimestamp.toDate();
         _selectedTime = TimeOfDay.fromDateTime(eventTimestamp.toDate());
       }
-      _selectedEventType = _getEventTypeFromString(eventData['type']); 
-      
-      if (eventData['type'] == 'meeting' || eventData['type'] == 'conference' || eventData['type'] == 'appointment') {
+      _selectedEventType = _getEventTypeFromString(eventData['type']);
+
+      // Using constants for event type checks
+      if (eventData['type'] == AppStrings.eventTypeMeeting ||
+          eventData['type'] == AppStrings.eventTypeConference ||
+          eventData['type'] == AppStrings.eventTypeAppointment) {
         _locationController.text = eventData['location'] ?? '';
       }
-      if (eventData['type'] == 'exam') {
+      if (eventData['type'] == AppStrings.eventTypeExam) {
         _subjectController.text = eventData['subject'] ?? '';
       }
-      if (eventData['type'] == 'appointment') {
+      if (eventData['type'] == AppStrings.eventTypeAppointment) {
         _withPersonYesNo = eventData['withPersonYesNo'] ?? false;
         _withPersonController.text = eventData['withPerson'] ?? '';
       }
@@ -74,15 +78,15 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   EventType _getEventTypeFromString(String typeString) {
     switch (typeString.toLowerCase()) {
-      case 'meeting':
+      case AppStrings.eventTypeMeeting:
         return EventType.meeting;
-      case 'exam':
+      case AppStrings.eventTypeExam:
         return EventType.exam;
-      case 'conference':
+      case AppStrings.eventTypeConference:
         return EventType.conference;
-      case 'appointment':
+      case AppStrings.eventTypeAppointment:
         return EventType.appointment;
-      case 'task':
+      case AppStrings.eventTypeTask:
       default:
         return EventType.task;
     }
@@ -155,7 +159,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
             ),
             timePickerTheme: const TimePickerThemeData(
               dayPeriodTextColor: Colors.white,
-              dayPeriodTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+              dayPeriodTextStyle: TextStyle(fontWeight: FontWeight.bold),
               dayPeriodColor: Colors.transparent,
             ),
           ),
@@ -173,14 +177,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   String? _validateTitle(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter the event title';
+      return AppStrings.addEventValidationTitle; // Usando constante
     }
     return null;
   }
 
   String? _validateDescription(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter the event description';
+      return AppStrings.addEventValidationDescription; // Usando constante
     }
     return null;
   }
@@ -210,7 +214,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
             .catchError((error) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Failed to save event: $error'),
+                  content: Text('${AppStrings.addEventFailedToSave}$error'), // Usando constante
                   backgroundColor: Colors.red,
                 ),
               );
@@ -240,7 +244,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
             .catchError((error) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Failed to update event: $error'),
+                  content: Text('${AppStrings.addEventFailedToUpdate}$error'), // Usando constante
                   backgroundColor: Colors.red,
                 ),
               );
@@ -249,7 +253,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please select the event date and time'),
+          content: Text(AppStrings.addEventValidationDateTime), // Usando constante
           backgroundColor: Colors.red,
         ),
       );
@@ -287,7 +291,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
           },
         ),
         title: ShiningTextAnimation(
-          text: widget.eventToEdit == null ? "CREATE NEW EVENT" : "EDIT EVENT", 
+          text: widget.eventToEdit == null ? AppStrings.addEventCreateTitle : AppStrings.addEventEditTitle, // Usando constantes
           style: TextStyles.urbanistBody1,
           shineColor: AppColors.textPrimary,
         ),
@@ -312,7 +316,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   color: AppColors.textPrimary,
                 ),
                 decoration: InputDecoration(
-                  labelText: 'Event Title',
+                  labelText: AppStrings.addEventFieldTitle, // Usando constante
                   labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -344,7 +348,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   color: AppColors.textPrimary,
                 ),
                 decoration: InputDecoration(
-                  labelText: 'Description',
+                  labelText: AppStrings.addEventFieldDescription, // Usando constante
                   labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -369,7 +373,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               ),
               const SizedBox(height: 22.0),
               Text(
-                'Priority',
+                AppStrings.addEventFieldPriority, // Usando constante
                 style:  TextStyles.plusJakartaSansSubtitle2,
               ),
               const SizedBox(height: 8.0),
@@ -377,25 +381,25 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 spacing: 8.0,
                 children: [
                   _buildPriorityOption(
-                    'CRITICAL',
+                    AppStrings.searchPriorityCritical, // Usando constante
                     Priority.critical,
                     const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
-                    'HIGH',
+                    AppStrings.searchPriorityHigh, // Usando constante
                     Priority.high,
                     secondaryColor.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
-                    'MEDIUM',
+                    AppStrings.searchPriorityMedium, // Usando constante
                     Priority.medium,
                     secondaryColor.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
-                    'LOW',
+                    AppStrings.searchPriorityLow, // Usando constante
                     Priority.low,
                     secondaryColor.withOpacity(0.8),
                     onSecondaryColor,
@@ -419,7 +423,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   const SizedBox(width: 8.0),
                   Expanded(
                     child: Text(
-                      'Notification',
+                      AppStrings.addEventFieldNotification, // Usando constante
                       style: TextStyles.plusJakartaSansSubtitle2,
                     ),
                   ),
@@ -433,7 +437,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       onTap: () => _selectDate(context),
                       child: InputDecorator(
                         decoration: InputDecoration(
-                          labelText: 'Date',
+                          labelText: AppStrings.addEventFieldDate, // Usando constante
                            labelStyle: TextStyles.plusJakartaSansSubtitle2,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -451,7 +455,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                             borderSide: BorderSide.none,
                           ),
                           errorText: _selectedDate == null
-                              ? 'Please select the event date'
+                              ? AppStrings.addEventValidationDate // Usando constante
                               : null,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16.0,
@@ -461,7 +465,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         child: Text(
                           _selectedDate != null
                               ? DateFormat('yyyy/MM/dd').format(_selectedDate!)
-                              : 'Select Date',
+                              : AppStrings.addEventSelectDate, // Usando constante
                           style: TextStyles.plusJakartaSansBody1,
                         ),
                       ),
@@ -473,7 +477,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       onTap: () => _selectTime(context),
                       child: InputDecorator(
                         decoration: InputDecoration(
-                          labelText: 'Time',
+                          labelText: AppStrings.addEventFieldTime, // Usando constante
                           labelStyle: TextStyles.plusJakartaSansSubtitle2,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -491,7 +495,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                             borderSide: BorderSide.none,
                           ),
                           errorText: _selectedTime == null
-                              ? 'Select Time'
+                              ? AppStrings.addEventSelectTime // Usando constante
                               : null,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16.0,
@@ -509,7 +513,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                     _selectedTime!.minute,
                                   ),
                                 )
-                              : '01:00 AM',
+                              : AppStrings.addEventDefaultTime, // Usando constante
                           style: TextStyles.plusJakartaSansBody1,
                         ),
                       ),
@@ -542,7 +546,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     })
                     .toList(),
                 decoration: InputDecoration(
-                  labelText: 'Event Type',
+                  labelText: AppStrings.addEventFieldEventType, // Usando constante
                   labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -576,7 +580,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     color: AppColors.textPrimary,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Location',
+                    labelText: AppStrings.addEventFieldLocation, // Usando constante
                     labelStyle: TextStyles.plusJakartaSansSubtitle2,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -604,7 +608,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     color: AppColors.textPrimary,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Subject',
+                    labelText: AppStrings.addEventFieldSubject, // Usando constante
                     labelStyle: TextStyles.plusJakartaSansSubtitle2,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -631,9 +635,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     const SizedBox(height: 12.0),
                     Row(
                       children: [
-                        const Text(
-                          "With Person (Yes/No):",
-                          style: TextStyle(
+                        Text(
+                          AppStrings.addEventFieldWithPersonYesNo, // Usando constante
+                          style: const TextStyle(
                             fontSize: 16.0,
                             color: AppColors.textPrimary,
                           ),
@@ -663,7 +667,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                             color: AppColors.textPrimary,
                           ),
                           decoration: InputDecoration(
-                            labelText: 'With Person',
+                            labelText: AppStrings.addEventFieldWithPerson, // Usando constante
                             labelStyle: TextStyles.plusJakartaSansSubtitle2,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -705,7 +709,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     ),
                     elevation: 2,
                   ),
-                  child: const Text('Save Event'),
+                  child: Text(AppStrings.addEventSaveButton), // Usando constante
                 ),
               ),
             ],
