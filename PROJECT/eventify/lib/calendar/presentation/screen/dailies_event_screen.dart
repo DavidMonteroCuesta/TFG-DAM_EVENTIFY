@@ -15,6 +15,7 @@ import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
 
 class DailiesEventScreen extends StatefulWidget {
   final DateTime selectedDate;
@@ -63,7 +64,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to load daily events: ${e.toString()}'),
+            content: Text('${AppStrings.dailiesFailedToLoadEvents}${e.toString()}'), // Usando constante
           ),
         );
       }
@@ -108,13 +109,13 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
             return AlertDialog(
               backgroundColor: Colors.grey[900],
               title: Text(
-                'Delete Event',
+                AppStrings.dailiesDeleteEventTitle, // Usando constante
                 style: TextStyles.urbanistSubtitle1.copyWith(
                   color: Colors.white,
                 ),
               ),
               content: Text(
-                'Are you sure you want to delete "$eventTitle"?',
+                '${AppStrings.dailiesDeleteEventConfirmPrefix}"$eventTitle"${AppStrings.dailiesDeleteEventConfirmSuffix}', // Usando constantes
                 style: TextStyles.plusJakartaSansBody2.copyWith(
                   color: Colors.grey,
                 ),
@@ -124,7 +125,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                   onPressed:
                       () => Navigator.of(context).pop(false), // User canceled
                   child: Text(
-                    'Cancel',
+                    AppStrings.dailiesCancelButton, // Usando constante
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
                       color: AppColors.primaryContainer,
                     ),
@@ -136,7 +137,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                         context,
                       ).pop(true), // User confirmed deletion
                   child: Text(
-                    'Delete',
+                    AppStrings.dailiesDeleteButton, // Usando constante
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
                       color: Colors.red,
                     ),
@@ -156,7 +157,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Event "$eventTitle" deleted successfully!'),
+              content: Text('${AppStrings.dailiesEventDeletedSuccessPrefix}"$eventTitle"${AppStrings.dailiesEventDeletedSuccessSuffix}'), // Usando constantes
             ),
           );
           // Indicate that data has changed, so CalendarScreen should refresh
@@ -165,7 +166,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
       } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to delete event: ${e.toString()}')),
+            SnackBar(content: Text('${AppStrings.dailiesFailedToDeleteEvent}${e.toString()}')), // Usando constante
           );
         }
       }
@@ -205,7 +206,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
           _dailyEvents.isEmpty
               ? Center(
                 child: Text(
-                  'No events for this day.', // Message when no events are found
+                  AppStrings.dailiesNoEventsForThisDay, // Usando constante
                   style: TextStyles.urbanistSubtitle1.copyWith(
                     color: Colors.grey,
                   ),
@@ -217,7 +218,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Events for ${DateFormat('dd/MM/yyyy').format(widget.selectedDate)} (${_dailyEvents.length})', // Display event count
+                      '${AppStrings.dailiesEventsForPrefix}${DateFormat('dd/MM/yyyy').format(widget.selectedDate)}${AppStrings.dailiesEventsCountSeparator}${_dailyEvents.length}${AppStrings.dailiesEventsCountSuffix}', // Usando constantes
                       style: TextStyles.urbanistSubtitle1.copyWith(
                         fontSize: 18,
                       ),
@@ -238,27 +239,26 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                               return const SizedBox.shrink(); // Or show an error message
                             }
 
-                            // REMOVED: context from the call to EventFactory.createEvent
                             final Event event = EventFactory.createEvent(
                               _getEventTypeFromString(
-                                eventData['type'] ?? 'task',
+                                eventData['type'] ?? AppStrings.eventTypeTask, // Usando constante
                               ),
                               eventData, // Pass the map directly
                               currentUserId, // Pass userId
                             );
 
-                            String eventTypeString = 'N/A';
+                            String eventTypeString = AppStrings.dailiesNA; // Usando constante
                             // Determine the event type string based on the runtime type of the event object
                             if (event is MeetingEvent) {
-                              eventTypeString = 'Meeting';
+                              eventTypeString = AppStrings.dailiesMeetingDisplay; // Usando constante
                             } else if (event is ExamEvent) {
-                              eventTypeString = 'Exam';
+                              eventTypeString = AppStrings.dailiesExamDisplay; // Usando constante
                             } else if (event is ConferenceEvent) {
-                              eventTypeString = 'Conference';
+                              eventTypeString = AppStrings.dailiesConferenceDisplay; // Usando constante
                             } else if (event is AppointmentEvent) {
-                              eventTypeString = 'Appointment';
+                              eventTypeString = AppStrings.dailiesAppointmentDisplay; // Usando constante
                             } else {
-                              eventTypeString = 'Task';
+                              eventTypeString = AppStrings.dailiesTaskDisplay; // Usando constante
                             }
                             // Format event time
                             String formattedDateTime =
@@ -266,7 +266,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                                     ? DateFormat(
                                       'HH:mm',
                                     ).format(event.dateTime!.toDate())
-                                    : 'N/A';
+                                    : AppStrings.dailiesNA; // Usando constante
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(
@@ -330,21 +330,21 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        'Time: $formattedDateTime',
+                                        '${AppStrings.dailiesTimePrefix}$formattedDateTime', // Usando constante
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        'Type: $eventTypeString',
+                                        '${AppStrings.dailiesTypePrefix}$eventTypeString', // Usando constante
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        'Description: ${event.description ?? 'N/A'}',
+                                        '${AppStrings.dailiesDescriptionPrefix}${event.description ?? AppStrings.dailiesNA}', // Usando constante
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       Text(
-                                        'Priority: ${event.priority.toString().split('.').last.toUpperCase()}',
+                                        '${AppStrings.dailiesPriorityPrefix}${event.priority.toString().split('.').last.toUpperCase()}', // Usando constante
                                         style: TextStyles.plusJakartaSansBody2
                                             .copyWith(color: Colors.yellow),
                                       ),
@@ -368,15 +368,15 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
 
   EventType _getEventTypeFromString(String typeString) {
     switch (typeString.toLowerCase()) {
-      case 'meeting':
+      case AppStrings.eventTypeMeeting: // Usando constante
         return EventType.meeting;
-      case 'exam':
+      case AppStrings.eventTypeExam: // Usando constante
         return EventType.exam;
-      case 'conference':
+      case AppStrings.eventTypeConference: // Usando constante
         return EventType.conference;
-      case 'appointment':
+      case AppStrings.eventTypeAppointment: // Usando constante
         return EventType.appointment;
-      case 'task':
+      case AppStrings.eventTypeTask: // Usando constante
       default:
         return EventType.task;
     }

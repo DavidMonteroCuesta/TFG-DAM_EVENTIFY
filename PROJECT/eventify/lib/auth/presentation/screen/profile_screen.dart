@@ -373,7 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                    child: dropdownContent, // Use the provided dropdown content
+                    child: dropdownContent,
                   ),
                 ),
               ],

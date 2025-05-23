@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:eventify/common/constants/api_constants.dart'; // Asegúrate de tener este archivo con tu API_KEY
+import 'package:eventify/common/constants/api_constants.dart';
+import 'package:eventify/common/constants/app_strings.dart';
 
 class ChatRemoteDataSource {
   // Define la URL base de la API de Gemini
@@ -36,18 +37,23 @@ class ChatRemoteDataSource {
             result['candidates'][0]['content']['parts'].isNotEmpty) {
           return result['candidates'][0]['content']['parts'][0]['text'];
         } else {
-          return 'No se pudo obtener una respuesta de la IA.';
+          // Usando constante
+          return AppStrings.chatNoAIResponse;
         }
       } else {
         // Manejo de errores basado en el código de estado HTTP
-        print('Error en la API de Gemini: ${response.statusCode}');
-        print('Cuerpo de la respuesta: ${response.body}');
-        return 'Error al conectar con la IA: ${response.statusCode}';
+        // Usando constantes
+        print('${AppStrings.chatGeminiApiError}${response.statusCode}');
+        print('${AppStrings.chatResponseBody}${response.body}');
+        // Usando constante
+        return '${AppStrings.chatConnectionError}${response.statusCode}';
       }
     } catch (e) {
       // Manejo de errores de red o cualquier otra excepción
-      print('Excepción al enviar mensaje a la IA: $e');
-      return 'Ocurrió un error inesperado al enviar el mensaje.';
+      // Usando constante
+      print('${AppStrings.chatExceptionSendingMessage}$e');
+      // Usando constante
+      return AppStrings.chatUnexpectedError;
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
 
 class ChatScreen extends StatefulWidget {
   static const String routeName = '/chat';
@@ -29,7 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
       final chatViewModel = Provider.of<ChatViewModel>(context, listen: false);
       if (chatViewModel.messages.isEmpty) { // Solo si no hay mensajes aún
         chatViewModel.addInitialBotGreeting(
-          "Hello! I am your Eventify assistant. How can I help you with your schedule today?",
+          AppStrings.chatInitialBotGreeting, // Usando constante
         );
       }
       _scrollToBottom();
@@ -72,11 +73,8 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
       child: Padding(
-        // MODIFIED: Adjusted padding to push content to the top of the input box
-        // Reduced top padding to make elements appear higher.
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 35.0), // Left, Top, Right, Bottom
         child: Row(
-          // Align children to the start (top) of the row
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
@@ -85,7 +83,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 onSubmitted: chatViewModel.isLoading ? null : _handleSubmitted, // Deshabilita la entrada si la IA está cargando
                 style: TextStyles.plusJakartaSansBody1,
                 decoration: InputDecoration(
-                  hintText: chatViewModel.isLoading ? 'Thinking...' : 'Escribe un mensaje...', // Muestra "Thinking..." cuando carga
+                  hintText: chatViewModel.isLoading ? AppStrings.chatThinkingHint : AppStrings.chatInputHint, // Usando constantes
                   hintStyle: TextStyles
                       .plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
@@ -102,7 +100,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     borderSide:
                         BorderSide.none,
                   ),
-                  // Content padding for the TextField itself
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                   filled: true,
@@ -110,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       _inputBackgroundColor,
                 ),
                 maxLines: null,
-                minLines: 1, // Cambiado a 1 para mejor experiencia de usuario
+                minLines: 1,
               ),
             ),
             IconButton(
@@ -118,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ? const CircularProgressIndicator(color: AppColors.textPrimary) // Indicador de carga en el botón
                   : const Icon(Icons.send, color: AppColors.textPrimary),
               onPressed: chatViewModel.isLoading
-                  ? null // Deshabilita el botón si la IA está cargando
+                  ? null
                   : () => _handleSubmitted(_messageController.text),
             ),
           ],
@@ -129,11 +126,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Usa Consumer para reconstruir solo la lista de mensajes cuando cambie
     return Scaffold(
       appBar: AppBar(
         title: ShiningTextAnimation(
-          text: 'Chat with Eventify',
+          text: AppStrings.chatScreenTitle, // Usando constante
           style: TextStyles.urbanistBody1,
         ),
         titleTextStyle: TextStyles.urbanistBody1,

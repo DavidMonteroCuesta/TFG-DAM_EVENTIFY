@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_month_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_year_use_case.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
 
 class EventViewModel extends ChangeNotifier {
   bool _isLoading = false;
@@ -71,7 +72,6 @@ class EventViewModel extends ChangeNotifier {
     String? subject,
     String? withPerson,
     bool withPersonYesNo,
-    // *** ELIMINADO: BuildContext context de aquí ***
   ) async {
     _isLoading = true;
     _errorMessage = null;
@@ -79,7 +79,7 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = 'User not authenticated. Cannot save event.';
+        _errorMessage = AppStrings.eventUserNotAuthenticatedSave; // Usando constante
         _safeNotifyListeners();
         return;
       }
@@ -100,8 +100,6 @@ class EventViewModel extends ChangeNotifier {
         if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
       };
 
-      // Crea un objeto Event temporal para el use case (no tendrá ID aún)
-      // *** ELIMINADO: context de la llamada a EventFactory.createEvent ***
       final Event newEvent = EventFactory.createEvent(type, eventDataPayload, userId);
 
       final String generatedId = await _addEventUseCase.execute(userId, newEvent);
@@ -120,7 +118,7 @@ class EventViewModel extends ChangeNotifier {
       _safeNotifyListeners(); // Notifica el estado final de éxito
     } catch (error) {
       _isLoading = false;
-      _errorMessage = 'Failed to save event: $error';
+      _errorMessage = '${AppStrings.eventFailedToSave}$error'; // Usando constante
       _safeNotifyListeners(); // Notifica el estado final de error
     }
   }
@@ -137,7 +135,6 @@ class EventViewModel extends ChangeNotifier {
       String? subject,
       bool withPersonYesNo,
       String? withPerson,
-      // *** ELIMINADO: BuildContext context de aquí ***
       ) async {
     _isLoading = true;
     _errorMessage = null;
@@ -145,7 +142,7 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = 'User not authenticated';
+        _errorMessage = AppStrings.eventUserNotAuthenticated; // Usando constante
         _safeNotifyListeners();
         return;
       }
@@ -166,8 +163,6 @@ class EventViewModel extends ChangeNotifier {
         if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
       };
 
-      // Crea un objeto Event a partir de los datos actualizados (no tendrá un campo ID en sí mismo)
-      // *** ELIMINADO: context de la llamada a EventFactory.createEvent ***
       final Event updatedEvent = EventFactory.createEvent(type, eventDataPayload, userId);
 
       await _updateEventUseCase.execute(userId, eventId, updatedEvent);
@@ -175,7 +170,7 @@ class EventViewModel extends ChangeNotifier {
       // Actualiza la lista local
       final int index = _events.indexWhere((e) => e['id'] == eventId);
       if (index != -1) {
-        _events[index] = { ...eventDataPayload, 'id': eventId, 'userId': userId }; 
+        _events[index] = { ...eventDataPayload, 'id': eventId, 'userId': userId };
       }
 
       _isLoading = false;
@@ -184,7 +179,7 @@ class EventViewModel extends ChangeNotifier {
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
-      _errorMessage = 'Failed to update event: $e';
+      _errorMessage = '${AppStrings.eventFailedToUpdate}$e'; // Usando constante
       _safeNotifyListeners();
     }
   }
@@ -196,7 +191,7 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = 'User not authenticated';
+        _errorMessage = AppStrings.eventUserNotAuthenticated; // Usando constante
         _safeNotifyListeners();
         return;
       }
@@ -211,7 +206,7 @@ class EventViewModel extends ChangeNotifier {
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
-      _errorMessage = 'Failed to delete event: $e';
+      _errorMessage = '${AppStrings.eventFailedToDelete}$e'; // Usando constante
       _safeNotifyListeners();
     }
   }
@@ -223,7 +218,7 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = 'User not authenticated';
+        _errorMessage = AppStrings.eventUserNotAuthenticated; // Usando constante
         _isLoading = false;
         _safeNotifyListeners();
         _events = []; // Limpia los eventos si no está autenticado
@@ -235,7 +230,7 @@ class EventViewModel extends ChangeNotifier {
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
-      _errorMessage = 'Failed to fetch events: $e';
+      _errorMessage = '${AppStrings.eventFailedToFetch}$e'; // Usando constante
       _safeNotifyListeners();
       _events = []; // Limpia los eventos en caso de error
     }
@@ -252,7 +247,7 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = 'User not authenticated';
+        _errorMessage = AppStrings.eventUserNotAuthenticated; // Usando constante
         _isLoading = false;
         _safeNotifyListeners();
         _nearestEvent = null;
@@ -263,9 +258,8 @@ class EventViewModel extends ChangeNotifier {
       final List<Map<String, dynamic>> allEventsData = await _getEventsForUserUseCase.execute(userId);
 
       // Convierte los mapas a objetos Event para la lógica, ya que la entidad Event ya no contiene 'id'
-      // *** ELIMINADO: context de la llamada a EventFactory.createEvent ***
       final List<Event> allEvents = allEventsData.map((data) => EventFactory.createEvent(
-        _getEventTypeFromString(data['type'] ?? 'task'), data, userId
+        _getEventTypeFromString(data['type'] ?? AppStrings.eventTypeTask), data, userId // Usando constante
       )).toList();
 
 
@@ -293,7 +287,7 @@ class EventViewModel extends ChangeNotifier {
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
-      _errorMessage = 'Failed to fetch nearest event: $e';
+      _errorMessage = '${AppStrings.eventFailedToFetchNearest}$e'; // Usando constante
       _safeNotifyListeners();
       _nearestEvent = null;
     }
@@ -316,15 +310,15 @@ class EventViewModel extends ChangeNotifier {
   // Helper para convertir string type a EventType enum
   EventType _getEventTypeFromString(String typeString) {
     switch (typeString.toLowerCase()) {
-      case 'meeting':
+      case AppStrings.eventTypeMeeting: // Usando constante
         return EventType.meeting;
-      case 'exam':
+      case AppStrings.eventTypeExam: // Usando constante
         return EventType.exam;
-      case 'conference':
+      case AppStrings.eventTypeConference: // Usando constante
         return EventType.conference;
-      case 'appointment':
+      case AppStrings.eventTypeAppointment: // Usando constante
         return EventType.appointment;
-      case 'task':
+      case AppStrings.eventTypeTask: // Usando constante
       default:
         return EventType.task;
     }
@@ -337,7 +331,7 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = 'User not authenticated';
+        _errorMessage = AppStrings.eventUserNotAuthenticated; // Usando constante
         _isLoading = false;
         _safeNotifyListeners();
         return []; // Retorna una lista vacía en caso de error
@@ -348,7 +342,7 @@ class EventViewModel extends ChangeNotifier {
       return _events; // Retorna la lista de mapas de eventos
     } catch (e) {
       _isLoading = false;
-      _errorMessage = 'Failed to fetch events for month: $e';
+      _errorMessage = '${AppStrings.eventFailedToFetchForMonth}$e'; // Usando constante
       _safeNotifyListeners();
       return []; // Retorna una lista vacía en caso de error
     }
@@ -361,7 +355,7 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = 'User not authenticated';
+        _errorMessage = AppStrings.eventUserNotAuthenticated; // Usando constante
         _isLoading = false;
         _safeNotifyListeners();
         return []; // Retorna una lista vacía en caso de error
@@ -372,7 +366,7 @@ class EventViewModel extends ChangeNotifier {
       return _events; // Retorna la lista de mapas de eventos
     } catch (e) {
       _isLoading = false;
-      _errorMessage = 'Failed to fetch events for year: $e';
+      _errorMessage = '${AppStrings.eventFailedToFetchForYear}$e'; // Usando constante
       _safeNotifyListeners();
       return []; // Retorna una lista vacía en caso de error
     }

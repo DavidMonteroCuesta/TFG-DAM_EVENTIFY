@@ -1,5 +1,6 @@
 import 'package:eventify/chat/domain/use_cases/send_message_use_case.dart';
 import 'package:eventify/chat/presentation/screen/chat_message.dart';
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class ChatViewModel extends ChangeNotifier {
@@ -31,7 +32,8 @@ class ChatViewModel extends ChangeNotifier {
 
       _messages.insert(0, ChatMessage(text: aiResponse, isUser: false));
     } catch (e) {
-      _messages.insert(0, ChatMessage(text: 'Error: ${e.toString()}', isUser: false));
+      // Reemplazado el texto hardcodeado por la constante
+      _messages.insert(0, ChatMessage(text: '${AppStrings.chatErrorPrefix}${e.toString()}', isUser: false));
     } finally {
       _setLoading(false);
     }

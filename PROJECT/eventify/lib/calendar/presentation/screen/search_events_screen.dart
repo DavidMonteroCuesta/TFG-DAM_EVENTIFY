@@ -16,6 +16,7 @@ import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
 import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
 
 class EventSearchScreen extends StatefulWidget {
   final DateTime? initialSelectedDate;
@@ -65,15 +66,15 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
 
   EventType _getEventTypeFromString(String typeString) {
     switch (typeString.toLowerCase()) {
-      case 'meeting':
+      case AppStrings.eventTypeMeeting: // Usando constante
         return EventType.meeting;
-      case 'exam':
+      case AppStrings.eventTypeExam: // Usando constante
         return EventType.exam;
-      case 'conference':
+      case AppStrings.eventTypeConference: // Usando constante
         return EventType.conference;
-      case 'appointment':
+      case AppStrings.eventTypeAppointment: // Usando constante
         return EventType.appointment;
-      case 'task':
+      case AppStrings.eventTypeTask: // Usando constante
         return EventType.task;
       default:
         return EventType.all;
@@ -90,7 +91,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to load events: ${e.toString()}')),
+          SnackBar(content: Text('${AppStrings.searchFailedToLoadEvents}${e.toString()}')), // Usando constante
         );
       }
     }
@@ -191,7 +192,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           location.isNotEmpty) {
         results = results.where((eventData) {
           final eventTypeString = eventData['type'] as String?;
-          if (eventTypeString == 'meeting' || eventTypeString == 'conference' || eventTypeString == 'appointment') {
+          if (eventTypeString == AppStrings.eventTypeMeeting || eventTypeString == AppStrings.eventTypeConference || eventTypeString == AppStrings.eventTypeAppointment) { // Usando constantes
             return (eventData['location'] as String?)?.toLowerCase().contains(location) ?? false;
           }
           return false;
@@ -201,7 +202,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           subject.isNotEmpty) {
         results = results.where((eventData) {
           final eventTypeString = eventData['type'] as String?;
-          if (eventTypeString == 'exam') {
+          if (eventTypeString == AppStrings.eventTypeExam) { // Usando constante
             return (eventData['subject'] as String?)?.toLowerCase().contains(subject) ?? false;
           }
           return false;
@@ -211,7 +212,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           _withPersonYesNoSearch) {
         results = results.where((eventData) {
           final eventTypeString = eventData['type'] as String?;
-          if (eventTypeString == 'appointment') {
+          if (eventTypeString == AppStrings.eventTypeAppointment) { // Usando constante
             final bool withPersonYesNo = eventData['withPersonYesNo'] ?? false;
             final String? eventWithPerson = eventData['withPerson'];
             return withPersonYesNo && (eventWithPerson?.toLowerCase().contains(withPerson) ?? false);
@@ -248,16 +249,16 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           builder: (BuildContext context) {
             return AlertDialog(
               backgroundColor: Colors.grey[900],
-              title: Text('Delete Event', style: TextStyles.urbanistSubtitle1.copyWith(color: Colors.white)),
-              content: Text('Are you sure you want to delete "$eventTitle"?', style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey)),
+              title: Text(AppStrings.searchDeleteEventTitle, style: TextStyles.urbanistSubtitle1.copyWith(color: Colors.white)), // Usando constante
+              content: Text('${AppStrings.searchDeleteEventConfirmPrefix}"$eventTitle"${AppStrings.searchDeleteEventConfirmSuffix}', style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey)), // Usando constantes
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('Cancel', style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.primaryContainer)),
+                  child: Text(AppStrings.searchCancelButton, style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.primaryContainer)), // Usando constante
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text('Delete', style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.red)),
+                  child: Text(AppStrings.searchDeleteButton, style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.red)), // Usando constante
                 ),
               ],
             );
@@ -270,7 +271,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         await _eventViewModel.deleteEvent(eventId);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Event "$eventTitle" deleted successfully!')),
+            SnackBar(content: Text('${AppStrings.searchEventDeletedSuccessPrefix}"$eventTitle"${AppStrings.searchEventDeletedSuccessSuffix}')), // Usando constantes
           );
           await _loadEvents();
           _searchEvents();
@@ -278,7 +279,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to delete event: ${e.toString()}')),
+            SnackBar(content: Text('${AppStrings.searchFailedToDeleteEvent}${e.toString()}')), // Usando constante
           );
         }
       }
@@ -310,7 +311,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           },
         ),
         title: ShiningTextAnimation(
-          text: "SEARCH EVENTS",
+          text: AppStrings.searchEventsTitle, // Usando constante
           style: TextStyles.urbanistBody1,
           shineColor: const Color(0xFFCBCBCB),
         ),
@@ -329,11 +330,11 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
             children: [
               _buildSearchField(
                 controller: _titleSearchController,
-                labelText: 'Event Title',
+                labelText: AppStrings.searchFieldEventTitle, // Usando constante
               ),
               _buildSearchField(
                 controller: _descriptionSearchController,
-                labelText: 'Description',
+                labelText: AppStrings.searchFieldDescription, // Usando constante
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -341,7 +342,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   onTap: () => _selectSearchDate(context),
                   child: InputDecorator(
                     decoration: InputDecoration(
-                      labelText: 'Date (YYYY-MM-DD)',
+                      labelText: AppStrings.searchFieldDate, // Usando constante
                       labelStyle: TextStyles.plusJakartaSansSubtitle2,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
@@ -383,7 +384,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                           ? DateFormat(
                             'yyyy-MM-dd',
                           ).format(_selectedSearchDate!)
-                          : 'Select Date',
+                          : AppStrings.searchFieldSelectDate, // Usando constante
                       style:
                           _selectedSearchDate != null
                               ? TextStyles.plusJakartaSansBody1
@@ -410,13 +411,13 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                         value: value,
                         child: Text(
                           value == EventType.all
-                              ? "ALL"
+                              ? AppStrings.eventTypeAll // Usando constante
                               : value.toString().split('.').last.toUpperCase(),
                           style: TextStyles.plusJakartaSansBody2,
                         ),
                       );
                     }).toList(),
-                labelText: 'Event Type',
+                labelText: AppStrings.searchFieldEventType, // Usando constante
               ),
               _buildPrioritySelector(),
               if (_selectedEventType == EventType.meeting ||
@@ -425,12 +426,12 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   _selectedEventType == EventType.all)
                 _buildSearchField(
                   controller: _locationSearchController,
-                  labelText: 'Location',
+                  labelText: AppStrings.searchFieldLocation, // Usando constante
                 ),
               if (_selectedEventType == EventType.exam || _selectedEventType == EventType.all)
                 _buildSearchField(
                   controller: _subjectSearchController,
-                  labelText: 'Subject',
+                  labelText: AppStrings.searchFieldSubject, // Usando constante
                 ),
               if (_selectedEventType == EventType.appointment || _selectedEventType == EventType.all)
                 _buildWithPersonField(),
@@ -438,7 +439,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               if (_searchResults.isNotEmpty) ...[
                 const SizedBox(height: 10.0),
                 Text(
-                  'Search Results (${_searchResults.length})',
+                  '${AppStrings.searchResultsPrefix}${_searchResults.length}${AppStrings.searchResultsSuffix}', // Usando constantes
                   style: TextStyles.urbanistSubtitle1.copyWith(fontSize: 18),
                 ),
                 const SizedBox(height: 10.0),
@@ -451,29 +452,29 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                           return const SizedBox.shrink();
                         }
                         final Event event = EventFactory.createEvent(
-                          _getEventTypeFromString(eventData['type'] ?? 'task'),
+                          _getEventTypeFromString(eventData['type'] ?? AppStrings.eventTypeTask), // Usando constante
                           eventData,
                           currentUserId,
                         );
 
-                        String eventTypeString = 'N/A';
+                        String eventTypeString = AppStrings.searchNA; // Usando constante
                         if (event is MeetingEvent) {
-                          eventTypeString = 'Meeting';
+                          eventTypeString = AppStrings.searchEventTypeMeetingDisplay; // Usando constante
                         } else if (event is ExamEvent) {
-                          eventTypeString = 'Exam';
+                          eventTypeString = AppStrings.searchEventTypeExamDisplay; // Usando constante
                         } else if (event is ConferenceEvent) {
-                          eventTypeString = 'Conference';
+                          eventTypeString = AppStrings.searchEventTypeConferenceDisplay; // Usando constante
                         } else if (event is AppointmentEvent) {
-                          eventTypeString = 'Appointment';
+                          eventTypeString = AppStrings.searchEventTypeAppointmentDisplay; // Usando constante
                         } else {
-                          eventTypeString = 'Task';
+                          eventTypeString = AppStrings.searchEventTypeTaskDisplay; // Usando constante
                         }
                         String formattedDateTime =
                             event.dateTime != null
                                 ? DateFormat(
                                   'yyyy/MM/dd HH:mm',
                                 ).format(event.dateTime!.toDate())
-                                : 'N/A';
+                                : AppStrings.searchNA; // Usando constante
 
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -518,37 +519,37 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                                   ),
                                   const SizedBox(height: 4.0),
                                   Text(
-                                    'Date and Time: $formattedDateTime',
+                                    '${AppStrings.searchDateAndTimePrefix}$formattedDateTime', // Usando constante
                                     style: TextStyles.plusJakartaSansBody2,
                                   ),
                                   const SizedBox(height: 4.0),
                                   Text(
-                                    'Type: $eventTypeString',
+                                    '${AppStrings.searchTypePrefix}$eventTypeString', // Usando constante
                                     style: TextStyles.plusJakartaSansBody2,
                                   ),
                                   const SizedBox(height: 4.0),
                                   Text(
-                                    'Description: ${event.description ?? 'N/A'}',
+                                    '${AppStrings.searchDescriptionPrefix}${event.description ?? AppStrings.searchNA}', // Usando constante
                                     style: TextStyles.plusJakartaSansBody2,
                                   ),
                                   Text(
-                                    'Priority: ${event.priority.toString().split('.').last.toUpperCase()}',
+                                    '${AppStrings.searchPriorityPrefix}${event.priority.toString().split('.').last.toUpperCase()}', // Usando constante
                                     style: TextStyles.plusJakartaSansBody2
                                         .copyWith(color: Colors.yellow),
                                   ),
                                   if (event.location != null && event.location!.isNotEmpty)
                                     Text(
-                                      'Location: ${event.location}',
+                                      '${AppStrings.searchLocationPrefix}${event.location}', // Usando constante
                                       style: TextStyles.plusJakartaSansBody2,
                                     ),
                                   if (event.subject != null && event.subject!.isNotEmpty)
                                     Text(
-                                      'Subject: ${event.subject}',
+                                      '${AppStrings.searchSubjectPrefix}${event.subject}', // Usando constante
                                       style: TextStyles.plusJakartaSansBody2,
                                     ),
                                   if (event.withPerson != null && event.withPerson!.isNotEmpty)
                                     Text(
-                                      'With Person: ${event.withPerson}',
+                                      '${AppStrings.searchWithPersonPrefix}${event.withPerson}', // Usando constante
                                       style: TextStyles.plusJakartaSansBody2,
                                     ),
                                 ],
@@ -655,7 +656,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         children: [
           Row(
             children: [
-              Text('Priority', style: TextStyles.plusJakartaSansSubtitle2),
+              Text(AppStrings.searchFieldPriority, style: TextStyles.plusJakartaSansSubtitle2), // Usando constante
               const SizedBox(width: 10),
               Switch(
                 value: _enablePriorityFilter,
@@ -686,25 +687,25 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               spacing: 8.0,
               children: [
                 _buildPriorityOption(
-                  'CRITICAL',
+                  AppStrings.searchPriorityCritical, // Usando constante
                   Priority.critical,
                   const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                   const Color(0xFF0F0F0F),
                 ),
                 _buildPriorityOption(
-                  'HIGH',
+                  AppStrings.searchPriorityHigh, // Usando constante
                   Priority.high,
                   const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                   const Color(0xFF0F0F0F),
                 ),
                 _buildPriorityOption(
-                  'MEDIUM',
+                  AppStrings.searchPriorityMedium, // Usando constante
                   Priority.medium,
                   const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                   const Color(0xFF0F0F0F),
                 ),
                 _buildPriorityOption(
-                  'LOW',
+                  AppStrings.searchPriorityLow, // Usando constante
                   Priority.low,
                   const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                   const Color(0xFF0F0F0F),
@@ -759,7 +760,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           Row(
             children: [
               Text(
-                "With Person (Yes/No):",
+                AppStrings.searchFieldWithPersonYesNo, // Usando constante
                 style: TextStyles.plusJakartaSansBody2,
               ),
               const SizedBox(width: 8.0),
@@ -786,7 +787,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 style: TextStyles.plusJakartaSansBody1,
                 onChanged: (value) => _searchEvents(),
                 decoration: InputDecoration(
-                  labelText: 'With Person',
+                  labelText: AppStrings.searchFieldWithPerson, // Usando constante
                   labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
