@@ -4,6 +4,7 @@ import 'package:eventify/auth/domain/use_cases/register_use_case.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth to check current user
+import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
 
 class SignUpViewModel extends ChangeNotifier {
   final RegisterUseCase registerUseCase;
@@ -30,13 +31,13 @@ class SignUpViewModel extends ChangeNotifier {
         _setLoadingState(false);
         return true;
       } else {
-        _setErrorMessage('Registration failed. Please try again.');
+        _setErrorMessage(AppStrings.signUpFailure); // Using constant
         _setLoadingState(false);
         return false;
       }
     } catch (e) {
       _setLoadingState(false);
-      _setErrorMessage('An error occurred: $e');
+      _setErrorMessage('${AppStrings.chatUnexpectedError}: $e'); // Using constant
       return false;
     }
   }
@@ -49,13 +50,9 @@ class SignUpViewModel extends ChangeNotifier {
       if (user != null) {
         _registeredUser = user;
         _setLoadingState(false);
-        
-        // --- VERIFICACIÓN CLAVE ---
-        // Imprime el UID del usuario autenticado para verificar
-        print('User UID after Google Sign-In: ${FirebaseAuth.instance.currentUser?.uid}');
-        // --- FIN VERIFICACIÓN CLAVE ---
 
-        // Navigate to the next screen (e.g., CalendarScreen)
+        print('User UID after Google Sign-In: ${FirebaseAuth.instance.currentUser?.uid}');
+
         Navigator.pushReplacement(
           // ignore: use_build_context_synchronously
           context,
@@ -63,16 +60,16 @@ class SignUpViewModel extends ChangeNotifier {
         );
         return true;
       } else {
-        _setErrorMessage('Google sign-in failed: User cancelled or no user returned.');
+        _setErrorMessage(AppStrings.googleSignInCancelled); // Using constant
         _setLoadingState(false);
         return false;
       }
     } on FirebaseAuthException catch (e) {
-      _setErrorMessage('Firebase Auth Error during Google sign-in: ${e.message}');
+      _setErrorMessage('${AppStrings.chatGeminiApiError}: ${e.message}'); // Using constant
       _setLoadingState(false);
       return false;
     } catch (e) {
-      _setErrorMessage('An unexpected error occurred during Google sign-in: $e');
+      _setErrorMessage('${AppStrings.chatUnexpectedError}: $e'); // Using constant
       _setLoadingState(false);
       return false;
     } finally {

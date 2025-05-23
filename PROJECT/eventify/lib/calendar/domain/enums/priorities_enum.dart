@@ -42,13 +42,13 @@ extension PriorityExtension on Priority {
 class PriorityConverter {
   static Priority stringToPriority(String? priorityString) {
     final normalized = priorityString?.trim().toLowerCase();
-    if (normalized == AppStrings.priorityDisplayCritical) {
+    if (normalized == AppStrings.priorityValueCritical) {
       return Priority.critical;
-    } else if (normalized == AppStrings.priorityDisplayHigh) {
+    } else if (normalized == AppStrings.priorityValueHigh) {
       return Priority.high;
-    } else if (normalized == AppStrings.priorityDisplayMedium) {
+    } else if (normalized == AppStrings.priorityValueMedium) {
       return Priority.medium;
-    } else if (normalized == AppStrings.priorityDisplayLow) {
+    } else if (normalized == AppStrings.priorityValueLow) {
       return Priority.low;
     } else {
       return Priority.medium;
