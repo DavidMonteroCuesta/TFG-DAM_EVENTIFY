@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import '../view_model/sign_in_view_model.dart';
 // Importa la clase abstracta TextStyles
 import 'package:eventify/common/theme/fonts/text_styles.dart';
-
+import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -61,35 +61,30 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     final signInViewModel = Provider.of<SignInViewModel>(context);
 
     return EventifyAuthLayout(
-      leftFooterText: 'Create Account',
-      rightFooterText: 'Log In',
+      leftFooterText: AppStrings.signInCreateAccountText, // Using constant
+      rightFooterText: AppStrings.signInLogInText, // Using constant
       onLeftFooterTap: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => SignUpScreen()),
+          MaterialPageRoute(builder: (_) => const SignUpScreen()),
         );
       },
       onRightFooterTap: () {},
-      //leftFooterText: '',
-      //rightFooterText: '',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AuthTitle(text: 'Welcome to Eventify'),
+          const AuthTitle(text: AppStrings.signInWelcomeTitle), // Using constant
           const SizedBox(height: 8),
-          AuthSubtitle(
-              text:
-                  'Fill out the information below in order to access your account.'),
+          const AuthSubtitle(
+              text: AppStrings.signInSubtitle), // Using constant
           const SizedBox(height: 24),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: 'Email',
+              hintText: AppStrings.signInEmailHint, // Using constant
               controller: _emailController,
-              // Aplica TextStyles.plusJakartaSansBody1 para el estilo del texto de entrada
               textStyle: TextStyles.plusJakartaSansBody1,
-              // Aplica TextStyles.plusJakartaSansSubtitle2 para el estilo del hintText
             ),
           ),
           const SizedBox(height: 16),
@@ -97,12 +92,10 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: 'Password',
+              hintText: AppStrings.signInPasswordHint, // Using constant
               obscure: true,
               controller: _passwordController,
-              // Aplica TextStyles.plusJakartaSansBody1 para el estilo del texto de entrada
               textStyle: TextStyles.plusJakartaSansBody1,
-              // Aplica TextStyles.plusJakartaSansSubtitle2 para el estilo del hintText
             ),
           ),
           const SizedBox(height: 16),
@@ -110,11 +103,10 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_signInButtonOffset, 0.0, 0.0),
             child: PrimaryButton(
-              text: 'Sign In',
+              text: AppStrings.signInButtonText, // Using constant
               onPressed: signInViewModel.isLoading
                   ? null
                   : () async {
-                      // Llama a la función de inicio de sesión del ViewModel
                       await signInViewModel.signInWithFirebase(
                           context, _emailController.text.trim(), _passwordController.text.trim());
                     },
@@ -126,14 +118,12 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 signInViewModel.errorMessage!,
-                // Aplica TextStyles.plusJakartaSansBody1 o similar, ajustando el color
                 style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.red),
               ),
             ),
           const SizedBox(height: 16),
           Text(
-            'Or sign in with',
-            // Aplica TextStyles.plusJakartaSansBody2 o similar
+            AppStrings.signInOrSignInWith, // Using constant
             style: TextStyles.plusJakartaSansBody2,
           ),
           const SizedBox(height: 16),

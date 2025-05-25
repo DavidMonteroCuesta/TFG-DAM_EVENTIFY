@@ -229,4 +229,41 @@ abstract class AppStrings {
   static const String signUpSuccess = 'Registro exitoso';
   static const String signUpFailure = 'Error en el registro';
   static const String googleSignInCancelled = 'Inicio de sesión con Google cancelado';
+
+  // New constants for SignUpScreen
+  static const String signUpCreateAccountTitle = 'Create Account';
+  static const String signUpLogInText = 'Log In';
+  static const String signUpSubtitleText = 'Let\'s get started by filling out the form below.';
+  static const String signUpEmailHint = 'Email';
+  static const String signUpUsernameHint = 'Username';
+  static const String signUpPasswordHint = 'Password';
+  static const String signUpConfirmPasswordHint = 'Confirm Password';
+  static const String signUpGetStartedButton = 'Get Started';
+  static const String signUpPasswordsDoNotMatch = 'Passwords do not match';
+  static const String signUpRegistrationFailedFallback = 'Registration failed';
+  static const String signUpOrSignUpWith = 'Or sign up with';
+
+  // New constants for SignInViewModel
+  static const String signInFailed = 'Sign in failed';
+  static const String signInErrorPrefix = 'Error: ';
+
+  // New constants for SignInScreen
+  static const String signInCreateAccountText = 'Create Account';
+  static const String signInLogInText = 'Log In';
+  static const String signInWelcomeTitle = 'Welcome to Eventify';
+  static const String signInSubtitle = 'Fill out the information below in order to access your account.';
+  static const String signInEmailHint = 'Email';
+  static const String signInPasswordHint = 'Password';
+  static const String signInButtonText = 'Sign In';
+  static const String signInOrSignInWith = 'Or sign in with';
+
+  // New constants for SocialSignInButtons
+  static const String socialSignInGoogleText = 'Continue with Google';
+  static const String socialSignInAppleText = 'Continue with Apple';
+
+  // New constants for EventifyAuthLayout
+  static const String appTitleEventify = 'EVENTIFY';
+
+  // New constants for ForgotPasswordOption
+  static const String forgotPasswordOptionText = 'Forgot Password?';
 }

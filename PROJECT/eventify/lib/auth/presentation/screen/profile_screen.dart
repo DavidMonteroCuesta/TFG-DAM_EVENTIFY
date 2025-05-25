@@ -5,6 +5,7 @@ import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/utils/dates/date_formatter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:eventify/common/constants/app_strings.dart';
 
 class ProfileScreen extends StatefulWidget {
   static String routeName = 'profile';
@@ -25,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   String get _firstLetter {
     final user = FirebaseAuth.instance.currentUser;
-    final username = user?.displayName ?? 'Usuario';
+    final username = user?.displayName ?? AppStrings.profileUsernameDefault; // Using constant
     return username.isNotEmpty ? username[0].toUpperCase() : '';
   }
 
@@ -62,10 +63,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _contactSupport(BuildContext context) {
-    const String email = 'ejemplotfgdavid@gmail.com';
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Contact us at: $email'),
+        content: Text(AppStrings.profileContactUsText), // Using constant
         duration: const Duration(seconds: 3),
         backgroundColor: Colors.blueGrey,
       ),
@@ -83,8 +83,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final user = FirebaseAuth.instance.currentUser;
 
-    final username = user?.displayName ?? 'Usuario';
-    final email = user?.email ?? 'email@dominio.com';
+    final username = user?.displayName ?? AppStrings.profileUsernameDefault; // Using constant
+    final email = user?.email ?? AppStrings.profileEmailDefault; // Using constant
 
     final bool isMobile = Theme.of(context).platform == TargetPlatform.android ||
         Theme.of(context).platform == TargetPlatform.iOS;
@@ -155,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 0, 0),
                 child: Text(
-                  'Your Account',
+                  AppStrings.profileYourAccountTitle, // Using constant
                   style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.grey[600]),
                 ),
               ),
@@ -164,13 +164,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Edit Profile Item
               _buildProfileListItem(
                 icon: Icons.person_outline,
-                text: 'Edit Profile',
+                text: AppStrings.profileEditProfileText, // Using constant
                 isExpandable: true,
                 isExpanded: _isEditProfileExpanded,
                 onToggleExpand: _toggleEditProfile,
                 listBackgroundColor: listBackgroundColor,
                 dropdownContent: Text(
-                  'Functionality not yet implemented.',
+                  AppStrings.functionalityNotImplemented, // Using constant
                   style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.white70),
                 ),
               ),
@@ -179,13 +179,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Notification Settings Item
               _buildProfileListItem(
                 icon: Icons.notifications_none,
-                text: 'Notification Settings',
+                text: AppStrings.profileNotificationSettingsText, // Using constant
                 isExpandable: true,
                 isExpanded: _isNotificationSettingsExpanded,
                 onToggleExpand: _toggleNotificationSettings,
                 listBackgroundColor: listBackgroundColor,
                 dropdownContent: Text(
-                  'Functionality not yet implemented.',
+                  AppStrings.functionalityNotImplemented, // Using constant
                   style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.white70),
                 ),
               ),
@@ -195,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 16, 0, 0),
                 child: Text(
-                  'App Settings',
+                  AppStrings.profileAppSettingsTitle, // Using constant
                   style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.grey[600]),
                 ),
               ),
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Support Section with Dropdown
               _buildProfileListItem(
                 icon: Icons.help_outline_rounded,
-                text: 'Support',
+                text: AppStrings.profileSupportText, // Using constant
                 isExpandable: true,
                 isExpanded: _isSupportExpanded,
                 onToggleExpand: _toggleSupport,
@@ -212,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 dropdownContent: InkWell(
                   onTap: () => _contactSupport(context),
                   child: Text(
-                    'Contact us at: ejemplotfgdavid@gmail.com',
+                    AppStrings.profileContactUsText, // Using constant
                     style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.white70),
                   ),
                 ),
@@ -222,13 +222,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Terms of Service Item
               _buildProfileListItem(
                 icon: Icons.privacy_tip_rounded,
-                text: 'Terms of Service',
+                text: AppStrings.profileTermsOfServiceText, // Using constant
                 isExpandable: true,
                 isExpanded: _isTermsOfServiceExpanded,
                 onToggleExpand: _toggleTermsOfService,
                 listBackgroundColor: listBackgroundColor,
                 dropdownContent: Text(
-                  'Functionality not yet implemented.',
+                  AppStrings.functionalityNotImplemented, // Using constant
                   style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.white70),
                 ),
               ),
@@ -252,7 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     shadowColor: errorColor.withOpacity(0.5),
                   ),
                   child: Text(
-                    'Log Out',
+                    AppStrings.profileLogoutButton, // Using constant
                     style: TextStyles.plusJakartaSansButton.copyWith(fontSize: 16),
                   ),
                 ),

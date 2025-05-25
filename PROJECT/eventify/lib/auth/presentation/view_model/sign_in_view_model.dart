@@ -2,6 +2,7 @@ import 'package:eventify/auth/domain/use_cases/login_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart'; // Import the calendar screen
+import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
 
 class SignInViewModel extends ChangeNotifier {
   final LoginUseCase loginUseCase;
@@ -12,7 +13,7 @@ class SignInViewModel extends ChangeNotifier {
   BuildContext? _context; // Store the context
 
   SignInViewModel({required this.loginUseCase}) {
-       // No need to check current user here.  We do it in main.dart
+       // No need to check current user here. We do it in main.dart
   }
 
   // Method to initialize the view model with the context
@@ -32,7 +33,7 @@ class SignInViewModel extends ChangeNotifier {
       final UserCredential? userCredential = await loginUseCase.execute(email, password); // Call the use case
       if (userCredential != null) {
         // Handle success in the ViewModel
-        print('Sign in successful: ${userCredential.user?.email}');
+        print('Sign in successful: ${userCredential.user?.email}'); // This is a log, not for UI
         _isLoading = false;
         notifyListeners();
         // Navigate to the calendar screen after successful login
@@ -41,30 +42,26 @@ class SignInViewModel extends ChangeNotifier {
             MaterialPageRoute(builder: (_) => const CalendarScreen()),
           );
         }
-
-       
       } else {
         _isLoading = false;
-        _errorMessage = 'Sign in failed';
+        _errorMessage = AppStrings.signInFailed; // Using constant
         notifyListeners();
          if (_context != null) {
            ScaffoldMessenger.of(_context!).showSnackBar(
-            const SnackBar(content: Text('Sign in failed')),
+            const SnackBar(content: Text(AppStrings.signInFailed)), // Using constant
           );
         }
-       
       }
     } catch (error) {
       // Handle the error
       _isLoading = false;
-      _errorMessage = error.toString();
+      _errorMessage = '${AppStrings.signInErrorPrefix}$error'; // Using constant
       notifyListeners();
        if (_context != null) {
          ScaffoldMessenger.of(_context!).showSnackBar(
-          SnackBar(content: Text('Error: $error')),
+          SnackBar(content: Text('${AppStrings.signInErrorPrefix}$error')), // Using constant
         );
        }
-     
     }
   }
 

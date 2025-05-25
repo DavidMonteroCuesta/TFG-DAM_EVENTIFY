@@ -73,7 +73,6 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: Colors.white),
           ),
         ),
-        // Use a builder to get the context and check the user
         home: Builder(
           builder: (context) {
             final auth = FirebaseAuth.instance;

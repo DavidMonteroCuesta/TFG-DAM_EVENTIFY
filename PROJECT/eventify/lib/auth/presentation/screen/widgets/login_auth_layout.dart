@@ -1,5 +1,6 @@
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:flutter/material.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
 
 class EventifyAuthLayout extends StatelessWidget {
   final Widget child;
@@ -31,7 +32,7 @@ class EventifyAuthLayout extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ShiningTextAnimation(
-                    text: 'EVENTIFY',
+                    text: AppStrings.appTitleEventify, // Using constant
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 40,

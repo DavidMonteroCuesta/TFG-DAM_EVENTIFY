@@ -4,7 +4,7 @@ import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
+import 'package:eventify/common/constants/app_strings.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String routeName = '/chat';

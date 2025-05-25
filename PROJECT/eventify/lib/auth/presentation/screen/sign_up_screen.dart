@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_up_view_model.dart';
 import 'package:eventify/common/animations/ani_left_to_right.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -21,12 +22,12 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  final _usernameController = TextEditingController(); // Nuevo controlador para el nombre de usuario
+  final _usernameController = TextEditingController();
 
   double _emailOffset = 0.0;
   double _passwordOffset = 0.0;
   double _confirmPasswordOffset = 0.0;
-  double _usernameOffset = 0.0; // Nuevo offset para el nombre de usuario
+  double _usernameOffset = 0.0;
   double _signUpButtonOffset = 0.0;
 
   @override
@@ -34,7 +35,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
     _emailOffset = -screenWidth;
     _passwordOffset = -screenWidth;
     _confirmPasswordOffset = -screenWidth;
-    _usernameOffset = -screenWidth; // Inicializar el offset del nombre de usuario
+    _usernameOffset = -screenWidth;
     _signUpButtonOffset = -screenWidth;
   }
 
@@ -45,7 +46,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
         _emailOffset = value;
       });
     });
-    animateElement(-screenWidth, 250, (value) { // Animar el campo del nombre de usuario
+    animateElement(-screenWidth, 250, (value) {
       setState(() {
         _usernameOffset = value;
       });
@@ -72,8 +73,8 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
     final signUpViewModel = Provider.of<SignUpViewModel>(context);
 
     return EventifyAuthLayout(
-      leftFooterText: 'Create Account',
-      rightFooterText: 'Log In',
+      leftFooterText: AppStrings.signUpCreateAccountTitle, // Using constant
+      rightFooterText: AppStrings.signUpLogInText, // Using constant
       onRightFooterTap: () {
         Navigator.pushReplacement(
           context,
@@ -86,15 +87,15 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AuthTitle(text: 'Create Account'),
+          const AuthTitle(text: AppStrings.signUpCreateAccountTitle), // Using constant
           const SizedBox(height: 8),
-          const AuthSubtitle(text: 'Let\'s get started by filling out the form below.'),
+          const AuthSubtitle(text: AppStrings.signUpSubtitleText), // Using constant
           const SizedBox(height: 24),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: 'Email',
+              hintText: AppStrings.signUpEmailHint, // Using constant
               controller: _emailController,
               textStyle: const TextStyle(),
             ),
@@ -104,7 +105,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_usernameOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: 'Username',
+              hintText: AppStrings.signUpUsernameHint, // Using constant
               controller: _usernameController,
               textStyle: const TextStyle(),
             ),
@@ -114,7 +115,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: 'Password',
+              hintText: AppStrings.signUpPasswordHint, // Using constant
               obscure: true,
               controller: _passwordController,
               textStyle: const TextStyle(),
@@ -125,7 +126,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_confirmPasswordOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: 'Confirm Password',
+              hintText: AppStrings.signUpConfirmPasswordHint, // Using constant
               obscure: true,
               controller: _confirmPasswordController,
               textStyle: const TextStyle(),
@@ -136,7 +137,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_signUpButtonOffset, 0.0, 0.0),
             child: PrimaryButton(
-              text: 'Get Started',
+              text: AppStrings.signUpGetStartedButton, // Using constant
               onPressed: signUpViewModel.isLoading
                   ? null
                   : () async {
@@ -155,12 +156,12 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
                         } else {
                           // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(signUpViewModel.errorMessage ?? 'Registration failed')),
+                            SnackBar(content: Text(signUpViewModel.errorMessage ?? AppStrings.signUpRegistrationFailedFallback)), // Using constant
                           );
                         }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Passwords do not match')),
+                          const SnackBar(content: Text(AppStrings.signUpPasswordsDoNotMatch)), // Using constant
                         );
                       }
                     },
@@ -177,7 +178,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             ),
           const SizedBox(height: 16),
           Text(
-            'Or sign up with',
+            AppStrings.signUpOrSignUpWith, // Using constant
             style: TextStyle(
               color: Colors.grey[500],
               fontSize: 14,

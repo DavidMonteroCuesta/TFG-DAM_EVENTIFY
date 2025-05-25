@@ -1,5 +1,5 @@
-// Widget separado para la opción de "Forgot Password?"
 import 'package:flutter/material.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
 
 class ForgotPasswordOption extends StatelessWidget {
   const ForgotPasswordOption({super.key});
@@ -12,7 +12,7 @@ class ForgotPasswordOption extends StatelessWidget {
           // Lógica para recuperar contraseña
         },
         child: const Text(
-          'Forgot Password?',
+          AppStrings.forgotPasswordOptionText, // Using constant
           style: TextStyle(
             color: Colors.grey,
             decoration: TextDecoration.underline,
