@@ -5,7 +5,8 @@ import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/utils/dates/date_formatter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
+import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
 
 class ProfileScreen extends StatefulWidget {
   static String routeName = 'profile';
@@ -22,11 +23,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isEditProfileExpanded = false;
   bool _isNotificationSettingsExpanded = false;
   bool _isTermsOfServiceExpanded = false;
-  bool _isSupportExpanded = false; // Renamed for consistency
+  bool _isSupportExpanded = false;
 
   String get _firstLetter {
     final user = FirebaseAuth.instance.currentUser;
-    final username = user?.displayName ?? AppStrings.profileUsernameDefault; // Using constant
+    final username = user?.displayName ?? AppInternalConstants.profileUsernameDefault;
     return username.isNotEmpty ? username[0].toUpperCase() : '';
   }
 
@@ -56,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  void _toggleSupport() { // Renamed from _toggleSupportDropdown
+  void _toggleSupport() {
     setState(() {
       _isSupportExpanded = !_isSupportExpanded;
     });
@@ -65,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _contactSupport(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(AppStrings.profileContactUsText), // Using constant
+        content: Text(AppStrings.profileContactUsText),
         duration: const Duration(seconds: 3),
         backgroundColor: Colors.blueGrey,
       ),
@@ -83,8 +84,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final user = FirebaseAuth.instance.currentUser;
 
-    final username = user?.displayName ?? AppStrings.profileUsernameDefault; // Using constant
-    final email = user?.email ?? AppStrings.profileEmailDefault; // Using constant
+    final username = user?.displayName ?? AppInternalConstants.profileUsernameDefault;
+    final email = user?.email ?? AppInternalConstants.profileEmailDefault;
 
     final bool isMobile = Theme.of(context).platform == TargetPlatform.android ||
         Theme.of(context).platform == TargetPlatform.iOS;
@@ -136,11 +137,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // MODIFIED: Applied ShiningTextAnimation to the username with matching colors
                     ShiningTextAnimation(
                       text: username,
-                      style: TextStyles.urbanistH6.copyWith(color: Colors.white70), // Matched color to currentDate
-                      shineColor: const Color(0xFFCBCBCB), // Added explicit shineColor for consistency
+                      style: TextStyles.urbanistH6.copyWith(color: Colors.white70),
+                      shineColor: const Color(0xFFCBCBCB),
                     ),
                     Text(
                       email,
@@ -155,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 0, 0),
                 child: Text(
-                  AppStrings.profileYourAccountTitle, // Using constant
+                  AppStrings.profileYourAccountTitle,
                   style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.grey[600]),
                 ),
               ),
@@ -164,13 +164,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Edit Profile Item
               _buildProfileListItem(
                 icon: Icons.person_outline,
-                text: AppStrings.profileEditProfileText, // Using constant
+                text: AppStrings.profileEditProfileText,
                 isExpandable: true,
                 isExpanded: _isEditProfileExpanded,
                 onToggleExpand: _toggleEditProfile,
                 listBackgroundColor: listBackgroundColor,
                 dropdownContent: Text(
-                  AppStrings.functionalityNotImplemented, // Using constant
+                  AppInternalConstants.functionalityNotImplemented,
                   style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.white70),
                 ),
               ),
@@ -179,13 +179,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Notification Settings Item
               _buildProfileListItem(
                 icon: Icons.notifications_none,
-                text: AppStrings.profileNotificationSettingsText, // Using constant
+                text: AppStrings.profileNotificationSettingsText,
                 isExpandable: true,
                 isExpanded: _isNotificationSettingsExpanded,
                 onToggleExpand: _toggleNotificationSettings,
                 listBackgroundColor: listBackgroundColor,
                 dropdownContent: Text(
-                  AppStrings.functionalityNotImplemented, // Using constant
+                  AppInternalConstants.functionalityNotImplemented,
                   style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.white70),
                 ),
               ),
@@ -195,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 16, 0, 0),
                 child: Text(
-                  AppStrings.profileAppSettingsTitle, // Using constant
+                  AppStrings.profileAppSettingsTitle,
                   style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.grey[600]),
                 ),
               ),
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Support Section with Dropdown
               _buildProfileListItem(
                 icon: Icons.help_outline_rounded,
-                text: AppStrings.profileSupportText, // Using constant
+                text: AppStrings.profileSupportText,
                 isExpandable: true,
                 isExpanded: _isSupportExpanded,
                 onToggleExpand: _toggleSupport,
@@ -212,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 dropdownContent: InkWell(
                   onTap: () => _contactSupport(context),
                   child: Text(
-                    AppStrings.profileContactUsText, // Using constant
+                    AppStrings.profileContactUsText,
                     style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.white70),
                   ),
                 ),
@@ -222,19 +222,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Terms of Service Item
               _buildProfileListItem(
                 icon: Icons.privacy_tip_rounded,
-                text: AppStrings.profileTermsOfServiceText, // Using constant
+                text: AppStrings.profileTermsOfServiceText,
                 isExpandable: true,
                 isExpanded: _isTermsOfServiceExpanded,
                 onToggleExpand: _toggleTermsOfService,
                 listBackgroundColor: listBackgroundColor,
                 dropdownContent: Text(
-                  AppStrings.functionalityNotImplemented, // Using constant
+                  AppInternalConstants.functionalityNotImplemented,
                   style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.white70),
                 ),
               ),
               const SizedBox(height: 24.0),
 
-              // Log Out Button (functionality is already implemented)
+              // Log Out Button
               Align(
                 alignment: AlignmentDirectional.center,
                 child: ElevatedButton(
@@ -252,7 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     shadowColor: errorColor.withOpacity(0.5),
                   ),
                   child: Text(
-                    AppStrings.profileLogoutButton, // Using constant
+                    AppStrings.profileLogoutButton,
                     style: TextStyles.plusJakartaSansButton.copyWith(fontSize: 16),
                   ),
                 ),
@@ -287,15 +287,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required bool isExpandable,
     required bool isExpanded,
     required VoidCallback onToggleExpand,
-    required Widget dropdownContent, // Content to show when expanded
-    VoidCallback? onTap, // Optional original onTap for non-expandable items
+    required Widget dropdownContent,
+    VoidCallback? onTap,
   }) {
     return Column(
       children: [
         Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
           child: InkWell(
-            onTap: isExpandable ? onToggleExpand : onTap, // Use onToggleExpand if expandable, else original onTap
+            onTap: isExpandable ? onToggleExpand : onTap,
             borderRadius: BorderRadius.circular(12),
             child: Container(
               width: double.infinity,
@@ -335,7 +335,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Icon(
                           isExpandable
                               ? (isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down)
-                              : Icons.arrow_forward_ios, // Keep forward arrow for non-expandable
+                              : Icons.arrow_forward_ios,
                           color: Colors.grey,
                           size: 24,
                         ),
@@ -351,16 +351,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           child: Visibility(
-            visible: isExpanded && isExpandable, // Only visible if expandable and expanded
+            visible: isExpanded && isExpandable,
             child: Column(
               children: [
-                const SizedBox(height: 5.0), // Separation between main item and dropdown content
+                const SizedBox(height: 5.0),
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF2A2A2A), // Slightly lighter grey
+                      color: const Color(0xFF2A2A2A),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: Colors.grey.withOpacity(0.2), width: 0.5),
                       boxShadow: [

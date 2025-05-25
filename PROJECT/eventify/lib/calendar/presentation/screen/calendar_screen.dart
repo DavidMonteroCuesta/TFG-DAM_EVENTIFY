@@ -5,11 +5,12 @@ import 'package:eventify/calendar/presentation/screen/widgets/header.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/monthly_calendar.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/upcoming_event_card.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/screen/add_event_screen.dart'; // Import AddEventScreen
+import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants (ensure this is present)
 
 class CalendarScreen extends StatefulWidget {
   static const String routeName = '/calendar';
@@ -110,8 +111,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     safeEventData['location'] = safeEventData['location'] ?? '';
     safeEventData['subject'] = safeEventData['subject'] ?? '';
     safeEventData['withPerson'] = safeEventData['withPerson'] ?? '';
-    safeEventData['type'] = safeEventData['type']?.toString() ?? 'task';
-    safeEventData['priority'] = safeEventData['priority']?.toString() ?? 'low';
+    safeEventData['type'] = safeEventData['type']?.toString() ?? AppInternalConstants.eventTypeTask; // Using constant
+    safeEventData['priority'] = safeEventData['priority']?.toString() ?? AppInternalConstants.priorityValueLow; // Using constant
 
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
@@ -218,7 +219,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                 priority: eventViewModel.nearestEvent!.priority.toString(),
                                                 description: eventViewModel.nearestEvent!.description ?? '',
                                                 onEdit: () => _onEditNearestEvent(eventViewModel.nearestEvent!.toJson()),
-                                                // MODIFIED: Nuevo callback para onTapCard
                                                 onTapCard: () => _navigateToSearchScreenWithNearestEvent(
                                                   eventViewModel.nearestEvent!.title,
                                                   eventViewModel.nearestEvent!.dateTime!.toDate(),
@@ -227,7 +227,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             } else {
                                               return Center(
                                                 child: Text(
-                                                  AppStrings.calendarNoUpcomingEvents,
+                                                  AppStrings.calendarNoUpcomingEvents, // Using constant
                                                   style: TextStyles.urbanistBody1,
                                                   textAlign: TextAlign.center,
                                                 ),
@@ -288,7 +288,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                               priority: eventViewModel.nearestEvent!.priority.toString(),
                                               description: eventViewModel.nearestEvent!.description ?? '',
                                               onEdit: () => _onEditNearestEvent(eventViewModel.nearestEvent!.toJson()),
-                                              // MODIFIED: Nuevo callback para onTapCard
                                               onTapCard: () => _navigateToSearchScreenWithNearestEvent(
                                                 eventViewModel.nearestEvent!.title,
                                                 eventViewModel.nearestEvent!.dateTime!.toDate(),
@@ -297,7 +296,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           } else {
                                             return Center(
                                               child: Text(
-                                                'No hay eventos próximos.',
+                                                AppStrings.calendarNoUpcomingEvents, // Using constant
                                                 style: TextStyles.urbanistBody1,
                                                 textAlign: TextAlign.center,
                                               ),

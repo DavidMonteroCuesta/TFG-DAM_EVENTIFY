@@ -1,8 +1,8 @@
 import 'package:eventify/auth/domain/use_cases/login_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:eventify/calendar/presentation/screen/calendar_screen.dart'; // Import the calendar screen
-import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
+import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
 
 class SignInViewModel extends ChangeNotifier {
   final LoginUseCase loginUseCase;
@@ -10,7 +10,7 @@ class SignInViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
-  BuildContext? _context; // Store the context
+  BuildContext? _context;
 
   SignInViewModel({required this.loginUseCase}) {
        // No need to check current user here. We do it in main.dart
@@ -26,11 +26,11 @@ class SignInViewModel extends ChangeNotifier {
   Future<void> signInWithFirebase(BuildContext context, String email, String password) async {
     _isLoading = true;
     _errorMessage = null;
-    _context = context; // Store the context
+    _context = context;
     notifyListeners();
 
     try {
-      final UserCredential? userCredential = await loginUseCase.execute(email, password); // Call the use case
+      final UserCredential? userCredential = await loginUseCase.execute(email, password);
       if (userCredential != null) {
         // Handle success in the ViewModel
         print('Sign in successful: ${userCredential.user?.email}'); // This is a log, not for UI
@@ -44,22 +44,22 @@ class SignInViewModel extends ChangeNotifier {
         }
       } else {
         _isLoading = false;
-        _errorMessage = AppStrings.signInFailed; // Using constant
+        _errorMessage = AppInternalConstants.signInFailed;
         notifyListeners();
          if (_context != null) {
            ScaffoldMessenger.of(_context!).showSnackBar(
-            const SnackBar(content: Text(AppStrings.signInFailed)), // Using constant
+            const SnackBar(content: Text(AppInternalConstants.signInFailed)),
           );
         }
       }
     } catch (error) {
       // Handle the error
       _isLoading = false;
-      _errorMessage = '${AppStrings.signInErrorPrefix}$error'; // Using constant
+      _errorMessage = '${AppInternalConstants.signInErrorPrefix}$error';
       notifyListeners();
        if (_context != null) {
          ScaffoldMessenger.of(_context!).showSnackBar(
-          SnackBar(content: Text('${AppStrings.signInErrorPrefix}$error')), // Using constant
+          SnackBar(content: Text('${AppInternalConstants.signInErrorPrefix}$error')),
         );
        }
     }

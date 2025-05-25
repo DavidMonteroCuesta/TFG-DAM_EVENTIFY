@@ -4,7 +4,8 @@ import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
+import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
 
 class ChatScreen extends StatefulWidget {
   static const String routeName = '/chat';
@@ -30,7 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
       final chatViewModel = Provider.of<ChatViewModel>(context, listen: false);
       if (chatViewModel.messages.isEmpty) { // Solo si no hay mensajes aún
         chatViewModel.addInitialBotGreeting(
-          AppStrings.chatInitialBotGreeting, // Usando constante
+          AppStrings.chatInitialBotGreeting,
         );
       }
       _scrollToBottom();
@@ -83,7 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 onSubmitted: chatViewModel.isLoading ? null : _handleSubmitted, // Deshabilita la entrada si la IA está cargando
                 style: TextStyles.plusJakartaSansBody1,
                 decoration: InputDecoration(
-                  hintText: chatViewModel.isLoading ? AppStrings.chatThinkingHint : AppStrings.chatInputHint, // Usando constantes
+                  hintText: chatViewModel.isLoading ? AppInternalConstants.chatThinkingHint : AppStrings.chatInputHint, // Using constants
                   hintStyle: TextStyles
                       .plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
@@ -129,7 +130,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: ShiningTextAnimation(
-          text: AppStrings.chatScreenTitle, // Usando constante
+          text: AppStrings.chatScreenTitle,
           style: TextStyles.urbanistBody1,
         ),
         titleTextStyle: TextStyles.urbanistBody1,

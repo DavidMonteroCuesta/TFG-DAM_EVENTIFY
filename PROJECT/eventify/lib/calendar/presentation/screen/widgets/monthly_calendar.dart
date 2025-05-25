@@ -5,10 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
+import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
 
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;
-  final ValueChanged<DateTime>? onDaySelected; // This property is correctly defined here
+  final ValueChanged<DateTime>? onDaySelected;
 
   const MonthlyCalendar({
     super.key,
@@ -43,7 +44,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
     if (widget.initialFocusedDay.year != oldWidget.initialFocusedDay.year ||
         widget.initialFocusedDay.month != oldWidget.initialFocusedDay.month ||
         widget.initialFocusedDay.day != oldWidget.initialFocusedDay.day ||
-        widget.key != oldWidget.key // Added check for key to force rebuild on reset
+        widget.key != oldWidget.key
         ) {
       setState(() {
         _focusedDay = widget.initialFocusedDay;
@@ -101,7 +102,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('${AppStrings.monthlyCalendarErrorLoadingEvents}${e.toString()}'))); // Using constant
+            content: Text('${AppInternalConstants.monthlyCalendarErrorLoadingEvents}${e.toString()}')));
       }
     }
   }
@@ -109,13 +110,13 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   @override
   Widget build(BuildContext context) {
     final daysOfWeek = [
-      AppStrings.monthlyCalendarMondayAbbr, // Using constant
-      AppStrings.monthlyCalendarTuesdayAbbr, // Using constant
-      AppStrings.monthlyCalendarWednesdayAbbr, // Using constant
-      AppStrings.monthlyCalendarThursdayAbbr, // Using constant
-      AppStrings.monthlyCalendarFridayAbbr, // Using constant
-      AppStrings.monthlyCalendarSaturdayAbbr, // Using constant
-      AppStrings.monthlyCalendarSundayAbbr, // Using constant
+      AppStrings.monthlyCalendarMondayAbbr,
+      AppStrings.monthlyCalendarTuesdayAbbr,
+      AppStrings.monthlyCalendarWednesdayAbbr,
+      AppStrings.monthlyCalendarThursdayAbbr,
+      AppStrings.monthlyCalendarFridayAbbr,
+      AppStrings.monthlyCalendarSaturdayAbbr,
+      AppStrings.monthlyCalendarSundayAbbr,
     ];
 
     return Container(
@@ -135,7 +136,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 onPressed: _goToPreviousMonth,
               ),
               Text(
-                DateFormat('MMMM', 'en_US').format(_focusedDay),
+                DateFormat('MMMM', AppInternalConstants.monthlyCalendarLocaleEnUs).format(_focusedDay),
                 style: TextStyles.urbanistH6,
               ),
               IconButton(
@@ -205,12 +206,12 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
           const SizedBox(height: 16),
           if (_eventsForCurrentMonth.isNotEmpty)
             Text(
-              '${AppStrings.monthlyCalendarEventsForMonthPrefix}${_eventsForCurrentMonth.length}', // Using constant
+              '${AppStrings.monthlyCalendarEventsForMonthPrefix}${_eventsForCurrentMonth.length}',
               style: TextStyles.plusJakartaSansBody1,
             )
           else
             Text(
-              AppStrings.monthlyCalendarNoEventsForMonth, // Using constant
+              AppStrings.monthlyCalendarNoEventsForMonth,
               style: TextStyles.plusJakartaSansBody1,
             ),
         ],

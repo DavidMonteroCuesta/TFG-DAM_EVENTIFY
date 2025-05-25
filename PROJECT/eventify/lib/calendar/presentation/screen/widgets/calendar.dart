@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Timestamp
 import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
+import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
 
 class Calendar extends StatefulWidget {
   final Function(int monthIndex)? onMonthSelected;
@@ -17,18 +18,18 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   final List<String> months = const [
-    AppStrings.monthJanuary, // Using constant
-    AppStrings.monthFebruary, // Using constant
-    AppStrings.monthMarch, // Using constant
-    AppStrings.monthApril, // Using constant
-    AppStrings.monthMay, // Using constant
-    AppStrings.monthJune, // Using constant
-    AppStrings.monthJuly, // Using constant
-    AppStrings.monthAugust, // Using constant
-    AppStrings.monthSeptember, // Using constant
-    AppStrings.monthOctober, // Using constant
-    AppStrings.monthNovember, // Using constant
-    AppStrings.monthDecember, // Using constant
+    AppStrings.monthJanuary,
+    AppStrings.monthFebruary,
+    AppStrings.monthMarch,
+    AppStrings.monthApril,
+    AppStrings.monthMay,
+    AppStrings.monthJune,
+    AppStrings.monthJuly,
+    AppStrings.monthAugust,
+    AppStrings.monthSeptember,
+    AppStrings.monthOctober,
+    AppStrings.monthNovember,
+    AppStrings.monthDecember,
   ];
 
   Map<int, int> _monthlyEventCounts = {};
@@ -82,7 +83,7 @@ class _CalendarState extends State<Calendar> {
         _monthlyEventCounts = counts;
       });
     } catch (e) {
-      print('${AppStrings.calendarErrorLoadingMonthlyCountsPrint}$yearToLoad: $e'); // Using constant
+      print('${AppInternalConstants.calendarErrorLoadingMonthlyCountsPrint}$yearToLoad: $e'); // Using constant from AppInternalConstants
     } finally {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
@@ -101,7 +102,7 @@ class _CalendarState extends State<Calendar> {
     }
 
     if (eventViewModel.errorMessage != null) {
-      return Center(child: Text('${AppStrings.calendarErrorMessagePrefix}${eventViewModel.errorMessage}')); // Using constant
+      return Center(child: Text('${AppInternalConstants.calendarErrorMessagePrefix}${eventViewModel.errorMessage}')); // Using constant from AppInternalConstants
     }
 
     return Column(

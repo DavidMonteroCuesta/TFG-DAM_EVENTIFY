@@ -3,9 +3,8 @@ import 'package:eventify/auth/domain/use_cases/google_sign_in_use_case.dart';
 import 'package:eventify/auth/domain/use_cases/register_use_case.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth to check current user
-import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
 class SignUpViewModel extends ChangeNotifier {
   final RegisterUseCase registerUseCase;
   final GoogleSignInUseCase googleSignInUseCase;
@@ -31,13 +30,13 @@ class SignUpViewModel extends ChangeNotifier {
         _setLoadingState(false);
         return true;
       } else {
-        _setErrorMessage(AppStrings.signUpFailure); // Using constant
+        _setErrorMessage(AppInternalConstants.signUpFailure); // Corrected to AppInternalConstants
         _setLoadingState(false);
         return false;
       }
     } catch (e) {
       _setLoadingState(false);
-      _setErrorMessage('${AppStrings.chatUnexpectedError}: $e'); // Using constant
+      _setErrorMessage('${AppInternalConstants.chatUnexpectedError}: $e');
       return false;
     }
   }
@@ -60,16 +59,16 @@ class SignUpViewModel extends ChangeNotifier {
         );
         return true;
       } else {
-        _setErrorMessage(AppStrings.googleSignInCancelled); // Using constant
+        _setErrorMessage(AppInternalConstants.googleSignInCancelled); // Corrected to AppInternalConstants
         _setLoadingState(false);
         return false;
       }
     } on FirebaseAuthException catch (e) {
-      _setErrorMessage('${AppStrings.chatGeminiApiError}: ${e.message}'); // Using constant
+      _setErrorMessage('${AppInternalConstants.chatGeminiApiError}: ${e.message}');
       _setLoadingState(false);
       return false;
     } catch (e) {
-      _setErrorMessage('${AppStrings.chatUnexpectedError}: $e'); // Using constant
+      _setErrorMessage('${AppInternalConstants.chatUnexpectedError}: $e');
       _setLoadingState(false);
       return false;
     } finally {

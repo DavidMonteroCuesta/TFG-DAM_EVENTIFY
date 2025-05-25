@@ -16,6 +16,7 @@ import 'package:eventify/calendar/domain/entities/event_factory.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
+import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
 
 class DailiesEventScreen extends StatefulWidget {
   final DateTime selectedDate;
@@ -64,7 +65,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${AppStrings.dailiesFailedToLoadEvents}${e.toString()}'), // Usando constante
+            content: Text('${AppInternalConstants.dailiesFailedToLoadEvents}${e.toString()}'),
           ),
         );
       }
@@ -109,13 +110,13 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
             return AlertDialog(
               backgroundColor: Colors.grey[900],
               title: Text(
-                AppStrings.dailiesDeleteEventTitle, // Usando constante
+                AppStrings.dailiesDeleteEventTitle,
                 style: TextStyles.urbanistSubtitle1.copyWith(
                   color: Colors.white,
                 ),
               ),
               content: Text(
-                '${AppStrings.dailiesDeleteEventConfirmPrefix}"$eventTitle"${AppStrings.dailiesDeleteEventConfirmSuffix}', // Usando constantes
+                '${AppStrings.dailiesDeleteEventConfirmPrefix}"$eventTitle"${AppStrings.dailiesDeleteEventConfirmSuffix}',
                 style: TextStyles.plusJakartaSansBody2.copyWith(
                   color: Colors.grey,
                 ),
@@ -125,7 +126,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                   onPressed:
                       () => Navigator.of(context).pop(false), // User canceled
                   child: Text(
-                    AppStrings.dailiesCancelButton, // Usando constante
+                    AppStrings.dailiesCancelButton,
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
                       color: AppColors.primaryContainer,
                     ),
@@ -137,7 +138,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                         context,
                       ).pop(true), // User confirmed deletion
                   child: Text(
-                    AppStrings.dailiesDeleteButton, // Usando constante
+                    AppStrings.dailiesDeleteButton,
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
                       color: Colors.red,
                     ),
@@ -157,7 +158,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${AppStrings.dailiesEventDeletedSuccessPrefix}"$eventTitle"${AppStrings.dailiesEventDeletedSuccessSuffix}'), // Usando constantes
+              content: Text('${AppStrings.dailiesEventDeletedSuccessPrefix}"$eventTitle"${AppStrings.dailiesEventDeletedSuccessSuffix}'),
             ),
           );
           // Indicate that data has changed, so CalendarScreen should refresh
@@ -166,7 +167,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
       } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${AppStrings.dailiesFailedToDeleteEvent}${e.toString()}')), // Usando constante
+            SnackBar(content: Text('${AppInternalConstants.dailiesFailedToDeleteEvent}${e.toString()}')),
           );
         }
       }
@@ -190,7 +191,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
         ),
         title: ShiningTextAnimation(
           text:
-              DateFormat('EEEE, dd MMMM', 'en_US')
+              DateFormat('EEEE, dd MMMM', AppInternalConstants.dailiesLocaleEnUs) // Using constant
                   .format(widget.selectedDate)
                   .toUpperCase(), // Display selected date in English
           style: TextStyles.urbanistBody1,
@@ -206,7 +207,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
           _dailyEvents.isEmpty
               ? Center(
                 child: Text(
-                  AppStrings.dailiesNoEventsForThisDay, // Usando constante
+                  AppStrings.dailiesNoEventsForThisDay,
                   style: TextStyles.urbanistSubtitle1.copyWith(
                     color: Colors.grey,
                   ),
@@ -218,7 +219,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${AppStrings.dailiesEventsForPrefix}${DateFormat('dd/MM/yyyy').format(widget.selectedDate)}${AppStrings.dailiesEventsCountSeparator}${_dailyEvents.length}${AppStrings.dailiesEventsCountSuffix}', // Usando constantes
+                      '${AppStrings.dailiesEventsForPrefix}${DateFormat('dd/MM/yyyy').format(widget.selectedDate)}${AppStrings.dailiesEventsCountSeparator}${_dailyEvents.length}${AppStrings.dailiesEventsCountSuffix}',
                       style: TextStyles.urbanistSubtitle1.copyWith(
                         fontSize: 18,
                       ),
@@ -241,24 +242,24 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
 
                             final Event event = EventFactory.createEvent(
                               _getEventTypeFromString(
-                                eventData['type'] ?? AppStrings.eventTypeTask, // Usando constante
+                                eventData['type'] ?? AppInternalConstants.eventTypeTask, // Using constant
                               ),
                               eventData, // Pass the map directly
                               currentUserId, // Pass userId
                             );
 
-                            String eventTypeString = AppStrings.dailiesNA; // Usando constante
+                            String eventTypeString = AppInternalConstants.dailiesNA; // Using constant
                             // Determine the event type string based on the runtime type of the event object
                             if (event is MeetingEvent) {
-                              eventTypeString = AppStrings.dailiesMeetingDisplay; // Usando constante
+                              eventTypeString = AppStrings.dailiesMeetingDisplay;
                             } else if (event is ExamEvent) {
-                              eventTypeString = AppStrings.dailiesExamDisplay; // Usando constante
+                              eventTypeString = AppStrings.dailiesExamDisplay;
                             } else if (event is ConferenceEvent) {
-                              eventTypeString = AppStrings.dailiesConferenceDisplay; // Usando constante
+                              eventTypeString = AppStrings.dailiesConferenceDisplay;
                             } else if (event is AppointmentEvent) {
-                              eventTypeString = AppStrings.dailiesAppointmentDisplay; // Usando constante
+                              eventTypeString = AppStrings.dailiesAppointmentDisplay;
                             } else {
-                              eventTypeString = AppStrings.dailiesTaskDisplay; // Usando constante
+                              eventTypeString = AppStrings.dailiesTaskDisplay;
                             }
                             // Format event time
                             String formattedDateTime =
@@ -266,7 +267,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                                     ? DateFormat(
                                       'HH:mm',
                                     ).format(event.dateTime!.toDate())
-                                    : AppStrings.dailiesNA; // Usando constante
+                                    : AppInternalConstants.dailiesNA; // Using constant
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(
@@ -330,21 +331,21 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        '${AppStrings.dailiesTimePrefix}$formattedDateTime', // Usando constante
+                                        '${AppStrings.dailiesTimePrefix}$formattedDateTime',
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        '${AppStrings.dailiesTypePrefix}$eventTypeString', // Usando constante
+                                        '${AppStrings.dailiesTypePrefix}$eventTypeString',
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        '${AppStrings.dailiesDescriptionPrefix}${event.description ?? AppStrings.dailiesNA}', // Usando constante
+                                        '${AppStrings.dailiesDescriptionPrefix}${event.description ?? AppInternalConstants.dailiesNA}', // Using constant
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       Text(
-                                        '${AppStrings.dailiesPriorityPrefix}${event.priority.toString().split('.').last.toUpperCase()}', // Usando constante
+                                        '${AppStrings.dailiesPriorityPrefix}${event.priority.toString().split('.').last.toUpperCase()}',
                                         style: TextStyles.plusJakartaSansBody2
                                             .copyWith(color: Colors.yellow),
                                       ),
@@ -368,15 +369,15 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
 
   EventType _getEventTypeFromString(String typeString) {
     switch (typeString.toLowerCase()) {
-      case AppStrings.eventTypeMeeting: // Usando constante
+      case AppInternalConstants.eventTypeMeeting:
         return EventType.meeting;
-      case AppStrings.eventTypeExam: // Usando constante
+      case AppInternalConstants.eventTypeExam:
         return EventType.exam;
-      case AppStrings.eventTypeConference: // Usando constante
+      case AppInternalConstants.eventTypeConference:
         return EventType.conference;
-      case AppStrings.eventTypeAppointment: // Usando constante
+      case AppInternalConstants.eventTypeAppointment:
         return EventType.appointment;
-      case AppStrings.eventTypeTask: // Usando constante
+      case AppInternalConstants.eventTypeTask:
       default:
         return EventType.task;
     }

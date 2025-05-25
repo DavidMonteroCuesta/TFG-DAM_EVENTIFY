@@ -1,7 +1,8 @@
 import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:eventify/common/theme/fonts/text_styles.dart'; // Assuming this import
+import 'package:eventify/common/theme/fonts/text_styles.dart';
 
 class UpcomingEventCard extends StatelessWidget {
   final String title;
@@ -10,7 +11,7 @@ class UpcomingEventCard extends StatelessWidget {
   final String priority;
   final String description;
   final VoidCallback? onEdit;
-  final VoidCallback? onTapCard; // Nuevo: Callback para tocar la tarjeta completa
+  final VoidCallback? onTapCard;
 
   const UpcomingEventCard({
     super.key,
@@ -20,16 +21,48 @@ class UpcomingEventCard extends StatelessWidget {
     required this.priority,
     required this.description,
     this.onEdit,
-    this.onTapCard, // Inicializar el nuevo callback
+    this.onTapCard,
   });
+
+  String _getTranslatedEventType(String typeString) {
+    switch (typeString.toLowerCase()) {
+      case AppInternalConstants.eventTypeMeeting:
+        return AppStrings.searchEventTypeMeetingDisplay.toUpperCase();
+      case AppInternalConstants.eventTypeExam:
+        return AppStrings.searchEventTypeExamDisplay.toUpperCase();
+      case AppInternalConstants.eventTypeConference:
+        return AppStrings.searchEventTypeConferenceDisplay.toUpperCase();
+      case AppInternalConstants.eventTypeAppointment:
+        return AppStrings.searchEventTypeAppointmentDisplay.toUpperCase();
+      case AppInternalConstants.eventTypeTask:
+      default:
+        return AppStrings.searchEventTypeTaskDisplay.toUpperCase();
+    }
+  }
+
+  // Helper function to get translated priority
+  String _getTranslatedPriority(String priorityString) {
+    switch (priorityString.toLowerCase()) {
+      case AppInternalConstants.priorityValueCritical:
+        return AppStrings.priorityDisplayCritical;
+      case AppInternalConstants.priorityValueHigh:
+        return AppStrings.priorityDisplayHigh;
+      case AppInternalConstants.priorityValueMedium:
+        return AppStrings.priorityDisplayMedium;
+      case AppInternalConstants.priorityValueLow:
+        return AppStrings.priorityDisplayLow;
+      default:
+        return priorityString; // Fallback to original if not found
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     const Color outlineColor = Color(0xFFE0E0E0);
 
-    return InkWell( // Envuelve la tarjeta con InkWell para que sea clicable
-      onTap: onTapCard, // Asigna el callback onTapCard
-      borderRadius: BorderRadius.circular(12.0), // Asegura que el InkWell tenga bordes redondeados
+    return InkWell(
+      onTap: onTapCard,
+      borderRadius: BorderRadius.circular(12.0),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         padding: const EdgeInsets.all(20.0),
@@ -68,30 +101,29 @@ class UpcomingEventCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                // MODIFIED: Moved event type here to be at the top right
                 Text(
-                  type.split('.').last.toUpperCase(), // Format type string
+                  _getTranslatedEventType(type.split('.').last), // Use helper for type
                   style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[400]),
                 ),
               ],
             ),
-            const SizedBox(height: 8.0), // Espacio consistente
+            const SizedBox(height: 8.0),
 
             Text(
               '${AppStrings.upcomingEventDatePrefix}${DateFormat('yyyy/MM/dd HH:mm').format(date)}',
               style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[400]),
             ),
-            const SizedBox(height: 8.0), // Espacio consistente
+            const SizedBox(height: 8.0),
 
             Text(
-              '${AppStrings.upcomingEventPriorityPrefix}${priority.split('.').last.toUpperCase()}',
+              '${AppStrings.upcomingEventPriorityPrefix}${_getTranslatedPriority(priority.split('.').last)}', // Use helper for priority
               style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.yellow),
             ),
-            const SizedBox(height: 8.0), // Espacio consistente
+            const SizedBox(height: 8.0),
 
             Flexible(
               child: Text(
-                '${AppStrings.upcomingEventDescriptionPrefix}${description.isNotEmpty ? description : AppStrings.upcomingEventDescriptionEmpty}',
+                '${AppStrings.upcomingEventDescriptionPrefix}${description.isNotEmpty ? description : AppInternalConstants.upcomingEventDescriptionEmpty}',
                 style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[300]),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

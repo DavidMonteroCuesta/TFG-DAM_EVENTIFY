@@ -1,4 +1,5 @@
 import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
+import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
 
 enum Priority {
   critical,
@@ -42,13 +43,13 @@ extension PriorityExtension on Priority {
 class PriorityConverter {
   static Priority stringToPriority(String? priorityString) {
     final normalized = priorityString?.trim().toLowerCase();
-    if (normalized == AppStrings.priorityValueCritical) {
+    if (normalized == AppInternalConstants.priorityValueCritical) {
       return Priority.critical;
-    } else if (normalized == AppStrings.priorityValueHigh) {
+    } else if (normalized == AppInternalConstants.priorityValueHigh) {
       return Priority.high;
-    } else if (normalized == AppStrings.priorityValueMedium) {
+    } else if (normalized == AppInternalConstants.priorityValueMedium) {
       return Priority.medium;
-    } else if (normalized == AppStrings.priorityValueLow) {
+    } else if (normalized == AppInternalConstants.priorityValueLow) {
       return Priority.low;
     } else {
       return Priority.medium;
