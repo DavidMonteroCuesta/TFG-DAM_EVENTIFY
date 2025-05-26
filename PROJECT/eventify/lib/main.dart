@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 import 'di/service_locator.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,19 +39,19 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.sl<ChatViewModel>()),
       ],
       child: MaterialApp(
-        title: 'Eventify Auth',
+        title: 'Eventify',
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: AppColors.background, // Using AppColors
+          scaffoldBackgroundColor: AppColors.background,
           colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: AppColors.primary as MaterialColor, // Using AppColors
-            accentColor: AppColors.accentColor400, // Using AppColors, keeping shade400
+            primarySwatch: AppColors.primary as MaterialColor,
+            accentColor: AppColors.accentColor400,
             brightness: Brightness.dark,
           ),
           inputDecorationTheme: InputDecorationTheme(
-            hintStyle: TextStyle(color: AppColors.textBody2Grey), // Using AppColors
+            hintStyle: TextStyle(color: AppColors.textBody2Grey),
             filled: true,
-            fillColor: AppColors.inputFillColor, // Using AppColors
+            fillColor: AppColors.inputFillColor,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide.none,
@@ -59,8 +59,8 @@ class MyApp extends StatelessWidget {
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.accentColor400, // Using AppColors, keeping shade400
-              foregroundColor: AppColors.elevatedButtonForeground, // Using AppColors
+              backgroundColor: AppColors.accentColor400,
+              foregroundColor: AppColors.elevatedButtonForeground,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -68,12 +68,12 @@ class MyApp extends StatelessWidget {
           ),
           outlinedButtonTheme: OutlinedButtonThemeData(
             style: OutlinedButton.styleFrom(
-              foregroundColor: AppColors.textPrimary, // Using AppColors
-              side: const BorderSide(color: AppColors.outlinedButtonBorder), // Using AppColors
+              foregroundColor: AppColors.textPrimary,
+              side: const BorderSide(color: AppColors.outlinedButtonBorder),
             ),
           ),
           textTheme: const TextTheme(
-            bodyMedium: TextStyle(color: AppColors.textPrimary), // Using AppColors
+            bodyMedium: TextStyle(color: AppColors.textPrimary),
           ),
         ),
         localizationsDelegates: const [

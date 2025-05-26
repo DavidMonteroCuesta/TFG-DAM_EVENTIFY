@@ -12,7 +12,7 @@ import '../view_model/sign_up_view_model.dart';
 import 'package:eventify/common/animations/ani_left_to_right.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;
@@ -156,7 +156,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
             children: daysOfWeek
                 .map((day) => Text(
                       day,
-                      style: const TextStyle(color: AppColors.calendarAccentColor), // Using AppColors
+                      style: const TextStyle(color: AppColors.calendarAccentColor),
                     ))
                 .toList(),
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 
 class PrimaryButton extends StatelessWidget {
   final String text;

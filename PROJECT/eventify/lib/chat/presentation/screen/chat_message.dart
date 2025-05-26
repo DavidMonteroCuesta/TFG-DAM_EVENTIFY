@@ -1,5 +1,5 @@
 import 'package:eventify/chat/presentation/screen/markdown_text.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';

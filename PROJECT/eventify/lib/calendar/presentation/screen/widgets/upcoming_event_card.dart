@@ -3,7 +3,7 @@ import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 
 class UpcomingEventCard extends StatelessWidget {
   final String title;

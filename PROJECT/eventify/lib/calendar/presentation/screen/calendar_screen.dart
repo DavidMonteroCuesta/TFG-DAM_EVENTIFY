@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 
 class CalendarScreen extends StatefulWidget {
   static const String routeName = '/calendar';

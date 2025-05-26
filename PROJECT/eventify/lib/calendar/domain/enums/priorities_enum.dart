@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart'; // Import flutter material for Color
 import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 
 enum Priority {
   critical,

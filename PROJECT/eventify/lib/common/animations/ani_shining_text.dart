@@ -1,4 +1,4 @@
-import 'package:eventify/common/theme/colors/colors.dart';
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ShiningTextAnimation extends StatefulWidget {

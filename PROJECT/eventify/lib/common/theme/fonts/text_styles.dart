@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Nueva ruta de importación
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Nueva ruta de importación
 
 abstract class TextStyles {
 

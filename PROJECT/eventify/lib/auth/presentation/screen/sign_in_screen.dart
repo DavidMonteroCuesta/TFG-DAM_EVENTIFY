@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import '../view_model/sign_in_view_model.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/constants/app_strings.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

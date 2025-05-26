@@ -1,7 +1,7 @@
 import 'package:eventify/calendar/presentation/screen/widgets/buttons/calendar_toggle_button.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/buttons/chat_button.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/buttons/profile_button.dart';
-import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 

@@ -1,4 +1,4 @@
-import 'package:eventify/common/theme/colors/colors.dart';
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/chat/presentation/screen/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_strings.dart';
