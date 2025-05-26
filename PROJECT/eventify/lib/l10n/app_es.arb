@@ -618,5 +618,29 @@
   "signInOrSignInWith": "O inicia sesión con",
   "@signInOrSignInWith": {
     "description": "El texto antes de los botones de inicio de sesión con redes sociales."
+  },
+  "profileThemesText": "Temas",
+  "@profileThemesText": {
+    "description": "Texto para la opción 'Temas' en la pantalla de perfil."
+  },
+  "themeSelectSecondaryColor": "Seleccionar Color Secundario",
+  "@themeSelectSecondaryColor": {
+    "description": "Etiqueta para seleccionar el color secundario en la configuración de temas."
+  },
+  "themeOptionGreenAccent": "Acento Verde",
+  "@themeOptionGreenAccent": {
+    "description": "Opción para el tema Acento Verde."
+  },
+  "themeOptionBlueAccent": "Acento Azul",
+  "@themeOptionBlueAccent": {
+    "description": "Opción para el tema Acento Azul."
+  },
+  "themeOptionOrangeAccent": "Acento Naranja",
+  "@themeOptionOrangeAccent": {
+    "description": "Opción para el tema Acento Naranja."
+  },
+  "themeOptionRedAccent": "Acento Rojo",
+  "@themeOptionRedAccent": {
+    "description": "Opción para el tema Acento Rojo."
   }
 }

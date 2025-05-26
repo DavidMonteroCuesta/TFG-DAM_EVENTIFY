@@ -136,10 +136,10 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         return Theme(
           data: ThemeData.dark().copyWith(
             primaryColor: AppColors.primaryContainer,
-            hintColor: AppColors.secondary,
+            hintColor: AppColors.secondaryDynamic,
             colorScheme: ColorScheme.dark(
               primary: AppColors.primaryContainer,
-            ).copyWith(secondary: AppColors.secondary),
+            ).copyWith(secondary: AppColors.secondaryDynamic),
             buttonTheme: const ButtonThemeData(
               textTheme: ButtonTextTheme.primary,
             ),
@@ -377,8 +377,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                          color: AppColors.focusedBorderGreen,
+                        borderSide: BorderSide(
+                          color: AppColors.focusedBorderDynamic,
                           width: 1.5,
                         ),
                       ),
@@ -549,7 +549,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                                   Text(
                                     '${AppStrings.searchPriorityPrefix(context)}${_getTranslatedPriorityDisplay(event.priority.toString().split('.').last)}',
                                     style: TextStyles.plusJakartaSansBody2
-                                        .copyWith(color: AppColors.priorityTextColor),
+                                        .copyWith(color: AppColors.priorityTextColorDynamic),
                                   ),
                                   if (event.location != null && event.location!.isNotEmpty)
                                     Text(
@@ -600,8 +600,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: AppColors.focusedBorderGreen,
+            borderSide: BorderSide(
+              color: AppColors.focusedBorderDynamic,
               width: 1.5,
             ),
           ),
@@ -641,8 +641,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: AppColors.focusedBorderGreen,
+            borderSide: BorderSide(
+              color: AppColors.focusedBorderDynamic,
               width: 1.5,
             ),
           ),
@@ -683,7 +683,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                     _searchEvents();
                   });
                 },
-                activeColor: AppColors.focusedBorderGreen.withOpacity(0.8),
+                activeColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
                 inactiveTrackColor: AppColors.switchInactiveTrackColor,
                 inactiveThumbColor: AppColors.switchInactiveThumbColor,
               ),
@@ -698,25 +698,25 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                 _buildPriorityOption(
                   AppStrings.searchPriorityCritical(context),
                   Priority.critical,
-                  AppColors.focusedBorderGreen.withOpacity(0.8),
+                  AppColors.focusedBorderDynamic.withOpacity(0.8),
                   AppColors.priorityOptionBackground,
                 ),
                 _buildPriorityOption(
                   AppStrings.searchPriorityHigh(context),
                   Priority.high,
-                  AppColors.focusedBorderGreen.withOpacity(0.8),
+                  AppColors.focusedBorderDynamic.withOpacity(0.8),
                   AppColors.priorityOptionBackground,
                 ),
                 _buildPriorityOption(
                   AppStrings.searchPriorityMedium(context),
                   Priority.medium,
-                  AppColors.focusedBorderGreen.withOpacity(0.8),
+                  AppColors.focusedBorderDynamic.withOpacity(0.8),
                   AppColors.priorityOptionBackground,
                 ),
                 _buildPriorityOption(
                   AppStrings.searchPriorityLow(context),
                   Priority.low,
-                  AppColors.focusedBorderGreen.withOpacity(0.8),
+                  AppColors.focusedBorderDynamic.withOpacity(0.8),
                   AppColors.priorityOptionBackground,
                 ),
               ],
@@ -782,7 +782,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                     _searchEvents();
                   });
                 },
-                activeColor: AppColors.focusedBorderGreen,
+                activeColor: AppColors.focusedBorderDynamic,
                 checkColor: AppColors.checkboxCheckColor,
               ),
             ],

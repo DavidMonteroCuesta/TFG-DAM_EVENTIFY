@@ -46,5 +46,7 @@ abstract class AppColorPalette {
   static const Color color0F0F0F = Color(0xFF0F0F0F); // Usado para priorityOptionBackground
   static const Color color90B77D = Color(0xFF90B77D); // Usado para footerRightTextColor
   static const Color color464646 = Color.fromARGB(255, 70, 70, 70); // Usado para profileMediumGrey
-  static const Color color424242 = Color(0xFF424242); // Usado para headerBackground
+  static const Color color424242 = Color(0xFF424242);
+
+  static const Color purple = Color(0xFF424242); // Usado para headerBackground
 }

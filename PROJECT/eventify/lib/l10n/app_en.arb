@@ -618,5 +618,29 @@
   "signInOrSignInWith": "Or sign in with",
   "@signInOrSignInWith": {
     "description": "The text before social sign-in buttons."
+  },
+  "profileThemesText": "Themes",
+  "@profileThemesText": {
+    "description": "Text for the 'Themes' option in the profile screen."
+  },
+  "themeSelectSecondaryColor": "Select Secondary Color",
+  "@themeSelectSecondaryColor": {
+    "description": "Label for selecting secondary color in theme settings."
+  },
+  "themeOptionGreenAccent": "Green Accent",
+  "@themeOptionGreenAccent": {
+    "description": "Option for Green Accent theme."
+  },
+  "themeOptionBlueAccent": "Blue Accent",
+  "@themeOptionBlueAccent": {
+    "description": "Option for Blue Accent theme."
+  },
+  "themeOptionOrangeAccent": "Orange Accent",
+  "@themeOptionOrangeAccent": {
+    "description": "Option for Orange Accent theme."
+  },
+  "themeOptionRedAccent": "Red Accent",
+  "@themeOptionRedAccent": {
+    "description": "Option for Red Accent theme."
   }
 }

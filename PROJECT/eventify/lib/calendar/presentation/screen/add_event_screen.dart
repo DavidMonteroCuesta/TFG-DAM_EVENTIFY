@@ -122,10 +122,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
         return Theme(
           data: ThemeData.dark().copyWith(
             primaryColor: AppColors.primaryContainer,
-            hintColor: AppColors.secondary,
+            hintColor: AppColors.secondaryDynamic,
             colorScheme: ColorScheme.dark(
               primary: AppColors.primaryContainer,
-            ).copyWith(secondary: AppColors.secondary),
+            ).copyWith(secondary: AppColors.secondaryDynamic),
             buttonTheme: const ButtonThemeData(
               textTheme: ButtonTextTheme.primary,
             ),
@@ -150,10 +150,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
         return Theme(
           data: ThemeData.dark().copyWith(
             primaryColor: AppColors.primaryContainer,
-            hintColor: AppColors.secondary,
+            hintColor: AppColors.secondaryDynamic,
             colorScheme: ColorScheme.dark(
               primary: AppColors.primaryContainer,
-            ).copyWith(secondary: AppColors.secondary),
+            ).copyWith(secondary: AppColors.secondaryDynamic),
             buttonTheme: const ButtonThemeData(
               textTheme: ButtonTextTheme.primary,
             ),
@@ -252,8 +252,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(AppInternalConstants.addEventValidationDateTime),
+        SnackBar(
+          content: const Text(AppInternalConstants.addEventValidationDateTime),
           backgroundColor: AppColors.deleteButtonColor, // Using AppColors
         ),
       );
@@ -273,7 +273,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   @override
   Widget build(BuildContext context) {
     // final Color headerColor = Colors.grey[800]!; // Replaced by AppColors.headerBackground
-    const secondaryColor = AppColors.secondary;
+    var secondaryColor = AppColors.secondaryDynamic;
     const onSecondaryColor = AppColors.onSecondary;
     const outlineColor = AppColors.outline;
 
@@ -383,25 +383,25 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   _buildPriorityOption(
                     AppStrings.searchPriorityCritical(context),
                     Priority.critical,
-                    AppColors.focusedBorderGreen.withOpacity(0.8), // Using AppColors
+                    AppColors.focusedBorderDynamic.withOpacity(0.8), // Using AppColors
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
                     AppStrings.searchPriorityHigh(context),
                     Priority.high,
-                    AppColors.focusedBorderGreen.withOpacity(0.8),
+                    AppColors.focusedBorderDynamic.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
                     AppStrings.searchPriorityMedium(context),
                     Priority.medium,
-                    AppColors.focusedBorderGreen.withOpacity(0.8),
+                    AppColors.focusedBorderDynamic.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
                     AppStrings.searchPriorityLow(context),
                     Priority.low,
-                    AppColors.focusedBorderGreen.withOpacity(0.8),
+                    AppColors.focusedBorderDynamic.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                 ],

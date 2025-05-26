@@ -32,6 +32,20 @@ abstract class AppStrings {
   static String profileContactUsText(BuildContext context) =>
       AppLocalizations.of(context)!.profileContactUsText;
 
+  // New Theme-related strings for Profile Screen
+  static String profileThemesText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileThemesText;
+  static String themeSelectSecondaryColor(BuildContext context) =>
+      AppLocalizations.of(context)!.themeSelectSecondaryColor;
+  static String themeOptionGreenAccent(BuildContext context) =>
+      AppLocalizations.of(context)!.themeOptionGreenAccent;
+  static String themeOptionBlueAccent(BuildContext context) =>
+      AppLocalizations.of(context)!.themeOptionBlueAccent;
+  static String themeOptionOrangeAccent(BuildContext context) =>
+      AppLocalizations.of(context)!.themeOptionOrangeAccent;
+  static String themeOptionRedAccent(BuildContext context) =>
+      AppLocalizations.of(context)!.themeOptionRedAccent;
+
   // Event Search Screen Strings (display only)
   static String searchEventsTitle(BuildContext context) =>
       AppLocalizations.of(context)!.searchEventsTitle;
@@ -338,3 +352,4 @@ abstract class AppStrings {
   static String forgotPasswordOptionText(BuildContext context) =>
       AppLocalizations.of(context)!.forgotPasswordOptionText;
 }
+

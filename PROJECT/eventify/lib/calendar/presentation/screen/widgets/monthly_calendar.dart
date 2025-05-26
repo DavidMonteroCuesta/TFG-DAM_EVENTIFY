@@ -156,7 +156,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
             children: daysOfWeek
                 .map((day) => Text(
                       day,
-                      style: const TextStyle(color: AppColors.calendarAccentColor),
+                      style: TextStyle(color: AppColors.calendarAccentColor),
                     ))
                 .toList(),
           ),

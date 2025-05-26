@@ -26,6 +26,7 @@ dependencies:
   flutter_animate: ^4.3.0
   http: ^1.1.0
   tflite_flutter: ^0.11.0
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:

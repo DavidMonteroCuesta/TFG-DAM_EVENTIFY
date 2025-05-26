@@ -3,620 +3,644 @@
 
   "chatInitialBotGreeting": "Salut ! Je suis votre assistant Eventify. Comment puis-je vous aider avec votre emploi du temps aujourd'hui ?",
   "@chatInitialBotGreeting": {
-    "description": "The initial greeting from the bot on the chat screen."
+    "description": "Le salut initial du bot sur l'écran de chat."
   },
-  "chatInputHint": "Écrivez un message...",
+  "chatInputHint": "Écrire un message...",
   "@chatInputHint": {
-    "description": "Hint text in the chat input field."
+    "description": "Texte d'indice dans le champ de saisie du chat."
   },
-  "chatScreenTitle": "Chat avec Eventify",
+  "chatScreenTitle": "Discuter avec Eventify",
   "@chatScreenTitle": {
-    "description": "The title of the chat screen."
+    "description": "Le titre de l'écran de chat."
   },
   "chatUserDefaultName": "Vous",
   "@chatUserDefaultName": {
-    "description": "The default name for the user in the chat."
+    "description": "Le nom par défaut de l'utilisateur dans le chat."
   },
   "chatAIAvatarLetters": "EV",
   "@chatAIAvatarLetters": {
-    "description": "The letters for the bot's avatar in the chat."
+    "description": "Les lettres pour l'avatar du bot dans le chat."
   },
 
   "profileYourAccountTitle": "Votre Compte",
   "@profileYourAccountTitle": {
-    "description": "The title for the 'Your Account' section on the profile screen."
+    "description": "Le titre de la section 'Votre Compte' sur l'écran de profil."
   },
-  "profileEditProfileText": "Modifier le profil",
+  "profileEditProfileText": "Modifier le Profil",
   "@profileEditProfileText": {
-    "description": "The text for the button to edit the profile."
+    "description": "Le texte du bouton pour modifier le profil."
   },
-  "profileNotificationSettingsText": "Paramètres de notification",
+  "profileNotificationSettingsText": "Paramètres de Notification",
   "@profileNotificationSettingsText": {
-    "description": "The text for the button to notification settings."
+    "description": "Le texte du bouton pour les paramètres de notification."
   },
-  "profileAppSettingsTitle": "Paramètres de l'application",
+  "profileAppSettingsTitle": "Paramètres de l'Application",
   "@profileAppSettingsTitle": {
-    "description": "The title for the 'App Settings' section on the profile screen."
+    "description": "Le titre de la section 'Paramètres de l'Application' sur l'écran de profil."
   },
   "profileSupportText": "Support",
   "@profileSupportText": {
-    "description": "The text for the support button."
+    "description": "Le texte du bouton pour le support."
   },
-  "profileTermsOfServiceText": "Conditions d'utilisation",
+  "profileTermsOfServiceText": "Conditions d'Utilisation",
   "@profileTermsOfServiceText": {
-    "description": "The text for the terms of service button."
+    "description": "Le texte du bouton pour les conditions d'utilisation."
   },
-  "profileLogoutButton": "Se déconnecter",
+  "profileLogoutButton": "Se Déconnecter",
   "@profileLogoutButton": {
-    "description": "The text for the log out button."
+    "description": "Le texte du bouton pour se déconnecter."
   },
   "profileContactUsText": "Contactez-nous à : ejemplotfgdavid@gmail.com",
   "@profileContactUsText": {
-    "description": "The contact information for support."
+    "description": "Les informations de contact pour le support."
   },
 
   "searchEventsTitle": "RECHERCHER DES ÉVÉNEMENTS",
   "@searchEventsTitle": {
-    "description": "The title of the event search screen."
+    "description": "Le titre de l'écran de recherche d'événements."
   },
-  "searchFieldEventTitle": "Titre de l'événement",
+  "searchFieldEventTitle": "Titre de l'Événement",
   "@searchFieldEventTitle": {
-    "description": "The label for the event title field in search."
+    "description": "L'étiquette pour le champ de titre de l'événement dans la recherche."
   },
   "searchFieldDescription": "Description",
   "@searchFieldDescription": {
-    "description": "The label for the description field in search."
+    "description": "L'étiquette pour le champ de description dans la recherche."
   },
   "searchFieldDate": "Date (AAAA-MM-JJ)",
   "@searchFieldDate": {
-    "description": "The label for the date field in search."
+    "description": "L'étiquette pour le champ de date dans la recherche."
   },
-  "searchFieldSelectDate": "Sélectionner la date",
+  "searchFieldSelectDate": "Sélectionner la Date",
   "@searchFieldSelectDate": {
-    "description": "The button text to select date in search."
+    "description": "Le texte du bouton pour sélectionner la date dans la recherche."
   },
-  "searchFieldEventType": "Type d'événement",
+  "searchFieldEventType": "Type d'Événement",
   "@searchFieldEventType": {
-    "description": "The label for the event type field in search."
+    "description": "L'étiquette pour le champ de type d'événement dans la recherche."
   },
   "searchFieldPriority": "Priorité",
   "@searchFieldPriority": {
-    "description": "The label for the priority field in search."
+    "description": "L'étiquette pour le champ de priorité dans la recherche."
   },
   "searchPriorityCritical": "CRITIQUE",
   "@searchPriorityCritical": {
-    "description": "Critical priority option in search."
+    "description": "Option de priorité critique dans la recherche."
   },
   "searchPriorityHigh": "ÉLEVÉE",
   "@searchPriorityHigh": {
-    "description": "High priority option in search."
+    "description": "Option de priorité élevée dans la recherche."
   },
   "searchPriorityMedium": "MOYENNE",
   "@searchPriorityMedium": {
-    "description": "Medium priority option in search."
+    "description": "Option de priorité moyenne dans la recherche."
   },
-  "searchPriorityLow": "FAIBLE",
+  "searchPriorityLow": "BASSE",
   "@searchPriorityLow": {
-    "description": "Low priority option in search."
+    "description": "Option de priorité basse dans la recherche."
   },
   "searchFieldLocation": "Lieu",
   "@searchFieldLocation": {
-    "description": "The label for the location field in search."
+    "description": "L'étiquette pour le champ de lieu dans la recherche."
   },
   "searchFieldSubject": "Sujet",
   "@searchFieldSubject": {
-    "description": "The label for the subject field in search."
+    "description": "L'étiquette pour le champ de sujet dans la recherche."
   },
-  "searchFieldWithPersonYesNo": "Avec personne (Oui/Non) :",
+  "searchFieldWithPersonYesNo": "Avec Personne (Oui/Non) :",
   "@searchFieldWithPersonYesNo": {
-    "description": "The label for the 'With Person' field with yes/no option in search."
+    "description": "L'étiquette pour le champ 'Avec Personne' avec option oui/non dans la recherche."
   },
-  "searchFieldWithPerson": "Avec personne",
+  "searchFieldWithPerson": "Avec Personne",
   "@searchFieldWithPerson": {
-    "description": "The label for the 'With Person' field in search."
+    "description": "L'étiquette pour le champ 'Avec Personne' dans la recherche."
   },
-  "searchResultsPrefix": "Résultats de recherche (",
+  "searchResultsPrefix": "Résultats de Recherche (",
   "@searchResultsPrefix": {
-    "description": "Prefix for search results."
+    "description": "Préfixe pour les résultats de recherche."
   },
   "searchResultsSuffix": ")",
   "@searchResultsSuffix": {
-    "description": "Suffix for search results."
+    "description": "Suffixe pour les résultats de recherche."
   },
-  "searchDateAndTimePrefix": "Date et heure : ",
+  "searchDateAndTimePrefix": "Date et Heure : ",
   "@searchDateAndTimePrefix": {
-    "description": "Prefix to display date and time in search results."
+    "description": "Préfixe pour afficher la date et l'heure dans les résultats de recherche."
   },
   "searchTypePrefix": "Type : ",
   "@searchTypePrefix": {
-    "description": "Prefix to display type in search results."
+    "description": "Préfixe pour afficher le type dans les résultats de recherche."
   },
   "searchDescriptionPrefix": "Description : ",
   "@searchDescriptionPrefix": {
-    "description": "Prefix to display description in search results."
+    "description": "Préfixe pour afficher la description dans les résultats de recherche."
   },
   "searchPriorityPrefix": "Priorité : ",
   "@searchPriorityPrefix": {
-    "description": "Prefix to display priority in search results."
+    "description": "Préfixe pour afficher la priorité dans les résultats de recherche."
   },
   "searchLocationPrefix": "Lieu : ",
   "@searchLocationPrefix": {
-    "description": "Prefix to display location in search results."
+    "description": "Préfixe pour afficher le lieu dans les résultats de recherche."
   },
   "searchSubjectPrefix": "Sujet : ",
   "@searchSubjectPrefix": {
-    "description": "Prefix to display subject in search results."
+    "description": "Préfixe pour afficher le sujet dans les résultats de recherche."
   },
-  "searchWithPersonPrefix": "Avec personne : ",
+  "searchWithPersonPrefix": "Avec Personne : ",
   "@searchWithPersonPrefix": {
-    "description": "Prefix to display if 'With Person' in search results."
+    "description": "Préfixe pour afficher si 'Avec Personne' dans les résultats de recherche."
   },
   "searchEventTypeMeetingDisplay": "Réunion",
   "@searchEventTypeMeetingDisplay": {
-    "description": "Display text for 'Meeting' event type in search."
+    "description": "Texte d'affichage pour le type d'événement 'Réunion' dans la recherche."
   },
   "searchEventTypeExamDisplay": "Examen",
   "@searchEventTypeExamDisplay": {
-    "description": "Display text for 'Exam' event type in search."
+    "description": "Texte d'affichage pour le type d'événement 'Examen' dans la recherche."
   },
   "searchEventTypeConferenceDisplay": "Conférence",
   "@searchEventTypeConferenceDisplay": {
-    "description": "Display text for 'Conference' event type in search."
+    "description": "Texte d'affichage pour le type d'événement 'Conférence' dans la recherche."
   },
   "searchEventTypeAppointmentDisplay": "Rendez-vous",
   "@searchEventTypeAppointmentDisplay": {
-    "description": "Display text for 'Appointment' event type in search."
+    "description": "Texte d'affichage pour le type d'événement 'Rendez-vous' dans la recherche."
   },
   "searchEventTypeTaskDisplay": "Tâche",
   "@searchEventTypeTaskDisplay": {
-    "description": "Display text for 'Task' event type in search."
+    "description": "Texte d'affichage pour le type d'événement 'Tâche' dans la recherche."
   },
   "searchEventTypeAllDisplay": "Tous les types",
   "@searchEventTypeAllDisplay": {
-    "description": "Display text for 'All types' event option in search."
+    "description": "Texte d'affichage pour l'option 'Tous les types' d'événement dans la recherche."
   },
-  "searchDeleteEventTitle": "Supprimer l'événement",
+  "searchDeleteEventTitle": "Supprimer l'Événement",
   "@searchDeleteEventTitle": {
-    "description": "The title of the dialog to delete an event in search."
+    "description": "Le titre du dialogue pour supprimer un événement dans la recherche."
   },
-  "searchDeleteEventConfirmPrefix": "Êtes-vous sûr de vouloir supprimer « ",
+  "searchDeleteEventConfirmPrefix": "Êtes-vous sûr de vouloir supprimer \"",
   "@searchDeleteEventConfirmPrefix": {
-    "description": "Prefix of the confirmation message to delete an event in search."
+    "description": "Préfixe du message de confirmation pour supprimer un événement dans la recherche."
   },
-  "searchDeleteEventConfirmSuffix": " » ?",
+  "searchDeleteEventConfirmSuffix": "\"?",
   "@searchDeleteEventConfirmSuffix": {
-    "description": "Suffix of the confirmation message to delete an event in search."
+    "description": "Suffixe du message de confirmation pour supprimer un événement dans la recherche."
   },
   "searchCancelButton": "Annuler",
   "@searchCancelButton": {
-    "description": "The text for the 'Cancel' button in the search event deletion dialog."
+    "description": "Le texte du bouton 'Annuler' dans le dialogue de suppression d'événement de recherche."
   },
   "searchDeleteButton": "Supprimer",
   "@searchDeleteButton": {
-    "description": "The text for the 'Delete' button in the search event deletion dialog."
+    "description": "Le texte du bouton 'Supprimer' dans le dialogue de suppression d'événement de recherche."
   },
-  "searchEventDeletedSuccessPrefix": "Événement « ",
+  "searchEventDeletedSuccessPrefix": "Événement \"",
   "@searchEventDeletedSuccessPrefix": {
-    "description": "Prefix of the success message when deleting an event in search."
+    "description": "Préfixe du message de succès lors de la suppression d'un événement dans la recherche."
   },
-  "searchEventDeletedSuccessSuffix": " » supprimé avec succès !",
+  "searchEventDeletedSuccessSuffix": "\" supprimé avec succès !",
   "@searchEventDeletedSuccessSuffix": {
-    "description": "Suffix of the success message when deleting an event in search."
+    "description": "Suffixe du message de succès lors de la suppression d'un événement dans la recherche."
   },
 
-  "dailiesDeleteEventTitle": "Supprimer l'événement",
+  "dailiesDeleteEventTitle": "Supprimer l'Événement",
   "@dailiesDeleteEventTitle": {
-    "description": "The title of the dialog to delete an event in the daily view."
+    "description": "Le titre du dialogue pour supprimer un événement dans la vue quotidienne."
   },
-  "dailiesDeleteEventConfirmPrefix": "Êtes-vous sûr de vouloir supprimer « ",
+  "dailiesDeleteEventConfirmPrefix": "Êtes-vous sûr de vouloir supprimer \"",
   "@dailiesDeleteEventConfirmPrefix": {
-    "description": "Prefix of the confirmation message to delete an event in the daily view."
+    "description": "Préfixe du message de confirmation pour supprimer un événement dans la vue quotidienne."
   },
-  "dailiesDeleteEventConfirmSuffix": " » ?",
+  "dailiesDeleteEventConfirmSuffix": "\"?",
   "@dailiesDeleteEventConfirmSuffix": {
-    "description": "Suffix of the confirmation message to delete an event in the daily view."
+    "description": "Suffixe du message de confirmation pour supprimer un événement dans la vue quotidienne."
   },
   "dailiesCancelButton": "Annuler",
   "@dailiesCancelButton": {
-    "description": "The text for the 'Cancel' button in the daily event deletion dialog."
+    "description": "Le texte du bouton 'Annuler' dans le dialogue de suppression d'événement quotidien."
   },
   "dailiesDeleteButton": "Supprimer",
   "@dailiesDeleteButton": {
-    "description": "The text for the 'Delete' button in the daily event deletion dialog."
+    "description": "Le texte du bouton 'Supprimer' dans le dialogue de suppression d'événement quotidien."
   },
-  "dailiesEventDeletedSuccessPrefix": "Événement « ",
+  "dailiesEventDeletedSuccessPrefix": "Événement \"",
   "@dailiesEventDeletedSuccessPrefix": {
-    "description": "Prefix of the success message when deleting an event in the daily view."
+    "description": "Préfixe du message de succès lors de la suppression d'un événement dans la vue quotidienne."
   },
-  "dailiesEventDeletedSuccessSuffix": " » supprimé avec succès !",
+  "dailiesEventDeletedSuccessSuffix": "\" supprimé avec succès !",
   "@dailiesEventDeletedSuccessSuffix": {
-    "description": "Suffix for the event count in the daily view."
+    "description": "Suffixe du message de succès lors de la suppression d'un événement dans la vue quotidienne."
   },
   "dailiesNoEventsForThisDay": "Aucun événement pour ce jour.",
   "@dailiesNoEventsForThisDay": {
-    "description": "Message when there are no events for a specific day."
+    "description": "Message lorsqu'il n'y a pas d'événements pour un jour spécifique."
   },
-  "dailiesEventsForPrefix": "Événements pour le ",
+  "dailiesEventsForPrefix": "Événements pour ",
   "@dailiesEventsForPrefix": {
-    "description": "Prefix for the list of events for a specific day."
+    "description": "Préfixe pour la liste des événements d'un jour spécifique."
   },
   "dailiesEventsCountSeparator": " (",
   "@dailiesEventsCountSeparator": {
-    "description": "Separator before the event count in the daily view."
+    "description": "Séparateur avant le compte d'événements dans la vue quotidienne."
   },
   "dailiesEventsCountSuffix": ")",
   "@dailiesEventsCountSuffix": {
-    "description": "Suffix for the event count in the daily view."
+    "description": "Suffixe pour le compte d'événements dans la vue quotidienne."
   },
   "dailiesTimePrefix": "Heure : ",
   "@dailiesTimePrefix": {
-    "description": "Prefix to display time in the daily view."
+    "description": "Préfixe pour afficher l'heure dans la vue quotidienne."
   },
   "dailiesTypePrefix": "Type : ",
   "@dailiesTypePrefix": {
-    "description": "Prefix to display type in the daily view."
+    "description": "Préfixe pour afficher le type dans la vue quotidienne."
   },
   "dailiesDescriptionPrefix": "Description : ",
   "@dailiesDescriptionPrefix": {
-    "description": "Prefix to display description in the daily view."
+    "description": "Préfixe pour afficher la description dans la vue quotidienne."
   },
   "dailiesPriorityPrefix": "Priorité : ",
   "@dailiesPriorityPrefix": {
-    "description": "Prefix to display priority in the daily view."
+    "description": "Préfixe pour afficher la priorité dans la vue quotidienne."
   },
   "dailiesMeetingDisplay": "Réunion",
   "@dailiesMeetingDisplay": {
-    "description": "Display text for 'Meeting' event type in the daily view."
+    "description": "Texte d'affichage pour le type d'événement 'Réunion' dans la vue quotidienne."
   },
   "dailiesExamDisplay": "Examen",
   "@dailiesExamDisplay": {
-    "description": "Display text for 'Exam' event type in the daily view."
+    "description": "Texte d'affichage pour le type d'événement 'Examen' dans la vue quotidienne."
   },
   "dailiesConferenceDisplay": "Conférence",
   "@dailiesConferenceDisplay": {
-    "description": "Display text for 'Conference' event type in the daily view."
+    "description": "Texte d'affichage pour le type d'événement 'Conférence' dans la vue quotidienne."
   },
   "dailiesAppointmentDisplay": "Rendez-vous",
   "@dailiesAppointmentDisplay": {
-    "description": "Display text for 'Appointment' event type in the daily view."
+    "description": "Texte d'affichage pour le type d'événement 'Rendez-vous' dans la vue quotidienne."
   },
   "dailiesTaskDisplay": "Tâche",
   "@dailiesTaskDisplay": {
-    "description": "Display text for 'Task' event type in the daily view."
+    "description": "Texte d'affichage pour le type d'événement 'Tâche' dans la vue quotidienne."
   },
 
   "calendarNoUpcomingEvents": "Aucun événement à venir.",
   "@calendarNoUpcomingEvents": {
-    "description": "Message when there are no upcoming events in the calendar."
+    "description": "Message lorsqu'il n'y a pas d'événements à venir dans le calendrier."
   },
 
   "addEventCreateTitle": "CRÉER UN NOUVEL ÉVÉNEMENT",
   "@addEventCreateTitle": {
-    "description": "The title of the screen for creating a new event."
+    "description": "Le titre de l'écran pour créer un nouvel événement."
   },
   "addEventEditTitle": "MODIFIER L'ÉVÉNEMENT",
   "@addEventEditTitle": {
-    "description": "The title of the screen for editing an existing event."
+    "description": "Le titre de l'écran pour modifier un événement existant."
   },
-  "addEventFieldTitle": "Titre de l'événement",
+  "addEventFieldTitle": "Titre de l'Événement",
   "@addEventFieldTitle": {
-    "description": "The label for the event title field in add/edit."
+    "description": "L'étiquette pour le champ de titre de l'événement dans l'ajout/édition."
   },
   "addEventFieldDescription": "Description",
   "@addEventFieldDescription": {
-    "description": "The label for the event description field in add/edit."
+    "description": "L'étiquette pour le champ de description de l'événement dans l'ajout/édition."
   },
   "addEventFieldPriority": "Priorité",
   "@addEventFieldPriority": {
-    "description": "The label for the event priority field in add/edit."
+    "description": "L'étiquette pour le champ de priorité de l'événement dans l'ajout/édition."
   },
   "addEventFieldNotification": "Notification",
   "@addEventFieldNotification": {
-    "description": "The label for the event notification field in add/edit."
+    "description": "L'étiquette pour le champ de notification de l'événement dans l'ajout/édition."
   },
   "addEventFieldDate": "Date",
   "@addEventFieldDate": {
-    "description": "The label for the event date field in add/edit."
+    "description": "L'étiquette pour le champ de date de l'événement dans l'ajout/édition."
   },
-  "addEventSelectDate": "Sélectionner la date",
+  "addEventSelectDate": "Sélectionner la Date",
   "@addEventSelectDate": {
-    "description": "The button text to select date in add/edit event."
+    "description": "Le texte du bouton pour sélectionner la date dans l'ajout/édition d'événement."
   },
   "addEventFieldTime": "Heure",
   "@addEventFieldTime": {
-    "description": "The label for the event time field in add/edit."
+    "description": "L'étiquette pour le champ d'heure de l'événement dans l'ajout/édition."
   },
-  "addEventSelectTime": "Sélectionner l'heure",
+  "addEventSelectTime": "Sélectionner l'Heure",
   "@addEventSelectTime": {
-    "description": "The button text to select time in add/edit event."
+    "description": "Le texte du bouton pour sélectionner l'heure dans l'ajout/édition d'événement."
   },
-  "addEventFieldEventType": "Type d'événement",
+  "addEventFieldEventType": "Type d'Événement",
   "@addEventFieldEventType": {
-    "description": "The label for the event type field in add/edit."
+    "description": "L'étiquette pour le champ de type d'événement dans l'ajout/édition."
   },
   "addEventFieldLocation": "Lieu",
   "@addEventFieldLocation": {
-    "description": "The label for the event location field in add/edit."
+    "description": "L'étiquette pour le champ de lieu de l'événement dans l'ajout/édition."
   },
   "addEventFieldSubject": "Sujet",
   "@addEventFieldSubject": {
-    "description": "The label for the event subject field in add/edit."
+    "description": "L'étiquette pour le champ de sujet de l'événement dans l'ajout/édition."
   },
-  "addEventFieldWithPersonYesNo": "Avec personne (Oui/Non) :",
+  "addEventFieldWithPersonYesNo": "Avec Personne (Oui/Non) :",
   "@addEventFieldWithPersonYesNo": {
-    "description": "The label for the 'With Person' field with yes/no option in add/edit."
+    "description": "L'étiquette pour le champ 'Avec Personne' avec option oui/non dans l'ajout/édition."
   },
-  "addEventFieldWithPerson": "Avec personne",
+  "addEventFieldWithPerson": "Avec Personne",
   "@addEventFieldWithPerson": {
-    "description": "The label for the 'With Person' field in add/edit event."
+    "description": "L'étiquette pour le champ 'Avec Personne' dans l'ajout/édition d'événement."
   },
-  "addEventSaveButton": "Enregistrer l'événement",
+  "addEventSaveButton": "Enregistrer l'Événement",
   "@addEventSaveButton": {
-    "description": "The text for the button to save a new or edited event."
+    "description": "Le texte du bouton pour enregistrer un nouvel événement ou un événement modifié."
   },
 
   "upcomingEventDatePrefix": "Date : ",
   "@upcomingEventDatePrefix": {
-    "description": "Prefix for the date of an upcoming event."
+    "description": "Préfixe pour la date d'un événement à venir."
   },
   "upcomingEventPriorityPrefix": "Priorité : ",
   "@upcomingEventPriorityPrefix": {
-    "description": "Prefix for the priority of an upcoming event."
+    "description": "Préfixe pour la priorité d'un événement à venir."
   },
   "upcomingEventDescriptionPrefix": "Description : ",
   "@upcomingEventDescriptionPrefix": {
-    "description": "Prefix for the description of an upcoming event."
+    "description": "Préfixe pour la description d'un événement à venir."
   },
 
   "monthlyCalendarMondayAbbr": "Lun",
   "@monthlyCalendarMondayAbbr": {
-    "description": "Abbreviation for Monday in the monthly calendar."
+    "description": "Abréviation de Lundi dans le calendrier mensuel."
   },
   "monthlyCalendarTuesdayAbbr": "Mar",
   "@monthlyCalendarTuesdayAbbr": {
-    "description": "Abbreviation for Tuesday in the monthly calendar."
+    "description": "Abréviation de Mardi dans le calendrier mensuel."
   },
   "monthlyCalendarWednesdayAbbr": "Mer",
   "@monthlyCalendarWednesdayAbbr": {
-    "description": "Abbreviation for Wednesday in the monthly calendar."
+    "description": "Abréviation de Mercredi dans le calendrier mensuel."
   },
   "monthlyCalendarThursdayAbbr": "Jeu",
   "@monthlyCalendarThursdayAbbr": {
-    "description": "Abbreviation for Thursday in the monthly calendar."
+    "description": "Abréviation de Jeudi dans le calendrier mensuel."
   },
   "monthlyCalendarFridayAbbr": "Ven",
   "@monthlyCalendarFridayAbbr": {
-    "description": "Abbreviation for Friday in the monthly calendar."
+    "description": "Abréviation de Vendredi dans le calendrier mensuel."
   },
   "monthlyCalendarSaturdayAbbr": "Sam",
   "@monthlyCalendarSaturdayAbbr": {
-    "description": "Abbreviation for Saturday in the monthly calendar."
+    "description": "Abréviation de Samedi dans le calendrier mensuel."
   },
   "monthlyCalendarSundayAbbr": "Dim",
   "@monthlyCalendarSundayAbbr": {
-    "description": "Abbreviation for Sunday in the monthly calendar."
+    "description": "Abréviation de Dimanche dans le calendrier mensuel."
   },
   "monthlyCalendarEventsForMonthPrefix": "Événements pour ce mois : ",
   "@monthlyCalendarEventsForMonthPrefix": {
-    "description": "Prefix for the number of events in the current month on the calendar."
+    "description": "Préfixe pour le nombre d'événements du mois actuel dans le calendrier."
   },
   "monthlyCalendarNoEventsForMonth": "Aucun événement pour ce mois.",
   "@monthlyCalendarNoEventsForMonth": {
-    "description": "Message when there are no events for the current month on the calendar."
+    "description": "Message lorsqu'il n'y a pas d'événements pour le mois actuel dans le calendrier."
   },
 
   "monthJanuary": "JANVIER",
   "@monthJanuary": {
-    "description": "Name of the month January."
+    "description": "Nom du mois de Janvier."
   },
   "monthFebruary": "FÉVRIER",
   "@monthFebruary": {
-    "description": "Name of the month February."
+    "description": "Nom du mois de Février."
   },
   "monthMarch": "MARS",
   "@monthMarch": {
-    "description": "Name of the month March."
+    "description": "Nom du mois de Mars."
   },
   "monthApril": "AVRIL",
   "@monthApril": {
-    "description": "Name of the month April."
+    "description": "Nom du mois d'Avril."
   },
   "monthMay": "MAI",
   "@monthMay": {
-    "description": "Name of the month May."
+    "description": "Nom du mois de Mai."
   },
   "monthJune": "JUIN",
   "@monthJune": {
-    "description": "Name of the month June."
+    "description": "Nom du mois de Juin."
   },
   "monthJuly": "JUILLET",
   "@monthJuly": {
-    "description": "Name of the month July."
+    "description": "Nom du mois de Juillet."
   },
   "monthAugust": "AOÛT",
   "@monthAugust": {
-    "description": "Name of the month August."
+    "description": "Nom du mois d'Août."
   },
   "monthSeptember": "SEPTEMBRE",
   "@monthSeptember": {
-    "description": "Name of the month September."
+    "description": "Nom du mois de Septembre."
   },
   "monthOctober": "OCTOBRE",
   "@monthOctober": {
-    "description": "Name of the month October."
+    "description": "Nom du mois d'Octobre."
   },
   "monthNovember": "NOVEMBRE",
   "@monthNovember": {
-    "description": "Name of the month November."
+    "description": "Nom du mois de Novembre."
   },
   "monthDecember": "DÉCEMBRE",
   "@monthDecember": {
-    "description": "Name of the month December."
+    "description": "Nom du mois de Décembre."
   },
 
-  "footerReturnToCurrentMonthTooltip": "Retour au mois actuel",
+  "footerReturnToCurrentMonthTooltip": "Retourner au mois actuel",
   "@footerReturnToCurrentMonthTooltip": {
-    "description": "Tooltip text for the button to return to the current month in the footer."
+    "description": "Texte de l'infobulle pour le bouton de retour au mois actuel dans le pied de page."
   },
 
   "profileButtonTooltip": "Profil",
   "@profileButtonTooltip": {
-    "description": "Tooltip text for the profile button."
+    "description": "Texte de l'infobulle pour le bouton de profil."
   },
 
   "chatButtonTooltip": "Chat",
   "@chatButtonTooltip": {
-    "description": "Tooltip text for the chat button."
+    "description": "Texte de l'infobulle pour le bouton de chat."
   },
 
   "calendarToggleShowYearlyViewTooltip": "Afficher la vue annuelle",
   "@calendarToggleShowYearlyViewTooltip": {
-    "description": "Tooltip text for the button to toggle to yearly view."
+    "description": "Texte de l'infobulle pour le bouton de bascule vers la vue annuelle."
   },
   "calendarToggleShowMonthlyViewTooltip": "Afficher la vue mensuelle",
   "@calendarToggleShowMonthlyViewTooltip": {
-    "description": "Tooltip text for the button to toggle to monthly view."
+    "description": "Texte de l'infobulle pour le bouton de bascule vers la vue mensuelle."
   },
 
   "priorityDisplayCritical": "Critique",
   "@priorityDisplayCritical": {
-    "description": "Display name for 'Critical' priority."
+    "description": "Nom d'affichage pour la priorité 'Critique'."
   },
   "priorityDisplayHigh": "Élevée",
   "@priorityDisplayHigh": {
-    "description": "Display name for 'High' priority."
+    "description": "Nom d'affichage pour la priorité 'Élevée'."
   },
   "priorityDisplayMedium": "Moyenne",
   "@priorityDisplayMedium": {
-    "description": "Display name for 'Medium' priority."
+    "description": "Nom d'affichage pour la priorité 'Moyenne'."
   },
-  "priorityDisplayLow": "Faible",
+  "priorityDisplayLow": "Basse",
   "@priorityDisplayLow": {
-    "description": "Display name for 'Low' priority."
+    "description": "Nom d'affichage pour la priorité 'Basse'."
   },
 
-  "signUpCreateAccountTitle": "Créer un compte",
+  "signUpCreateAccountTitle": "Créer un Compte",
   "@signUpCreateAccountTitle": {
-    "description": "The title of the account creation screen."
+    "description": "Le titre de l'écran de création de compte."
   },
-  "signUpLogInText": "Se connecter",
+  "signUpLogInText": "Se Connecter",
   "@signUpLogInText": {
-    "description": "The text for the link to go to the login screen from signup."
+    "description": "Le texte du lien pour aller à l'écran de connexion depuis l'inscription."
   },
-  "signUpSubtitleText": "Commençons par remplir le formulaire ci-dessous.",
+  "signUpSubtitleText": "Commencez par remplir le formulaire ci-dessous.",
   "@signUpSubtitleText": {
-    "description": "The subtitle on the signup screen."
+    "description": "Le sous-titre sur l'écran d'inscription."
   },
-  "signUpEmailHint": "E-mail",
+  "signUpEmailHint": "Adresse e-mail",
   "@signUpEmailHint": {
-    "description": "Hint text for the email field on signup."
+    "description": "Texte d'indice pour le champ e-mail sur l'inscription."
   },
   "signUpUsernameHint": "Nom d'utilisateur",
   "@signUpUsernameHint": {
-    "description": "Hint text for the username field on signup."
+    "description": "Texte d'indice pour le champ nom d'utilisateur sur l'inscription."
   },
   "signUpPasswordHint": "Mot de passe",
   "@signUpPasswordHint": {
-    "description": "Hint text for the password field on signup."
+    "description": "Texte d'indice pour le champ mot de passe sur l'inscription."
   },
-  "signUpConfirmPasswordHint": "Confirmer le mot de passe",
+  "signUpConfirmPasswordHint": "Confirmer le Mot de passe",
   "@signUpConfirmPasswordHint": {
-    "description": "Hint text for the confirm password field on signup."
+    "description": "Texte d'indice pour le champ de confirmation du mot de passe sur l'inscription."
   },
   "signUpGetStartedButton": "Commencer",
   "@signUpGetStartedButton": {
-    "description": "The text for the button to start signup."
+    "description": "Le texte du bouton pour commencer l'inscription."
   },
   "signUpOrSignUpWith": "Ou inscrivez-vous avec",
   "@signUpOrSignUpWith": {
-    "description": "The text before social sign-up buttons."
+    "description": "Le texte avant les boutons d'inscription sociale."
   },
 
   "signInTitle": "Se connecter",
   "@signInTitle": {
-    "description": "The title of the login screen."
+    "description": "Le titre de l'écran de connexion."
   },
-  "emailLabel": "E-mail",
+  "emailLabel": "Adresse e-mail",
   "@emailLabel": {
-    "description": "The label for the email input field."
+    "description": "L'étiquette pour le champ de saisie de l'adresse e-mail."
   },
   "passwordLabel": "Mot de passe",
   "@passwordLabel": {
-    "description": "The label for the password input field."
+    "description": "L'étiquette pour le champ de saisie du mot de passe."
   },
   "signInButton": "Se connecter",
   "@signInButton": {
-    "description": "The text for the login button."
+    "description": "Le texte du bouton de connexion."
   },
-  "welcomeBack": "Bienvenue de retour",
+  "welcomeBack": "Bienvenue de nouveau",
   "@welcomeBack": {
-    "description": "The title on the login screen."
+    "description": "Le titre sur l'écran de connexion."
   },
   "signInSubtitle": "Remplissez les informations ci-dessous pour accéder à votre compte.",
   "@signInSubtitle": {
-    "description": "The subtitle on the login screen."
+    "description": "Le sous-titre sur l'écran de connexion."
   },
   "createAccount": "Créer un compte",
   "@createAccount": {
-    "description": "The text for the link to the signup screen."
+    "description": "Le texte du lien vers l'écran d'inscription."
   },
   "logIn": "Se connecter",
   "@logIn": {
-    "description": "The text for the link to the login screen."
+    "description": "Le texte du lien vers l'écran de connexion."
   },
   "loginFailed": "Échec de la connexion",
   "@loginFailed": {
-    "description": "The message when the login process fails."
+    "description": "Le message lorsque le processus de connexion échoue."
   },
   "orSignInWith": "Ou connectez-vous avec",
   "@orSignInWith": {
-      "description": "The text before social sign in buttons."
+      "description": "Le texte avant les boutons de connexion sociale."
   },
 
   "socialSignInGoogleText": "Continuer avec Google",
   "@socialSignInGoogleText": {
-    "description": "Text for the 'Continue with Google' button."
+    "description": "Texte du bouton 'Continuer avec Google'."
   },
   "socialSignInAppleText": "Continuer avec Apple",
   "@socialSignInAppleText": {
-    "description": "Text for the 'Continue with Apple' button."
+    "description": "Texte du bouton 'Continuer avec Apple'."
   },
 
   "appTitleEventify": "EVENTIFY",
   "@appTitleEventify": {
-    "description": "The main title of the application."
+    "description": "Le titre principal de l'application."
   },
 
   "forgotPasswordOptionText": "Mot de passe oublié ?",
   "@forgotPasswordOptionText": {
-    "description": "The text for the 'Forgot your password?' option."
+    "description": "Le texte de l'option 'Mot de passe oublié ?'."
   },
-  "signInCreateAccountText": "Créer un compte",
+  "signInCreateAccountText": "Créer un Compte",
   "@signInCreateAccountText": {
-    "description": "Text for the create account link on the login screen."
+    "description": "Texte du lien de création de compte sur l'écran de connexion."
   },
-  "signInLogInText": "Se connecter",
+  "signInLogInText": "Se Connecter",
   "@signInLogInText": {
-    "description": "Text for the log in link on the login screen."
+    "description": "Texte du lien de connexion sur l'écran de connexion."
   },
   "signInWelcomeTitle": "Bienvenue sur Eventify",
   "@signInWelcomeTitle": {
-    "description": "The welcome title on the login screen."
+    "description": "Le titre de bienvenue sur l'écran de connexion."
   },
-  "signInEmailHint": "E-mail",
+  "signInEmailHint": "Adresse e-mail",
   "@signInEmailHint": {
-    "description": "Hint text for the email field on the login screen."
+    "description": "Texte d'indice pour le champ e-mail sur l'écran de connexion."
   },
   "signInPasswordHint": "Mot de passe",
   "@signInPasswordHint": {
-    "description": "Hint text for the password field on the login screen."
+    "description": "Texte d'indice pour le champ mot de passe sur l'écran de connexion."
   },
-  "signInButtonText": "Se connecter",
+  "signInButtonText": "Se Connecter",
   "@signInButtonText": {
-    "description": "The text for the login button."
+    "description": "Le texte du bouton de connexion."
   },
   "signInOrSignInWith": "Ou connectez-vous avec",
   "@signInOrSignInWith": {
-    "description": "The text before social sign-in buttons."
+    "description": "Le texte avant les boutons de connexion sociale."
+  },
+  "profileThemesText": "Thèmes",
+  "@profileThemesText": {
+    "description": "Texte pour l'option 'Thèmes' dans l'écran de profil."
+  },
+  "themeSelectSecondaryColor": "Sélectionner la couleur secondaire",
+  "@themeSelectSecondaryColor": {
+    "description": "Libellé pour sélectionner la couleur secondaire dans les paramètres de thème."
+  },
+  "themeOptionGreenAccent": "Vert accentué",
+  "@themeOptionGreenAccent": {
+    "description": "Option pour le thème Vert accentué."
+  },
+  "themeOptionBlueAccent": "Bleu accentué",
+  "@themeOptionBlueAccent": {
+    "description": "Option pour le thème Bleu accentué."
+  },
+  "themeOptionOrangeAccent": "Orange accentué",
+  "@themeOptionOrangeAccent": {
+    "description": "Option pour le thème Orange accentué."
+  },
+  "themeOptionRedAccent": "Rouge accentué",
+  "@themeOptionRedAccent": {
+    "description": "Option pour le thème Rouge accentué."
   }
 }

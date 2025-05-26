@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors_palette.dart'; // IMPORTANT: Add this import!
 
 class ProfileScreen extends StatefulWidget {
   static String routeName = 'profile';
@@ -25,6 +26,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isNotificationSettingsExpanded = false;
   bool _isTermsOfServiceExpanded = false;
   bool _isSupportExpanded = false;
+  bool _isThemeColorExpanded = false; // New state for theme color dropdown
+
+  // State variable for the currently selected color in the dropdown
+  Color? _selectedColor; // Will be null if "Predeterminado" is selected
+
+  // List of available colors for the user to choose from in the dropdown
+  final List<Map<String, dynamic>> _colorOptions = [
+    // Added "Predeterminado" option with null color
+    {'name': 'Predeterminado', 'color': null},
+    {'name': 'Verde', 'color': AppColorPalette.greenAccent}, // No longer "(Default)"
+    {'name': 'Azul', 'color': AppColorPalette.blueAccent},
+    {'name': 'Naranja', 'color': AppColorPalette.orangeAccent},
+    {'name': 'Rojo', 'color': AppColorPalette.redAccent},
+    // Removed 'Púrpura' as requested
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize _selectedColor directly from AppColors.currentUserSelectedColor.
+    // If AppColors.currentUserSelectedColor is null (no user selection),
+    // _selectedColor will correctly be null, matching the "Predeterminado" option.
+    _selectedColor = AppColors.currentUserSelectedColor;
+  }
 
   String get _firstLetter {
     final user = FirebaseAuth.instance.currentUser;
@@ -64,6 +89,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  void _toggleThemeColor() { // New toggle function for theme color
+    setState(() {
+      _isThemeColorExpanded = !_isThemeColorExpanded;
+    });
+  }
+
+  void _changeThemeColor(Color? newColor) {
+    // newColor can now be null if "Predeterminado" is selected
+    setState(() {
+      _selectedColor = newColor; // Update the dropdown's selected value
+      AppColors.currentUserSelectedColor = newColor; // Update the static global color to null if "Predeterminado"
+    });
+    // Optionally, show a confirmation message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Color de tema cambiado.'),
+        duration: const Duration(seconds: 2),
+        backgroundColor: AppColors.snackBarInfoColor,
+      ),
+    );
+    // NOTE: Because AppColors uses static getters, this setState() call
+    // is what triggers the ProfileScreen to rebuild and use the new colors.
+    // Other parts of your app would need similar rebuild triggers.
+  }
+
   void _contactSupport(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -78,9 +128,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final errorColor = theme.colorScheme.error; // Keeping this as it's theme-derived
-    // const listBackgroundColor = Color(0xFF1F1F1F); // Replaced by AppColors.cardBackground
-    // const mediumGreyColor = Color.fromARGB(255, 70, 70, 70); // Replaced by AppColors.profileMediumGrey
-    // const headerBackgroundColor = Color.fromARGB(255, 30, 30, 30); // Replaced by AppColors.profileHeaderBackground
     final currentDate = DateFormatter.getCurrentDateFormatted();
 
     final user = FirebaseAuth.instance.currentUser;
@@ -201,6 +248,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               const SizedBox(height: 8.0),
+
+              // NEW: Theme Color Selection Item
+              _buildProfileListItem(
+                icon: Icons.color_lens_outlined,
+                text: AppStrings.profileThemesText(context),
+                isExpandable: true,
+                isExpanded: _isThemeColorExpanded,
+                onToggleExpand: _toggleThemeColor,
+                listBackgroundColor: AppColors.cardBackground, // Using AppColors
+                dropdownContent: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Selecciona un color para el tema:',
+                      style: TextStyles.plusJakartaSansBody2.copyWith(color: AppColors.textPrimary),
+                    ),
+                    const SizedBox(height: 8.0),
+                    DropdownButton<Color>(
+                      value: _selectedColor,
+                      dropdownColor: AppColors.dropdownContentBackground, // Using AppColors
+                      icon: Icon(Icons.arrow_drop_down, color: AppColors.textPrimary), // Using AppColors
+                      underline: Container(
+                        height: 1,
+                        color: AppColors.textPrimary.withOpacity(0.5), // Using AppColors
+                      ),
+                      isExpanded: true,
+                      onChanged: _changeThemeColor,
+                      items: _colorOptions.map<DropdownMenuItem<Color>>((Map<String, dynamic> option) {
+                        return DropdownMenuItem<Color>(
+                          value: option['color'] as Color?, // Cast to Color? as it can now be null
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  color: (option['color'] as Color?) ?? AppColorPalette.grey, // Show grey for "Predeterminado" swatch
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              Text(
+                                option['name'] as String,
+                                style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.textPrimary), // Using AppColors
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8.0),
+
 
               // Support Section with Dropdown
               _buildProfileListItem(

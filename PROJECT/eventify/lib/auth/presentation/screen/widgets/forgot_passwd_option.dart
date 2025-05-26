@@ -14,7 +14,7 @@ class ForgotPasswordOption extends StatelessWidget {
         },
         child: Text(
           AppStrings.forgotPasswordOptionText(context),
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.textSecondary, // Using AppColors
             decoration: TextDecoration.underline,
           ),

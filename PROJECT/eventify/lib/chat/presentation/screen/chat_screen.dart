@@ -96,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide:
-                        BorderSide(color: AppColors.secondary, width: 1.5),
+                        BorderSide(color: AppColors.primary, width: 1.5),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),

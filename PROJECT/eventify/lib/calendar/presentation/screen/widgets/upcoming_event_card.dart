@@ -126,7 +126,7 @@ class UpcomingEventCard extends StatelessWidget {
             Text(
               '${AppStrings.upcomingEventPriorityPrefix(context)}${_getTranslatedPriority(context, priority.split('.').last)}',
               style: TextStyles.plusJakartaSansBody2.copyWith(
-                color: AppColors.priorityTextColor, // Using AppColors
+                color: AppColors.priorityTextColorDynamic, // Using AppColors
               ),
             ),
             const SizedBox(height: 8.0),

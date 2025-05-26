@@ -325,7 +325,7 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                                       Text(
                                         '${AppStrings.dailiesPriorityPrefix(context)}${event.priority.toString().split('.').last.toUpperCase()}',
                                         style: TextStyles.plusJakartaSansBody2
-                                            .copyWith(color: AppColors.priorityTextColor), // Using AppColors
+                                            .copyWith(color: AppColors.priorityTextColorDynamic), // Using AppColors
                                       ),
                                     ],
                                   ),
