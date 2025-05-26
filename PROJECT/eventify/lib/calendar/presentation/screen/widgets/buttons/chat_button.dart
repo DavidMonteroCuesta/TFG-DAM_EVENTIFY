@@ -1,7 +1,7 @@
 import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/chat/presentation/screen/chat_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
+import 'package:eventify/common/constants/app_strings.dart';
 
 class ChatButton extends StatelessWidget {
   final double size;
@@ -30,9 +30,9 @@ class ChatButton extends StatelessWidget {
         shape: const CircleBorder(),
         backgroundColor: Colors.transparent,
         // ignore: deprecated_member_use
-        highlightColor: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.4),
+        highlightColor: AppColors.highlightColorWhite, // Using AppColors
       ),
-      tooltip: AppStrings.chatButtonTooltip(context), // Using constant
+      tooltip: AppStrings.chatButtonTooltip(context),
     );
   }
 }

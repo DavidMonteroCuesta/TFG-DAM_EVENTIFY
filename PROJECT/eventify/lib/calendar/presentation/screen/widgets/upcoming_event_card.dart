@@ -3,6 +3,7 @@ import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class UpcomingEventCard extends StatelessWidget {
   final String title;
@@ -61,7 +62,7 @@ class UpcomingEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color outlineColor = Color(0xFFE0E0E0);
+    // const Color outlineColor = Color(0xFFE0E0E0); // Replaced by AppColors.outlineColorLight
 
     return InkWell(
       onTap: onTapCard,
@@ -70,12 +71,12 @@ class UpcomingEventCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-          color: const Color(0xFF1F1F1F),
+          color: AppColors.cardBackground, // Using AppColors
           borderRadius: BorderRadius.circular(12.0),
-          border: Border.all(color: outlineColor.withOpacity(0.3), width: 1.0),
+          border: Border.all(color: AppColors.outlineColorLight.withOpacity(0.3), width: 1.0), // Using AppColors
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withOpacity(0.2), // Derived color, keep as is
               spreadRadius: 1,
               blurRadius: 5,
               offset: const Offset(0, 3),
@@ -95,7 +96,7 @@ class UpcomingEventCard extends StatelessWidget {
                     style: TextStyles.plusJakartaSansBody1.copyWith(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: AppColors.textPrimary, // Using AppColors
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -105,9 +106,9 @@ class UpcomingEventCard extends StatelessWidget {
                   _getTranslatedEventType(
                     context,
                     type.split('.').last,
-                  ), // Pass context to helper
+                  ),
                   style: TextStyles.plusJakartaSansBody2.copyWith(
-                    color: Colors.grey[400],
+                    color: AppColors.textGrey400, // Using AppColors
                   ),
                 ),
               ],
@@ -115,26 +116,26 @@ class UpcomingEventCard extends StatelessWidget {
             const SizedBox(height: 8.0),
 
             Text(
-              '${AppStrings.upcomingEventDatePrefix(context)}${DateFormat('yyyy/MM/dd HH:mm').format(date)}', // Pass context
+              '${AppStrings.upcomingEventDatePrefix(context)}${DateFormat('yyyy/MM/dd HH:mm').format(date)}',
               style: TextStyles.plusJakartaSansBody2.copyWith(
-                color: Colors.grey[400],
+                color: AppColors.textGrey400, // Using AppColors
               ),
             ),
             const SizedBox(height: 8.0),
 
             Text(
-              '${AppStrings.upcomingEventPriorityPrefix(context)}${_getTranslatedPriority(context, priority.split('.').last)}', // Pass context to helper
+              '${AppStrings.upcomingEventPriorityPrefix(context)}${_getTranslatedPriority(context, priority.split('.').last)}',
               style: TextStyles.plusJakartaSansBody2.copyWith(
-                color: Colors.yellow,
+                color: AppColors.priorityTextColor, // Using AppColors
               ),
             ),
             const SizedBox(height: 8.0),
 
             Flexible(
               child: Text(
-                '${AppStrings.upcomingEventDescriptionPrefix(context)}${description.isNotEmpty ? description : AppInternalConstants.upcomingEventDescriptionEmpty}', // Pass context
+                '${AppStrings.upcomingEventDescriptionPrefix(context)}${description.isNotEmpty ? description : AppInternalConstants.upcomingEventDescriptionEmpty}',
                 style: TextStyles.plusJakartaSansBody2.copyWith(
-                  color: Colors.grey[300],
+                  color: AppColors.textSubtitle1Grey, // Using AppColors
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

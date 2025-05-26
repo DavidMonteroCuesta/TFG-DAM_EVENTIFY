@@ -8,8 +8,9 @@ import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
 import 'package:eventify/auth/presentation/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'; // Import this
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // This line will be added after setup
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 import 'di/service_locator.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,8 +23,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.init();
-  // Initialize date formatting for all locales you support, or specific ones.
-  // 'es' for Spanish, 'en' for English, etc.
   await initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
@@ -43,16 +42,16 @@ class MyApp extends StatelessWidget {
         title: 'Eventify Auth',
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: Colors.black,
+          scaffoldBackgroundColor: AppColors.background, // Using AppColors
           colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.green,
-            accentColor: Colors.greenAccent.shade400,
+            primarySwatch: AppColors.primary as MaterialColor, // Using AppColors
+            accentColor: AppColors.accentColor400, // Using AppColors, keeping shade400
             brightness: Brightness.dark,
           ),
           inputDecorationTheme: InputDecorationTheme(
-            hintStyle: TextStyle(color: Colors.grey.shade500),
+            hintStyle: TextStyle(color: AppColors.textBody2Grey), // Using AppColors
             filled: true,
-            fillColor: const Color(0xFF1F1F1F),
+            fillColor: AppColors.inputFillColor, // Using AppColors
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide.none,
@@ -60,8 +59,8 @@ class MyApp extends StatelessWidget {
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.greenAccent.shade400,
-              foregroundColor: Colors.black,
+              backgroundColor: AppColors.accentColor400, // Using AppColors, keeping shade400
+              foregroundColor: AppColors.elevatedButtonForeground, // Using AppColors
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -69,17 +68,16 @@ class MyApp extends StatelessWidget {
           ),
           outlinedButtonTheme: OutlinedButtonThemeData(
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.white,
-              side: const BorderSide(color: Colors.grey),
+              foregroundColor: AppColors.textPrimary, // Using AppColors
+              side: const BorderSide(color: AppColors.outlinedButtonBorder), // Using AppColors
             ),
           ),
           textTheme: const TextTheme(
-            bodyMedium: TextStyle(color: Colors.white),
+            bodyMedium: TextStyle(color: AppColors.textPrimary), // Using AppColors
           ),
         ),
-        // --- START LOCALIZATION CONFIGURATION ---
         localizationsDelegates: const [
-          AppLocalizations.delegate, // Your generated localizations delegate
+          AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,

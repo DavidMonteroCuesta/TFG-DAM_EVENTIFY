@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class ForgotPasswordOption extends StatelessWidget {
   const ForgotPasswordOption({super.key});
@@ -13,8 +14,8 @@ class ForgotPasswordOption extends StatelessWidget {
         },
         child: Text(
           AppStrings.forgotPasswordOptionText(context),
-          style: TextStyle(
-            color: Colors.grey,
+          style: const TextStyle(
+            color: AppColors.textSecondary, // Using AppColors
             decoration: TextDecoration.underline,
           ),
         ),

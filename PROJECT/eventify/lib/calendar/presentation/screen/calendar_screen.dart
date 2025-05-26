@@ -5,12 +5,13 @@ import 'package:eventify/calendar/presentation/screen/widgets/header.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/monthly_calendar.dart';
 import 'package:eventify/calendar/presentation/screen/widgets/upcoming_event_card.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/calendar/presentation/screen/add_event_screen.dart'; // Import AddEventScreen
+import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class CalendarScreen extends StatefulWidget {
   static const String routeName = '/calendar';
@@ -111,8 +112,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     safeEventData['location'] = safeEventData['location'] ?? '';
     safeEventData['subject'] = safeEventData['subject'] ?? '';
     safeEventData['withPerson'] = safeEventData['withPerson'] ?? '';
-    safeEventData['type'] = safeEventData['type']?.toString() ?? AppInternalConstants.eventTypeTask; // Using constant
-    safeEventData['priority'] = safeEventData['priority']?.toString() ?? AppInternalConstants.priorityValueLow; // Using constant
+    safeEventData['type'] = safeEventData['type']?.toString() ?? AppInternalConstants.eventTypeTask;
+    safeEventData['priority'] = safeEventData['priority']?.toString() ?? AppInternalConstants.priorityValueLow;
 
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
@@ -132,8 +133,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => EventSearchScreen(
-          initialSearchTitle: title, // Pasa el título
-          initialSelectedDate: date, // Pasa la fecha
+          initialSearchTitle: title,
+          initialSelectedDate: date,
         ),
       ),
     );
@@ -161,6 +162,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final double heightThreshold = 865;
 
     return Scaffold(
+      backgroundColor: AppColors.background, // Using AppColors
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final isTablet =
@@ -202,7 +204,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         child: Consumer<EventViewModel>(
                                           builder: (context, eventViewModel, child) {
                                             if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
-                                              return const Center(child: CircularProgressIndicator());
+                                              return Center(child: CircularProgressIndicator(color: AppColors.primary)); // Using AppColors
                                             } else if (eventViewModel.errorMessage != null) {
                                               return Center(
                                                 child: Text(
@@ -227,7 +229,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             } else {
                                               return Center(
                                                 child: Text(
-                                                  // CORRECTED: Pass context here
                                                   AppStrings.calendarNoUpcomingEvents(context),
                                                   style: TextStyles.urbanistBody1,
                                                   textAlign: TextAlign.center,
@@ -272,7 +273,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       child: Consumer<EventViewModel>(
                                         builder: (context, eventViewModel, child) {
                                           if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
-                                            return const Center(child: CircularProgressIndicator());
+                                            return Center(child: CircularProgressIndicator(color: AppColors.primary)); // Using AppColors
                                           } else if (eventViewModel.errorMessage != null) {
                                             return Center(
                                               child: Text(
@@ -297,7 +298,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           } else {
                                             return Center(
                                               child: Text(
-                                                // CORRECTED: Pass context here
                                                 AppStrings.calendarNoUpcomingEvents(context),
                                                 style: TextStyles.urbanistBody1,
                                                 textAlign: TextAlign.center,

@@ -1,6 +1,7 @@
 import 'package:eventify/auth/presentation/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class ProfileButton extends StatelessWidget {
   final String? profileImageUrl;
@@ -37,18 +38,18 @@ class ProfileButton extends StatelessWidget {
               )
             : Icon(
                 Icons.person,
-                color: Colors.white,
+                color: AppColors.textPrimary, // Using AppColors
               ),
       ),
       iconSize: size,
       padding: EdgeInsets.zero,
       style: IconButton.styleFrom(
         shape: const CircleBorder(),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent, // Colors.transparent doesn't need to be in AppColors
         // ignore: deprecated_member_use
-        highlightColor: Colors.grey.withOpacity(0.4),
+        highlightColor: AppColors.highlightColorGrey, // Using AppColors
       ),
-      tooltip: AppStrings.profileButtonTooltip(context), // Using constant
+      tooltip: AppStrings.profileButtonTooltip(context),
     );
   }
 }

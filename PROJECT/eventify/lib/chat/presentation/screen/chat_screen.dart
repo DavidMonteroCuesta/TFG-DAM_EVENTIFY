@@ -1,11 +1,11 @@
 import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
-import 'package:eventify/common/theme/colors/colors.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String routeName = '/chat';
@@ -19,9 +19,10 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final Color _cardBackgroundColor = const Color(0xFF1F1F1F);
-  final Color _headerBackgroundColor = Colors.grey[800]!;
-  final Color _inputBackgroundColor = const Color(0xFF1F1F1F);
+  // No longer need these local color variables as they will be fetched from AppColors
+  // final Color _cardBackgroundColor = const Color(0xFF1F1F1F);
+  // final Color _headerBackgroundColor = Colors.grey[800]!;
+  // final Color _inputBackgroundColor = const Color(0xFF1F1F1F);
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
       final chatViewModel = Provider.of<ChatViewModel>(context, listen: false);
       if (chatViewModel.messages.isEmpty) {
         chatViewModel.addInitialBotGreeting(
-          AppStrings.chatInitialBotGreeting(context), // Usando AppStrings con context
+          AppStrings.chatInitialBotGreeting(context),
         );
       }
       _scrollToBottom();
@@ -61,33 +62,32 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildTextComposer() {
-    final chatViewModel = Provider.of<ChatViewModel>(context); // Escucha el ViewModel para el estado de carga
+    final chatViewModel = Provider.of<ChatViewModel>(context);
     return Container(
       decoration: BoxDecoration(
-        color: _cardBackgroundColor,
+        color: AppColors.cardBackground, // Using AppColors
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, -1),
             blurRadius: 2,
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.1), // Keep as is, derived color
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 35.0), // Left, Top, Right, Bottom
+        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 35.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: TextField(
                 controller: _messageController,
-                onSubmitted: chatViewModel.isLoading ? null : _handleSubmitted, // Deshabilita la entrada si la IA está cargando
+                onSubmitted: chatViewModel.isLoading ? null : _handleSubmitted,
                 style: TextStyles.plusJakartaSansBody1,
                 decoration: InputDecoration(
-                  // CAMBIO AQUÍ: AppStrings.chatInputHint(context)
                   hintText: chatViewModel.isLoading
                       ? AppInternalConstants.chatThinkingHint
-                      : AppStrings.chatInputHint(context), // Usando AppStrings con context
+                      : AppStrings.chatInputHint(context),
                   hintStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -106,8 +106,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                   filled: true,
-                  fillColor:
-                      _inputBackgroundColor,
+                  fillColor: AppColors.inputFillColor, // Using AppColors
                 ),
                 maxLines: null,
                 minLines: 1,
@@ -115,7 +114,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             IconButton(
               icon: chatViewModel.isLoading
-                  ? const CircularProgressIndicator(color: AppColors.textPrimary) // Indicador de carga en el botón
+                  ? const CircularProgressIndicator(color: AppColors.textPrimary)
                   : const Icon(Icons.send, color: AppColors.textPrimary),
               onPressed: chatViewModel.isLoading
                   ? null
@@ -136,9 +135,8 @@ class _ChatScreenState extends State<ChatScreen> {
           style: TextStyles.urbanistBody1,
         ),
         titleTextStyle: TextStyles.urbanistBody1,
-        backgroundColor: _headerBackgroundColor,
-        foregroundColor:
-            AppColors.outline,
+        backgroundColor: AppColors.headerBackground, // Using AppColors
+        foregroundColor: AppColors.outline,
         elevation: 0,
         centerTitle: true,
         toolbarHeight: kToolbarHeight,
@@ -149,7 +147,7 @@ class _ChatScreenState extends State<ChatScreen> {
           },
         ),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background, // Using AppColors
       body: Column(
         children: [
           Expanded(

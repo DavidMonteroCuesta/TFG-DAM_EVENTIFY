@@ -3,7 +3,7 @@ import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
-import 'package:eventify/common/theme/colors/colors.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +60,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
       }
       _selectedEventType = _getEventTypeFromString(eventData['type']);
 
-      // Using constants for event type checks
       if (eventData['type'] == AppInternalConstants.eventTypeMeeting ||
           eventData['type'] == AppInternalConstants.eventTypeConference ||
           eventData['type'] == AppInternalConstants.eventTypeAppointment) {
@@ -159,7 +158,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               textTheme: ButtonTextTheme.primary,
             ),
             timePickerTheme: const TimePickerThemeData(
-              dayPeriodTextColor: Colors.white,
+              dayPeriodTextColor: AppColors.textPrimary, // Using AppColors
               dayPeriodTextStyle: TextStyle(fontWeight: FontWeight.bold),
               dayPeriodColor: Colors.transparent,
             ),
@@ -216,7 +215,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('${AppInternalConstants.addEventFailedToSave}$error'),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.deleteButtonColor, // Using AppColors
                 ),
               );
             });
@@ -246,7 +245,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('${AppInternalConstants.addEventFailedToUpdate}$error'),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.deleteButtonColor, // Using AppColors
                 ),
               );
             });
@@ -255,7 +254,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(AppInternalConstants.addEventValidationDateTime),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.deleteButtonColor, // Using AppColors
         ),
       );
     }
@@ -273,7 +272,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Color headerColor = Colors.grey[800]!;
+    // final Color headerColor = Colors.grey[800]!; // Replaced by AppColors.headerBackground
     const secondaryColor = AppColors.secondary;
     const onSecondaryColor = AppColors.onSecondary;
     const outlineColor = AppColors.outline;
@@ -281,7 +280,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: AppColors.outlineColorLight), // Using AppColors
           onPressed: () {
             if (mounted) {
               Navigator.of(context).pushAndRemoveUntil(
@@ -296,7 +295,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
           style: TextStyles.urbanistBody1,
           shineColor: AppColors.textPrimary,
         ),
-        backgroundColor: headerColor,
+        backgroundColor: AppColors.headerBackground, // Using AppColors
         foregroundColor: AppColors.outline,
         elevation: 0,
         centerTitle: true,
@@ -336,7 +335,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     vertical: 12.0,
                   ),
                   filled: true,
-                  fillColor: const Color(0xFF1F1F1F),
+                  fillColor: AppColors.inputFillColor, // Using AppColors
                 ),
                 validator: _validateTitle,
               ),
@@ -368,7 +367,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     vertical: 12.0,
                   ),
                   filled: true,
-                  fillColor: const Color(0xFF1F1F1F),
+                  fillColor: AppColors.inputFillColor, // Using AppColors
                 ),
                 validator: _validateDescription,
               ),
@@ -384,25 +383,25 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   _buildPriorityOption(
                     AppStrings.searchPriorityCritical(context),
                     Priority.critical,
-                    const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
+                    AppColors.focusedBorderGreen.withOpacity(0.8), // Using AppColors
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
                     AppStrings.searchPriorityHigh(context),
                     Priority.high,
-                    secondaryColor.withOpacity(0.8),
+                    AppColors.focusedBorderGreen.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
                     AppStrings.searchPriorityMedium(context),
                     Priority.medium,
-                    secondaryColor.withOpacity(0.8),
+                    AppColors.focusedBorderGreen.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
                     AppStrings.searchPriorityLow(context),
                     Priority.low,
-                    secondaryColor.withOpacity(0.8),
+                    AppColors.focusedBorderGreen.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                 ],
@@ -413,8 +412,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   Switch(
                     value: _hasNotification,
                     activeColor: secondaryColor.withOpacity(0.7),
-                    inactiveTrackColor: outlineColor.withOpacity(0.6),
-                    inactiveThumbColor: Colors.grey[350],
+                    inactiveTrackColor: AppColors.switchInactiveTrackColor.withOpacity(0.6), // Using AppColors
+                    inactiveThumbColor: AppColors.switchInactiveThumbColor, // Using AppColors
                     onChanged: (bool value) {
                       setState(() {
                         _hasNotification = value;
@@ -462,6 +461,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                             horizontal: 16.0,
                             vertical: 12.0,
                           ),
+                          filled: true, // Ensure filled is true for background color
+                          fillColor: AppColors.inputFillColor, // Using AppColors
                         ),
                         child: Text(
                           _selectedDate != null
@@ -502,6 +503,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                             horizontal: 16.0,
                             vertical: 12.0,
                           ),
+                          filled: true, // Ensure filled is true for background color
+                          fillColor: AppColors.inputFillColor, // Using AppColors
                         ),
                         child: Text(
                           _selectedTime != null
@@ -566,7 +569,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     vertical: 12.0,
                   ),
                   filled: true,
-                  fillColor: const Color(0xFF1F1F1F),
+                  fillColor: AppColors.inputFillColor, // Using AppColors
                 ),
                 style: TextStyles.plusJakartaSansBody1,
               ),
@@ -599,6 +602,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       horizontal: 16.0,
                       vertical: 12.0,
                     ),
+                    filled: true, // Ensure filled is true for background color
+                    fillColor: AppColors.inputFillColor, // Using AppColors
                   ),
                 ),
               if (_selectedEventType == EventType.exam)
@@ -627,6 +632,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       horizontal: 16.0,
                       vertical: 12.0,
                     ),
+                    filled: true, // Ensure filled is true for background color
+                    fillColor: AppColors.inputFillColor, // Using AppColors
                   ),
                 ),
               if (_selectedEventType == EventType.appointment)
@@ -676,7 +683,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide.none,
+                              borderSide: BorderSide(color: secondaryColor, width: 1.5), // Consistent with other focused borders
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -686,6 +693,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               horizontal: 16.0,
                               vertical: 12.0,
                             ),
+                            filled: true, // Ensure filled is true for background color
+                            fillColor: AppColors.inputFillColor, // Using AppColors
                           ),
                         ),
                       ),
@@ -731,7 +740,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       label: Text(
         label,
         style: TextStyle(
-          color: isSelected ? textColor : Colors.black87.withOpacity(0.8),
+          color: isSelected ? textColor : AppColors.priorityOptionSelectedTextColor, // Using AppColors
         ),
       ),
       selected: isSelected,
@@ -745,7 +754,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       backgroundColor: backgroundColor.withOpacity(0.3),
       selectedColor: backgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      side: BorderSide(color: isSelected ? backgroundColor : Colors.grey[300]!),
+      side: BorderSide(color: isSelected ? backgroundColor : AppColors.choiceChipBorderColor), // Using AppColors
       labelPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     );
   }

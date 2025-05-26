@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class SocialSignInButton extends StatelessWidget {
   final String text;
@@ -18,8 +19,8 @@ class SocialSignInButton extends StatelessWidget {
       width: double.infinity,
       child: OutlinedButton.icon(
         style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.white,
-          side: const BorderSide(color: Colors.grey),
+          foregroundColor: AppColors.textPrimary, // Using AppColors
+          side: const BorderSide(color: AppColors.outlinedButtonBorder), // Using AppColors
         ),
         icon: icon,
         label: Text(text),

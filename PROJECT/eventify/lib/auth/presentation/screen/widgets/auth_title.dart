@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class AuthTitle extends StatelessWidget {
   final String text;
@@ -11,7 +12,7 @@ class AuthTitle extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        color: Colors.grey.shade200,
+        color: AppColors.authTitleColor, // Using AppColors
         fontSize: fontSize ?? 28,
         fontWeight: FontWeight.w700,
       ),

@@ -1,5 +1,6 @@
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class MonthItem extends StatelessWidget {
   final String monthName;
@@ -14,13 +15,13 @@ class MonthItem extends StatelessWidget {
 
   Color? _getNotificationColor(int count) {
     if (count == 1) {
-      return Colors.green;
+      return AppColors.primary; // Using AppColors
     } else if (count > 1 && count <= 3) {
-      return Colors.orangeAccent;
+      return AppColors.calendarAccentColor; // Using AppColors
     } else if (count >= 4 && count <= 7) {
-      return Colors.orange;
+      return AppColors.notificationOrange; // Using AppColors
     } else if (count > 7) {
-      return Colors.red;
+      return AppColors.deleteButtonColor; // Using AppColors
     }
     return null;
   }
@@ -35,11 +36,11 @@ class MonthItem extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.13,
         margin: const EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
-          color: Colors.grey[850],
+          color: AppColors.calendarBackground, // Using AppColors
           borderRadius: BorderRadius.circular(12),
           boxShadow: const [
             BoxShadow(
-              color: Colors.black45,
+              color: Colors.black45, // Keep as is, derived color
               offset: Offset(0, 4),
               blurRadius: 6,
             ),
@@ -68,7 +69,7 @@ class MonthItem extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: const [
                       BoxShadow(
-                        color: Colors.black45,
+                        color: Colors.black45, // Keep as is, derived color
                         offset: Offset(0, 1),
                         blurRadius: 3,
                       ),
@@ -77,7 +78,7 @@ class MonthItem extends StatelessWidget {
                   child: Text(
                     notificationCount.toString(),
                     style: TextStyles.plusJakartaSansButton.copyWith(
-                      color: Colors.black,
+                      color: AppColors.textOnLightBackground, // Using AppColors
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),

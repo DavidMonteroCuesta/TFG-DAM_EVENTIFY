@@ -1,6 +1,7 @@
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:flutter/material.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class EventifyAuthLayout extends StatelessWidget {
   final Widget child;
@@ -21,7 +22,7 @@ class EventifyAuthLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background, // Using AppColors
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -34,13 +35,13 @@ class EventifyAuthLayout extends StatelessWidget {
                   ShiningTextAnimation(
                     text: AppStrings.appTitleEventify(context),
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary, // Using AppColors
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
                     ),
                     duration: const Duration(milliseconds: 2000),
-                    shineColor: Colors.greenAccent.shade400,
+                    shineColor: AppColors.accentColor400, // Using AppColors
                   ),
                   const SizedBox(height: 32),
 
@@ -56,7 +57,7 @@ class EventifyAuthLayout extends StatelessWidget {
                         child: Text(
                           leftFooterText,
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: AppColors.textPrimary, // Using AppColors
                             fontSize: 14,
                             decoration: TextDecoration.underline,
                           ),
@@ -68,7 +69,7 @@ class EventifyAuthLayout extends StatelessWidget {
                         child: Text(
                           rightFooterText,
                           style: const TextStyle(
-                            color: Color(0xFF90B77D),
+                            color: AppColors.footerRightTextColor, // Using AppColors
                             fontSize: 14,
                             decoration: TextDecoration.underline,
                           ),

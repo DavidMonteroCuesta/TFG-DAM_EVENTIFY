@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_up_view_model.dart';
 import 'package:eventify/common/animations/ani_left_to_right.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -168,20 +169,20 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
                     },
             ),
           ),
-          if (signUpViewModel.isLoading) const CircularProgressIndicator(),
+          if (signUpViewModel.isLoading) CircularProgressIndicator(color: AppColors.primary), // Using AppColors
           if (signUpViewModel.errorMessage != null)
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 signUpViewModel.errorMessage!,
-                style: const TextStyle(color: Colors.red),
+                style: const TextStyle(color: AppColors.errorTextColor), // Using AppColors
               ),
             ),
           const SizedBox(height: 16),
           Text(
             AppStrings.signUpOrSignUpWith(context),
             style: TextStyle(
-              color: Colors.grey[500],
+              color: AppColors.textGrey500, // Using AppColors
               fontSize: 14,
             ),
           ),

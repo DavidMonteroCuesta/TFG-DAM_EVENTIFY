@@ -1,3 +1,4 @@
+import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class ShiningTextAnimation extends StatefulWidget {
@@ -11,7 +12,7 @@ class ShiningTextAnimation extends StatefulWidget {
     required this.text,
     this.style,
     this.duration = const Duration(milliseconds: 9999),
-    this.shineColor = Colors.white70,
+    this.shineColor = AppColors.shineEffectColor, // Usando AppColors
   });
 
   @override
@@ -53,10 +54,8 @@ class _ShiningTextAnimationState extends State<ShiningTextAnimation> with Single
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Colors.transparent,
-                    // ignore: deprecated_member_use
+                    Colors.transparent, // Colors.transparent es una constante de Flutter, no necesita AppColors
                     widget.shineColor.withOpacity(0.8),
-                    // ignore: deprecated_member_use
                     widget.shineColor.withOpacity(0.8),
                     Colors.transparent,
                   ],

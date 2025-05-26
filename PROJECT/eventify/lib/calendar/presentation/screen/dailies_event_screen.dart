@@ -10,13 +10,13 @@ import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:eventify/common/theme/colors/colors.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
 
 class DailiesEventScreen extends StatefulWidget {
   final DateTime selectedDate;
@@ -29,7 +29,6 @@ class DailiesEventScreen extends StatefulWidget {
 
 class _DailiesEventScreenState extends State<DailiesEventScreen> {
   late EventViewModel _eventViewModel;
-  // Now stores List<Map<String, dynamic>>
   List<Map<String, dynamic>> _dailyEvents = [];
 
   @override
@@ -39,18 +38,14 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
     _loadDailyEvents();
   }
 
-  // Helper to normalize DateTime to date components only (year, month, day)
   DateTime _normalizeDate(DateTime dateTime) {
     return DateTime(dateTime.year, dateTime.month, dateTime.day);
   }
 
-  // Loads events for the currently selected day from the EventViewModel
   Future<void> _loadDailyEvents() async {
     try {
-      // Get all user events as List<Map<String, dynamic>>
       await _eventViewModel.getEventsForCurrentUser();
       setState(() {
-        // Filter events to show only those for the selected date
         _dailyEvents =
             _eventViewModel.events.where((eventData) {
               final Timestamp? eventTimestamp = eventData['dateTime'];
@@ -72,63 +67,52 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
     }
   }
 
-  // Handles navigation to AddEventScreen for adding new events or editing existing ones.
-  // If 'eventData' is provided, it's an edit operation; otherwise, it's an add operation.
   Future<void> _onAddOrEditEvent({Map<String, dynamic>? eventData}) async {
-    // Navigate to AddEventScreen, passing event data to edit if applicable.
-    // 'result' will be true if an event was successfully saved/updated.
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
         builder:
             (context) => AddEventScreen(
               eventToEdit: eventData,
-            ), // Pass event data for editing
+            ),
       ),
     );
 
     if (result == true) {
-      // If an event was added or edited, reload daily events to update the list.
       _loadDailyEvents();
-      // Indicate that data might have changed, so CalendarScreen should refresh
       if (context.mounted) {
-        Navigator.of(context).pop(true); // Return true to signal a change
+        Navigator.of(context).pop(true);
       }
     }
   }
 
-  // Handles event deletion.
   Future<void> _onDeleteEvent(Map<String, dynamic> eventData) async {
-    final String eventId = eventData['id'] as String; // Get ID from the map
+    final String eventId = eventData['id'] as String;
     final String eventTitle =
-        eventData['title'] as String; // Get title from the map
+        eventData['title'] as String;
 
-    // Show a confirmation dialog before deleting the event.
     final bool confirm =
         await showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor: Colors.grey[900],
+              backgroundColor: AppColors.dialogBackground, // Using AppColors
               title: Text(
-                // PASAR CONTEXTO AQUÍ
                 AppStrings.dailiesDeleteEventTitle(context),
                 style: TextStyles.urbanistSubtitle1.copyWith(
-                  color: Colors.white,
+                  color: AppColors.textPrimary, // Using AppColors
                 ),
               ),
               content: Text(
-                // PASAR CONTEXTO AQUÍ
                 '${AppStrings.dailiesDeleteEventConfirmPrefix(context)}"$eventTitle"${AppStrings.dailiesDeleteEventConfirmSuffix(context)}',
                 style: TextStyles.plusJakartaSansBody2.copyWith(
-                  color: Colors.grey,
+                  color: AppColors.textSecondary, // Using AppColors
                 ),
               ),
               actions: <Widget>[
                 TextButton(
                   onPressed:
-                      () => Navigator.of(context).pop(false), // User canceled
+                      () => Navigator.of(context).pop(false),
                   child: Text(
-                    // PASAR CONTEXTO AQUÍ
                     AppStrings.dailiesCancelButton(context),
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
                       color: AppColors.primaryContainer,
@@ -139,12 +123,11 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                   onPressed:
                       () => Navigator.of(
                         context,
-                      ).pop(true), // User confirmed deletion
+                      ).pop(true),
                   child: Text(
-                    // PASAR CONTEXTO AQUÍ
                     AppStrings.dailiesDeleteButton(context),
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
-                      color: Colors.red,
+                      color: AppColors.deleteButtonColor, // Using AppColors
                     ),
                   ),
                 ),
@@ -152,22 +135,19 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
             );
           },
         ) ??
-        false; // Default to false if the dialog is dismissed
+        false;
 
     if (confirm) {
       try {
-        // Call the deleteEvent method of EventViewModel
         await _eventViewModel.deleteEvent(eventId);
-        _loadDailyEvents(); // Reload events after successful deletion
+        _loadDailyEvents();
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              // PASAR CONTEXTO AQUÍ
               content: Text('${AppStrings.dailiesEventDeletedSuccessPrefix(context)}"$eventTitle"${AppStrings.dailiesEventDeletedSuccessSuffix(context)}'),
             ),
           );
-          // Indicate that data has changed, so CalendarScreen should refresh
-          Navigator.of(context).pop(true); // Return true to signal a change
+          Navigator.of(context).pop(true);
         }
       } catch (e) {
         if (context.mounted) {
@@ -181,29 +161,28 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Color headerColor = Colors.grey[800]!;
-    const outlineColor = Color(0xFFE0E0E0);
+    // final Color headerColor = Colors.grey[800]!; // Replaced by AppColors.headerBackground
+    // const outlineColor = Color(0xFFE0E0E0); // Replaced by AppColors.outlineColorLight
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: AppColors.outlineColorLight), // Using AppColors
           onPressed: () {
-            // Navigate back to the previous screen (CalendarScreen)
-            Navigator.of(context).pop(false); // Return false if no change
+            Navigator.of(context).pop(false);
           },
         ),
         title: ShiningTextAnimation(
           text:
-              DateFormat('EEEE, dd MMMM', AppInternalConstants.dailiesLocaleEnUs) // Using constant
+              DateFormat('EEEE, dd MMMM', AppInternalConstants.dailiesLocaleEnUs)
                   .format(widget.selectedDate)
-                  .toUpperCase(), // Display selected date in English
+                  .toUpperCase(),
           style: TextStyles.urbanistBody1,
-          shineColor: const Color(0xFFCBCBCB),
+          shineColor: AppColors.shineColorLight, // Using AppColors
         ),
-        backgroundColor: headerColor,
-        foregroundColor: outlineColor,
+        backgroundColor: AppColors.headerBackground, // Using AppColors
+        foregroundColor: AppColors.outlineColorLight, // Using AppColors
         elevation: 0,
         centerTitle: true,
         toolbarHeight: kToolbarHeight,
@@ -212,10 +191,9 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
           _dailyEvents.isEmpty
               ? Center(
                 child: Text(
-                  // PASAR CONTEXTO AQUÍ
                   AppStrings.dailiesNoEventsForThisDay(context),
                   style: TextStyles.urbanistSubtitle1.copyWith(
-                    color: Colors.grey,
+                    color: AppColors.textSecondary, // Using AppColors
                   ),
                 ),
               )
@@ -225,7 +203,6 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      // PASAR CONTEXTO AQUÍ
                       '${AppStrings.dailiesEventsForPrefix(context)}${DateFormat('dd/MM/yyyy').format(widget.selectedDate)}${AppStrings.dailiesEventsCountSeparator(context)}${_dailyEvents.length}${AppStrings.dailiesEventsCountSuffix(context)}',
                       style: TextStyles.urbanistSubtitle1.copyWith(
                         fontSize: 18,
@@ -236,45 +213,41 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children:
                           _dailyEvents.map((eventData) {
-                            // Create an Event object from the map for type-specific access
                             final String? currentUserId =
                                 FirebaseAuth
                                     .instance
                                     .currentUser
-                                    ?.uid; // Get the actual authenticated user's UID
+                                    ?.uid;
                             if (currentUserId == null) {
-                              // Handle the case where the user is not authenticated (this shouldn't happen here if login worked)
-                              return const SizedBox.shrink(); // Or show an error message
+                              return const SizedBox.shrink();
                             }
 
                             final Event event = EventFactory.createEvent(
                               _getEventTypeFromString(
-                                eventData['type'] ?? AppInternalConstants.eventTypeTask, // Using constant
+                                eventData['type'] ?? AppInternalConstants.eventTypeTask,
                               ),
-                              eventData, // Pass the map directly
-                              currentUserId, // Pass userId
+                              eventData,
+                              currentUserId,
                             );
 
-                            String eventTypeString = AppInternalConstants.dailiesNA; // Using constant
-                            // Determine the event type string based on the runtime type of the event object
+                            String eventTypeString = AppInternalConstants.dailiesNA;
                             if (event is MeetingEvent) {
-                              eventTypeString = AppStrings.dailiesMeetingDisplay(context); // PASAR CONTEXTO AQUÍ
+                              eventTypeString = AppStrings.dailiesMeetingDisplay(context);
                             } else if (event is ExamEvent) {
-                              eventTypeString = AppStrings.dailiesExamDisplay(context); // PASAR CONTEXTO AQUÍ
+                              eventTypeString = AppStrings.dailiesExamDisplay(context);
                             } else if (event is ConferenceEvent) {
-                              eventTypeString = AppStrings.dailiesConferenceDisplay(context); // PASAR CONTEXTO AQUÍ
+                              eventTypeString = AppStrings.dailiesConferenceDisplay(context);
                             } else if (event is AppointmentEvent) {
-                              eventTypeString = AppStrings.dailiesAppointmentDisplay(context); // PASAR CONTEXTO AQUÍ
+                              eventTypeString = AppStrings.dailiesAppointmentDisplay(context);
                             } else {
-                              eventTypeString = AppStrings.dailiesTaskDisplay(context); // PASAR CONTEXTO AQUÍ
+                              eventTypeString = AppStrings.dailiesTaskDisplay(context);
                             }
-                            // Format event time
                             String formattedDateTime =
                                 event.dateTime != null
                                     ? DateFormat(
                                       'HH:mm',
                                     ).format(event.dateTime!.toDate())
-                                    : AppInternalConstants.dailiesNA; // Using constant
+                                    : AppInternalConstants.dailiesNA;
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(
@@ -285,10 +258,10 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                                 child: Container(
                                   padding: const EdgeInsets.all(12.0),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF1F1F1F),
+                                    color: AppColors.cardBackground, // Using AppColors
                                     borderRadius: BorderRadius.circular(8.0),
                                     border: Border.all(
-                                      color: outlineColor.withOpacity(0.3),
+                                      color: AppColors.outlineColorLight.withOpacity(0.3), // Using AppColors
                                     ),
                                   ),
                                   child: Column(
@@ -310,27 +283,25 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                                           ),
                                           Row(
                                             children: [
-                                              // Edit button
                                               IconButton(
                                                 icon: const Icon(
                                                   Icons.edit,
-                                                  color: Colors.blueAccent,
+                                                  color: AppColors.editIconColor, // Using AppColors
                                                 ),
                                                 onPressed:
                                                     () => _onAddOrEditEvent(
                                                       eventData: eventData,
-                                                    ), // Pass eventData for editing
+                                                    ),
                                               ),
-                                              // Delete button
                                               IconButton(
                                                 icon: const Icon(
                                                   Icons.delete,
-                                                  color: Colors.redAccent,
+                                                  color: AppColors.deleteIconColor, // Using AppColors
                                                 ),
                                                 onPressed:
                                                     () => _onDeleteEvent(
                                                       eventData,
-                                                    ), // Pass eventData for deleting
+                                                    ),
                                               ),
                                             ],
                                           ),
@@ -338,27 +309,23 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        // PASAR CONTEXTO AQUÍ
                                         '${AppStrings.dailiesTimePrefix(context)}$formattedDateTime',
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        // PASAR CONTEXTO AQUÍ
                                         '${AppStrings.dailiesTypePrefix(context)}$eventTypeString',
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        // PASAR CONTEXTO AQUÍ
-                                        '${AppStrings.dailiesDescriptionPrefix(context)}${event.description ?? AppInternalConstants.dailiesNA}', // Using constant
+                                        '${AppStrings.dailiesDescriptionPrefix(context)}${event.description ?? AppInternalConstants.dailiesNA}',
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       Text(
-                                        // PASAR CONTEXTO AQUÍ
                                         '${AppStrings.dailiesPriorityPrefix(context)}${event.priority.toString().split('.').last.toUpperCase()}',
                                         style: TextStyles.plusJakartaSansBody2
-                                            .copyWith(color: Colors.yellow),
+                                            .copyWith(color: AppColors.priorityTextColor), // Using AppColors
                                       ),
                                     ],
                                   ),
@@ -371,9 +338,9 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                 ),
               ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _onAddOrEditEvent(), // Call add function
+        onPressed: () => _onAddOrEditEvent(),
         backgroundColor: AppColors.primaryContainer,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: AppColors.fabIconColor), // Using AppColors
       ),
     );
   }

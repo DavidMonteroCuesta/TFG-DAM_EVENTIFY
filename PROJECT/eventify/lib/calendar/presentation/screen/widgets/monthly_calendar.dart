@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;
@@ -109,7 +110,6 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    // Corrected: Pass context to all AppStrings calls here
     final daysOfWeek = [
       AppStrings.monthlyCalendarMondayAbbr(context),
       AppStrings.monthlyCalendarTuesdayAbbr(context),
@@ -122,7 +122,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[850],
+        color: AppColors.calendarBackground, // Using AppColors
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.all(16.0),
@@ -133,7 +133,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary), // Using AppColors
                 onPressed: _goToPreviousMonth,
               ),
               Text(
@@ -141,7 +141,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 style: TextStyles.urbanistH6,
               ),
               IconButton(
-                icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+                icon: const Icon(Icons.arrow_forward_ios, color: AppColors.textPrimary), // Using AppColors
                 onPressed: _goToNextMonth,
               ),
             ],
@@ -152,7 +152,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
             children: daysOfWeek
                 .map((day) => Text(
                       day,
-                      style: const TextStyle(color: Colors.orangeAccent),
+                      style: const TextStyle(color: AppColors.calendarAccentColor), // Using AppColors
                     ))
                 .toList(),
           ),
@@ -184,7 +184,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: isToday
-                          ? Colors.grey[300]!.withOpacity(0.2)
+                          ? AppColors.todayHighlightColor // Using AppColors
                           : null,
                       shape: isToday ? BoxShape.circle : BoxShape.rectangle,
                     ),
@@ -193,8 +193,8 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                         '${day.day}',
                         style: TextStyle(
                           color: isToday || hasEvent
-                              ? Colors.orangeAccent
-                              : Colors.white,
+                              ? AppColors.calendarAccentColor // Using AppColors
+                              : AppColors.textPrimary, // Using AppColors
                           fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
@@ -207,13 +207,11 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
           const SizedBox(height: 16),
           if (_eventsForCurrentMonth.isNotEmpty)
             Text(
-              // Corrected: Pass context here
               '${AppStrings.monthlyCalendarEventsForMonthPrefix(context)}${_eventsForCurrentMonth.length}',
               style: TextStyles.plusJakartaSansBody1,
             )
           else
             Text(
-              // Corrected: Pass context here
               AppStrings.monthlyCalendarNoEventsForMonth(context),
               style: TextStyles.plusJakartaSansBody1,
             ),

@@ -3,15 +3,16 @@ import 'package:eventify/calendar/presentation/screen/search_events_screen.dart'
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
+import 'package:eventify/common/theme/colors/colors.dart'; // Import AppColors
 
 class Header extends StatefulWidget {
   final Function(int year)? onYearChanged;
-  final int currentYear; // Nuevo: Año actual pasado desde CalendarScreen
+  final int currentYear;
 
   const Header({
     super.key,
     this.onYearChanged,
-    required this.currentYear, // Ahora es requerido
+    required this.currentYear,
   });
 
   @override
@@ -24,14 +25,12 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     super.initState();
-    // Inicializa _currentYear con el valor pasado por el widget
     _currentYear = widget.currentYear;
   }
 
   @override
   void didUpdateWidget(covariant Header oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Si el año pasado por el widget cambia, actualiza el estado interno
     if (widget.currentYear != oldWidget.currentYear) {
       setState(() {
         _currentYear = widget.currentYear;
@@ -57,7 +56,7 @@ class _HeaderState extends State<Header> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      color: Colors.grey[800],
+      color: AppColors.headerBackground, // Using AppColors
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -65,11 +64,11 @@ class _HeaderState extends State<Header> {
             children: [
               IconButton(
                 onPressed: _goToPreviousYear,
-                icon: const Icon(Icons.arrow_downward, color: Colors.white),
+                icon: const Icon(Icons.arrow_downward, color: AppColors.textPrimary), // Using AppColors
               ),
               IconButton(
                 onPressed: _goToNextYear,
-                icon: const Icon(Icons.arrow_upward, color: Colors.white),
+                icon: const Icon(Icons.arrow_upward, color: AppColors.textPrimary), // Using AppColors
               ),
             ],
           ),
@@ -78,8 +77,9 @@ class _HeaderState extends State<Header> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: ShiningTextAnimation(
-                  text: '$_currentYear', // Muestra el año del estado interno
+                  text: '$_currentYear',
                   style: TextStyles.urbanistBody1,
+                  shineColor: AppColors.shineEffectColor, // Ensure shineColor is also using AppColors
                 ),
               ),
             ),
@@ -94,7 +94,7 @@ class _HeaderState extends State<Header> {
                     ),
                   );
                 },
-                icon: const Icon(Icons.search, color: Colors.white),
+                icon: const Icon(Icons.search, color: AppColors.textPrimary), // Using AppColors
               ),
               IconButton(
                 onPressed: () {
@@ -104,7 +104,7 @@ class _HeaderState extends State<Header> {
                     ),
                   );
                 },
-                icon: const Icon(Icons.add, color: Colors.white),
+                icon: const Icon(Icons.add, color: AppColors.textPrimary), // Using AppColors
               ),
             ],
           ),
