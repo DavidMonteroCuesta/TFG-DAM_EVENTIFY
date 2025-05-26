@@ -27,7 +27,7 @@ class ChatRemoteDataSource {
 
       // Realiza la solicitud POST a la API de Gemini
       final response = await http.post(
-        Uri.parse('$_apiUrl?key=${ApiConstants.apiKey}'),
+        Uri.parse('$_apiUrl?key=${ApiConstants.geminiApiKey}'),
         headers: {'Content-Type': AppInternalConstants.chatApiContentTypeHeader},
         body: json.encode(payload),
       );
