@@ -1,39 +1,48 @@
 // eventify/common/theme/colors/app_colors.dart
 import 'package:eventify/common/theme/colors/app_colors_palette.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // ¡Importa esto!
 
 /// Paleta de colores de la aplicación.
 /// Cada color tiene un nombre descriptivo y referencia a la paleta base.
 /// Esta clase actúa como la interfaz pública para acceder a los colores.
 abstract class AppColors extends AppColorPalette {
+  // Clave para guardar/cargar el color en SharedPreferences
+  static const String _themeColorKey = 'user_selected_theme_color';
+
   // --- USER-MANAGED DYNAMIC ACCENT COLOR SOURCE ---
-  // This static nullable field will hold the user's selected color.
-  // YOU MUST update this variable whenever the user changes their color preference.
-  // WARNING: Changing this will NOT automatically trigger UI updates for widgets
-  // using the dynamic color getters below.
   static Color? currentUserSelectedColor;
 
-  // --- DYNAMIC COLOR GETTERS (Non-reactive, based on currentUserSelectedColor) ---
-  // These getters provide dynamic colors. If currentUserSelectedColor is null,
-  // they use their default fallback colors. If it's not null, they use currentUserSelectedColor.
-  // You can call these as AppColors.primary, AppColors.secondary, etc.
-  // REMEMBER: Widgets using these will NOT automatically rebuild when currentUserSelectedColor changes.
+  // NUEVOS MÉTODOS: Cargar y Guardar el color del tema
+  static Future<void> loadThemeColor() async {
+    final prefs = await SharedPreferences.getInstance();
+    final int? colorValue = prefs.getInt(_themeColorKey);
+    if (colorValue != null) {
+      currentUserSelectedColor = Color(colorValue);
+    } else {
+      currentUserSelectedColor = null; // Asegura que sea null si no hay nada guardado
+    }
+  }
 
-  // Primary Color (now dynamic)
+  static Future<void> saveThemeColor(Color? color) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (color != null) {
+      await prefs.setInt(_themeColorKey, color.value);
+    } else {
+      await prefs.remove(_themeColorKey); // Elimina la clave si se selecciona "Predeterminado"
+    }
+  }
+
+  // --- DYNAMIC COLOR GETTERS (Non-reactive, based on currentUserSelectedColor) ---
   static Color get primary {
     return currentUserSelectedColor ?? AppColorPalette.green;
   }
 
-  // Accent and Interactive Element Colors (made dynamic where requested)
-  // notificationOrange (now strictly follows theme color if set)
   static Color get notificationOrange {
-    // Si el usuario seleccionó un color, úsalo. De lo contrario, usa el naranja predeterminado.
     return currentUserSelectedColor ?? AppColorPalette.orange;
   }
 
-  // deleteButtonColor (now strictly follows theme color if set)
   static Color get deleteButtonColor {
-    // Si el usuario seleccionó un color, úsalo. De lo contrario, usa el rojo predeterminado.
     return currentUserSelectedColor ?? AppColorPalette.red;
   }
 
@@ -85,11 +94,8 @@ abstract class AppColors extends AppColorPalette {
     return secondaryDynamic;
   }
 
-
   // --- STATIC CONSTANT COLORS (FIXED - DO NOT CHANGE AT RUNTIME) ---
-  // These colors are always the same regardless of user selection.
-
-  // Background Colors
+  // ... (el resto de tus colores estáticos constantes sin cambios)
   static const Color background = AppColorPalette.black;
   static const Color cardBackground = AppColorPalette.color1F1F1F;
   static const Color calendarBackground = AppColorPalette.color262626;

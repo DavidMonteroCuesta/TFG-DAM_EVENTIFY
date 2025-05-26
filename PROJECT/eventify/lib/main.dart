@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'di/service_locator.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,6 +23,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.init();
+
+  // Asegúrate de que el color del tema se cargue ANTES de runApp
+  await AppColors.loadThemeColor(); // <-- Asegúrate de que esta línea esté aquí
+
   await initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
@@ -43,9 +47,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: AppColors.background,
-          colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: AppColors.primary as MaterialColor,
-            accentColor: AppColors.accentColor400,
+          // *** CAMBIO AQUÍ: Usar 'primary' en colorScheme en lugar de 'primarySwatch' ***
+          colorScheme: ColorScheme.dark().copyWith(
+            primary: AppColors.primary, // AppColors.primary devuelve un Color, no un MaterialColor.
+            secondary: AppColors.accentColor400, // Usar AppColors.accentColor400 como secondary
             brightness: Brightness.dark,
           ),
           inputDecorationTheme: InputDecorationTheme(
@@ -59,7 +64,8 @@ class MyApp extends StatelessWidget {
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.accentColor400,
+              // Si quieres que el color del botón elevado sea el color primario dinámico
+              backgroundColor: AppColors.primary, // Cambiado de accentColor400 a primary
               foregroundColor: AppColors.elevatedButtonForeground,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

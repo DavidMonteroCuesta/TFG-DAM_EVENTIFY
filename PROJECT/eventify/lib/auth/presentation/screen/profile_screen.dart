@@ -1,3 +1,4 @@
+// eventify/calendar/presentation/screen/profile_screen.dart
 import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/utils/auth/logout_service.dart';
@@ -7,8 +8,8 @@ import 'package:eventify/common/utils/dates/date_formatter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
-import 'package:eventify/common/theme/colors/app_colors_palette.dart'; // IMPORTANT: Add this import!
+import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:eventify/common/theme/colors/app_colors_palette.dart'; // Asegúrate de importar AppColorPalette
 
 class ProfileScreen extends StatefulWidget {
   static String routeName = 'profile';
@@ -21,34 +22,50 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // State variables for each dropdown's visibility
   bool _isEditProfileExpanded = false;
   bool _isNotificationSettingsExpanded = false;
   bool _isTermsOfServiceExpanded = false;
   bool _isSupportExpanded = false;
-  bool _isThemeColorExpanded = false; // New state for theme color dropdown
+  bool _isThemeColorExpanded = false;
 
-  // State variable for the currently selected color in the dropdown
-  Color? _selectedColor; // Will be null if "Predeterminado" is selected
-
-  // List of available colors for the user to choose from in the dropdown
-  final List<Map<String, dynamic>> _colorOptions = [
-    // Added "Predeterminado" option with null color
-    {'name': 'Predeterminado', 'color': null},
-    {'name': 'Verde', 'color': AppColorPalette.greenAccent}, // No longer "(Default)"
-    {'name': 'Azul', 'color': AppColorPalette.blueAccent},
-    {'name': 'Naranja', 'color': AppColorPalette.orangeAccent},
-    {'name': 'Rojo', 'color': AppColorPalette.redAccent},
-    // Removed 'Púrpura' as requested
+  // Lista de colores disponibles para el usuario
+  // Usaremos esta lista directamente para los DropdownMenuItem
+  final List<Color?> _availableColors = [
+    null, // Representa "Predeterminado"
+    AppColorPalette.greenAccent,
+    AppColorPalette.blueAccent,
+    AppColorPalette.orangeAccent,
+    AppColorPalette.redAccent,
   ];
+
+  // Nombres correspondientes para mostrar en el Dropdown
+  final List<String> _colorNames = [
+    'Predeterminado',
+    'Verde',
+    'Azul',
+    'Naranja',
+    'Rojo',
+  ];
+
+  Color? _selectedColor; // El color actualmente seleccionado en el dropdown
 
   @override
   void initState() {
     super.initState();
-    // Initialize _selectedColor directly from AppColors.currentUserSelectedColor.
-    // If AppColors.currentUserSelectedColor is null (no user selection),
-    // _selectedColor will correctly be null, matching the "Predeterminado" option.
-    _selectedColor = AppColors.currentUserSelectedColor;
+    // Al inicializar, busca el color cargado entre las opciones disponibles.
+    // Esto asegura que _selectedColor sea la misma instancia de Color
+    // que se encuentra en _availableColors.
+    final loadedColor = AppColors.currentUserSelectedColor;
+
+    if (loadedColor == null) {
+      _selectedColor = null; // Si no hay color guardado, es "Predeterminado"
+    } else {
+      // Encuentra la instancia de Color en _availableColors que coincide con el valor numérico
+      _selectedColor = _availableColors.firstWhere(
+        (colorOption) => colorOption?.value == loadedColor.value,
+        orElse: () => null, // Si no se encuentra una coincidencia exacta, establece en Predeterminado
+      );
+    }
   }
 
   String get _firstLetter {
@@ -64,7 +81,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Toggle functions for each dropdown
   void _toggleEditProfile() {
     setState(() {
       _isEditProfileExpanded = !_isEditProfileExpanded;
@@ -89,29 +105,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  void _toggleThemeColor() { // New toggle function for theme color
+  void _toggleThemeColor() {
     setState(() {
       _isThemeColorExpanded = !_isThemeColorExpanded;
     });
   }
 
-  void _changeThemeColor(Color? newColor) {
-    // newColor can now be null if "Predeterminado" is selected
+  void _changeThemeColor(Color? newColor) async {
     setState(() {
-      _selectedColor = newColor; // Update the dropdown's selected value
-      AppColors.currentUserSelectedColor = newColor; // Update the static global color to null if "Predeterminado"
+      _selectedColor = newColor; // Actualiza el valor del dropdown
+      AppColors.currentUserSelectedColor = newColor; // Actualiza el color global estático
     });
-    // Optionally, show a confirmation message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Color de tema cambiado.'),
-        duration: const Duration(seconds: 2),
-        backgroundColor: AppColors.snackBarInfoColor,
-      ),
-    );
-    // NOTE: Because AppColors uses static getters, this setState() call
-    // is what triggers the ProfileScreen to rebuild and use the new colors.
-    // Other parts of your app would need similar rebuild triggers.
+    await AppColors.saveThemeColor(newColor); // Guarda el color en SharedPreferences
   }
 
   void _contactSupport(BuildContext context) {
@@ -119,15 +124,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       SnackBar(
         content: Text(AppStrings.profileContactUsText(context)),
         duration: const Duration(seconds: 3),
-        backgroundColor: AppColors.snackBarInfoColor, // Using AppColors
+        backgroundColor: AppColors.snackBarInfoColor,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final errorColor = theme.colorScheme.error; // Keeping this as it's theme-derived
+    final errorColor = AppColors.errorTextColor;
     final currentDate = DateFormatter.getCurrentDateFormatted();
 
     final user = FirebaseAuth.instance.currentUser;
@@ -142,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final double usernameTopPadding = isMobile ? 56.0 : 16.0;
 
     return Scaffold(
-      backgroundColor: AppColors.background, // Using AppColors
+      backgroundColor: AppColors.background,
       body: Stack(
         children: [
           Column(
@@ -152,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 width: double.infinity,
                 height: 120,
-                color: AppColors.profileHeaderBackground, // Using AppColors
+                color: AppColors.profileHeaderBackground,
                 child: Stack(
                   children: [
                     Align(
@@ -160,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 16.0, top: 20.0),
                         child: IconButton(
-                          icon: const Icon(Icons.close, color: AppColors.textSecondary), // Using AppColors
+                          icon: const Icon(Icons.close, color: AppColors.textSecondary),
                           onPressed: () => _navigateToCalendarScreen(context),
                         ),
                       ),
@@ -169,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.only(left: 96.0, top: 60.0),
                       child: ShiningTextAnimation(
                         text: currentDate,
-                        style: TextStyles.urbanistBody1.copyWith(color: AppColors.shineEffectColor), // Using AppColors
+                        style: TextStyles.urbanistBody1.copyWith(color: AppColors.shineEffectColor),
                       ),
                     ),
                   ],
@@ -187,12 +191,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     ShiningTextAnimation(
                       text: username,
-                      style: TextStyles.urbanistH6.copyWith(color: AppColors.shineEffectColor), // Using AppColors
-                      shineColor: AppColors.shineColorLight, // Using AppColors
+                      style: TextStyles.urbanistH6.copyWith(color: AppColors.shineColorLight),
+                      shineColor: AppColors.shineColorLight, // Asegura que el brillo sea visible
                     ),
                     Text(
                       email,
-                      style: TextStyles.plusJakartaSansBody2.copyWith(color: AppColors.textGrey400), // Using AppColors
+                      style: TextStyles.plusJakartaSansBody2.copyWith(color: AppColors.textGrey400),
                     ),
                   ],
                 ),
@@ -204,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 0, 0),
                 child: Text(
                   AppStrings.profileYourAccountTitle(context),
-                  style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.switchInactiveTrackColor), // Using AppColors
+                  style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.switchInactiveTrackColor),
                 ),
               ),
               const SizedBox(height: 8.0),
@@ -216,10 +220,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 isExpandable: true,
                 isExpanded: _isEditProfileExpanded,
                 onToggleExpand: _toggleEditProfile,
-                listBackgroundColor: AppColors.cardBackground, // Using AppColors
+                listBackgroundColor: AppColors.cardBackground,
                 dropdownContent: Text(
                   AppInternalConstants.functionalityNotImplemented,
-                  style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.shineEffectColor), // Using AppColors
+                  style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.shineEffectColor),
                 ),
               ),
               const SizedBox(height: 8.0),
@@ -231,10 +235,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 isExpandable: true,
                 isExpanded: _isNotificationSettingsExpanded,
                 onToggleExpand: _toggleNotificationSettings,
-                listBackgroundColor: AppColors.cardBackground, // Using AppColors
+                listBackgroundColor: AppColors.cardBackground,
                 dropdownContent: Text(
                   AppInternalConstants.functionalityNotImplemented,
-                  style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.shineEffectColor), // Using AppColors
+                  style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.shineEffectColor),
                 ),
               ),
               const SizedBox(height: 24.0),
@@ -244,19 +248,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 16, 0, 0),
                 child: Text(
                   AppStrings.profileAppSettingsTitle(context),
-                  style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.switchInactiveTrackColor), // Using AppColors
+                  style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.switchInactiveTrackColor),
                 ),
               ),
               const SizedBox(height: 8.0),
 
-              // NEW: Theme Color Selection Item
+              // Theme Color Selection Item
               _buildProfileListItem(
                 icon: Icons.color_lens_outlined,
                 text: AppStrings.profileThemesText(context),
                 isExpandable: true,
                 isExpanded: _isThemeColorExpanded,
                 onToggleExpand: _toggleThemeColor,
-                listBackgroundColor: AppColors.cardBackground, // Using AppColors
+                listBackgroundColor: AppColors.cardBackground,
                 dropdownContent: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -265,33 +269,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyles.plusJakartaSansBody2.copyWith(color: AppColors.textPrimary),
                     ),
                     const SizedBox(height: 8.0),
-                    DropdownButton<Color>(
-                      value: _selectedColor,
-                      dropdownColor: AppColors.dropdownContentBackground, // Using AppColors
-                      icon: Icon(Icons.arrow_drop_down, color: AppColors.textPrimary), // Using AppColors
+                    DropdownButton<Color?>( // Usa Color? para permitir 'null'
+                      value: _selectedColor, // Este debe ser una instancia de la lista `items`
+                      dropdownColor: AppColors.dropdownContentBackground,
+                      icon: Icon(Icons.arrow_drop_down, color: AppColors.textPrimary),
                       underline: Container(
                         height: 1,
-                        color: AppColors.textPrimary.withOpacity(0.5), // Using AppColors
+                        color: AppColors.textPrimary.withOpacity(0.5),
                       ),
                       isExpanded: true,
                       onChanged: _changeThemeColor,
-                      items: _colorOptions.map<DropdownMenuItem<Color>>((Map<String, dynamic> option) {
-                        return DropdownMenuItem<Color>(
-                          value: option['color'] as Color?, // Cast to Color? as it can now be null
+                      // Construye los DropdownMenuItem usando las listas _availableColors y _colorNames
+                      items: _availableColors.asMap().entries.map((entry) {
+                        final int index = entry.key;
+                        final Color? colorOption = entry.value;
+                        final String name = _colorNames[index];
+
+                        return DropdownMenuItem<Color?>(
+                          value: colorOption,
                           child: Row(
                             children: [
                               Container(
                                 width: 20,
                                 height: 20,
                                 decoration: BoxDecoration(
-                                  color: (option['color'] as Color?) ?? AppColorPalette.grey, // Show grey for "Predeterminado" swatch
+                                  color: colorOption ?? AppColorPalette.grey, // Usa gris para 'Predeterminado'
                                   shape: BoxShape.circle,
                                 ),
                               ),
                               const SizedBox(width: 8.0),
                               Text(
-                                option['name'] as String,
-                                style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.textPrimary), // Using AppColors
+                                name,
+                                style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.textPrimary),
                               ),
                             ],
                           ),
@@ -303,7 +312,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 8.0),
 
-
               // Support Section with Dropdown
               _buildProfileListItem(
                 icon: Icons.help_outline_rounded,
@@ -311,12 +319,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 isExpandable: true,
                 isExpanded: _isSupportExpanded,
                 onToggleExpand: _toggleSupport,
-                listBackgroundColor: AppColors.cardBackground, // Using AppColors
+                listBackgroundColor: AppColors.cardBackground,
                 dropdownContent: InkWell(
                   onTap: () => _contactSupport(context),
                   child: Text(
                     AppStrings.profileContactUsText(context),
-                    style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.shineEffectColor), // Using AppColors
+                    style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.shineEffectColor),
                   ),
                 ),
               ),
@@ -329,10 +337,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 isExpandable: true,
                 isExpanded: _isTermsOfServiceExpanded,
                 onToggleExpand: _toggleTermsOfService,
-                listBackgroundColor: AppColors.cardBackground, // Using AppColors
+                listBackgroundColor: AppColors.cardBackground,
                 dropdownContent: Text(
                   AppInternalConstants.functionalityNotImplemented,
-                  style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.shineEffectColor), // Using AppColors
+                  style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.shineEffectColor),
                 ),
               ),
               const SizedBox(height: 24.0),
@@ -345,14 +353,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     LogoutService.logout(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: errorColor, // Keeping this as it's theme-derived
-                    foregroundColor: AppColors.textPrimary, // Using AppColors
+                    backgroundColor: errorColor,
+                    foregroundColor: AppColors.textPrimary,
                     fixedSize: const Size(200, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     elevation: 5,
-                    shadowColor: errorColor.withOpacity(0.5), // Keeping this as it's theme-derived
+                    shadowColor: errorColor.withOpacity(0.5),
                   ),
                   child: Text(
                     AppStrings.profileLogoutButton(context),
@@ -368,11 +376,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             left: 16,
             child: CircleAvatar(
               radius: 40,
-              backgroundColor: AppColors.profileMediumGrey, // Using AppColors
+              backgroundColor: AppColors.profileMediumGrey,
               child: Center(
                 child: Text(
                   _firstLetter,
-                  style: TextStyles.urbanistSubtitle1.copyWith(color: AppColors.textPrimary, fontSize: 32), // Using AppColors
+                  style: TextStyles.urbanistSubtitle1.copyWith(color: AppColors.textPrimary, fontSize: 32),
                 ),
               ),
             ),
@@ -382,7 +390,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Helper widget for consistent list item styling with optional dropdown
   Widget _buildProfileListItem({
     required IconData icon,
     required String text,
@@ -408,7 +415,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1), // Derived color, keep as is
+                    color: Colors.black.withOpacity(0.1),
                     spreadRadius: 0.5,
                     blurRadius: 3,
                     offset: const Offset(0, 2),
@@ -422,14 +429,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Icon(
                       icon,
-                      color: AppColors.textGrey500, // Using AppColors
+                      color: AppColors.textGrey500,
                       size: 24,
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                       child: Text(
                         text,
-                        style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.textPrimary), // Using AppColors
+                        style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.textPrimary),
                       ),
                     ),
                     Expanded(
@@ -439,7 +446,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isExpandable
                               ? (isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down)
                               : Icons.arrow_forward_ios,
-                          color: AppColors.textSecondary, // Using AppColors
+                          color: AppColors.textSecondary,
                           size: 24,
                         ),
                       ),
@@ -463,12 +470,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: AppColors.dropdownContentBackground, // Using AppColors
+                      color: AppColors.dropdownContentBackground,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.textSecondary.withOpacity(0.2), width: 0.5), // Using AppColors
+                      border: Border.all(color: AppColors.textSecondary.withOpacity(0.2), width: 0.5),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1), // Derived color, keep as is
+                          color: Colors.black.withOpacity(0.1),
                           spreadRadius: 0.5,
                           blurRadius: 3,
                           offset: const Offset(0, 2),
