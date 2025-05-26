@@ -3,7 +3,7 @@ import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
+import 'package:eventify/common/constants/app_strings.dart';
 
 class ChatMessage extends StatelessWidget {
   const ChatMessage({
@@ -20,12 +20,10 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser;
-    // Usando constante para el nombre de usuario por defecto
-    String userDisplayName = user?.displayName ?? AppStrings.chatUserDefaultName;
+    String userDisplayName = user?.displayName ?? AppStrings.chatUserDefaultName(context);
     final String firstLetter =
         userDisplayName.isNotEmpty ? userDisplayName[0].toUpperCase() : '';
-    // Usando constante para las letras del perfil de la IA
-    final String aiFirstLetters = AppStrings.chatAIAvatarLetters;
+    final String aiFirstLetters = AppStrings.chatAIAvatarLetters(context);
     final Color userColor =
         Colors.grey[700]!;
 

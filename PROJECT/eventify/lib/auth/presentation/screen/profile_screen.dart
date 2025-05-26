@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _contactSupport(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(AppStrings.profileContactUsText),
+        content: Text(AppStrings.profileContactUsText(context)),
         duration: const Duration(seconds: 3),
         backgroundColor: Colors.blueGrey,
       ),
@@ -155,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 0, 0),
                 child: Text(
-                  AppStrings.profileYourAccountTitle,
+                  AppStrings.profileYourAccountTitle(context),
                   style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.grey[600]),
                 ),
               ),
@@ -164,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Edit Profile Item
               _buildProfileListItem(
                 icon: Icons.person_outline,
-                text: AppStrings.profileEditProfileText,
+                text: AppStrings.profileEditProfileText(context),
                 isExpandable: true,
                 isExpanded: _isEditProfileExpanded,
                 onToggleExpand: _toggleEditProfile,
@@ -179,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Notification Settings Item
               _buildProfileListItem(
                 icon: Icons.notifications_none,
-                text: AppStrings.profileNotificationSettingsText,
+                text: AppStrings.profileNotificationSettingsText(context),
                 isExpandable: true,
                 isExpanded: _isNotificationSettingsExpanded,
                 onToggleExpand: _toggleNotificationSettings,
@@ -195,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 16, 0, 0),
                 child: Text(
-                  AppStrings.profileAppSettingsTitle,
+                  AppStrings.profileAppSettingsTitle(context),
                   style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.grey[600]),
                 ),
               ),
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Support Section with Dropdown
               _buildProfileListItem(
                 icon: Icons.help_outline_rounded,
-                text: AppStrings.profileSupportText,
+                text: AppStrings.profileSupportText(context),
                 isExpandable: true,
                 isExpanded: _isSupportExpanded,
                 onToggleExpand: _toggleSupport,
@@ -212,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 dropdownContent: InkWell(
                   onTap: () => _contactSupport(context),
                   child: Text(
-                    AppStrings.profileContactUsText,
+                    AppStrings.profileContactUsText(context),
                     style: TextStyles.plusJakartaSansBody1.copyWith(color: Colors.white70),
                   ),
                 ),
@@ -222,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Terms of Service Item
               _buildProfileListItem(
                 icon: Icons.privacy_tip_rounded,
-                text: AppStrings.profileTermsOfServiceText,
+                text: AppStrings.profileTermsOfServiceText(context),
                 isExpandable: true,
                 isExpanded: _isTermsOfServiceExpanded,
                 onToggleExpand: _toggleTermsOfService,
@@ -252,7 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     shadowColor: errorColor.withOpacity(0.5),
                   ),
                   child: Text(
-                    AppStrings.profileLogoutButton,
+                    AppStrings.profileLogoutButton(context),
                     style: TextStyles.plusJakartaSansButton.copyWith(fontSize: 16),
                   ),
                 ),

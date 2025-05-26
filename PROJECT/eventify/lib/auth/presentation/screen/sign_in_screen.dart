@@ -10,9 +10,8 @@ import 'package:eventify/common/animations/ani_left_to_right.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_in_view_model.dart';
-// Importa la clase abstracta TextStyles
 import 'package:eventify/common/theme/fonts/text_styles.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
+import 'package:eventify/common/constants/app_strings.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -61,8 +60,8 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     final signInViewModel = Provider.of<SignInViewModel>(context);
 
     return EventifyAuthLayout(
-      leftFooterText: AppStrings.signInCreateAccountText, // Using constant
-      rightFooterText: AppStrings.signInLogInText, // Using constant
+      leftFooterText: AppStrings.signInCreateAccountText(context), // Using constant
+      rightFooterText: AppStrings.signInLogInText(context), // Using constant
       onLeftFooterTap: () {
         Navigator.pushReplacement(
           context,
@@ -73,16 +72,16 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AuthTitle(text: AppStrings.signInWelcomeTitle), // Using constant
+          AuthTitle(text: AppStrings.signInWelcomeTitle(context)), // Using constant
           const SizedBox(height: 8),
-          const AuthSubtitle(
-              text: AppStrings.signInSubtitle), // Using constant
+          AuthSubtitle(
+              text: AppStrings.signInSubtitle(context)), // Using constant
           const SizedBox(height: 24),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: AppStrings.signInEmailHint, // Using constant
+              hintText: AppStrings.signInEmailHint(context), // Using constant
               controller: _emailController,
               textStyle: TextStyles.plusJakartaSansBody1,
             ),
@@ -92,7 +91,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: AppStrings.signInPasswordHint, // Using constant
+              hintText: AppStrings.signInPasswordHint(context), // Using constant
               obscure: true,
               controller: _passwordController,
               textStyle: TextStyles.plusJakartaSansBody1,
@@ -103,7 +102,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_signInButtonOffset, 0.0, 0.0),
             child: PrimaryButton(
-              text: AppStrings.signInButtonText, // Using constant
+              text: AppStrings.signInButtonText(context), // Using constant
               onPressed: signInViewModel.isLoading
                   ? null
                   : () async {
@@ -123,7 +122,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             ),
           const SizedBox(height: 16),
           Text(
-            AppStrings.signInOrSignInWith, // Using constant
+            AppStrings.signInOrSignInWith(context), // Using constant
             style: TextStyles.plusJakartaSansBody2,
           ),
           const SizedBox(height: 16),

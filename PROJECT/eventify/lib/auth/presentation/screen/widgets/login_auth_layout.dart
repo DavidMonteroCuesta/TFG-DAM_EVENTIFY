@@ -32,7 +32,7 @@ class EventifyAuthLayout extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ShiningTextAnimation(
-                    text: AppStrings.appTitleEventify, // Using constant
+                    text: AppStrings.appTitleEventify(context),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 40,

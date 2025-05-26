@@ -21,8 +21,8 @@ class CalendarToggleButton extends StatelessWidget {
         size: 24.0,
       ),
       tooltip: isMonthlyView
-          ? AppStrings.calendarToggleShowYearlyViewTooltip
-          : AppStrings.calendarToggleShowMonthlyViewTooltip,
+          ? AppStrings.calendarToggleShowYearlyViewTooltip(context)
+          : AppStrings.calendarToggleShowMonthlyViewTooltip(context),
     );
   }
 }

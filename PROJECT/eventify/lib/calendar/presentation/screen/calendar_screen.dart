@@ -10,7 +10,7 @@ import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/screen/add_event_screen.dart'; // Import AddEventScreen
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants (ensure this is present)
+import 'package:eventify/common/constants/app_internal_constants.dart';
 
 class CalendarScreen extends StatefulWidget {
   static const String routeName = '/calendar';
@@ -227,7 +227,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             } else {
                                               return Center(
                                                 child: Text(
-                                                  AppStrings.calendarNoUpcomingEvents, // Using constant
+                                                  // CORRECTED: Pass context here
+                                                  AppStrings.calendarNoUpcomingEvents(context),
                                                   style: TextStyles.urbanistBody1,
                                                   textAlign: TextAlign.center,
                                                 ),
@@ -296,7 +297,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           } else {
                                             return Center(
                                               child: Text(
-                                                AppStrings.calendarNoUpcomingEvents, // Using constant
+                                                // CORRECTED: Pass context here
+                                                AppStrings.calendarNoUpcomingEvents(context),
                                                 style: TextStyles.urbanistBody1,
                                                 textAlign: TextAlign.center,
                                               ),

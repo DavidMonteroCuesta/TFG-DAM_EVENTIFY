@@ -48,7 +48,7 @@ class ProfileButton extends StatelessWidget {
         // ignore: deprecated_member_use
         highlightColor: Colors.grey.withOpacity(0.4),
       ),
-      tooltip: AppStrings.profileButtonTooltip, // Using constant
+      tooltip: AppStrings.profileButtonTooltip(context), // Using constant
     );
   }
 }

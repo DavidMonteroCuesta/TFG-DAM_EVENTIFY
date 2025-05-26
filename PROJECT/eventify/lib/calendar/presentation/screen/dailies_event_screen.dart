@@ -110,13 +110,15 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
             return AlertDialog(
               backgroundColor: Colors.grey[900],
               title: Text(
-                AppStrings.dailiesDeleteEventTitle,
+                // PASAR CONTEXTO AQUÍ
+                AppStrings.dailiesDeleteEventTitle(context),
                 style: TextStyles.urbanistSubtitle1.copyWith(
                   color: Colors.white,
                 ),
               ),
               content: Text(
-                '${AppStrings.dailiesDeleteEventConfirmPrefix}"$eventTitle"${AppStrings.dailiesDeleteEventConfirmSuffix}',
+                // PASAR CONTEXTO AQUÍ
+                '${AppStrings.dailiesDeleteEventConfirmPrefix(context)}"$eventTitle"${AppStrings.dailiesDeleteEventConfirmSuffix(context)}',
                 style: TextStyles.plusJakartaSansBody2.copyWith(
                   color: Colors.grey,
                 ),
@@ -126,7 +128,8 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                   onPressed:
                       () => Navigator.of(context).pop(false), // User canceled
                   child: Text(
-                    AppStrings.dailiesCancelButton,
+                    // PASAR CONTEXTO AQUÍ
+                    AppStrings.dailiesCancelButton(context),
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
                       color: AppColors.primaryContainer,
                     ),
@@ -138,7 +141,8 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                         context,
                       ).pop(true), // User confirmed deletion
                   child: Text(
-                    AppStrings.dailiesDeleteButton,
+                    // PASAR CONTEXTO AQUÍ
+                    AppStrings.dailiesDeleteButton(context),
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
                       color: Colors.red,
                     ),
@@ -158,7 +162,8 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${AppStrings.dailiesEventDeletedSuccessPrefix}"$eventTitle"${AppStrings.dailiesEventDeletedSuccessSuffix}'),
+              // PASAR CONTEXTO AQUÍ
+              content: Text('${AppStrings.dailiesEventDeletedSuccessPrefix(context)}"$eventTitle"${AppStrings.dailiesEventDeletedSuccessSuffix(context)}'),
             ),
           );
           // Indicate that data has changed, so CalendarScreen should refresh
@@ -207,7 +212,8 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
           _dailyEvents.isEmpty
               ? Center(
                 child: Text(
-                  AppStrings.dailiesNoEventsForThisDay,
+                  // PASAR CONTEXTO AQUÍ
+                  AppStrings.dailiesNoEventsForThisDay(context),
                   style: TextStyles.urbanistSubtitle1.copyWith(
                     color: Colors.grey,
                   ),
@@ -219,7 +225,8 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${AppStrings.dailiesEventsForPrefix}${DateFormat('dd/MM/yyyy').format(widget.selectedDate)}${AppStrings.dailiesEventsCountSeparator}${_dailyEvents.length}${AppStrings.dailiesEventsCountSuffix}',
+                      // PASAR CONTEXTO AQUÍ
+                      '${AppStrings.dailiesEventsForPrefix(context)}${DateFormat('dd/MM/yyyy').format(widget.selectedDate)}${AppStrings.dailiesEventsCountSeparator(context)}${_dailyEvents.length}${AppStrings.dailiesEventsCountSuffix(context)}',
                       style: TextStyles.urbanistSubtitle1.copyWith(
                         fontSize: 18,
                       ),
@@ -251,15 +258,15 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                             String eventTypeString = AppInternalConstants.dailiesNA; // Using constant
                             // Determine the event type string based on the runtime type of the event object
                             if (event is MeetingEvent) {
-                              eventTypeString = AppStrings.dailiesMeetingDisplay;
+                              eventTypeString = AppStrings.dailiesMeetingDisplay(context); // PASAR CONTEXTO AQUÍ
                             } else if (event is ExamEvent) {
-                              eventTypeString = AppStrings.dailiesExamDisplay;
+                              eventTypeString = AppStrings.dailiesExamDisplay(context); // PASAR CONTEXTO AQUÍ
                             } else if (event is ConferenceEvent) {
-                              eventTypeString = AppStrings.dailiesConferenceDisplay;
+                              eventTypeString = AppStrings.dailiesConferenceDisplay(context); // PASAR CONTEXTO AQUÍ
                             } else if (event is AppointmentEvent) {
-                              eventTypeString = AppStrings.dailiesAppointmentDisplay;
+                              eventTypeString = AppStrings.dailiesAppointmentDisplay(context); // PASAR CONTEXTO AQUÍ
                             } else {
-                              eventTypeString = AppStrings.dailiesTaskDisplay;
+                              eventTypeString = AppStrings.dailiesTaskDisplay(context); // PASAR CONTEXTO AQUÍ
                             }
                             // Format event time
                             String formattedDateTime =
@@ -331,21 +338,25 @@ class _DailiesEventScreenState extends State<DailiesEventScreen> {
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        '${AppStrings.dailiesTimePrefix}$formattedDateTime',
+                                        // PASAR CONTEXTO AQUÍ
+                                        '${AppStrings.dailiesTimePrefix(context)}$formattedDateTime',
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        '${AppStrings.dailiesTypePrefix}$eventTypeString',
+                                        // PASAR CONTEXTO AQUÍ
+                                        '${AppStrings.dailiesTypePrefix(context)}$eventTypeString',
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                        '${AppStrings.dailiesDescriptionPrefix}${event.description ?? AppInternalConstants.dailiesNA}', // Using constant
+                                        // PASAR CONTEXTO AQUÍ
+                                        '${AppStrings.dailiesDescriptionPrefix(context)}${event.description ?? AppInternalConstants.dailiesNA}', // Using constant
                                         style: TextStyles.plusJakartaSansBody2,
                                       ),
                                       Text(
-                                        '${AppStrings.dailiesPriorityPrefix}${event.priority.toString().split('.').last.toUpperCase()}',
+                                        // PASAR CONTEXTO AQUÍ
+                                        '${AppStrings.dailiesPriorityPrefix(context)}${event.priority.toString().split('.').last.toUpperCase()}',
                                         style: TextStyles.plusJakartaSansBody2
                                             .copyWith(color: Colors.yellow),
                                       ),

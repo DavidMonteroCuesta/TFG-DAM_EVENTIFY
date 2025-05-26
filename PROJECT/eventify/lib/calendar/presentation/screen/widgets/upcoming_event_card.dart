@@ -24,35 +24,38 @@ class UpcomingEventCard extends StatelessWidget {
     this.onTapCard,
   });
 
-  String _getTranslatedEventType(String typeString) {
+  String _getTranslatedEventType(BuildContext context, String typeString) {
     switch (typeString.toLowerCase()) {
       case AppInternalConstants.eventTypeMeeting:
-        return AppStrings.searchEventTypeMeetingDisplay.toUpperCase();
+        return AppStrings.searchEventTypeMeetingDisplay(context).toUpperCase();
       case AppInternalConstants.eventTypeExam:
-        return AppStrings.searchEventTypeExamDisplay.toUpperCase();
+        return AppStrings.searchEventTypeExamDisplay(context).toUpperCase();
       case AppInternalConstants.eventTypeConference:
-        return AppStrings.searchEventTypeConferenceDisplay.toUpperCase();
+        return AppStrings.searchEventTypeConferenceDisplay(
+          context,
+        ).toUpperCase();
       case AppInternalConstants.eventTypeAppointment:
-        return AppStrings.searchEventTypeAppointmentDisplay.toUpperCase();
+        return AppStrings.searchEventTypeAppointmentDisplay(
+          context,
+        ).toUpperCase();
       case AppInternalConstants.eventTypeTask:
       default:
-        return AppStrings.searchEventTypeTaskDisplay.toUpperCase();
+        return AppStrings.searchEventTypeTaskDisplay(context).toUpperCase();
     }
   }
 
-  // Helper function to get translated priority
-  String _getTranslatedPriority(String priorityString) {
+  String _getTranslatedPriority(BuildContext context, String priorityString) {
     switch (priorityString.toLowerCase()) {
       case AppInternalConstants.priorityValueCritical:
-        return AppStrings.priorityDisplayCritical;
+        return AppStrings.priorityDisplayCritical(context);
       case AppInternalConstants.priorityValueHigh:
-        return AppStrings.priorityDisplayHigh;
+        return AppStrings.priorityDisplayHigh(context);
       case AppInternalConstants.priorityValueMedium:
-        return AppStrings.priorityDisplayMedium;
+        return AppStrings.priorityDisplayMedium(context);
       case AppInternalConstants.priorityValueLow:
-        return AppStrings.priorityDisplayLow;
+        return AppStrings.priorityDisplayLow(context);
       default:
-        return priorityString; // Fallback to original if not found
+        return priorityString;
     }
   }
 
@@ -69,10 +72,7 @@ class UpcomingEventCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: const Color(0xFF1F1F1F),
           borderRadius: BorderRadius.circular(12.0),
-          border: Border.all(
-            color: outlineColor.withOpacity(0.3),
-            width: 1.0,
-          ),
+          border: Border.all(color: outlineColor.withOpacity(0.3), width: 1.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
@@ -102,29 +102,40 @@ class UpcomingEventCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  _getTranslatedEventType(type.split('.').last), // Use helper for type
-                  style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[400]),
+                  _getTranslatedEventType(
+                    context,
+                    type.split('.').last,
+                  ), // Pass context to helper
+                  style: TextStyles.plusJakartaSansBody2.copyWith(
+                    color: Colors.grey[400],
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 8.0),
 
             Text(
-              '${AppStrings.upcomingEventDatePrefix}${DateFormat('yyyy/MM/dd HH:mm').format(date)}',
-              style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[400]),
+              '${AppStrings.upcomingEventDatePrefix(context)}${DateFormat('yyyy/MM/dd HH:mm').format(date)}', // Pass context
+              style: TextStyles.plusJakartaSansBody2.copyWith(
+                color: Colors.grey[400],
+              ),
             ),
             const SizedBox(height: 8.0),
 
             Text(
-              '${AppStrings.upcomingEventPriorityPrefix}${_getTranslatedPriority(priority.split('.').last)}', // Use helper for priority
-              style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.yellow),
+              '${AppStrings.upcomingEventPriorityPrefix(context)}${_getTranslatedPriority(context, priority.split('.').last)}', // Pass context to helper
+              style: TextStyles.plusJakartaSansBody2.copyWith(
+                color: Colors.yellow,
+              ),
             ),
             const SizedBox(height: 8.0),
 
             Flexible(
               child: Text(
-                '${AppStrings.upcomingEventDescriptionPrefix}${description.isNotEmpty ? description : AppInternalConstants.upcomingEventDescriptionEmpty}',
-                style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey[300]),
+                '${AppStrings.upcomingEventDescriptionPrefix(context)}${description.isNotEmpty ? description : AppInternalConstants.upcomingEventDescriptionEmpty}', // Pass context
+                style: TextStyles.plusJakartaSansBody2.copyWith(
+                  color: Colors.grey[300],
+                ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

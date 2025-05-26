@@ -37,7 +37,7 @@ class Footer extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.today, color: AppColors.footerIconColor, size: 24.0),
             onPressed: onResetToCurrent,
-            tooltip: AppStrings.footerReturnToCurrentMonthTooltip, // Using constant
+            tooltip: AppStrings.footerReturnToCurrentMonthTooltip(context),
           ),
           ChatButton(
             size: 32,

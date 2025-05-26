@@ -29,10 +29,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.windows:
         return windows;
       case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return linux;
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -64,6 +61,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '261209819802',
     projectId: 'eventify-16edb',
     storageBucket: 'eventify-16edb.firebasestorage.app',
+    iosClientId: '261209819802-s5dfg1gsk10i3gdhe25d5khqiee1bi6l.apps.googleusercontent.com',
     iosBundleId: 'com.example.eventify',
   );
 
@@ -73,6 +71,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '261209819802',
     projectId: 'eventify-16edb',
     storageBucket: 'eventify-16edb.firebasestorage.app',
+    iosClientId: '261209819802-s5dfg1gsk10i3gdhe25d5khqiee1bi6l.apps.googleusercontent.com',
     iosBundleId: 'com.example.eventify',
   );
 
@@ -84,5 +83,15 @@ class DefaultFirebaseOptions {
     authDomain: 'eventify-16edb.firebaseapp.com',
     storageBucket: 'eventify-16edb.firebasestorage.app',
     measurementId: 'G-CB5B7FNDHQ',
+  );
+
+  static const FirebaseOptions linux = FirebaseOptions(
+    apiKey: 'AIzaSyBY5WqXr-Flz3qkCJ-JuOrX9gZIVz1xNR4',
+    appId: '1:261209819802:web:bd4794ecd7c80c59ff6d23',
+    messagingSenderId: '261209819802',
+    projectId: 'eventify-16edb',
+    authDomain: 'eventify-16edb.firebaseapp.com',
+    storageBucket: 'eventify-16edb.firebasestorage.app',
+    measurementId: 'G-G45L3TYPH6',
   );
 }

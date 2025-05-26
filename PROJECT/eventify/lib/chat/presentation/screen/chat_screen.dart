@@ -26,12 +26,12 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    // Accede al ViewModel y añade el saludo inicial
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final chatViewModel = Provider.of<ChatViewModel>(context, listen: false);
-      if (chatViewModel.messages.isEmpty) { // Solo si no hay mensajes aún
+      if (chatViewModel.messages.isEmpty) {
         chatViewModel.addInitialBotGreeting(
-          AppStrings.chatInitialBotGreeting,
+          AppStrings.chatInitialBotGreeting(context), // Usando AppStrings con context
         );
       }
       _scrollToBottom();
@@ -84,9 +84,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 onSubmitted: chatViewModel.isLoading ? null : _handleSubmitted, // Deshabilita la entrada si la IA está cargando
                 style: TextStyles.plusJakartaSansBody1,
                 decoration: InputDecoration(
-                  hintText: chatViewModel.isLoading ? AppInternalConstants.chatThinkingHint : AppStrings.chatInputHint, // Using constants
-                  hintStyle: TextStyles
-                      .plusJakartaSansSubtitle2,
+                  // CAMBIO AQUÍ: AppStrings.chatInputHint(context)
+                  hintText: chatViewModel.isLoading
+                      ? AppInternalConstants.chatThinkingHint
+                      : AppStrings.chatInputHint(context), // Usando AppStrings con context
+                  hintStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -130,7 +132,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: ShiningTextAnimation(
-          text: AppStrings.chatScreenTitle,
+          text: AppStrings.chatScreenTitle(context),
           style: TextStyles.urbanistBody1,
         ),
         titleTextStyle: TextStyles.urbanistBody1,

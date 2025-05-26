@@ -8,6 +8,8 @@ import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
 import 'package:eventify/auth/presentation/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'; // Import this
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // This line will be added after setup
 import 'di/service_locator.dart' as di;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +22,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.init();
-  await initializeDateFormatting('es_ES', null).then((_) => runApp(const MyApp()));
+  // Initialize date formatting for all locales you support, or specific ones.
+  // 'es' for Spanish, 'en' for English, etc.
+  await initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -73,6 +77,17 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: Colors.white),
           ),
         ),
+        // --- START LOCALIZATION CONFIGURATION ---
+        localizationsDelegates: const [
+          AppLocalizations.delegate, // Your generated localizations delegate
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('es', ''),
+        ],
         home: Builder(
           builder: (context) {
             final auth = FirebaseAuth.instance;

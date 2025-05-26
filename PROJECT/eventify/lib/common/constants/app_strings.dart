@@ -1,190 +1,340 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 abstract class AppStrings {
   // Chat strings (display only)
-  static const String chatInitialBotGreeting =
-      "¡Hola! Soy tu asistente de Eventify. ¿Cómo puedo ayudarte con tu horario hoy?";
-  static const String chatInputHint = 'Escribe un mensaje...';
-  static const String chatScreenTitle = 'Chatea con Eventify';
-  static const String chatUserDefaultName = 'Tú';
-  static const String chatAIAvatarLetters = 'EV';
+  static String chatInitialBotGreeting(BuildContext context) =>
+      AppLocalizations.of(context)!.chatInitialBotGreeting;
+  static String chatInputHint(BuildContext context) =>
+      AppLocalizations.of(context)!.chatInputHint;
+  static String chatScreenTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.chatScreenTitle;
+  static String chatUserDefaultName(BuildContext context) =>
+      AppLocalizations.of(context)!.chatUserDefaultName;
+  static String chatAIAvatarLetters(BuildContext context) =>
+      AppLocalizations.of(context)!.chatAIAvatarLetters;
 
   // Profile Screen Strings (display only)
-  static const String profileYourAccountTitle = 'Tu Cuenta';
-  static const String profileEditProfileText = 'Editar Perfil';
-  static const String profileNotificationSettingsText = 'Configuración de Notificaciones';
-  static const String profileAppSettingsTitle = 'Configuración de la Aplicación';
-  static const String profileSupportText = 'Soporte';
-  static const String profileTermsOfServiceText = 'Términos de Servicio';
-  static const String profileLogoutButton = 'Cerrar Sesión';
-  static const String profileContactUsText =
-      'Contáctanos en: ejemplotfgdavid@gmail.com';
+  static String profileYourAccountTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.profileYourAccountTitle;
+  static String profileEditProfileText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileEditProfileText;
+  static String profileNotificationSettingsText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileNotificationSettingsText;
+  static String profileAppSettingsTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.profileAppSettingsTitle;
+  static String profileSupportText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileSupportText;
+  static String profileTermsOfServiceText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileTermsOfServiceText;
+  static String profileLogoutButton(BuildContext context) =>
+      AppLocalizations.of(context)!.profileLogoutButton;
+  static String profileContactUsText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileContactUsText;
 
   // Event Search Screen Strings (display only)
-  static const String searchEventsTitle = 'BUSCAR EVENTOS';
-  static const String searchFieldEventTitle = 'Título del Evento';
-  static const String searchFieldDescription = 'Descripción';
-  static const String searchFieldDate = 'Fecha (AAAA-MM-DD)';
-  static const String searchFieldSelectDate = 'Seleccionar Fecha';
-  static const String searchFieldEventType = 'Tipo de Evento';
-  static const String searchFieldPriority = 'Prioridad';
-  static const String searchPriorityCritical = 'CRÍTICA';
-  static const String searchPriorityHigh = 'ALTA';
-  static const String searchPriorityMedium = 'MEDIA';
-  static const String searchPriorityLow = 'BAJA';
-  static const String searchFieldLocation = 'Ubicación';
-  static const String searchFieldSubject = 'Asunto';
-  static const String searchFieldWithPersonYesNo = 'Con Persona (Sí/No):';
-  static const String searchFieldWithPerson = 'Con Persona';
-  static const String searchResultsPrefix = 'Resultados de Búsqueda (';
-  static const String searchResultsSuffix = ')';
-  static const String searchDateAndTimePrefix = 'Fecha y Hora: ';
-  static const String searchTypePrefix = 'Tipo: ';
-  static const String searchDescriptionPrefix = 'Descripción: ';
-  static const String searchPriorityPrefix = 'Prioridad: ';
-  static const String searchLocationPrefix = 'Ubicación: ';
-  static const String searchSubjectPrefix = 'Asunto: ';
-  static const String searchWithPersonPrefix = 'Con Persona: ';
-  static const String searchEventTypeMeetingDisplay = 'Reunión';
-  static const String searchEventTypeExamDisplay = 'Examen';
-  static const String searchEventTypeConferenceDisplay = 'Conferencia';
-  static const String searchEventTypeAppointmentDisplay = 'Cita';
-  static const String searchEventTypeTaskDisplay = 'Tarea';
-  static const String searchEventTypeAllDisplay = 'Todos los tipos';
-  static const String searchDeleteEventTitle = 'Eliminar Evento';
-  static const String searchDeleteEventConfirmPrefix =
-      '¿Estás seguro de que quieres eliminar "';
-  static const String searchDeleteEventConfirmSuffix = '"?';
-  static const String searchCancelButton = 'Cancelar';
-  static const String searchDeleteButton = 'Eliminar';
-  static const String searchEventDeletedSuccessPrefix = 'Evento "';
-  static const String searchEventDeletedSuccessSuffix =
-      '" eliminado exitosamente!';
+  static String searchEventsTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.searchEventsTitle;
+  static String searchFieldEventTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldEventTitle;
+  static String searchFieldDescription(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldDescription;
+  static String searchFieldDate(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldDate;
+  static String searchFieldSelectDate(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldSelectDate;
+  static String searchFieldEventType(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldEventType;
+  static String searchFieldPriority(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldPriority;
+  static String searchPriorityCritical(BuildContext context) =>
+      AppLocalizations.of(context)!.searchPriorityCritical;
+  static String searchPriorityHigh(BuildContext context) =>
+      AppLocalizations.of(context)!.searchPriorityHigh;
+  static String searchPriorityMedium(BuildContext context) =>
+      AppLocalizations.of(context)!.searchPriorityMedium;
+  static String searchPriorityLow(BuildContext context) =>
+      AppLocalizations.of(context)!.searchPriorityLow;
+  static String searchFieldLocation(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldLocation;
+  static String searchFieldSubject(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldSubject;
+  static String searchFieldWithPersonYesNo(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldWithPersonYesNo;
+  static String searchFieldWithPerson(BuildContext context) =>
+      AppLocalizations.of(context)!.searchFieldWithPerson;
+  static String searchResultsPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchResultsPrefix;
+  static String searchResultsSuffix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchResultsSuffix;
+  static String searchDateAndTimePrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchDateAndTimePrefix;
+  static String searchTypePrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchTypePrefix;
+  static String searchDescriptionPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchDescriptionPrefix;
+  static String searchPriorityPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchPriorityPrefix;
+  static String searchLocationPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchLocationPrefix;
+  static String searchSubjectPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchSubjectPrefix;
+  static String searchWithPersonPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchWithPersonPrefix;
+  static String searchEventTypeMeetingDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.searchEventTypeMeetingDisplay;
+  static String searchEventTypeExamDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.searchEventTypeExamDisplay;
+  static String searchEventTypeConferenceDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.searchEventTypeConferenceDisplay;
+  static String searchEventTypeAppointmentDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.searchEventTypeAppointmentDisplay;
+  static String searchEventTypeTaskDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.searchEventTypeTaskDisplay;
+  static String searchEventTypeAllDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.searchEventTypeAllDisplay;
+  static String searchDeleteEventTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.searchDeleteEventTitle;
+  static String searchDeleteEventConfirmPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchDeleteEventConfirmPrefix;
+  static String searchDeleteEventConfirmSuffix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchDeleteEventConfirmSuffix;
+  static String searchCancelButton(BuildContext context) =>
+      AppLocalizations.of(context)!.searchCancelButton;
+  static String searchDeleteButton(BuildContext context) =>
+      AppLocalizations.of(context)!.searchDeleteButton;
+  static String searchEventDeletedSuccessPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchEventDeletedSuccessPrefix;
+  static String searchEventDeletedSuccessSuffix(BuildContext context) =>
+      AppLocalizations.of(context)!.searchEventDeletedSuccessSuffix;
 
   // Dailies Event Screen Strings (display only)
-  static const String dailiesDeleteEventTitle = 'Eliminar Evento';
-  static const String dailiesDeleteEventConfirmPrefix =
-      '¿Estás seguro de que quieres eliminar "';
-  static const String dailiesDeleteEventConfirmSuffix = '"?';
-  static const String dailiesCancelButton = 'Cancelar';
-  static const String dailiesDeleteButton = 'Eliminar';
-  static const String dailiesEventDeletedSuccessPrefix = 'Evento "';
-  static const String dailiesEventDeletedSuccessSuffix =
-      '" eliminado exitosamente!';
-  static const String dailiesNoEventsForThisDay = 'No hay eventos para este día.';
-  static const String dailiesEventsForPrefix = 'Eventos para ';
-  static const String dailiesEventsCountSeparator = ' (';
-  static const String dailiesEventsCountSuffix = ')';
-  static const String dailiesTimePrefix = 'Hora: ';
-  static const String dailiesTypePrefix = 'Tipo: ';
-  static const String dailiesDescriptionPrefix = 'Descripción: ';
-  static const String dailiesPriorityPrefix = 'Prioridad: ';
-  static const String dailiesMeetingDisplay = 'Reunión';
-  static const String dailiesExamDisplay = 'Examen';
-  static const String dailiesConferenceDisplay = 'Conferencia';
-  static const String dailiesAppointmentDisplay = 'Cita';
-  static const String dailiesTaskDisplay = 'Tarea';
+  static String dailiesDeleteEventTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesDeleteEventTitle;
+  static String dailiesDeleteEventConfirmPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesDeleteEventConfirmPrefix;
+  static String dailiesDeleteEventConfirmSuffix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesDeleteEventConfirmSuffix;
+  static String dailiesCancelButton(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesCancelButton;
+  static String dailiesDeleteButton(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesDeleteButton;
+  static String dailiesEventDeletedSuccessPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesEventDeletedSuccessPrefix;
+  static String dailiesEventDeletedSuccessSuffix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesEventDeletedSuccessSuffix;
+  static String dailiesNoEventsForThisDay(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesNoEventsForThisDay;
+  static String dailiesEventsForPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesEventsForPrefix;
+  static String dailiesEventsCountSeparator(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesEventsCountSeparator;
+  static String dailiesEventsCountSuffix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesEventsCountSuffix;
+  static String dailiesTimePrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesTimePrefix;
+  static String dailiesTypePrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesTypePrefix;
+  static String dailiesDescriptionPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesDescriptionPrefix;
+  static String dailiesPriorityPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesPriorityPrefix;
+  static String dailiesMeetingDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesMeetingDisplay;
+  static String dailiesExamDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesExamDisplay;
+  static String dailiesConferenceDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesConferenceDisplay;
+  static String dailiesAppointmentDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesAppointmentDisplay;
+  static String dailiesTaskDisplay(BuildContext context) =>
+      AppLocalizations.of(context)!.dailiesTaskDisplay;
 
   // Calendar Screen Strings (display only)
-  static const String calendarNoUpcomingEvents = 'No hay eventos próximos.';
+  static String calendarNoUpcomingEvents(BuildContext context) =>
+      AppLocalizations.of(context)!.calendarNoUpcomingEvents;
 
   // Add Event Screen Strings (display only)
-  static const String addEventCreateTitle = 'CREAR NUEVO EVENTO';
-  static const String addEventEditTitle = 'EDITAR EVENTO';
-  static const String addEventFieldTitle = 'Título del Evento';
-  static const String addEventFieldDescription = 'Descripción';
-  static const String addEventFieldPriority = 'Prioridad';
-  static const String addEventFieldNotification = 'Notificación';
-  static const String addEventFieldDate = 'Fecha';
-  static const String addEventSelectDate = 'Seleccionar Fecha';
-  static const String addEventFieldTime = 'Hora';
-  static const String addEventSelectTime = 'Seleccionar Hora';
-  static const String addEventFieldEventType = 'Tipo de Evento';
-  static const String addEventFieldLocation = 'Ubicación';
-  static const String addEventFieldSubject = 'Asunto';
-  static const String addEventFieldWithPersonYesNo = 'Con Persona (Sí/No):';
-  static const String addEventFieldWithPerson = 'Con Persona';
-  static const String addEventSaveButton = 'Guardar Evento';
+  static String addEventCreateTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventCreateTitle;
+  static String addEventEditTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventEditTitle;
+  static String addEventFieldTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldTitle;
+  static String addEventFieldDescription(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldDescription;
+  static String addEventFieldPriority(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldPriority;
+  static String addEventFieldNotification(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldNotification;
+  static String addEventFieldDate(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldDate;
+  static String addEventSelectDate(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventSelectDate;
+  static String addEventFieldTime(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldTime;
+  static String addEventSelectTime(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventSelectTime;
+  static String addEventFieldEventType(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldEventType;
+  static String addEventFieldLocation(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldLocation;
+  static String addEventFieldSubject(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldSubject;
+  static String addEventFieldWithPersonYesNo(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldWithPersonYesNo;
+  static String addEventFieldWithPerson(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventFieldWithPerson;
+  static String addEventSaveButton(BuildContext context) =>
+      AppLocalizations.of(context)!.addEventSaveButton;
 
   // Upcoming Event Card Strings (display only)
-  static const String upcomingEventDatePrefix = 'Fecha: ';
-  static const String upcomingEventPriorityPrefix = 'Prioridad: ';
-  static const String upcomingEventDescriptionPrefix = 'Descripción: ';
+  static String upcomingEventDatePrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.upcomingEventDatePrefix;
+  static String upcomingEventPriorityPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.upcomingEventPriorityPrefix;
+  static String upcomingEventDescriptionPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.upcomingEventDescriptionPrefix;
 
   // Monthly Calendar Strings (display only)
-  static const String monthlyCalendarMondayAbbr = 'Lun';
-  static const String monthlyCalendarTuesdayAbbr = 'Mar';
-  static const String monthlyCalendarWednesdayAbbr = 'Mié';
-  static const String monthlyCalendarThursdayAbbr = 'Jue';
-  static const String monthlyCalendarFridayAbbr = 'Vie';
-  static const String monthlyCalendarSaturdayAbbr = 'Sáb';
-  static const String monthlyCalendarSundayAbbr = 'Dom';
-  static const String monthlyCalendarEventsForMonthPrefix =
-      'Eventos para este mes: ';
-  static const String monthlyCalendarNoEventsForMonth =
-      'No hay eventos para este mes.';
+  static String monthlyCalendarMondayAbbr(BuildContext context) =>
+      AppLocalizations.of(context)!.monthlyCalendarMondayAbbr;
+  static String monthlyCalendarTuesdayAbbr(BuildContext context) =>
+      AppLocalizations.of(context)!.monthlyCalendarTuesdayAbbr;
+  static String monthlyCalendarWednesdayAbbr(BuildContext context) =>
+      AppLocalizations.of(context)!.monthlyCalendarWednesdayAbbr;
+  static String monthlyCalendarThursdayAbbr(BuildContext context) =>
+      AppLocalizations.of(context)!.monthlyCalendarThursdayAbbr;
+  static String monthlyCalendarFridayAbbr(BuildContext context) =>
+      AppLocalizations.of(context)!.monthlyCalendarFridayAbbr;
+  static String monthlyCalendarSaturdayAbbr(BuildContext context) =>
+      AppLocalizations.of(context)!.monthlyCalendarSaturdayAbbr;
+  static String monthlyCalendarSundayAbbr(BuildContext context) =>
+      AppLocalizations.of(context)!.monthlyCalendarSundayAbbr;
+  static String monthlyCalendarEventsForMonthPrefix(BuildContext context) =>
+      AppLocalizations.of(context)!.monthlyCalendarEventsForMonthPrefix;
+  static String monthlyCalendarNoEventsForMonth(BuildContext context) =>
+      AppLocalizations.of(context)!.monthlyCalendarNoEventsForMonth;
 
   // Month Row Strings (display only)
-  static const String monthJanuary = 'ENERO';
-  static const String monthFebruary = 'FEBRERO';
-  static const String monthMarch = 'MARZO';
-  static const String monthApril = 'ABRIL';
-  static const String monthMay = 'MAYO';
-  static const String monthJune = 'JUNIO';
-  static const String monthJuly = 'JULIO';
-  static const String monthAugust = 'AGOSTO';
-  static const String monthSeptember = 'SEPTIEMBRE';
-  static const String monthOctober = 'OCTUBRE';
-  static const String monthNovember = 'NOVIEMBRE';
-  static const String monthDecember = 'DICIEMBRE';
+  static String monthJanuary(BuildContext context) =>
+      AppLocalizations.of(context)!.monthJanuary;
+  static String monthFebruary(BuildContext context) =>
+      AppLocalizations.of(context)!.monthFebruary;
+  static String monthMarch(BuildContext context) =>
+      AppLocalizations.of(context)!.monthMarch;
+  static String monthApril(BuildContext context) =>
+      AppLocalizations.of(context)!.monthApril;
+  static String monthMay(BuildContext context) =>
+      AppLocalizations.of(context)!.monthMay;
+  static String monthJune(BuildContext context) =>
+      AppLocalizations.of(context)!.monthJune;
+  static String monthJuly(BuildContext context) =>
+      AppLocalizations.of(context)!.monthJuly;
+  static String monthAugust(BuildContext context) =>
+      AppLocalizations.of(context)!.monthAugust;
+  static String monthSeptember(BuildContext context) =>
+      AppLocalizations.of(context)!.monthSeptember;
+  static String monthOctober(BuildContext context) =>
+      AppLocalizations.of(context)!.monthOctober;
+  static String monthNovember(BuildContext context) =>
+      AppLocalizations.of(context)!.monthNovember;
+  static String monthDecember(BuildContext context) =>
+      AppLocalizations.of(context)!.monthDecember;
 
   // Footer Strings (display only)
-  static const String footerReturnToCurrentMonthTooltip =
-      'Volver al mes actual';
+  static String footerReturnToCurrentMonthTooltip(BuildContext context) =>
+      AppLocalizations.of(context)!.footerReturnToCurrentMonthTooltip;
 
   // Profile Button Strings (display only)
-  static const String profileButtonTooltip = 'Perfil';
+  static String profileButtonTooltip(BuildContext context) =>
+      AppLocalizations.of(context)!.profileButtonTooltip;
 
   // Chat Button Strings (display only)
-  static const String chatButtonTooltip = 'Chat';
+  static String chatButtonTooltip(BuildContext context) =>
+      AppLocalizations.of(context)!.chatButtonTooltip;
 
   // Calendar Toggle Button Strings (display only)
-  static const String calendarToggleShowYearlyViewTooltip = 'Mostrar vista anual';
-  static const String calendarToggleShowMonthlyViewTooltip =
-      'Mostrar vista mensual';
+  static String calendarToggleShowYearlyViewTooltip(BuildContext context) =>
+      AppLocalizations.of(context)!.calendarToggleShowYearlyViewTooltip;
+  static String calendarToggleShowMonthlyViewTooltip(BuildContext context) =>
+      AppLocalizations.of(context)!.calendarToggleShowMonthlyViewTooltip;
 
   // Priority Display Names (Capitalized for display)
-  static const String priorityDisplayCritical = 'Crítica';
-  static const String priorityDisplayHigh = 'Alta';
-  static const String priorityDisplayMedium = 'Media';
-  static const String priorityDisplayLow = 'Baja';
+  static String priorityDisplayCritical(BuildContext context) =>
+      AppLocalizations.of(context)!.priorityDisplayCritical;
+  static String priorityDisplayHigh(BuildContext context) =>
+      AppLocalizations.of(context)!.priorityDisplayHigh;
+  static String priorityDisplayMedium(BuildContext context) =>
+      AppLocalizations.of(context)!.priorityDisplayMedium;
+  static String priorityDisplayLow(BuildContext context) =>
+      AppLocalizations.of(context)!.priorityDisplayLow;
 
   // SignUpScreen display strings
-  static const String signUpCreateAccountTitle = 'Crear Cuenta';
-  static const String signUpLogInText = 'Iniciar Sesión';
-  static const String signUpSubtitleText = 'Comencemos rellenando el siguiente formulario.';
-  static const String signUpEmailHint = 'Correo Electrónico';
-  static const String signUpUsernameHint = 'Nombre de Usuario';
-  static const String signUpPasswordHint = 'Contraseña';
-  static const String signUpConfirmPasswordHint = 'Confirmar Contraseña';
-  static const String signUpGetStartedButton = 'Empezar';
-  static const String signUpOrSignUpWith = 'O regístrate con';
+  static String signUpCreateAccountTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.signUpCreateAccountTitle;
+  static String signUpLogInText(BuildContext context) =>
+      AppLocalizations.of(context)!.signUpLogInText;
+  static String signUpSubtitleText(BuildContext context) =>
+      AppLocalizations.of(context)!.signUpSubtitleText;
+  static String signUpEmailHint(BuildContext context) =>
+      AppLocalizations.of(context)!.signUpEmailHint;
+  static String signUpUsernameHint(BuildContext context) =>
+      AppLocalizations.of(context)!.signUpUsernameHint;
+  static String signUpPasswordHint(BuildContext context) =>
+      AppLocalizations.of(context)!.signUpPasswordHint;
+  static String signUpConfirmPasswordHint(BuildContext context) =>
+      AppLocalizations.of(context)!.signUpConfirmPasswordHint;
+  static String signUpGetStartedButton(BuildContext context) =>
+      AppLocalizations.of(context)!.signUpGetStartedButton;
+  static String signUpOrSignUpWith(BuildContext context) =>
+      AppLocalizations.of(context)!.signUpOrSignUpWith;
 
   // SignInScreen display strings
-  static const String signInCreateAccountText = 'Crear Cuenta';
-  static const String signInLogInText = 'Iniciar Sesión';
-  static const String signInWelcomeTitle = 'Bienvenido a Eventify';
-  static const String signInSubtitle = 'Rellena la siguiente información para acceder a tu cuenta.';
-  static const String signInEmailHint = 'Correo Electrónico';
-  static const String signInPasswordHint = 'Contraseña';
-  static const String signInButtonText = 'Iniciar Sesión';
-  static const String signInOrSignInWith = 'O inicia sesión con';
+  static String signInCreateAccountText(BuildContext context) =>
+      AppLocalizations.of(context)!.signInCreateAccountText;
+  static String signInLogInText(BuildContext context) =>
+      AppLocalizations.of(context)!.signInLogInText;
+  static String signInWelcomeTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.signInWelcomeTitle;
+  static String signInSubtitle(BuildContext context) =>
+      AppLocalizations.of(context)!.signInSubtitle;
+  static String signInEmailHint(BuildContext context) =>
+      AppLocalizations.of(context)!.signInEmailHint;
+  static String signInPasswordHint(BuildContext context) =>
+      AppLocalizations.of(context)!.signInPasswordHint;
+  static String signInButtonText(BuildContext context) =>
+      AppLocalizations.of(context)!.signInButtonText;
+  static String signInOrSignInWith(BuildContext context) =>
+      AppLocalizations.of(context)!.signInOrSignInWith;
+  static String signInTitle(BuildContext context) =>
+      AppLocalizations.of(context)!.signInTitle;
+  static String emailLabel(BuildContext context) =>
+      AppLocalizations.of(context)!.emailLabel;
+  static String passwordLabel(BuildContext context) =>
+      AppLocalizations.of(context)!.passwordLabel;
+  static String loginFailed(BuildContext context) =>
+      AppLocalizations.of(context)!.loginFailed;
+  static String welcomeBack(BuildContext context) =>
+      AppLocalizations.of(context)!.welcomeBack;
+  static String createAccount(BuildContext context) =>
+      AppLocalizations.of(context)!.createAccount;
+  static String logIn(BuildContext context) =>
+      AppLocalizations.of(context)!.logIn;
+  static String orSignInWith(BuildContext context) =>
+      AppLocalizations.of(context)!.orSignInWith;
 
   // SocialSignInButtons display strings
-  static const String socialSignInGoogleText = 'Continuar con Google';
-  static const String socialSignInAppleText = 'Continuar con Apple';
+  static String socialSignInGoogleText(BuildContext context) =>
+      AppLocalizations.of(context)!.socialSignInGoogleText;
+  static String socialSignInAppleText(BuildContext context) =>
+      AppLocalizations.of(context)!.socialSignInAppleText;
 
   // EventifyAuthLayout display strings
-  static const String appTitleEventify = 'EVENTIFY';
+  static String appTitleEventify(BuildContext context) =>
+      AppLocalizations.of(context)!.appTitleEventify;
 
   // ForgotPasswordOption display strings
-  static const String forgotPasswordOptionText = '¿Olvidaste tu contraseña?';
+  static String forgotPasswordOptionText(BuildContext context) =>
+      AppLocalizations.of(context)!.forgotPasswordOptionText;
 }

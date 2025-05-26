@@ -17,20 +17,9 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  final List<String> months = const [
-    AppStrings.monthJanuary,
-    AppStrings.monthFebruary,
-    AppStrings.monthMarch,
-    AppStrings.monthApril,
-    AppStrings.monthMay,
-    AppStrings.monthJune,
-    AppStrings.monthJuly,
-    AppStrings.monthAugust,
-    AppStrings.monthSeptember,
-    AppStrings.monthOctober,
-    AppStrings.monthNovember,
-    AppStrings.monthDecember,
-  ];
+  // Make 'months' nullable or initialize it in didChangeDependencies
+  // It cannot be 'late final' if initialized using context in initState
+  List<String>? _months; // Changed to nullable
 
   Map<int, int> _monthlyEventCounts = {};
   late EventViewModel _eventViewModel;
@@ -39,9 +28,36 @@ class _CalendarState extends State<Calendar> {
   void initState() {
     super.initState();
     _eventViewModel = Provider.of<EventViewModel>(context, listen: false);
+
+    // REMOVED THE MONTHS INITIALIZATION FROM HERE
+    // This was the source of the error.
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadMonthlyEventCounts();
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Initialize _months here, where context is guaranteed to be fully available.
+    // This ensures localization data is ready.
+    if (_months == null) { // Only initialize once
+      _months = [
+        AppStrings.monthJanuary(context),
+        AppStrings.monthFebruary(context),
+        AppStrings.monthMarch(context),
+        AppStrings.monthApril(context),
+        AppStrings.monthMay(context),
+        AppStrings.monthJune(context),
+        AppStrings.monthJuly(context),
+        AppStrings.monthAugust(context),
+        AppStrings.monthSeptember(context),
+        AppStrings.monthOctober(context),
+        AppStrings.monthNovember(context),
+        AppStrings.monthDecember(context),
+      ];
+    }
   }
 
   @override
@@ -105,6 +121,11 @@ class _CalendarState extends State<Calendar> {
       return Center(child: Text('${AppInternalConstants.calendarErrorMessagePrefix}${eventViewModel.errorMessage}')); // Using constant from AppInternalConstants
     }
 
+    // Add a check to ensure _months is not null before using it
+    if (_months == null) {
+      return const Center(child: CircularProgressIndicator()); // Or any other loading/error state
+    }
+
     return Column(
       children: _buildMonthRows(MediaQuery.of(context).size.width),
     );
@@ -121,9 +142,10 @@ class _CalendarState extends State<Calendar> {
 
     final List<int> notifications = List.generate(12, (index) => _monthlyEventCounts[index + 1] ?? 0);
 
-    for (int i = 0; i < months.length; i += itemsPerRow) {
-      final end = i + itemsPerRow > months.length ? months.length : i + itemsPerRow;
-      final rowMonths = months.sublist(i, end);
+    // Use _months! because didChangeDependencies guarantees it's initialized
+    for (int i = 0; i < _months!.length; i += itemsPerRow) {
+      final end = i + itemsPerRow > _months!.length ? _months!.length : i + itemsPerRow;
+      final rowMonths = _months!.sublist(i, end);
       final rowNotifications = notifications.sublist(i, end);
       rows.add(
         MonthRow(

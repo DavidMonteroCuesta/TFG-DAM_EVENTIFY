@@ -1,5 +1,4 @@
-import 'package:eventify/common/constants/app_strings.dart'; // Import AppStrings
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
+import 'package:eventify/common/constants/app_internal_constants.dart';
 
 enum Priority {
   critical,
@@ -9,18 +8,19 @@ enum Priority {
 }
 
 extension PriorityExtension on Priority {
-  String get name {
+  String get key {
     switch (this) {
       case Priority.critical:
-        return AppStrings.priorityDisplayCritical;
+        return 'priorityDisplayCritical';
       case Priority.high:
-        return AppStrings.priorityDisplayHigh;
+        return 'priorityDisplayHigh';
       case Priority.medium:
-        return AppStrings.priorityDisplayMedium;
+        return 'priorityDisplayMedium';
       case Priority.low:
-        return AppStrings.priorityDisplayLow;
+        return 'priorityDisplayLow';
     }
   }
+
 
   String get color {
     switch (this) {
@@ -36,7 +36,7 @@ extension PriorityExtension on Priority {
   }
 
   String toFormattedString() {
-    return name.toLowerCase();
+    return toString().split('.').last;
   }
 }
 

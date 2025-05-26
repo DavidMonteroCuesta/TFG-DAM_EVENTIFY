@@ -12,9 +12,8 @@ import 'package:eventify/common/theme/colors/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
 import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Importación de la interfaz de constantes internas
-
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
 class EventSearchScreen extends StatefulWidget {
   final DateTime? initialSelectedDate;
   final String? initialSearchTitle; // Nuevo: Título de búsqueda inicial
@@ -49,7 +48,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     super.initState();
     _eventViewModel = sl<EventViewModel>();
     _selectedSearchDate = widget.initialSelectedDate;
-    // MODIFIED: Inicializa el controlador del título con el valor inicial
     _titleSearchController.text = widget.initialSearchTitle ?? '';
 
     _loadEvents();
@@ -78,35 +76,35 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     }
   }
 
-  // Helper function to get translated event type for display
   String _getTranslatedEventTypeDisplay(EventType type) {
     switch (type) {
       case EventType.meeting:
-        return AppStrings.searchEventTypeMeetingDisplay;
+        return AppStrings.searchEventTypeMeetingDisplay(context);
       case EventType.exam:
-        return AppStrings.searchEventTypeExamDisplay;
+        return AppStrings.searchEventTypeExamDisplay(context);
       case EventType.conference:
-        return AppStrings.searchEventTypeConferenceDisplay;
+        return AppStrings.searchEventTypeConferenceDisplay(context);
       case EventType.appointment:
-        return AppStrings.searchEventTypeAppointmentDisplay;
+        return AppStrings.searchEventTypeAppointmentDisplay(context);
       case EventType.task:
-        return AppStrings.searchEventTypeTaskDisplay;
+        return AppStrings.searchEventTypeTaskDisplay(context);
       case EventType.all:
-        return AppStrings.searchEventTypeAllDisplay;
+        return AppStrings.searchEventTypeAllDisplay(context);
     }
   }
 
   // Helper function to get translated priority for display and convert to uppercase
   String _getTranslatedPriorityDisplay(String priorityString) {
+    // CAMBIO AQUÍ: Pasa context a cada llamada de AppStrings
     switch (priorityString.toLowerCase()) {
       case AppInternalConstants.priorityValueCritical:
-        return AppStrings.priorityDisplayCritical.toUpperCase();
+        return AppStrings.priorityDisplayCritical(context).toUpperCase();
       case AppInternalConstants.priorityValueHigh:
-        return AppStrings.priorityDisplayHigh.toUpperCase();
+        return AppStrings.priorityDisplayHigh(context).toUpperCase();
       case AppInternalConstants.priorityValueMedium:
-        return AppStrings.priorityDisplayMedium.toUpperCase();
+        return AppStrings.priorityDisplayMedium(context).toUpperCase();
       case AppInternalConstants.priorityValueLow:
-        return AppStrings.priorityDisplayLow.toUpperCase();
+        return AppStrings.priorityDisplayLow(context).toUpperCase();
       default:
         return priorityString.toUpperCase(); // Fallback to original if not found, also in uppercase
     }
@@ -122,6 +120,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
+          // Estas constantes no requieren context
           SnackBar(content: Text('${AppInternalConstants.searchFailedToLoadEvents}${e.toString()}')),
         );
       }
@@ -223,6 +222,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           location.isNotEmpty) {
         results = results.where((eventData) {
           final eventTypeString = eventData['type'] as String?;
+          // Estas constantes no requieren context
           if (eventTypeString == AppInternalConstants.eventTypeMeeting || eventTypeString == AppInternalConstants.eventTypeConference || eventTypeString == AppInternalConstants.eventTypeAppointment) {
             return (eventData['location'] as String?)?.toLowerCase().contains(location) ?? false;
           }
@@ -233,6 +233,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           subject.isNotEmpty) {
         results = results.where((eventData) {
           final eventTypeString = eventData['type'] as String?;
+          // Estas constantes no requieren context
           if (eventTypeString == AppInternalConstants.eventTypeExam) {
             return (eventData['subject'] as String?)?.toLowerCase().contains(subject) ?? false;
           }
@@ -243,6 +244,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           _withPersonYesNoSearch) {
         results = results.where((eventData) {
           final eventTypeString = eventData['type'] as String?;
+          // Estas constantes no requieren context
           if (eventTypeString == AppInternalConstants.eventTypeAppointment) {
             final bool withPersonYesNo = eventData['withPersonYesNo'] ?? false;
             final String? eventWithPerson = eventData['withPerson'];
@@ -280,16 +282,20 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           builder: (BuildContext context) {
             return AlertDialog(
               backgroundColor: Colors.grey[900],
-              title: Text(AppStrings.searchDeleteEventTitle, style: TextStyles.urbanistSubtitle1.copyWith(color: Colors.white)),
-              content: Text('${AppStrings.searchDeleteEventConfirmPrefix}"$eventTitle"${AppStrings.searchDeleteEventConfirmSuffix}', style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey)),
+              // CAMBIO AQUÍ: Pasa context a AppStrings
+              title: Text(AppStrings.searchDeleteEventTitle(context), style: TextStyles.urbanistSubtitle1.copyWith(color: Colors.white)),
+              // CAMBIO AQUÍ: Pasa context a AppStrings
+              content: Text('${AppStrings.searchDeleteEventConfirmPrefix(context)}"$eventTitle"${AppStrings.searchDeleteEventConfirmSuffix(context)}', style: TextStyles.plusJakartaSansBody2.copyWith(color: Colors.grey)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(AppStrings.searchCancelButton, style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.primaryContainer)),
+                  // CAMBIO AQUÍ: Pasa context a AppStrings
+                  child: Text(AppStrings.searchCancelButton(context), style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.primaryContainer)),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text(AppStrings.searchDeleteButton, style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.red)),
+                  // CAMBIO AQUÍ: Pasa context a AppStrings
+                  child: Text(AppStrings.searchDeleteButton(context), style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: Colors.red)),
                 ),
               ],
             );
@@ -302,7 +308,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         await _eventViewModel.deleteEvent(eventId);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${AppStrings.searchEventDeletedSuccessPrefix}"$eventTitle"${AppStrings.searchEventDeletedSuccessSuffix}')),
+            // CAMBIO AQUÍ: Pasa context a AppStrings
+            SnackBar(content: Text('${AppStrings.searchEventDeletedSuccessPrefix(context)}"$eventTitle"${AppStrings.searchEventDeletedSuccessSuffix(context)}')),
           );
           await _loadEvents();
           _searchEvents();
@@ -310,6 +317,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
+            // Estas constantes no requieren context
             SnackBar(content: Text('${AppInternalConstants.searchFailedToDeleteEvent}${e.toString()}')),
           );
         }
@@ -342,7 +350,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           },
         ),
         title: ShiningTextAnimation(
-          text: AppStrings.searchEventsTitle,
+          // CAMBIO AQUÍ: Pasa context a AppStrings
+          text: AppStrings.searchEventsTitle(context),
           style: TextStyles.urbanistBody1,
           shineColor: const Color(0xFFCBCBCB),
         ),
@@ -361,11 +370,13 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
             children: [
               _buildSearchField(
                 controller: _titleSearchController,
-                labelText: AppStrings.searchFieldEventTitle,
+                // CAMBIO AQUÍ: Pasa context a AppStrings
+                labelText: AppStrings.searchFieldEventTitle(context),
               ),
               _buildSearchField(
                 controller: _descriptionSearchController,
-                labelText: AppStrings.searchFieldDescription,
+                // CAMBIO AQUÍ: Pasa context a AppStrings
+                labelText: AppStrings.searchFieldDescription(context),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -373,7 +384,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   onTap: () => _selectSearchDate(context),
                   child: InputDecorator(
                     decoration: InputDecoration(
-                      labelText: AppStrings.searchFieldDate,
+                      // CAMBIO AQUÍ: Pasa context a AppStrings
+                      labelText: AppStrings.searchFieldDate(context),
                       labelStyle: TextStyles.plusJakartaSansSubtitle2,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
@@ -415,7 +427,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                           ? DateFormat(
                             'yyyy-MM-dd',
                           ).format(_selectedSearchDate!)
-                          : AppStrings.searchFieldSelectDate,
+                          // CAMBIO AQUÍ: Pasa context a AppStrings
+                          : AppStrings.searchFieldSelectDate(context),
                       style:
                           _selectedSearchDate != null
                               ? TextStyles.plusJakartaSansBody1
@@ -446,7 +459,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                         ),
                       );
                     }).toList(),
-                labelText: AppStrings.searchFieldEventType,
+                // CAMBIO AQUÍ: Pasa context a AppStrings
+                labelText: AppStrings.searchFieldEventType(context),
               ),
               _buildPrioritySelector(),
               if (_selectedEventType == EventType.meeting ||
@@ -455,12 +469,14 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   _selectedEventType == EventType.all)
                 _buildSearchField(
                   controller: _locationSearchController,
-                  labelText: AppStrings.searchFieldLocation,
+                  // CAMBIO AQUÍ: Pasa context a AppStrings
+                  labelText: AppStrings.searchFieldLocation(context),
                 ),
               if (_selectedEventType == EventType.exam || _selectedEventType == EventType.all)
                 _buildSearchField(
                   controller: _subjectSearchController,
-                  labelText: AppStrings.searchFieldSubject,
+                  // CAMBIO AQUÍ: Pasa context a AppStrings
+                  labelText: AppStrings.searchFieldSubject(context),
                 ),
               if (_selectedEventType == EventType.appointment || _selectedEventType == EventType.all)
                 _buildWithPersonField(),
@@ -468,7 +484,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               if (_searchResults.isNotEmpty) ...[
                 const SizedBox(height: 10.0),
                 Text(
-                  '${AppStrings.searchResultsPrefix}${_searchResults.length}${AppStrings.searchResultsSuffix}',
+                  // CAMBIO AQUÍ: Pasa context a AppStrings
+                  '${AppStrings.searchResultsPrefix(context)}${_searchResults.length}${AppStrings.searchResultsSuffix(context)}',
                   style: TextStyles.urbanistSubtitle1.copyWith(fontSize: 18),
                 ),
                 const SizedBox(height: 10.0),
@@ -481,6 +498,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                           return const SizedBox.shrink();
                         }
                         final Event event = EventFactory.createEvent(
+                          // Estas constantes no requieren context
                           _getEventTypeFromString(eventData['type'] ?? AppInternalConstants.eventTypeTask),
                           eventData,
                           currentUserId,
@@ -492,6 +510,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                                 ? DateFormat(
                                   'yyyy/MM/dd HH:mm',
                                 ).format(event.dateTime!.toDate())
+                                // Estas constantes no requieren context
                                 : AppInternalConstants.searchNA;
 
                         return Padding(
@@ -537,37 +556,44 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                                   ),
                                   const SizedBox(height: 4.0),
                                   Text(
-                                    '${AppStrings.searchDateAndTimePrefix}$formattedDateTime',
+                                    // CAMBIO AQUÍ: Pasa context a AppStrings
+                                    '${AppStrings.searchDateAndTimePrefix(context)}$formattedDateTime',
                                     style: TextStyles.plusJakartaSansBody2,
                                   ),
                                   const SizedBox(height: 4.0),
                                   Text(
-                                    '${AppStrings.searchTypePrefix}$eventTypeString',
+                                    // CAMBIO AQUÍ: Pasa context a AppStrings
+                                    '${AppStrings.searchTypePrefix(context)}$eventTypeString',
                                     style: TextStyles.plusJakartaSansBody2,
                                   ),
                                   const SizedBox(height: 4.0),
                                   Text(
-                                    '${AppStrings.searchDescriptionPrefix}${event.description ?? AppInternalConstants.searchNA}',
+                                    // CAMBIO AQUÍ: Pasa context a AppStrings
+                                    '${AppStrings.searchDescriptionPrefix(context)}${event.description ?? AppInternalConstants.searchNA}',
                                     style: TextStyles.plusJakartaSansBody2,
                                   ),
                                   Text(
-                                    '${AppStrings.searchPriorityPrefix}${_getTranslatedPriorityDisplay(event.priority.toString().split('.').last)}', // Use helper
+                                    // CAMBIO AQUÍ: Pasa context a AppStrings
+                                    '${AppStrings.searchPriorityPrefix(context)}${_getTranslatedPriorityDisplay(event.priority.toString().split('.').last)}', // Use helper
                                     style: TextStyles.plusJakartaSansBody2
                                         .copyWith(color: Colors.yellow),
                                   ),
                                   if (event.location != null && event.location!.isNotEmpty)
                                     Text(
-                                      '${AppStrings.searchLocationPrefix}${event.location}',
+                                      // CAMBIO AQUÍ: Pasa context a AppStrings
+                                      '${AppStrings.searchLocationPrefix(context)}${event.location}',
                                       style: TextStyles.plusJakartaSansBody2,
                                     ),
                                   if (event.subject != null && event.subject!.isNotEmpty)
                                     Text(
-                                      '${AppStrings.searchSubjectPrefix}${event.subject}',
+                                      // CAMBIO AQUÍ: Pasa context a AppStrings
+                                      '${AppStrings.searchSubjectPrefix(context)}${event.subject}',
                                       style: TextStyles.plusJakartaSansBody2,
                                     ),
                                   if (event.withPerson != null && event.withPerson!.isNotEmpty)
                                     Text(
-                                      '${AppStrings.searchWithPersonPrefix}${event.withPerson}',
+                                      // CAMBIO AQUÍ: Pasa context a AppStrings
+                                      '${AppStrings.searchWithPersonPrefix(context)}${event.withPerson}',
                                       style: TextStyles.plusJakartaSansBody2,
                                     ),
                                 ],
@@ -596,7 +622,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         style: TextStyles.plusJakartaSansBody1,
         onChanged: (value) => _searchEvents(),
         decoration: InputDecoration(
-          labelText: labelText,
+          labelText: labelText, // labelText ya viene con la traducción aplicada
           labelStyle: TextStyles.plusJakartaSansSubtitle2,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -637,7 +663,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         onChanged: onChanged,
         items: items,
         decoration: InputDecoration(
-          labelText: labelText,
+          labelText: labelText, // labelText ya viene con la traducción aplicada
           labelStyle: TextStyles.plusJakartaSansSubtitle2,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -674,7 +700,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         children: [
           Row(
             children: [
-              Text(AppStrings.searchFieldPriority, style: TextStyles.plusJakartaSansSubtitle2),
+              // CAMBIO AQUÍ: Pasa context a AppStrings
+              Text(AppStrings.searchFieldPriority(context), style: TextStyles.plusJakartaSansSubtitle2),
               const SizedBox(width: 10),
               Switch(
                 value: _enablePriorityFilter,
@@ -705,25 +732,29 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               spacing: 8.0,
               children: [
                 _buildPriorityOption(
-                  AppStrings.searchPriorityCritical,
+                  // CAMBIO AQUÍ: Pasa context a AppStrings
+                  AppStrings.searchPriorityCritical(context),
                   Priority.critical,
                   const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                   const Color(0xFF0F0F0F),
                 ),
                 _buildPriorityOption(
-                  AppStrings.searchPriorityHigh,
+                  // CAMBIO AQUÍ: Pasa context a AppStrings
+                  AppStrings.searchPriorityHigh(context),
                   Priority.high,
                   const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                   const Color(0xFF0F0F0F),
                 ),
                 _buildPriorityOption(
-                  AppStrings.searchPriorityMedium,
+                  // CAMBIO AQUÍ: Pasa context a AppStrings
+                  AppStrings.searchPriorityMedium(context),
                   Priority.medium,
                   const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                   const Color(0xFF0F0F0F),
                 ),
                 _buildPriorityOption(
-                  AppStrings.searchPriorityLow,
+                  // CAMBIO AQUÍ: Pasa context a AppStrings
+                  AppStrings.searchPriorityLow(context),
                   Priority.low,
                   const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                   const Color(0xFF0F0F0F),
@@ -769,7 +800,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
 
   Widget _buildWithPersonField() {
     const secondaryColor = Color.fromRGBO(105, 240, 174, 1);
-    const outlineColor = Color(0xFFE0E0E0);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -778,7 +808,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           Row(
             children: [
               Text(
-                AppStrings.searchFieldWithPersonYesNo,
+                AppStrings.searchFieldWithPersonYesNo(context),
                 style: TextStyles.plusJakartaSansBody1.copyWith(
                   fontSize: 16.0,
                   color: AppColors.textPrimary,
@@ -787,52 +817,23 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               const SizedBox(width: 8.0),
               Checkbox(
                 value: _withPersonYesNoSearch,
-                onChanged: (bool? value) {
+                onChanged: (bool? newValue) {
                   setState(() {
-                    _withPersonYesNoSearch = value ?? false;
+                    _withPersonYesNoSearch = newValue ?? false;
                     _searchEvents();
                   });
                 },
                 activeColor: secondaryColor,
-                checkColor: AppColors.onSecondary,
-                side: BorderSide(color: outlineColor),
+                checkColor: Colors.black,
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12.0),
-            child: Visibility(
-              visible: _withPersonYesNoSearch,
-              child: TextFormField(
-                controller: _withPersonSearchController,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  color: AppColors.textPrimary,
-                ),
-                onChanged: (value) => _searchEvents(),
-                decoration: InputDecoration(
-                  labelText: AppStrings.searchFieldWithPerson,
-                  labelStyle: TextStyles.plusJakartaSansSubtitle2,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 12.0,
-                  ),
-                  filled: true,
-                  fillColor: const Color(0xFF1F1F1F),
-                ),
-              ),
+          Visibility(
+            visible: _withPersonYesNoSearch,
+            child: _buildSearchField(
+              controller: _withPersonSearchController,
+              // CAMBIO AQUÍ: Pasa context a AppStrings
+              labelText: AppStrings.searchFieldWithPerson(context),
             ),
           ),
         ],

@@ -9,8 +9,8 @@ import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eventify/di/service_locator.dart';
-import 'package:eventify/common/constants/app_strings.dart'; // Importación de la interfaz de constantes
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
 
 class AddEventScreen extends StatefulWidget {
   final Map<String, dynamic>? eventToEdit;
@@ -292,7 +292,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
           },
         ),
         title: ShiningTextAnimation(
-          text: widget.eventToEdit == null ? AppStrings.addEventCreateTitle : AppStrings.addEventEditTitle,
+          text: widget.eventToEdit == null ? AppStrings.addEventCreateTitle(context) : AppStrings.addEventEditTitle(context),
           style: TextStyles.urbanistBody1,
           shineColor: AppColors.textPrimary,
         ),
@@ -317,7 +317,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   color: AppColors.textPrimary,
                 ),
                 decoration: InputDecoration(
-                  labelText: AppStrings.addEventFieldTitle,
+                  labelText: AppStrings.addEventFieldTitle(context),
                   labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -349,7 +349,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   color: AppColors.textPrimary,
                 ),
                 decoration: InputDecoration(
-                  labelText: AppStrings.addEventFieldDescription,
+                  labelText: AppStrings.addEventFieldDescription(context),
                   labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -374,7 +374,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               ),
               const SizedBox(height: 22.0),
               Text(
-                AppStrings.addEventFieldPriority,
+                AppStrings.addEventFieldPriority(context),
                 style:  TextStyles.plusJakartaSansSubtitle2,
               ),
               const SizedBox(height: 8.0),
@@ -382,25 +382,25 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 spacing: 8.0,
                 children: [
                   _buildPriorityOption(
-                    AppStrings.searchPriorityCritical,
+                    AppStrings.searchPriorityCritical(context),
                     Priority.critical,
                     const Color.fromRGBO(105, 240, 174, 1).withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
-                    AppStrings.searchPriorityHigh,
+                    AppStrings.searchPriorityHigh(context),
                     Priority.high,
                     secondaryColor.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
-                    AppStrings.searchPriorityMedium,
+                    AppStrings.searchPriorityMedium(context),
                     Priority.medium,
                     secondaryColor.withOpacity(0.8),
                     onSecondaryColor,
                   ),
                   _buildPriorityOption(
-                    AppStrings.searchPriorityLow,
+                    AppStrings.searchPriorityLow(context),
                     Priority.low,
                     secondaryColor.withOpacity(0.8),
                     onSecondaryColor,
@@ -424,7 +424,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   const SizedBox(width: 8.0),
                   Expanded(
                     child: Text(
-                      AppStrings.addEventFieldNotification,
+                      AppStrings.addEventFieldNotification(context),
                       style: TextStyles.plusJakartaSansSubtitle2,
                     ),
                   ),
@@ -438,7 +438,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       onTap: () => _selectDate(context),
                       child: InputDecorator(
                         decoration: InputDecoration(
-                          labelText: AppStrings.addEventFieldDate,
+                          labelText: AppStrings.addEventFieldDate(context),
                            labelStyle: TextStyles.plusJakartaSansSubtitle2,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -466,7 +466,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         child: Text(
                           _selectedDate != null
                               ? DateFormat('yyyy/MM/dd').format(_selectedDate!)
-                              : AppStrings.addEventSelectDate,
+                              : AppStrings.addEventSelectDate(context),
                           style: TextStyles.plusJakartaSansBody1,
                         ),
                       ),
@@ -478,7 +478,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       onTap: () => _selectTime(context),
                       child: InputDecorator(
                         decoration: InputDecoration(
-                          labelText: AppStrings.addEventFieldTime,
+                          labelText: AppStrings.addEventFieldTime(context),
                           labelStyle: TextStyles.plusJakartaSansSubtitle2,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -496,7 +496,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                             borderSide: BorderSide.none,
                           ),
                           errorText: _selectedTime == null
-                              ? AppStrings.addEventSelectTime
+                              ? AppStrings.addEventSelectTime(context)
                               : null,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16.0,
@@ -547,7 +547,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     })
                     .toList(),
                 decoration: InputDecoration(
-                  labelText: AppStrings.addEventFieldEventType,
+                  labelText: AppStrings.addEventFieldEventType(context),
                   labelStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -581,7 +581,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     color: AppColors.textPrimary,
                   ),
                   decoration: InputDecoration(
-                    labelText: AppStrings.addEventFieldLocation,
+                    labelText: AppStrings.addEventFieldLocation(context),
                     labelStyle: TextStyles.plusJakartaSansSubtitle2,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -609,7 +609,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     color: AppColors.textPrimary,
                   ),
                   decoration: InputDecoration(
-                    labelText: AppStrings.addEventFieldSubject,
+                    labelText: AppStrings.addEventFieldSubject(context),
                     labelStyle: TextStyles.plusJakartaSansSubtitle2,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -637,7 +637,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     Row(
                       children: [
                         Text(
-                          AppStrings.addEventFieldWithPersonYesNo,
+                          AppStrings.addEventFieldWithPersonYesNo(context),
                           style: const TextStyle(
                             fontSize: 16.0,
                             color: AppColors.textPrimary,
@@ -668,7 +668,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                             color: AppColors.textPrimary,
                           ),
                           decoration: InputDecoration(
-                            labelText: AppStrings.addEventFieldWithPerson,
+                            labelText: AppStrings.addEventFieldWithPerson(context),
                             labelStyle: TextStyles.plusJakartaSansSubtitle2,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -710,7 +710,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     ),
                     elevation: 2,
                   ),
-                  child: Text(AppStrings.addEventSaveButton),
+                  child: Text(AppStrings.addEventSaveButton(context)),
                 ),
               ),
             ],

@@ -15,7 +15,7 @@ class SocialSignInButtons extends StatelessWidget {
       children: [
         SocialSignInButton(
           icon: Image.asset('assets/icons/google.png', height: 18),
-          text: AppStrings.socialSignInGoogleText,
+          text: AppStrings.socialSignInGoogleText(context),
           onPressed: () async {
             await signUpViewModel.signInWithGoogle(context);
           },
@@ -23,7 +23,7 @@ class SocialSignInButtons extends StatelessWidget {
         const SizedBox(height: 10),
         SocialSignInButton(
           icon: const Icon(Icons.apple),
-          text: AppStrings.socialSignInAppleText,
+          text: AppStrings.socialSignInAppleText(context),
           onPressed: null,
         ),
       ],

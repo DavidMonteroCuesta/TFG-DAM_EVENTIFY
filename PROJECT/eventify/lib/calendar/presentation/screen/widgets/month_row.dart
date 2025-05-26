@@ -15,7 +15,7 @@ class MonthRow extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // context is available here
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
       child: Row(
@@ -23,7 +23,8 @@ class MonthRow extends StatelessWidget {
         children: rowMonths.asMap().entries.map((entry) {
           final index = entry.key;
           final month = entry.value;
-          final int globalMonthIndex = _getGlobalMonthIndex(month);
+          // Pass context to _getGlobalMonthIndex
+          final int globalMonthIndex = _getGlobalMonthIndex(context, month);
 
           return Expanded(
             child: MonthItem(
@@ -39,20 +40,22 @@ class MonthRow extends StatelessWidget {
     );
   }
 
-  int _getGlobalMonthIndex(String monthName) {
-    final List<String> allMonths = const [
-      AppStrings.monthJanuary, // Using constant
-      AppStrings.monthFebruary, // Using constant
-      AppStrings.monthMarch, // Using constant
-      AppStrings.monthApril, // Using constant
-      AppStrings.monthMay, // Using constant
-      AppStrings.monthJune, // Using constant
-      AppStrings.monthJuly, // Using constant
-      AppStrings.monthAugust, // Using constant
-      AppStrings.monthSeptember, // Using constant
-      AppStrings.monthOctober, // Using constant
-      AppStrings.monthNovember, // Using constant
-      AppStrings.monthDecember, // Using constant
+  // Add BuildContext context as a parameter
+  int _getGlobalMonthIndex(BuildContext context, String monthName) {
+    // Pass context to all AppStrings calls
+    final List<String> allMonths = [
+      AppStrings.monthJanuary(context),
+      AppStrings.monthFebruary(context),
+      AppStrings.monthMarch(context),
+      AppStrings.monthApril(context),
+      AppStrings.monthMay(context),
+      AppStrings.monthJune(context),
+      AppStrings.monthJuly(context),
+      AppStrings.monthAugust(context),
+      AppStrings.monthSeptember(context),
+      AppStrings.monthOctober(context),
+      AppStrings.monthNovember(context),
+      AppStrings.monthDecember(context),
     ];
     return allMonths.indexOf(monthName) + 1;
   }

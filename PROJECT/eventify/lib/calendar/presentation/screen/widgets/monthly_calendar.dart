@@ -109,14 +109,15 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    // Corrected: Pass context to all AppStrings calls here
     final daysOfWeek = [
-      AppStrings.monthlyCalendarMondayAbbr,
-      AppStrings.monthlyCalendarTuesdayAbbr,
-      AppStrings.monthlyCalendarWednesdayAbbr,
-      AppStrings.monthlyCalendarThursdayAbbr,
-      AppStrings.monthlyCalendarFridayAbbr,
-      AppStrings.monthlyCalendarSaturdayAbbr,
-      AppStrings.monthlyCalendarSundayAbbr,
+      AppStrings.monthlyCalendarMondayAbbr(context),
+      AppStrings.monthlyCalendarTuesdayAbbr(context),
+      AppStrings.monthlyCalendarWednesdayAbbr(context),
+      AppStrings.monthlyCalendarThursdayAbbr(context),
+      AppStrings.monthlyCalendarFridayAbbr(context),
+      AppStrings.monthlyCalendarSaturdayAbbr(context),
+      AppStrings.monthlyCalendarSundayAbbr(context),
     ];
 
     return Container(
@@ -206,12 +207,14 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
           const SizedBox(height: 16),
           if (_eventsForCurrentMonth.isNotEmpty)
             Text(
-              '${AppStrings.monthlyCalendarEventsForMonthPrefix}${_eventsForCurrentMonth.length}',
+              // Corrected: Pass context here
+              '${AppStrings.monthlyCalendarEventsForMonthPrefix(context)}${_eventsForCurrentMonth.length}',
               style: TextStyles.plusJakartaSansBody1,
             )
           else
             Text(
-              AppStrings.monthlyCalendarNoEventsForMonth,
+              // Corrected: Pass context here
+              AppStrings.monthlyCalendarNoEventsForMonth(context),
               style: TextStyles.plusJakartaSansBody1,
             ),
         ],

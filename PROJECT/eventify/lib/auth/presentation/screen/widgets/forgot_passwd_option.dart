@@ -11,8 +11,8 @@ class ForgotPasswordOption extends StatelessWidget {
         onTap: () {
           // Lógica para recuperar contraseña
         },
-        child: const Text(
-          AppStrings.forgotPasswordOptionText, // Using constant
+        child: Text(
+          AppStrings.forgotPasswordOptionText(context),
           style: TextStyle(
             color: Colors.grey,
             decoration: TextDecoration.underline,

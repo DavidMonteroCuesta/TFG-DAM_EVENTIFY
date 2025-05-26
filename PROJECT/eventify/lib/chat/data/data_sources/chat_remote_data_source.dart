@@ -12,7 +12,8 @@ class ChatRemoteDataSource {
       // Historial de chat para la solicitud de Gemini
       List<Map<String, dynamic>> chatHistory = [
         {
-          AppInternalConstants.chatApiRoleUser: AppInternalConstants.chatApiPartsKey,
+          // CORRECTED LINE: The key must be "role", and its value is the constant for "user"
+          "role": AppInternalConstants.chatApiRoleUser,
           AppInternalConstants.chatApiPartsKey: [
             {AppInternalConstants.chatApiTextKey: message}
           ]

@@ -74,8 +74,8 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
     final signUpViewModel = Provider.of<SignUpViewModel>(context);
 
     return EventifyAuthLayout(
-      leftFooterText: AppStrings.signUpCreateAccountTitle,
-      rightFooterText: AppStrings.signUpLogInText,
+      leftFooterText: AppStrings.signUpCreateAccountTitle(context),
+      rightFooterText: AppStrings.signUpLogInText(context),
       onRightFooterTap: () {
         Navigator.pushReplacement(
           context,
@@ -88,15 +88,15 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AuthTitle(text: AppStrings.signUpCreateAccountTitle),
+          AuthTitle(text: AppStrings.signUpCreateAccountTitle(context)),
           const SizedBox(height: 8),
-          const AuthSubtitle(text: AppStrings.signUpSubtitleText),
+          AuthSubtitle(text: AppStrings.signUpSubtitleText(context)),
           const SizedBox(height: 24),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: AppStrings.signUpEmailHint,
+              hintText: AppStrings.signUpEmailHint(context),
               controller: _emailController,
               textStyle: const TextStyle(),
             ),
@@ -106,7 +106,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_usernameOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: AppStrings.signUpUsernameHint,
+              hintText: AppStrings.signUpUsernameHint(context),
               controller: _usernameController,
               textStyle: const TextStyle(),
             ),
@@ -116,7 +116,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: AppStrings.signUpPasswordHint,
+              hintText: AppStrings.signUpPasswordHint(context),
               obscure: true,
               controller: _passwordController,
               textStyle: const TextStyle(),
@@ -127,7 +127,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_confirmPasswordOffset, 0.0, 0.0),
             child: CustomTextField(
-              hintText: AppStrings.signUpConfirmPasswordHint,
+              hintText: AppStrings.signUpConfirmPasswordHint(context),
               obscure: true,
               controller: _confirmPasswordController,
               textStyle: const TextStyle(),
@@ -138,7 +138,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             duration: const Duration(milliseconds: 300),
             transform: Matrix4.translationValues(_signUpButtonOffset, 0.0, 0.0),
             child: PrimaryButton(
-              text: AppStrings.signUpGetStartedButton,
+              text: AppStrings.signUpGetStartedButton(context),
               onPressed: signUpViewModel.isLoading
                   ? null
                   : () async {
@@ -179,7 +179,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
             ),
           const SizedBox(height: 16),
           Text(
-            AppStrings.signUpOrSignUpWith,
+            AppStrings.signUpOrSignUpWith(context),
             style: TextStyle(
               color: Colors.grey[500],
               fontSize: 14,

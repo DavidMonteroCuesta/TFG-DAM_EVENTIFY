@@ -32,7 +32,7 @@ class ChatButton extends StatelessWidget {
         // ignore: deprecated_member_use
         highlightColor: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.4),
       ),
-      tooltip: AppStrings.chatButtonTooltip, // Using constant
+      tooltip: AppStrings.chatButtonTooltip(context), // Using constant
     );
   }
 }
