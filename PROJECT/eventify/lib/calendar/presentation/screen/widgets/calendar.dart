@@ -42,8 +42,7 @@ class _CalendarState extends State<Calendar> {
     super.didChangeDependencies();
     // Initialize _months here, where context is guaranteed to be fully available.
     // This ensures localization data is ready.
-    if (_months == null) { // Only initialize once
-      _months = [
+    _months ??= [
         AppStrings.monthJanuary(context),
         AppStrings.monthFebruary(context),
         AppStrings.monthMarch(context),
@@ -57,7 +56,6 @@ class _CalendarState extends State<Calendar> {
         AppStrings.monthNovember(context),
         AppStrings.monthDecember(context),
       ];
-    }
   }
 
   @override

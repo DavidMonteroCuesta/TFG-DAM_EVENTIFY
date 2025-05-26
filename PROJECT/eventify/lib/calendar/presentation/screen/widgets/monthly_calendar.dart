@@ -110,6 +110,9 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the current device locale
+    final String currentLocale = Localizations.localeOf(context).languageCode;
+
     final daysOfWeek = [
       AppStrings.monthlyCalendarMondayAbbr(context),
       AppStrings.monthlyCalendarTuesdayAbbr(context),
@@ -137,7 +140,8 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 onPressed: _goToPreviousMonth,
               ),
               Text(
-                DateFormat('MMMM', AppInternalConstants.monthlyCalendarLocaleEnUs).format(_focusedDay),
+                // Use the currentLocale for formatting the month name
+                DateFormat('MMMM', currentLocale).format(_focusedDay),
                 style: TextStyles.urbanistH6,
               ),
               IconButton(
