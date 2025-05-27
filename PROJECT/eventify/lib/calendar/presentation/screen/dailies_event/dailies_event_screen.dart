@@ -11,7 +11,7 @@ import 'package:eventify/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
-import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
+import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

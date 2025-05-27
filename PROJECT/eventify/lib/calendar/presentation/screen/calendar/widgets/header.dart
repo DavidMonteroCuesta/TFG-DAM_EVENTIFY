@@ -1,9 +1,9 @@
-import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
-import 'package:eventify/calendar/presentation/screen/search_events_screen.dart';
+import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
+import 'package:eventify/calendar/presentation/screen/search/search_events_screen.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 
 class Header extends StatefulWidget {
   final Function(int year)? onYearChanged;
@@ -56,7 +56,7 @@ class _HeaderState extends State<Header> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      color: AppColors.headerBackground,
+      color: AppColors.headerBackground.withOpacity(0.8), // Ajusta la opacidad si lo necesitas
       child: SizedBox(
         height: 64, // Ajusta la altura si lo necesitas
         child: Row(

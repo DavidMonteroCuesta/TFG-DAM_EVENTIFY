@@ -5,7 +5,7 @@ import 'package:eventify/auth/presentation/screen/widgets/custom_text_field.dart
 import 'package:eventify/auth/presentation/screen/widgets/login_auth_layout.dart';
 import 'package:eventify/auth/presentation/screen/widgets/primary_button.dart';
 import 'package:eventify/auth/presentation/screen/widgets/social_sign_in_buttons.dart';
-import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_model/sign_up_view_model.dart';

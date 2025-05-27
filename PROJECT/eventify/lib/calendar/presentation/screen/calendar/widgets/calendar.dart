@@ -1,4 +1,4 @@
-import 'package:eventify/calendar/presentation/screen/widgets/month_row.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/month_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';

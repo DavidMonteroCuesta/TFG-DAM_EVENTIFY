@@ -33,7 +33,7 @@ class MonthItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.1275,
+        height: MediaQuery.of(context).size.height * 0.1265,
         margin: const EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
           color: AppColors.calendarBackground, // Using AppColors

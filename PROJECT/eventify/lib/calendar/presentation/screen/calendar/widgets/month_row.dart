@@ -1,4 +1,4 @@
-import 'package:eventify/calendar/presentation/screen/widgets/month_item.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/month_item.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
 

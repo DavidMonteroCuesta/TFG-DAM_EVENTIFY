@@ -94,8 +94,6 @@ abstract class AppColors extends AppColorPalette {
     return secondaryDynamic;
   }
 
-  // --- STATIC CONSTANT COLORS (FIXED - DO NOT CHANGE AT RUNTIME) ---
-  // ... (el resto de tus colores estáticos constantes sin cambios)
   static const Color background = AppColorPalette.black;
   static const Color cardBackground = AppColorPalette.color1F1F1F;
   static const Color calendarBackground = AppColorPalette.color262626;
@@ -104,14 +102,12 @@ abstract class AppColors extends AppColorPalette {
   static const Color dropdownContentBackground = AppColorPalette.color2A2A2A;
   static const Color userMessageBubbleBackground = AppColorPalette.color757575;
   static const Color chatButtonBackground = AppColorPalette.white12;
-  static const Color footerBackground = AppColorPalette.color303030;
+  static const Color footerBackground = AppColorPalette.color1E1E1E;
   static const Color inputFillColor = AppColorPalette.white12;
-  static const Color headerBackground = AppColorPalette.color424242;
+  static const Color headerBackground = AppColorPalette.color1E1E1E;
 
-
-  // Text Colors
   static const Color textPrimary = AppColorPalette.white;
-  static const Color textSecondary = AppColorPalette.grey; // Keep this as a general static grey
+  static const Color textSecondary = AppColorPalette.grey;
   static const Color avatarTextColor = AppColorPalette.white;
   static const Color hintTextColor = AppColorPalette.grey;
   static const Color textOnLightBackground = AppColorPalette.black;
@@ -122,39 +118,30 @@ abstract class AppColors extends AppColorPalette {
   static const Color textGrey500 = AppColorPalette.color9E9E9E;
   static const Color authTitleColor = AppColorPalette.colorE0E0E0;
 
-
-  // Border and Line Colors
   static const Color dividerColor = AppColorPalette.grey;
   static const Color outline = AppColorPalette.grey;
-  static const Color outlinedButtonBorder = AppColorPalette.grey; // Keep this as a general static grey
+  static const Color outlinedButtonBorder = AppColorPalette.grey;
   static const Color outlineColorLight = AppColorPalette.colorE0E0E0;
   static const Color choiceChipBorderColor = AppColorPalette.colorBDBDBD;
 
 
-  // Accent and Interactive Element Colors (Keep these static if they are not tied to currentUserSelectedColor)
   static const Color primaryContainer = AppColorPalette.colorE0F7FA;
   static const Color onPrimaryContainer = AppColorPalette.black87;
-  static const Color onSecondary = AppColorPalette.white; // Keep this static if it's always white/black
+  static const Color onSecondary = AppColorPalette.white; 
   static const Color accentColor400 = AppColorPalette.color00E676;
   static const Color editIconColor = AppColorPalette.blueAccent;
   static const Color snackBarInfoColor = AppColorPalette.blueGrey;
 
-
-  // State and Feedback Colors
   static const Color errorTextColor = AppColorPalette.red;
   static const Color todayHighlightColor = AppColorPalette.colorBDBDBD_0_2;
   static const Color deleteIconColor = AppColorPalette.redAccent;
   static const Color checkboxCheckColor = AppColorPalette.black;
 
-
-  // Shine and Effect Colors
   static const Color shineEffectColor = AppColorPalette.white70;
   static const Color shineColorLight = AppColorPalette.colorCBCBCB;
   static const Color highlightColorGrey = AppColorPalette.color9E9E9E_0_4;
   static const Color highlightColorWhite = AppColorPalette.colorFFFFFF_0_4;
 
-
-  // Specific Component Colors
   static const Color switchInactiveTrackColor = AppColorPalette.color757575;
   static const Color switchInactiveThumbColor = AppColorPalette.colorBDBDBD;
   static const Color priorityOptionBackground = AppColorPalette.color0F0F0F;

@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
-import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
+import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
 

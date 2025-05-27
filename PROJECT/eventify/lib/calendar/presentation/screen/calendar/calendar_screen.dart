@@ -1,15 +1,15 @@
-import 'package:eventify/calendar/presentation/screen/search_events_screen.dart';
-import 'package:eventify/calendar/presentation/screen/widgets/calendar.dart';
-import 'package:eventify/calendar/presentation/screen/widgets/footer.dart';
-import 'package:eventify/calendar/presentation/screen/widgets/header.dart';
-import 'package:eventify/calendar/presentation/screen/widgets/monthly_calendar.dart';
-import 'package:eventify/calendar/presentation/screen/widgets/upcoming_event_card.dart';
+import 'package:eventify/calendar/presentation/screen/search/search_events_screen.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/calendar.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/footer.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/header.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/monthly_calendar.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/upcoming_event_card.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
+import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 
@@ -156,11 +156,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     const double spacingBetweenHeaderAndCalendar = 10.0;
-    // Reduced spacing between event card/calendar and footer
-    const double spacingBetweenContentAndFooter = 10.0; // Reduced from 20.0
+    const double spacingBetweenContentAndFooter = 10.0;
     final screenHeight = MediaQuery.of(context).size.height;
     final footerHeight = screenHeight * 0.10;
-    final double heightThreshold = 750;
+    final double heightThreshold = 760;
 
     return Scaffold(
       backgroundColor: AppColors.background,

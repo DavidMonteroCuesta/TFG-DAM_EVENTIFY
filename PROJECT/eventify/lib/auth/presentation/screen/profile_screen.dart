@@ -1,5 +1,5 @@
 import 'dart:ui'; // <-- Añadido para BackdropFilter
-import 'package:eventify/calendar/presentation/screen/calendar_screen.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/utils/auth/logout_service.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';

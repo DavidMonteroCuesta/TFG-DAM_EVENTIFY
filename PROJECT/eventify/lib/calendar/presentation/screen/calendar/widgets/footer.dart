@@ -1,6 +1,6 @@
-import 'package:eventify/calendar/presentation/screen/widgets/buttons/calendar_toggle_button.dart';
-import 'package:eventify/calendar/presentation/screen/widgets/buttons/chat_button.dart';
-import 'package:eventify/calendar/presentation/screen/widgets/buttons/profile_button.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/calendar_toggle_button.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/chat_button.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/profile_button.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_strings.dart';
@@ -30,7 +30,7 @@ class Footer extends StatelessWidget {
 
     return Container(
       height: footerHeight,
-      color: AppColors.headerBackground, // Using AppColors
+      color: AppColors.footerBackground.withOpacity(0.8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
