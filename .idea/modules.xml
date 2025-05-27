@@ -28,6 +28,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1696248558/android.path_provider_android.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1962428682/android.shared_preferences_android.iml" filepath="$PROJECT_DIR$/.idea/modules/-1962428682/android.shared_preferences_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1962428682/android.shared_preferences_android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-1962428682/android.shared_preferences_android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1962428682/android.shared_preferences_android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/-1962428682/android.shared_preferences_android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1962428682/android.shared_preferences_android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-1962428682/android.shared_preferences_android.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/389934066/android.tflite_flutter.iml" filepath="$PROJECT_DIR$/.idea/modules/389934066/android.tflite_flutter.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/389934066/android.tflite_flutter.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/389934066/android.tflite_flutter.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/389934066/android.tflite_flutter.main.iml" filepath="$PROJECT_DIR$/.idea/modules/389934066/android.tflite_flutter.main.iml" />

@@ -1,4 +1,3 @@
-// Widget for the location, subject, and with-person fields in AddEventScreen
 import 'package:flutter/material.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';

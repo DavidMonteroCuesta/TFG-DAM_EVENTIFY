@@ -1,7 +1,7 @@
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -58,12 +58,14 @@ class _AddEventScreenState extends State<AddEventScreen>
               withPersonYesNo,
             )
             .then((_) {
+              // ignore: use_build_context_synchronously
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const CalendarScreen()),
                 (Route<dynamic> route) => false,
               );
             })
             .catchError((error) {
+              // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -90,12 +92,14 @@ class _AddEventScreenState extends State<AddEventScreen>
               withPersonController.text,
             )
             .then((_) {
+              // ignore: use_build_context_synchronously
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const CalendarScreen()),
                 (Route<dynamic> route) => false,
               );
             })
             .catchError((error) {
+              // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -146,6 +150,7 @@ class _AddEventScreenState extends State<AddEventScreen>
           style: TextStyles.urbanistBody1,
           shineColor: AppColors.textPrimary,
         ),
+        // ignore: deprecated_member_use
         backgroundColor: AppColors.headerBackground.withOpacity(0.8),
         foregroundColor: AppColors.outline,
         elevation: 0,
@@ -186,6 +191,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                     label: AppStrings.searchPriorityCritical(context),
                     priority: Priority.critical,
                     selectedPriority: selectedPriority,
+                    // ignore: deprecated_member_use
                     backgroundColor: AppColors.focusedBorderDynamic.withOpacity(
                       0.8,
                     ),
@@ -200,6 +206,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                     label: AppStrings.searchPriorityHigh(context),
                     priority: Priority.high,
                     selectedPriority: selectedPriority,
+                    // ignore: deprecated_member_use
                     backgroundColor: AppColors.focusedBorderDynamic.withOpacity(
                       0.8,
                     ),
@@ -214,6 +221,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                     label: AppStrings.searchPriorityMedium(context),
                     priority: Priority.medium,
                     selectedPriority: selectedPriority,
+                    // ignore: deprecated_member_use
                     backgroundColor: AppColors.focusedBorderDynamic.withOpacity(
                       0.8,
                     ),
@@ -228,6 +236,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                     label: AppStrings.searchPriorityLow(context),
                     priority: Priority.low,
                     selectedPriority: selectedPriority,
+                    // ignore: deprecated_member_use
                     backgroundColor: AppColors.focusedBorderDynamic.withOpacity(
                       0.8,
                     ),

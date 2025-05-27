@@ -1,4 +1,3 @@
-// Widget for the date and time pickers in AddEventScreen
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
