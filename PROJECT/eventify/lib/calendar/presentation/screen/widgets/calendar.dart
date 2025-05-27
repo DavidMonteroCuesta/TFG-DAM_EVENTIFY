@@ -138,12 +138,22 @@ class _CalendarState extends State<Calendar> {
       itemsPerRow = 3;
     }
 
+    List<String> displayedMonths = _months!;
+    if (screenWidth < 400) {
+      displayedMonths = _months!.map((month) {
+        if (month.length > 3) {
+          return month.substring(0, 3);
+        } else {
+          return month;
+        }
+      }).toList();
+    }
+
     final List<int> notifications = List.generate(12, (index) => _monthlyEventCounts[index + 1] ?? 0);
 
-    // Use _months! because didChangeDependencies guarantees it's initialized
-    for (int i = 0; i < _months!.length; i += itemsPerRow) {
-      final end = i + itemsPerRow > _months!.length ? _months!.length : i + itemsPerRow;
-      final rowMonths = _months!.sublist(i, end);
+    for (int i = 0; i < displayedMonths.length; i += itemsPerRow) {
+      final end = i + itemsPerRow > displayedMonths.length ? displayedMonths.length : i + itemsPerRow;
+      final rowMonths = displayedMonths.sublist(i, end);
       final rowNotifications = notifications.sublist(i, end);
       rows.add(
         MonthRow(

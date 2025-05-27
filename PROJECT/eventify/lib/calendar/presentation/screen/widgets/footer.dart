@@ -30,7 +30,7 @@ class Footer extends StatelessWidget {
 
     return Container(
       height: footerHeight,
-      color: AppColors.footerBackground, // Using AppColors
+      color: AppColors.headerBackground, // Using AppColors
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

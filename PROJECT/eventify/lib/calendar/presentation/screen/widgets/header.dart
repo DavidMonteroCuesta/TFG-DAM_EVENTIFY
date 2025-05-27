@@ -56,59 +56,68 @@ class _HeaderState extends State<Header> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      color: AppColors.headerBackground, // Using AppColors
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: _goToPreviousYear,
-                icon: const Icon(Icons.arrow_downward, color: AppColors.textPrimary), // Using AppColors
-              ),
-              IconButton(
-                onPressed: _goToNextYear,
-                icon: const Icon(Icons.arrow_upward, color: AppColors.textPrimary), // Using AppColors
-              ),
-            ],
-          ),
-          Expanded(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: ShiningTextAnimation(
-                  text: '$_currentYear',
-                  style: TextStyles.urbanistBody1,
-                  shineColor: AppColors.shineEffectColor, // Ensure shineColor is also using AppColors
-                ),
+      color: AppColors.headerBackground,
+      child: SizedBox(
+        height: 64, // Ajusta la altura si lo necesitas
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end, // Alinea todos los hijos abajo
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: _goToPreviousYear,
+                    icon: const Icon(Icons.arrow_downward, color: AppColors.textPrimary),
+                  ),
+                  IconButton(
+                    onPressed: _goToNextYear,
+                    icon: const Icon(Icons.arrow_upward, color: AppColors.textPrimary),
+                  ),
+                ],
               ),
             ),
-          ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const EventSearchScreen(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.search, color: AppColors.textPrimary), // Using AppColors
+            Container(
+              alignment: Alignment.bottomCenter,
+              margin: const EdgeInsets.only(bottom: 10),
+              child: ShiningTextAnimation(
+                text: '$_currentYear',
+                style: TextStyles.urbanistBody1,
+                shineColor: AppColors.shineEffectColor,
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const AddEventScreen(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.add, color: AppColors.textPrimary), // Using AppColors
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const EventSearchScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.search, color: AppColors.textPrimary),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const AddEventScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.add, color: AppColors.textPrimary),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

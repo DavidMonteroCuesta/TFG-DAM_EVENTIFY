@@ -23,10 +23,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.init();
-
-  // Asegúrate de que el color del tema se cargue ANTES de runApp
-  await AppColors.loadThemeColor(); // <-- Asegúrate de que esta línea esté aquí
-
+  await AppColors.loadThemeColor();
   await initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
@@ -47,10 +44,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: AppColors.background,
-          // *** CAMBIO AQUÍ: Usar 'primary' en colorScheme en lugar de 'primarySwatch' ***
           colorScheme: ColorScheme.dark().copyWith(
-            primary: AppColors.primary, // AppColors.primary devuelve un Color, no un MaterialColor.
-            secondary: AppColors.accentColor400, // Usar AppColors.accentColor400 como secondary
+            primary: AppColors.primary,
+            secondary: AppColors.accentColor400,
             brightness: Brightness.dark,
           ),
           inputDecorationTheme: InputDecorationTheme(
@@ -64,8 +60,7 @@ class MyApp extends StatelessWidget {
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              // Si quieres que el color del botón elevado sea el color primario dinámico
-              backgroundColor: AppColors.primary, // Cambiado de accentColor400 a primary
+              backgroundColor: AppColors.primary,
               foregroundColor: AppColors.elevatedButtonForeground,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

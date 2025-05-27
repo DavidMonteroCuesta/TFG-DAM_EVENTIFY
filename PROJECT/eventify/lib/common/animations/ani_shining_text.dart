@@ -12,7 +12,7 @@ class ShiningTextAnimation extends StatefulWidget {
     required this.text,
     this.style,
     this.duration = const Duration(milliseconds: 9999),
-    this.shineColor = AppColors.shineEffectColor, // Usando AppColors
+    this.shineColor = AppColors.shineEffectColor, 
   });
 
   @override

@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/screen/add_event_screen.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 
 class CalendarScreen extends StatefulWidget {
   static const String routeName = '/calendar';
@@ -155,14 +155,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double spacingBetweenHeaderAndCalendar = 20.0;
-    const double spacingBetweenEventAndFooter = 20.0;
+    const double spacingBetweenHeaderAndCalendar = 10.0;
+    // Reduced spacing between event card/calendar and footer
+    const double spacingBetweenContentAndFooter = 10.0; // Reduced from 20.0
     final screenHeight = MediaQuery.of(context).size.height;
     final footerHeight = screenHeight * 0.10;
-    final double heightThreshold = 865;
+    final double heightThreshold = 750;
 
     return Scaffold(
-      backgroundColor: AppColors.background, // Using AppColors
+      backgroundColor: AppColors.background,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final isTablet =
@@ -190,7 +191,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           children: [
                             Expanded(
                               flex: 2,
-                              child: SingleChildScrollView(
+                              child: SingleChildScrollView( // Reverted to SingleChildScrollView
                                 child: Column(
                                   children: [
                                     Calendar(
@@ -204,7 +205,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         child: Consumer<EventViewModel>(
                                           builder: (context, eventViewModel, child) {
                                             if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
-                                              return Center(child: CircularProgressIndicator(color: AppColors.primary)); // Using AppColors
+                                              return Center(child: CircularProgressIndicator(color: AppColors.primary));
                                             } else if (eventViewModel.errorMessage != null) {
                                               return Center(
                                                 child: Text(
@@ -256,10 +257,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         )
                       : PageView( // Mobile view
                           controller: _pageController,
-                          physics:
-                              const NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            SingleChildScrollView(
+                            SingleChildScrollView( // Reverted to SingleChildScrollView
                               child: Column(
                                 children: [
                                   Calendar(
@@ -273,7 +273,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       child: Consumer<EventViewModel>(
                                         builder: (context, eventViewModel, child) {
                                           if (eventViewModel.isLoading && eventViewModel.nearestEvent == null) {
-                                            return Center(child: CircularProgressIndicator(color: AppColors.primary)); // Using AppColors
+                                            return Center(child: CircularProgressIndicator(color: AppColors.primary));
                                           } else if (eventViewModel.errorMessage != null) {
                                             return Center(
                                               child: Text(
@@ -320,7 +320,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         ),
                 ),
               ),
-              SizedBox(height: spacingBetweenEventAndFooter),
+              SizedBox(height: spacingBetweenContentAndFooter), // Changed spacing constant
               SizedBox(
                 height: footerHeight,
                 child: Footer(
