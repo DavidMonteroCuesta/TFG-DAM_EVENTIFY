@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+
+import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../data_sources/auth_remote_data_source.dart';
-import '../../domain/entities/user.dart';
 import '../models/user_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -10,17 +11,25 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<firebase_auth.UserCredential?> login(String email, String password) async {
+  Future<firebase_auth.UserCredential?> login(
+    String email,
+    String password,
+  ) async {
     return await remoteDataSource.login(email, password);
   }
 
   @override
   Future<User?> register(String email, String password, String username) async {
-    final String? userId =
-        await remoteDataSource.registerWithEmailAndPassword(email, password);
+    final String? userId = await remoteDataSource.registerWithEmailAndPassword(
+      email,
+      password,
+    );
     if (userId != null) {
-      final UserModel userModel =
-          UserModel(id: userId, username: username, email: email);
+      final UserModel userModel = UserModel(
+        id: userId,
+        username: username,
+        email: email,
+      );
       await remoteDataSource.saveUser(userModel);
       return userModel.toDomain();
     }
@@ -40,5 +49,10 @@ class AuthRepositoryImpl implements AuthRepository {
       return userModel.toDomain();
     }
     return null;
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail(String email) async {
+    await remoteDataSource.sendPasswordResetEmail(email);
   }
 }

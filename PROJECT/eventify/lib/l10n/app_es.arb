@@ -532,7 +532,7 @@
     "description": "El texto antes de los botones de registro con redes sociales."
   },
 
-  "signInTitle": "Iniciar sesión",
+  "signInTitle": "Iniciar Sesión",
   "@signInTitle": {
     "description": "El título de la pantalla de inicio de sesión."
   },
@@ -544,7 +544,7 @@
   "@passwordLabel": {
     "description": "La etiqueta para el campo de entrada de contraseña."
   },
-  "signInButton": "Iniciar sesión",
+  "signInButton": "Iniciar Sesión",
   "@signInButton": {
     "description": "El texto para el botón de inicio de sesión."
   },
@@ -556,11 +556,11 @@
   "@signInSubtitle": {
     "description": "El subtítulo en la pantalla de inicio de sesión."
   },
-  "createAccount": "Crear cuenta",
+  "createAccount": "Crear Cuenta",
   "@createAccount": {
     "description": "El texto para el enlace a la pantalla de registro."
   },
-  "logIn": "Iniciar sesión",
+  "logIn": "Iniciar Sesión",
   "@logIn": {
     "description": "El texto para el enlace a la pantalla de inicio de sesión."
   },
@@ -642,5 +642,74 @@
   "themeOptionRedAccent": "Acento Rojo",
   "@themeOptionRedAccent": {
     "description": "Opción para el tema Acento Rojo."
-  }
+  },
+
+  "forgotPasswordDialogTitle": "Restablecer Contraseña",
+  "@forgotPasswordDialogTitle": {
+    "description": "El título del diálogo para la recuperación de contraseña."
+  },
+  "forgotPasswordDialogInstructions": "Introduce tu correo electrónico para recibir instrucciones de recuperación de contraseña.",
+  "@forgotPasswordDialogInstructions": {
+    "description": "Texto de instrucciones en el diálogo de recuperación de contraseña."
+  },
+  "forgotPasswordDialogEmailLabel": "Correo Electrónico",
+  "@forgotPasswordDialogEmailLabel": {
+    "description": "Etiqueta para el campo de correo electrónico en el diálogo de recuperación de contraseña."
+  },
+  "forgotPasswordDialogSendButton": "Enviar",
+  "@forgotPasswordDialogSendButton": {
+    "description": "Texto del botón 'Enviar' en el diálogo de 'Olvidaste tu contraseña'."
+  },
+  "forgotPasswordDialogCancelButton": "Cancelar",
+  "@forgotPasswordDialogCancelButton": {
+    "description": "Texto del botón 'Cancelar' en el diálogo de 'Olvidaste tu contraseña'."
+  },
+  "forgotPasswordDialogSuccess": "Correo de recuperación enviado.",
+  "@forgotPasswordDialogSuccess": {
+    "description": "Mensaje de éxito cuando se envía el correo de recuperación."
+  },
+  "forgotPasswordDialogError": "Error al enviar el correo de recuperación.",
+  "@forgotPasswordDialogError": {
+    "description": "Mensaje de error cuando hay un problema al enviar el correo de recuperación."
+  },
+  "passwordResetError": "Error al enviar el correo de recuperación.",
+  "@passwordResetError": {
+    "description": "Mensaje de error al enviar el correo de recuperación."
+  },
+  "signInCredentialsFailed": "Fallo al introducir las credenciales",
+  "@signInCredentialsFailed": {
+    "description": "Mensaje cuando las credenciales de inicio de sesión están vacías o son incorrectas."
+  },
+  "signInFailed": "Error en el inicio de sesión",
+  "@signInFailed": {
+    "description": "Mensaje genérico de error en el inicio de sesión."
+  },
+  "passwordRequirementsNotMet": "La contraseña no supera los requisitos mínimos",
+  "@passwordRequirementsNotMet": {
+    "description": "Mensaje cuando la contraseña no cumple los requisitos mínimos."
+  },
+  "passwordSaved": "Contraseña guardada correctamente.",
+  "@passwordSaved": {
+    "description": "Mensaje cuando la contraseña se guarda correctamente."
+  },
+  "passwordRequired": "Debes definir una contraseña para continuar.",
+  "@passwordRequired": {
+    "description": "Mensaje cuando el usuario debe definir una contraseña para continuar."
+  },
+  "firebaseAuthRegisterError": "Error al registrar usuario en Firebase Auth.",
+  "@firebaseAuthRegisterError": {"description": "Error al registrar usuario en Firebase Auth."},
+  "unexpectedRegisterError": "Error inesperado al registrar usuario.",
+  "@unexpectedRegisterError": {"description": "Error inesperado al registrar usuario."},
+  "firestoreSaveUserError": "Error al guardar usuario en Firestore.",
+  "@firestoreSaveUserError": {"description": "Error al guardar usuario en Firestore."},
+  "firebaseAuthLoginError": "Error al iniciar sesión en Firebase Auth.",
+  "@firebaseAuthLoginError": {"description": "Error al iniciar sesión en Firebase Auth."},
+  "unexpectedLoginError": "Error inesperado al iniciar sesión.",
+  "@unexpectedLoginError": {"description": "Error inesperado al iniciar sesión."},
+  "errorSavingGoogleUserInfo": "Error al guardar información de usuario de Google en Firestore.",
+  "@errorSavingGoogleUserInfo": {"description": "Error al guardar información de usuario de Google en Firestore."},
+  "firebaseAuthResetPasswordError": "Error al enviar correo de restablecimiento de contraseña en Firebase Auth.",
+  "@firebaseAuthResetPasswordError": {"description": "Error al enviar correo de restablecimiento de contraseña en Firebase Auth."},
+  "unexpectedResetPasswordError": "Error inesperado al restablecer la contraseña.",
+  "@unexpectedResetPasswordError": {"description": "Error inesperado al restablecer la contraseña."}
 }

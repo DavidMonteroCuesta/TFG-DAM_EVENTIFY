@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:eventify/common/constants/app_logs.dart';
+
 import '../repositories/auth_repository.dart';
 
 class LoginUseCase {
@@ -10,9 +12,12 @@ class LoginUseCase {
   LoginUseCase({required this.repository});
   Future<UserCredential?> execute(String email, String password) async {
     try {
-      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
     } catch (e) {
-      log("LoginUseCase error: $e");
+      log(AppLogs.loginUseCaseError + e.toString());
       rethrow;
     }
   }

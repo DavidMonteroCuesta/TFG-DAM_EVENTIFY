@@ -1,25 +1,28 @@
-import 'dart:math';
-
-import 'package:eventify/auth/domain/use_cases/login_use_case.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:ui'; // Import for ImageFilter
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eventify/auth/domain/use_cases/login_use_case.dart';
+import 'package:eventify/auth/domain/use_cases/send_password_reset_email_use_case.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInViewModel extends ChangeNotifier {
   final LoginUseCase loginUseCase;
+  final SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
   BuildContext? _context;
 
-  SignInViewModel({required this.loginUseCase}) {
+  SignInViewModel({
+    required this.loginUseCase,
+    required this.sendPasswordResetEmailUseCase,
+  }) {
     // No need to check current user here. We do it in main.dart
   }
 
@@ -39,17 +42,27 @@ class SignInViewModel extends ChangeNotifier {
     _context = context;
     notifyListeners();
 
+    // Validación de campos vacíos
+    if (email.isEmpty || password.isEmpty) {
+      _isLoading = false;
+      _errorMessage = AppStrings.signInCredentialsFailed(context);
+      notifyListeners();
+      if (_context != null) {
+        ScaffoldMessenger.of(_context!).showSnackBar(
+          SnackBar(content: Text(AppStrings.signInCredentialsFailed(context))),
+        );
+      }
+      return;
+    }
+
     try {
       final UserCredential? userCredential = await loginUseCase.execute(
         email,
         password,
       );
       if (userCredential != null) {
-
-        log('Sign in successful: ${userCredential.user?.email}' as num);
         _isLoading = false;
         notifyListeners();
-        // Navigate to the calendar screen after successful login
         if (_context != null) {
           Navigator.of(_context!).pushReplacement(
             MaterialPageRoute(builder: (_) => const CalendarScreen()),
@@ -57,24 +70,24 @@ class SignInViewModel extends ChangeNotifier {
         }
       } else {
         _isLoading = false;
-        _errorMessage = AppInternalConstants.signInFailed;
+        _errorMessage = AppStrings.signInCredentialsFailed(context);
         notifyListeners();
         if (_context != null) {
           ScaffoldMessenger.of(_context!).showSnackBar(
-            const SnackBar(content: Text(AppInternalConstants.signInFailed)),
+            SnackBar(
+              content: Text(AppStrings.signInCredentialsFailed(context)),
+            ),
           );
         }
       }
     } catch (error) {
-      // Handle the error
+      // Mostrar siempre un mensaje genérico al usuario
       _isLoading = false;
-      _errorMessage = '${AppInternalConstants.signInErrorPrefix}$error';
+      _errorMessage = AppStrings.signInFailed(context);
       notifyListeners();
       if (_context != null) {
         ScaffoldMessenger.of(_context!).showSnackBar(
-          SnackBar(
-            content: Text('${AppInternalConstants.signInErrorPrefix}$error'),
-          ),
+          SnackBar(content: Text(AppStrings.signInFailed(context))),
         );
       }
     }
@@ -168,7 +181,9 @@ class SignInViewModel extends ChangeNotifier {
                                   if (errorText == null) {
                                     setState(() {
                                       errorText =
-                                          'La contraseña debe tener al menos 8 caracteres (sin contar la ñ).';
+                                          AppStrings.passwordRequirementsNotMet(
+                                            context,
+                                          );
                                     });
                                   }
                                 } else {
@@ -192,17 +207,13 @@ class SignInViewModel extends ChangeNotifier {
           if (password != null && password.isNotEmpty) {
             await firebaseUser.updatePassword(password);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Contraseña guardada correctamente.'),
-              ),
+              SnackBar(content: Text(AppStrings.passwordSaved(context))),
             );
           } else {
             // Si no define contraseña, cerrar sesión y mostrar error
             await FirebaseAuth.instance.signOut();
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Debes definir una contraseña para continuar.'),
-              ),
+              SnackBar(content: Text(AppStrings.passwordRequired(context))),
             );
             _isLoading = false;
             notifyListeners();
@@ -214,13 +225,33 @@ class SignInViewModel extends ChangeNotifier {
         return firebaseUser;
       }
       _isLoading = false;
+      _errorMessage = AppStrings.signInFailed(context);
       notifyListeners();
       return null;
     } catch (e) {
       _isLoading = false;
-      _errorMessage = 'Error con Google: $e';
+      _errorMessage = AppStrings.signInFailed(context);
       notifyListeners();
       return null;
+    }
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      await sendPasswordResetEmailUseCase.execute(email);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      if (_context != null) {
+        _errorMessage = AppStrings.passwordResetError(_context!);
+      } else {
+        _errorMessage = 'Error al enviar el correo de recuperación.';
+      }
+      notifyListeners();
     }
   }
 
@@ -235,7 +266,6 @@ class SignInViewModel extends ChangeNotifier {
   }
 }
 
-// Widget para el campo de contraseña con icono de mostrar/ocultar
 class _PasswordFieldWithToggle extends StatefulWidget {
   final String? errorText;
   final ValueChanged<String> onChanged;
@@ -264,7 +294,7 @@ class _PasswordFieldWithToggleState extends State<_PasswordFieldWithToggle> {
         ),
         filled: true,
         fillColor: AppColors.cardBackground,
-        hintText: 'Contraseña',
+        hintText: AppStrings.signInPasswordHint(context),
         hintStyle: TextStyle(
           color:
               widget.errorText != null

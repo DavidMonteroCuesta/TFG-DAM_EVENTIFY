@@ -24,7 +24,6 @@ class ChatMessage extends StatelessWidget {
     final String firstLetter =
         userDisplayName.isNotEmpty ? userDisplayName[0].toUpperCase() : '';
     final String aiFirstLetters = AppStrings.chatAIAvatarLetters(context);
-    // final Color userColor = Colors.grey[700]!; // Replaced by AppColors.userMessageBubbleBackground
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

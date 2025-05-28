@@ -1,17 +1,19 @@
 import 'package:eventify/auth/presentation/screen/login/widgets/auth_subtitle.dart';
 import 'package:eventify/auth/presentation/screen/login/widgets/auth_title.dart';
 import 'package:eventify/auth/presentation/screen/login/widgets/custom_text_field.dart';
+import 'package:eventify/auth/presentation/screen/login/widgets/forgot_passwd_option.dart';
 import 'package:eventify/auth/presentation/screen/login/widgets/login_auth_layout.dart';
 import 'package:eventify/auth/presentation/screen/login/widgets/primary_button.dart';
-import 'package:eventify/auth/presentation/screen/login/widgets/forgot_passwd_option.dart';
+import 'package:eventify/auth/presentation/screen/login/widgets/social_sign_in_button.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart'; // Import CalendarScreen
 import 'package:eventify/common/animations/ani_left_to_right.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../view_model/sign_in_view_model.dart';
-import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
-import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart'; // Import CalendarScreen
+import 'package:eventify/common/theme/fonts/text_styles.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../view_model/sign_in_view_model.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -124,22 +126,30 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
               ),
             ),
           const SizedBox(height: 16),
-          PrimaryButton(
-            text: 'Registrarse / Iniciar sesión con Google',
-            onPressed:
-                signInViewModel.isLoading
-                    ? null
-                    : () async {
-                      final user = await signInViewModel
-                          .signInWithGoogleAndPassword(context);
-                      if (user != null) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (_) => const CalendarScreen(),
-                          ),
-                        );
-                      }
-                    },
+          SizedBox(
+            height: 45, // Altura estándar, menos alto que antes
+            child: SocialSignInButton(
+              icon: Image.asset(
+                'assets/icons/google.png',
+                width: 24,
+                height: 24,
+              ),
+              text: AppStrings.socialSignInGoogleText(context),
+              onPressed:
+                  signInViewModel.isLoading
+                      ? null
+                      : () async {
+                        final user = await signInViewModel
+                            .signInWithGoogleAndPassword(context);
+                        if (user != null) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => const CalendarScreen(),
+                            ),
+                          );
+                        }
+                      },
+            ),
           ),
           const SizedBox(height: 16),
           // Elimina SocialSignInButtons, solo deja ForgotPasswordOption

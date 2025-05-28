@@ -6,6 +6,7 @@ import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.d
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_logs.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   final RegisterUseCase registerUseCase;
@@ -35,9 +36,7 @@ class SignUpViewModel extends ChangeNotifier {
         _setLoadingState(false);
         return true;
       } else {
-        _setErrorMessage(
-          AppInternalConstants.signUpFailure,
-        ); // Corrected to AppInternalConstants
+        _setErrorMessage(AppInternalConstants.signUpFailure);
         _setLoadingState(false);
         return false;
       }
@@ -61,7 +60,10 @@ class SignUpViewModel extends ChangeNotifier {
         _registeredUser = user;
         _setLoadingState(false);
 
-        log('User UID after Google Sign-In: ${FirebaseAuth.instance.currentUser?.uid}');
+        log(
+          AppLogs.googleSignInUserUid +
+              (FirebaseAuth.instance.currentUser?.uid ?? ''),
+        );
 
         Navigator.pushReplacement(
           // ignore: use_build_context_synchronously
@@ -70,9 +72,7 @@ class SignUpViewModel extends ChangeNotifier {
         );
         return true;
       } else {
-        _setErrorMessage(
-          AppInternalConstants.googleSignInCancelled,
-        ); // Corrected to AppInternalConstants
+        _setErrorMessage(AppInternalConstants.googleSignInCancelled);
         _setLoadingState(false);
         return false;
       }

@@ -1,6 +1,6 @@
 import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +19,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  // No longer need these local color variables as they will be fetched from AppColors
-  // final Color _cardBackgroundColor = const Color(0xFF1F1F1F);
-  // final Color _headerBackgroundColor = Colors.grey[800]!;
-  // final Color _inputBackgroundColor = const Color(0xFF1F1F1F);
 
   @override
   void initState() {
@@ -106,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                   filled: true,
-                  fillColor: AppColors.inputFillColor, // Using AppColors
+                  fillColor: AppColors.inputFillColor,
                 ),
                 maxLines: null,
                 minLines: 1,
@@ -135,7 +131,7 @@ class _ChatScreenState extends State<ChatScreen> {
           style: TextStyles.urbanistBody1,
         ),
         titleTextStyle: TextStyles.urbanistBody1,
-        backgroundColor: AppColors.headerBackground, // Using AppColors
+        backgroundColor: AppColors.headerBackground,
         foregroundColor: AppColors.outline,
         elevation: 0,
         centerTitle: true,
@@ -147,7 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
           },
         ),
       ),
-      backgroundColor: AppColors.background, // Using AppColors
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           Expanded(

@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'dart:developer'; // Import log function for logging
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:eventify/common/constants/api_constants.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
+import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_logs.dart';
 
 class ChatRemoteDataSource {
   // Define la URL base de la API de Gemini
@@ -61,13 +62,13 @@ class ChatRemoteDataSource {
         }
       } else {
         // Manejo de errores basado en el código de estado HTTP
-        log('${AppInternalConstants.chatGeminiApiError}${response.statusCode}');
-        log('${AppInternalConstants.chatResponseBody}${response.body}');
+        log(AppLogs.chatGeminiApiError + ' ' + AppLogs.statusCode + ' ' + response.statusCode.toString(),);
+        log(AppLogs.chatResponseBody + ' ' + response.body);
         return '${AppInternalConstants.chatConnectionError}${response.statusCode}';
       }
     } catch (e) {
       // Manejo de errores de red o cualquier otra excepción
-      log('${AppInternalConstants.chatExceptionSendingMessage} $e');
+      log(AppLogs.chatExceptionSendingMessage + ' ' + e.toString());
       return AppInternalConstants.chatUnexpectedError;
     }
   }

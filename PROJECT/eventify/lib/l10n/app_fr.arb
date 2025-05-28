@@ -570,7 +570,7 @@
   },
   "orSignInWith": "Ou connectez-vous avec",
   "@orSignInWith": {
-      "description": "Le texte avant les boutons de connexion sociale."
+    "description": "Le texte avant les boutons de connexion sociale."
   },
 
   "socialSignInGoogleText": "Continuer avec Google",
@@ -642,5 +642,74 @@
   "themeOptionRedAccent": "Rouge accentué",
   "@themeOptionRedAccent": {
     "description": "Option pour le thème Rouge accentué."
-  }
+  },
+
+  "forgotPasswordDialogTitle": "Réinitialiser le mot de passe",
+  "@forgotPasswordDialogTitle": {
+    "description": "Titre de la boîte de dialogue de récupération du mot de passe."
+  },
+  "forgotPasswordDialogInstructions": "Entrez votre adresse e-mail pour recevoir les instructions de réinitialisation du mot de passe.",
+  "@forgotPasswordDialogInstructions": {
+    "description": "Instructions dans la boîte de dialogue de récupération du mot de passe."
+  },
+  "forgotPasswordDialogEmailLabel": "Adresse e-mail",
+  "@forgotPasswordDialogEmailLabel": {
+    "description": "Étiquette pour le champ d'adresse e-mail dans la boîte de dialogue de récupération du mot de passe."
+  },
+  "forgotPasswordDialogSendButton": "Envoyer",
+  "@forgotPasswordDialogSendButton": {
+    "description": "Texte du bouton 'Envoyer' dans la boîte de dialogue de récupération du mot de passe."
+  },
+  "forgotPasswordDialogCancelButton": "Annuler",
+  "@forgotPasswordDialogCancelButton": {
+    "description": "Texte du bouton 'Annuler' dans la boîte de dialogue de récupération du mot de passe."
+  },
+  "forgotPasswordDialogSuccess": "E-mail de récupération envoyé.",
+  "@forgotPasswordDialogSuccess": {
+    "description": "Message de succès lors de l'envoi de l'e-mail de récupération du mot de passe."
+  },
+  "forgotPasswordDialogError": "Erreur lors de l'envoi de l'e-mail de récupération.",
+  "@forgotPasswordDialogError": {
+    "description": "Message d'erreur lorsque il y a un problème lors de l'envoi de l'e-mail de récupération."
+  },
+  "signInCredentialsFailed": "Échec de la saisie des identifiants",
+  "@signInCredentialsFailed": {
+    "description": "Message lorsque les identifiants de connexion sont vides ou incorrects."
+  },
+  "signInFailed": "Échec de la connexion",
+  "@signInFailed": {
+    "description": "Message d'erreur générique lors de la connexion."
+  },
+  "passwordRequirementsNotMet": "Le mot de passe ne répond pas aux exigences minimales",
+  "@passwordRequirementsNotMet": {
+    "description": "Message lorsque le mot de passe ne répond pas aux exigences minimales."
+  },
+  "passwordSaved": "Mot de passe enregistré avec succès.",
+  "@passwordSaved": {
+    "description": "Message lorsque le mot de passe est enregistré avec succès."
+  },
+  "passwordRequired": "Vous devez définir un mot de passe pour continuer.",
+  "@passwordRequired": {
+    "description": "Message lorsque l'utilisateur doit définir un mot de passe pour continuer."
+  },
+  "passwordResetError": "Erreur lors de l'envoi de l'e-mail de récupération.",
+  "@passwordResetError": {
+    "description": "Message d'erreur lors de l'envoi de l'e-mail de récupération."
+  },
+  "firebaseAuthRegisterError": "Erreur d'inscription Firebase Auth.",
+  "@firebaseAuthRegisterError": {"description": "Erreur lors de l'inscription de l'utilisateur dans Firebase Auth."},
+  "unexpectedRegisterError": "Erreur inattendue lors de l'inscription.",
+  "@unexpectedRegisterError": {"description": "Erreur inattendue lors de l'inscription."},
+  "firestoreSaveUserError": "Erreur lors de l'enregistrement de l'utilisateur dans Firestore.",
+  "@firestoreSaveUserError": {"description": "Erreur lors de l'enregistrement de l'utilisateur dans Firestore."},
+  "firebaseAuthLoginError": "Erreur de connexion Firebase Auth.",
+  "@firebaseAuthLoginError": {"description": "Erreur lors de la connexion à Firebase Auth."},
+  "unexpectedLoginError": "Erreur inattendue lors de la connexion.",
+  "@unexpectedLoginError": {"description": "Erreur inattendue lors de la connexion."},
+  "errorSavingGoogleUserInfo": "Erreur lors de l'enregistrement des informations utilisateur Google dans Firestore.",
+  "@errorSavingGoogleUserInfo": {"description": "Erreur lors de l'enregistrement des informations utilisateur Google dans Firestore."},
+  "firebaseAuthResetPasswordError": "Erreur lors de l'envoi de l'e-mail de réinitialisation du mot de passe dans Firebase Auth.",
+  "@firebaseAuthResetPasswordError": {"description": "Erreur lors de l'envoi de l'e-mail de réinitialisation du mot de passe dans Firebase Auth."},
+  "unexpectedResetPasswordError": "Erreur inattendue lors de la réinitialisation du mot de passe.",
+  "@unexpectedResetPasswordError": {"description": "Erreur inattendue lors de la réinitialisation du mot de passe."}
 }

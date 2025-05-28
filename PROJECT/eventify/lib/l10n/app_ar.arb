@@ -1,0 +1,715 @@
+{
+  "@@locale": "ar",
+
+  "chatInitialBotGreeting": "سلام! أنا المساعد ديالك فـ Eventify. كيفاش نقدر نعاونك مع جدولك اليوم؟",
+  "@chatInitialBotGreeting": {
+    "description": "التحية الأولية من الروبوت على شاشة الدردشة."
+  },
+  "chatInputHint": "اكتب رسالة...",
+  "@chatInputHint": {
+    "description": "نص تلميح في حقل إدخال الدردشة."
+  },
+  "chatScreenTitle": "دردش مع Eventify",
+  "@chatScreenTitle": {
+    "description": "عنوان شاشة الدردشة."
+  },
+  "chatUserDefaultName": "أنت",
+  "@chatUserDefaultName": {
+    "description": "الاسم الافتراضي للمستخدم في الدردشة."
+  },
+  "chatAIAvatarLetters": "EV",
+  "@chatAIAvatarLetters": {
+    "description": "أحرف الصورة الرمزية للروبوت في الدردشة."
+  },
+
+  "profileYourAccountTitle": "حسابك",
+  "@profileYourAccountTitle": {
+    "description": "عنوان قسم 'حسابك' في شاشة الملف الشخصي."
+  },
+  "profileEditProfileText": "تعديل الملف الشخصي",
+  "@profileEditProfileText": {
+    "description": "نص الزر لتعديل الملف الشخصي."
+  },
+  "profileNotificationSettingsText": "إعدادات الإشعارات",
+  "@profileNotificationSettingsText": {
+    "description": "نص الزر لإعدادات الإشعارات."
+  },
+  "profileAppSettingsTitle": "إعدادات التطبيق",
+  "@profileAppSettingsTitle": {
+    "description": "عنوان قسم 'إعدادات التطبيق' في شاشة الملف الشخصي."
+  },
+  "profileSupportText": "الدعم",
+  "@profileSupportText": {
+    "description": "نص زر الدعم."
+  },
+  "profileTermsOfServiceText": "شروط الخدمة",
+  "@profileTermsOfServiceText": {
+    "description": "نص زر شروط الخدمة."
+  },
+  "profileLogoutButton": "تسجيل الخروج",
+  "@profileLogoutButton": {
+    "description": "نص زر تسجيل الخروج."
+  },
+  "profileContactUsText": "تواصل معنا على: ejemplotfgdavid@gmail.com",
+  "@profileContactUsText": {
+    "description": "معلومات الاتصال للدعم."
+  },
+
+  "searchEventsTitle": "البحث عن الأحداث",
+  "@searchEventsTitle": {
+    "description": "عنوان شاشة البحث عن الأحداث."
+  },
+  "searchFieldEventTitle": "عنوان الحدث",
+  "@searchFieldEventTitle": {
+    "description": "تسمية حقل عنوان الحدث في البحث."
+  },
+  "searchFieldDescription": "الوصف",
+  "@searchFieldDescription": {
+    "description": "تسمية حقل الوصف في البحث."
+  },
+  "searchFieldDate": "التاريخ (YYYY-MM-DD)",
+  "@searchFieldDate": {
+    "description": "تسمية حقل التاريخ في البحث."
+  },
+  "searchFieldSelectDate": "اختر التاريخ",
+  "@searchFieldSelectDate": {
+    "description": "نص الزر لاختيار التاريخ في البحث."
+  },
+  "searchFieldEventType": "نوع الحدث",
+  "@searchFieldEventType": {
+    "description": "تسمية حقل نوع الحدث في البحث."
+  },
+  "searchFieldPriority": "الأولوية",
+  "@searchFieldPriority": {
+    "description": "تسمية حقل الأولوية في البحث."
+  },
+  "searchPriorityCritical": "حرجة",
+  "@searchPriorityCritical": {
+    "description": "خيار الأولوية الحرجة في البحث."
+  },
+  "searchPriorityHigh": "عالية",
+  "@searchPriorityHigh": {
+    "description": "خيار الأولوية العالية في البحث."
+  },
+  "searchPriorityMedium": "متوسطة",
+  "@searchPriorityMedium": {
+    "description": "خيار الأولوية المتوسطة في البحث."
+  },
+  "searchPriorityLow": "منخفضة",
+  "@searchPriorityLow": {
+    "description": "خيار الأولوية المنخفضة في البحث."
+  },
+  "searchFieldLocation": "الموقع",
+  "@searchFieldLocation": {
+    "description": "تسمية حقل الموقع في البحث."
+  },
+  "searchFieldSubject": "الموضوع",
+  "@searchFieldSubject": {
+    "description": "تسمية حقل الموضوع في البحث."
+  },
+  "searchFieldWithPersonYesNo": "مع شخص (نعم/لا):",
+  "@searchFieldWithPersonYesNo": {
+    "description": "تسمية حقل 'مع شخص' بخيار نعم/لا في البحث."
+  },
+  "searchFieldWithPerson": "مع شخص",
+  "@searchFieldWithPerson": {
+    "description": "تسمية حقل 'مع شخص' في البحث."
+  },
+  "searchResultsPrefix": "نتائج البحث (",
+  "@searchResultsPrefix": {
+    "description": "بادئة لنتائج البحث."
+  },
+  "searchResultsSuffix": ")",
+  "@searchResultsSuffix": {
+    "description": "لاحقة لنتائج البحث."
+  },
+  "searchDateAndTimePrefix": "التاريخ والوقت: ",
+  "@searchDateAndTimePrefix": {
+    "description": "بادئة لعرض التاريخ والوقت في نتائج البحث."
+  },
+  "searchTypePrefix": "النوع: ",
+  "@searchTypePrefix": {
+    "description": "بادئة لعرض النوع في نتائج البحث."
+  },
+  "searchDescriptionPrefix": "الوصف: ",
+  "@searchDescriptionPrefix": {
+    "description": "بادئة لعرض الوصف في نتائج البحث."
+  },
+  "searchPriorityPrefix": "الأولوية: ",
+  "@searchPriorityPrefix": {
+    "description": "بادئة لعرض الأولوية في نتائج البحث."
+  },
+  "searchLocationPrefix": "الموقع: ",
+  "@searchLocationPrefix": {
+    "description": "بادئة لعرض الموقع في نتائج البحث."
+  },
+  "searchSubjectPrefix": "الموضوع: ",
+  "@searchSubjectPrefix": {
+    "description": "بادئة لعرض الموضوع في نتائج البحث."
+  },
+  "searchWithPersonPrefix": "مع شخص: ",
+  "@searchWithPersonPrefix": {
+    "description": "بادئة لعرض 'مع شخص' في نتائج البحث."
+  },
+  "searchEventTypeMeetingDisplay": "اجتماع",
+  "@searchEventTypeMeetingDisplay": {
+    "description": "نص العرض لنوع الحدث 'اجتماع' في البحث."
+  },
+  "searchEventTypeExamDisplay": "امتحان",
+  "@searchEventTypeExamDisplay": {
+    "description": "نص العرض لنوع الحدث 'امتحان' في البحث."
+  },
+  "searchEventTypeConferenceDisplay": "مؤتمر",
+  "@searchEventTypeConferenceDisplay": {
+    "description": "نص العرض لنوع الحدث 'مؤتمر' في البحث."
+  },
+  "searchEventTypeAppointmentDisplay": "موعد",
+  "@searchEventTypeAppointmentDisplay": {
+    "description": "نص العرض لنوع الحدث 'موعد' في البحث."
+  },
+  "searchEventTypeTaskDisplay": "مهمة",
+  "@searchEventTypeTaskDisplay": {
+    "description": "نص العرض لنوع الحدث 'مهمة' في البحث."
+  },
+  "searchEventTypeAllDisplay": "جميع الأنواع",
+  "@searchEventTypeAllDisplay": {
+    "description": "نص العرض لخيار 'جميع الأنواع' في البحث."
+  },
+  "searchDeleteEventTitle": "حذف الحدث",
+  "@searchDeleteEventTitle": {
+    "description": "عنوان مربع حوار حذف حدث في البحث."
+  },
+  "searchDeleteEventConfirmPrefix": "واش متأكد بغيتي تحذف \"",
+  "@searchDeleteEventConfirmPrefix": {
+    "description": "بادئة رسالة تأكيد حذف حدث في البحث."
+  },
+  "searchDeleteEventConfirmSuffix": "\"؟",
+  "@searchDeleteEventConfirmSuffix": {
+    "description": "لاحقة رسالة تأكيد حذف حدث في البحث."
+  },
+  "searchCancelButton": "إلغاء",
+  "@searchCancelButton": {
+    "description": "نص زر 'إلغاء' في مربع حوار حذف حدث البحث."
+  },
+  "searchDeleteButton": "حذف",
+  "@searchDeleteButton": {
+    "description": "نص زر 'حذف' في مربع حوار حذف حدث البحث."
+  },
+  "searchEventDeletedSuccessPrefix": "تم حذف الحدث \"",
+  "@searchEventDeletedSuccessPrefix": {
+    "description": "بادئة رسالة نجاح حذف حدث في البحث."
+  },
+  "searchEventDeletedSuccessSuffix": "\" بنجاح!",
+  "@searchEventDeletedSuccessSuffix": {
+    "description": "لاحقة رسالة نجاح حذف حدث في البحث."
+  },
+
+  "dailiesDeleteEventTitle": "حذف الحدث",
+  "@dailiesDeleteEventTitle": {
+    "description": "عنوان مربع حوار حذف حدث في العرض اليومي."
+  },
+  "dailiesDeleteEventConfirmPrefix": "واش متأكد بغيتي تحذف \"",
+  "@dailiesDeleteEventConfirmPrefix": {
+    "description": "بادئة رسالة تأكيد حذف حدث في العرض اليومي."
+  },
+  "dailiesDeleteEventConfirmSuffix": "\"؟",
+  "@dailiesDeleteEventConfirmSuffix": {
+    "description": "لاحقة رسالة تأكيد حذف حدث في العرض اليومي."
+  },
+  "dailiesCancelButton": "إلغاء",
+  "@dailiesCancelButton": {
+    "description": "نص زر 'إلغاء' في مربع حوار حذف الحدث اليومي."
+  },
+  "dailiesDeleteButton": "حذف",
+  "@dailiesDeleteButton": {
+    "description": "نص زر 'حذف' في مربع حوار حذف الحدث اليومي."
+  },
+  "dailiesEventDeletedSuccessPrefix": "تم حذف الحدث \"",
+  "@dailiesEventDeletedSuccessPrefix": {
+    "description": "بادئة رسالة نجاح حذف حدث في العرض اليومي."
+  },
+  "dailiesEventDeletedSuccessSuffix": "\" بنجاح!",
+  "@dailiesEventDeletedSuccessSuffix": {
+    "description": "لاحقة رسالة نجاح حذف حدث في العرض اليومي."
+  },
+  "dailiesNoEventsForThisDay": "لا توجد أحداث لهذا اليوم.",
+  "@dailiesNoEventsForThisDay": {
+    "description": "رسالة عند عدم وجود أحداث ليوم معين."
+  },
+  "dailiesEventsForPrefix": "أحداث لـ ",
+  "@dailiesEventsForPrefix": {
+    "description": "بادئة لقائمة الأحداث ليوم معين."
+  },
+  "dailiesEventsCountSeparator": " (",
+  "@dailiesEventsCountSeparator": {
+    "description": "فاصل قبل عدد الأحداث في العرض اليومي."
+  },
+  "dailiesEventsCountSuffix": ")",
+  "@dailiesEventsCountSuffix": {
+    "description": "لاحقة لعدد الأحداث في العرض اليومي."
+  },
+  "dailiesTimePrefix": "الوقت: ",
+  "@dailiesTimePrefix": {
+    "description": "بادئة لعرض الوقت في العرض اليومي."
+  },
+  "dailiesTypePrefix": "النوع: ",
+  "@dailiesTypePrefix": {
+    "description": "بادئة لعرض النوع في العرض اليومي."
+  },
+  "dailiesDescriptionPrefix": "الوصف: ",
+  "@dailiesDescriptionPrefix": {
+    "description": "بادئة لعرض الوصف في العرض اليومي."
+  },
+  "dailiesPriorityPrefix": "الأولوية: ",
+  "@dailiesPriorityPrefix": {
+    "description": "بادئة لعرض الأولوية في العرض اليومي."
+  },
+  "dailiesMeetingDisplay": "اجتماع",
+  "@dailiesMeetingDisplay": {
+    "description": "نص العرض لنوع الحدث 'اجتماع' في العرض اليومي."
+  },
+  "dailiesExamDisplay": "امتحان",
+  "@dailiesExamDisplay": {
+    "description": "نص العرض لنوع الحدث 'امتحان' في العرض اليومي."
+  },
+  "dailiesConferenceDisplay": "مؤتمر",
+  "@dailiesConferenceDisplay": {
+    "description": "نص العرض لنوع الحدث 'مؤتمر' في العرض اليومي."
+  },
+  "dailiesAppointmentDisplay": "موعد",
+  "@dailiesAppointmentDisplay": {
+    "description": "نص العرض لنوع الحدث 'موعد' في العرض اليومي."
+  },
+  "dailiesTaskDisplay": "مهمة",
+  "@dailiesTaskDisplay": {
+    "description": "نص العرض لنوع الحدث 'مهمة' في العرض اليومي."
+  },
+
+  "calendarNoUpcomingEvents": "لا توجد أحداث قادمة.",
+  "@calendarNoUpcomingEvents": {
+    "description": "رسالة عند عدم وجود أحداث قادمة في التقويم."
+  },
+
+  "addEventCreateTitle": "إنشاء حدث جديد",
+  "@addEventCreateTitle": {
+    "description": "عنوان شاشة إنشاء حدث جديد."
+  },
+  "addEventEditTitle": "تعديل الحدث",
+  "@addEventEditTitle": {
+    "description": "عنوان شاشة تعديل حدث موجود."
+  },
+  "addEventFieldTitle": "عنوان الحدث",
+  "@addEventFieldTitle": {
+    "description": "تسمية حقل عنوان الحدث في الإضافة/التعديل."
+  },
+  "addEventFieldDescription": "الوصف",
+  "@addEventFieldDescription": {
+    "description": "تسمية حقل وصف الحدث في الإضافة/التعديل."
+  },
+  "addEventFieldPriority": "الأولوية",
+  "@addEventFieldPriority": {
+    "description": "تسمية حقل أولوية الحدث في الإضافة/التعديل."
+  },
+  "addEventFieldNotification": "إشعار",
+  "@addEventFieldNotification": {
+    "description": "تسمية حقل إشعار الحدث في الإضافة/التعديل."
+  },
+  "addEventFieldDate": "التاريخ",
+  "@addEventFieldDate": {
+    "description": "تسمية حقل تاريخ الحدث في الإضافة/التعديل."
+  },
+  "addEventSelectDate": "اختر التاريخ",
+  "@addEventSelectDate": {
+    "description": "نص الزر لاختيار التاريخ في إضافة/تعديل الحدث."
+  },
+  "addEventFieldTime": "الوقت",
+  "@addEventFieldTime": {
+    "description": "تسمية حقل وقت الحدث في الإضافة/التعديل."
+  },
+  "addEventSelectTime": "اختر الوقت",
+  "@addEventSelectTime": {
+    "description": "نص الزر لاختيار الوقت في إضافة/تعديل الحدث."
+  },
+  "addEventFieldEventType": "نوع الحدث",
+  "@addEventFieldEventType": {
+    "description": "تسمية حقل نوع الحدث في الإضافة/التعديل."
+  },
+  "addEventFieldLocation": "الموقع",
+  "@addEventFieldLocation": {
+    "description": "تسمية حقل موقع الحدث في الإضافة/التعديل."
+  },
+  "addEventFieldSubject": "الموضوع",
+  "@addEventFieldSubject": {
+    "description": "تسمية حقل موضوع الحدث في الإضافة/التعديل."
+  },
+  "addEventFieldWithPersonYesNo": "مع شخص (نعم/لا):",
+  "@addEventFieldWithPersonYesNo": {
+    "description": "تسمية حقل 'مع شخص' بخيار نعم/لا في الإضافة/التعديل."
+  },
+  "addEventFieldWithPerson": "مع شخص",
+  "@addEventFieldWithPerson": {
+    "description": "تسمية حقل 'مع شخص' في إضافة/تعديل الحدث."
+  },
+  "addEventSaveButton": "حفظ الحدث",
+  "@addEventSaveButton": {
+    "description": "نص الزر لحفظ حدث جديد أو معدل."
+  },
+
+  "upcomingEventDatePrefix": "التاريخ: ",
+  "@upcomingEventDatePrefix": {
+    "description": "بادئة لتاريخ حدث قادم."
+  },
+  "upcomingEventPriorityPrefix": "الأولوية: ",
+  "@upcomingEventPriorityPrefix": {
+    "description": "بادئة لأولوية حدث قادم."
+  },
+  "upcomingEventDescriptionPrefix": "الوصف: ",
+  "@upcomingEventDescriptionPrefix": {
+    "description": "بادئة لوصف حدث قادم."
+  },
+
+  "monthlyCalendarMondayAbbr": "اثنين",
+  "@monthlyCalendarMondayAbbr": {
+    "description": "اختصار يوم الاثنين في التقويم الشهري."
+  },
+  "monthlyCalendarTuesdayAbbr": "ثلاثاء",
+  "@monthlyCalendarTuesdayAbbr": {
+    "description": "اختصار يوم الثلاثاء في التقويم الشهري."
+  },
+  "monthlyCalendarWednesdayAbbr": "أربعاء",
+  "@monthlyCalendarWednesdayAbbr": {
+    "description": "اختصار يوم الأربعاء في التقويم الشهري."
+  },
+  "monthlyCalendarThursdayAbbr": "خميس",
+  "@monthlyCalendarThursdayAbbr": {
+    "description": "اختصار يوم الخميس في التقويم الشهري."
+  },
+  "monthlyCalendarFridayAbbr": "جمعة",
+  "@monthlyCalendarFridayAbbr": {
+    "description": "اختصار يوم الجمعة في التقويم الشهري."
+  },
+  "monthlyCalendarSaturdayAbbr": "سبت",
+  "@monthlyCalendarSaturdayAbbr": {
+    "description": "اختصار يوم السبت في التقويم الشهري."
+  },
+  "monthlyCalendarSundayAbbr": "أحد",
+  "@monthlyCalendarSundayAbbr": {
+    "description": "اختصار يوم الأحد في التقويم الشهري."
+  },
+  "monthlyCalendarEventsForMonthPrefix": "أحداث هذا الشهر: ",
+  "@monthlyCalendarEventsForMonthPrefix": {
+    "description": "بادئة لعدد الأحداث في الشهر الحالي في التقويم."
+  },
+  "monthlyCalendarNoEventsForMonth": "لا توجد أحداث لهذا الشهر.",
+  "@monthlyCalendarNoEventsForMonth": {
+    "description": "رسالة عند عدم وجود أحداث للشهر الحالي في التقويم."
+  },
+
+  "monthJanuary": "يناير",
+  "@monthJanuary": {
+    "description": "اسم شهر يناير."
+  },
+  "monthFebruary": "فبراير",
+  "@monthFebruary": {
+    "description": "اسم شهر فبراير."
+  },
+  "monthMarch": "مارس",
+  "@monthMarch": {
+    "description": "اسم شهر مارس."
+  },
+  "monthApril": "أبريل",
+  "@monthApril": {
+    "description": "اسم شهر أبريل."
+  },
+  "monthMay": "مايو",
+  "@monthMay": {
+    "description": "اسم شهر مايو."
+  },
+  "monthJune": "يونيو",
+  "@monthJune": {
+    "description": "اسم شهر يونيو."
+  },
+  "monthJuly": "يوليو",
+  "@monthJuly": {
+    "description": "اسم شهر يوليو."
+  },
+  "monthAugust": "أغسطس",
+  "@monthAugust": {
+    "description": "اسم شهر أغسطس."
+  },
+  "monthSeptember": "سبتمبر",
+  "@monthSeptember": {
+    "description": "اسم شهر سبتمبر."
+  },
+  "monthOctober": "أكتوبر",
+  "@monthOctober": {
+    "description": "اسم شهر أكتوبر."
+  },
+  "monthNovember": "نوفمبر",
+  "@monthNovember": {
+    "description": "اسم شهر نوفمبر."
+  },
+  "monthDecember": "ديسمبر",
+  "@monthDecember": {
+    "description": "اسم شهر ديسمبر."
+  },
+
+  "footerReturnToCurrentMonthTooltip": "العودة إلى الشهر الحالي",
+  "@footerReturnToCurrentMonthTooltip": {
+    "description": "نص تلميح الأداة لزر العودة إلى الشهر الحالي في التذييل."
+  },
+
+  "profileButtonTooltip": "الملف الشخصي",
+  "@profileButtonTooltip": {
+    "description": "نص تلميح الأداة لزر الملف الشخصي."
+  },
+
+  "chatButtonTooltip": "الدردشة",
+  "@chatButtonTooltip": {
+    "description": "نص تلميح الأداة لزر الدردشة."
+  },
+
+  "calendarToggleShowYearlyViewTooltip": "إظهار العرض السنوي",
+  "@calendarToggleShowYearlyViewTooltip": {
+    "description": "نص تلميح الأداة لزر التبديل إلى العرض السنوي."
+  },
+  "calendarToggleShowMonthlyViewTooltip": "إظهار العرض الشهري",
+  "@calendarToggleShowMonthlyViewTooltip": {
+    "description": "نص تلميح الأداة لزر التبديل إلى العرض الشهري."
+  },
+
+  "priorityDisplayCritical": "حرجة",
+  "@priorityDisplayCritical": {
+    "description": "اسم العرض لأولوية 'حرجة'."
+  },
+  "priorityDisplayHigh": "عالية",
+  "@priorityDisplayHigh": {
+    "description": "اسم العرض لأولوية 'عالية'."
+  },
+  "priorityDisplayMedium": "متوسطة",
+  "@priorityDisplayMedium": {
+    "description": "اسم العرض لأولوية 'متوسطة'."
+  },
+  "priorityDisplayLow": "منخفضة",
+  "@priorityDisplayLow": {
+    "description": "اسم العرض لأولوية 'منخفضة'."
+  },
+
+  "signUpCreateAccountTitle": "إنشاء حساب",
+  "@signUpCreateAccountTitle": {
+    "description": "عنوان شاشة إنشاء الحساب."
+  },
+  "signUpLogInText": "تسجيل الدخول",
+  "@signUpLogInText": {
+    "description": "نص الرابط للانتقال إلى شاشة تسجيل الدخول من التسجيل."
+  },
+  "signUpSubtitleText": "لنبدأ بملء النموذج أدناه.",
+  "@signUpSubtitleText": {
+    "description": "الترجمة الفرعية على شاشة التسجيل."
+  },
+  "signUpEmailHint": "البريد الإلكتروني",
+  "@signUpEmailHint": {
+    "description": "نص تلميح لحقل البريد الإلكتروني عند التسجيل."
+  },
+  "signUpUsernameHint": "اسم المستخدم",
+  "@signUpUsernameHint": {
+    "description": "نص تلميح لحقل اسم المستخدم عند التسجيل."
+  },
+  "signUpPasswordHint": "كلمة المرور",
+  "@signUpPasswordHint": {
+    "description": "نص تلميح لحقل كلمة المرور عند التسجيل."
+  },
+  "signUpConfirmPasswordHint": "تأكيد كلمة المرور",
+  "@signUpConfirmPasswordHint": {
+    "description": "نص تلميح لحقل تأكيد كلمة المرور عند التسجيل."
+  },
+  "signUpGetStartedButton": "ابدأ",
+  "@signUpGetStartedButton": {
+    "description": "نص الزر لبدء التسجيل."
+  },
+  "signUpOrSignUpWith": "أو سجل باستخدام",
+  "@signUpOrSignUpWith": {
+    "description": "النص قبل أزرار التسجيل الاجتماعي."
+  },
+
+  "signInTitle": "تسجيل الدخول",
+  "@signInTitle": {
+    "description": "عنوان شاشة تسجيل الدخول."
+  },
+  "emailLabel": "البريد الإلكتروني",
+  "@emailLabel": {
+    "description": "تسمية حقل إدخال البريد الإلكتروني."
+  },
+  "passwordLabel": "كلمة المرور",
+  "@passwordLabel": {
+    "description": "تسمية حقل إدخال كلمة المرور."
+  },
+  "signInButton": "تسجيل الدخول",
+  "@signInButton": {
+    "description": "نص زر تسجيل الدخول."
+  },
+  "welcomeBack": "مرحبا بعودتك",
+  "@welcomeBack": {
+    "description": "العنوان على شاشة تسجيل الدخول."
+  },
+  "signInSubtitle": "املأ المعلومات أدناه للوصول إلى حسابك.",
+  "@signInSubtitle": {
+    "description": "الترجمة الفرعية على شاشة تسجيل الدخول."
+  },
+  "createAccount": "إنشاء حساب",
+  "@createAccount": {
+    "description": "نص الرابط إلى شاشة التسجيل."
+  },
+  "logIn": "تسجيل الدخول",
+  "@logIn": {
+    "description": "نص الرابط إلى شاشة تسجيل الدخول."
+  },
+  "loginFailed": "فشل تسجيل الدخول",
+  "@loginFailed": {
+    "description": "الرسالة عند فشل عملية تسجيل الدخول."
+  },
+  "orSignInWith": "أو سجل الدخول باستخدام",
+  "@orSignInWith": {
+    "description": "النص قبل أزرار تسجيل الدخول الاجتماعي."
+  },
+
+  "socialSignInGoogleText": "المتابعة باستخدام جوجل",
+  "@socialSignInGoogleText": {
+    "description": "نص الزر للمتابعة باستخدام جوجل."
+  },
+  "socialSignInAppleText": "المتابعة باستخدام آبل",
+  "@socialSignInAppleText": {
+    "description": "نص الزر للمتابعة باستخدام آبل."
+  },
+
+  "appTitleEventify": "EVENTIFY",
+  "@appTitleEventify": {
+    "description": "العنوان الرئيسي للتطبيق."
+  },
+
+  "forgotPasswordOptionText": "نسيت كلمة المرور؟",
+  "@forgotPasswordOptionText": {
+    "description": "نص خيار 'نسيت كلمة المرور؟'."
+  },
+  "signInCreateAccountText": "إنشاء حساب",
+  "@signInCreateAccountText": {
+    "description": "نص رابط إنشاء حساب على شاشة تسجيل الدخول."
+  },
+  "signInLogInText": "تسجيل الدخول",
+  "@signInLogInText": {
+    "description": "نص رابط تسجيل الدخول على شاشة تسجيل الدخول."
+  },
+  "signInWelcomeTitle": "مرحبا بك في Eventify",
+  "@signInWelcomeTitle": {
+    "description": "عنوان الترحيب على شاشة تسجيل الدخول."
+  },
+  "signInEmailHint": "البريد الإلكتروني",
+  "@signInEmailHint": {
+    "description": "نص تلميح لحقل البريد الإلكتروني على شاشة تسجيل الدخول."
+  },
+  "signInPasswordHint": "كلمة المرور",
+  "@signInPasswordHint": {
+    "description": "نص تلميح لحقل كلمة المرور على شاشة تسجيل الدخول."
+  },
+  "signInButtonText": "تسجيل الدخول",
+  "@signInButtonText": {
+    "description": "نص زر تسجيل الدخول."
+  },
+  "signInOrSignInWith": "أو سجل الدخول باستخدام",
+  "@signInOrSignInWith": {
+    "description": "النص قبل أزرار تسجيل الدخول الاجتماعي."
+  },
+  "profileThemesText": "السمات",
+  "@profileThemesText": {
+    "description": "نص خيار 'السمات' في شاشة الملف الشخصي."
+  },
+  "themeSelectSecondaryColor": "اختر اللون الثانوي",
+  "@themeSelectSecondaryColor": {
+    "description": "تسمية لاختيار اللون الثانوي في إعدادات السمة."
+  },
+  "themeOptionGreenAccent": "لمسة خضراء",
+  "@themeOptionGreenAccent": {
+    "description": "خيار السمة 'لمسة خضراء'."
+  },
+  "themeOptionBlueAccent": "لمسة زرقاء",
+  "@themeOptionBlueAccent": {
+    "description": "خيار السمة 'لمسة زرقاء'."
+  },
+  "themeOptionOrangeAccent": "لمسة برتقالية",
+  "@themeOptionOrangeAccent": {
+    "description": "خيار السمة 'لمسة برتقالية'."
+  },
+  "themeOptionRedAccent": "لمسة حمراء",
+  "@themeOptionRedAccent": {
+    "description": "خيار السمة 'لمسة حمراء'."
+  },
+
+  "forgotPasswordDialogTitle": "إعادة تعيين كلمة المرور",
+  "@forgotPasswordDialogTitle": {
+    "description": "عنوان مربع حوار استعادة كلمة المرور."
+  },
+  "forgotPasswordDialogInstructions": "أدخل بريدك الإلكتروني لتلقي تعليمات استعادة كلمة المرور.",
+  "@forgotPasswordDialogInstructions": {
+    "description": "نص التعليمات في مربع حوار استعادة كلمة المرور."
+  },
+  "forgotPasswordDialogEmailLabel": "البريد الإلكتروني",
+  "@forgotPasswordDialogEmailLabel": {
+    "description": "تسمية حقل البريد الإلكتروني في مربع حوار استعادة كلمة المرور."
+  },
+  "forgotPasswordDialogSendButton": "إرسال",
+  "@forgotPasswordDialogSendButton": {
+    "description": "نص زر 'إرسال' في مربع حوار 'نسيت كلمة المرور'."
+  },
+  "forgotPasswordDialogCancelButton": "إلغاء",
+  "@forgotPasswordDialogCancelButton": {
+    "description": "نص زر 'إلغاء' في مربع حوار 'نسيت كلمة المرور'."
+  },
+  "forgotPasswordDialogSuccess": "تم إرسال بريد إلكتروني للاستعادة.",
+  "@forgotPasswordDialogSuccess": {
+    "description": "رسالة نجاح عند إرسال بريد إلكتروني للاستعادة."
+  },
+  "forgotPasswordDialogError": "حدث خطأ أثناء إرسال بريد إلكتروني للاستعادة.",
+  "@forgotPasswordDialogError": {
+    "description": "رسالة خطأ عند وجود مشكلة في إرسال بريد إلكتروني للاستعادة."
+  },
+  "signInCredentialsFailed": "فشل في إدخال بيانات الاعتماد",
+  "@signInCredentialsFailed": {
+    "description": "رسالة عند ترك بيانات الاعتماد فارغة أو إدخالها بشكل غير صحيح."
+  },
+  "signInFailed": "فشل في تسجيل الدخول",
+  "@signInFailed": {
+    "description": "رسالة خطأ عامة عند تسجيل الدخول."
+  },
+  "passwordRequirementsNotMet": "كلمة المرور لا تلبي المتطلبات الدنيا",
+  "@passwordRequirementsNotMet": {
+    "description": "رسالة عند عدم استيفاء كلمة المرور للمتطلبات الدنيا."
+  },
+  "passwordSaved": "تم حفظ كلمة المرور بنجاح.",
+  "@passwordSaved": {
+    "description": "رسالة عند حفظ كلمة المرور بنجاح."
+  },
+  "passwordRequired": "يجب عليك تعيين كلمة مرور للمتابعة.",
+  "@passwordRequired": {
+    "description": "رسالة عند وجوب تعيين كلمة مرور للمتابعة."
+  },
+  "passwordResetError": "حدث خطأ أثناء إرسال بريد الاسترداد.",
+  "@passwordResetError": {
+    "description": "رسالة خطأ عند فشل إرسال بريد الاسترداد."
+  },
+  "firebaseAuthRegisterError": "خطأ في تسجيل مستخدم Firebase Auth.",
+  "@firebaseAuthRegisterError": {"description": "خطأ في تسجيل مستخدم Firebase Auth."},
+  "unexpectedRegisterError": "خطأ غير متوقع أثناء التسجيل.",
+  "@unexpectedRegisterError": {"description": "خطأ غير متوقع أثناء التسجيل."},
+  "firestoreSaveUserError": "خطأ في حفظ المستخدم في Firestore.",
+  "@firestoreSaveUserError": {"description": "خطأ في حفظ المستخدم في Firestore."},
+  "firebaseAuthLoginError": "خطأ في تسجيل الدخول إلى Firebase Auth.",
+  "@firebaseAuthLoginError": {"description": "خطأ في تسجيل الدخول إلى Firebase Auth."},
+  "unexpectedLoginError": "خطأ غير متوقع أثناء تسجيل الدخول.",
+  "@unexpectedLoginError": {"description": "خطأ غير متوقع أثناء تسجيل الدخول."},
+  "errorSavingGoogleUserInfo": "خطأ في حفظ معلومات مستخدم Google في Firestore.",
+  "@errorSavingGoogleUserInfo": {"description": "خطأ في حفظ معلومات مستخدم Google في Firestore."},
+  "firebaseAuthResetPasswordError": "خطأ في إرسال بريد إعادة تعيين كلمة المرور في Firebase Auth.",
+  "@firebaseAuthResetPasswordError": {"description": "خطأ في إرسال بريد إعادة تعيين كلمة المرور في Firebase Auth."},
+  "unexpectedResetPasswordError": "خطأ غير متوقع أثناء إعادة تعيين كلمة المرور.",
+  "@unexpectedResetPasswordError": {"description": "خطأ غير متوقع أثناء إعادة تعيين كلمة المرور."}
+}

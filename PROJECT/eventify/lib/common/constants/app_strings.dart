@@ -337,6 +337,10 @@ abstract class AppStrings {
       AppLocalizations.of(context)!.logIn;
   static String orSignInWith(BuildContext context) =>
       AppLocalizations.of(context)!.orSignInWith;
+  static String signInCredentialsFailed(BuildContext context) =>
+      AppLocalizations.of(context)!.signInCredentialsFailed;
+  static String signInFailed(BuildContext context) =>
+      AppLocalizations.of(context)!.signInFailed;
 
   // SocialSignInButtons display strings
   static String socialSignInGoogleText(BuildContext context) =>
@@ -351,5 +355,38 @@ abstract class AppStrings {
   // ForgotPasswordOption display strings
   static String forgotPasswordOptionText(BuildContext context) =>
       AppLocalizations.of(context)!.forgotPasswordOptionText;
-}
+  static String forgotPasswordDialogSendButton(BuildContext context) =>
+      AppLocalizations.of(context)!.forgotPasswordDialogSendButton;
+  static String forgotPasswordDialogCancelButton(BuildContext context) =>
+      AppLocalizations.of(context)!.forgotPasswordDialogCancelButton;
+  static String forgotPasswordDialogSuccess(BuildContext context) =>
+      AppLocalizations.of(context)!.forgotPasswordDialogSuccess;
 
+  // Password requirements string
+  static String passwordRequirementsNotMet(BuildContext context) =>
+      AppLocalizations.of(context)!.passwordRequirementsNotMet;
+  static String passwordSaved(BuildContext context) =>
+      AppLocalizations.of(context)!.passwordSaved;
+  static String passwordRequired(BuildContext context) =>
+      AppLocalizations.of(context)!.passwordRequired;
+  static String passwordResetError(BuildContext context) =>
+      AppLocalizations.of(context)!.passwordResetError;
+
+  // Error log messages for AuthRemoteDataSource
+  static String firebaseAuthRegisterError(BuildContext context) =>
+      AppLocalizations.of(context)!.firebaseAuthRegisterError;
+  static String unexpectedRegisterError(BuildContext context) =>
+      AppLocalizations.of(context)!.unexpectedRegisterError;
+  static String firestoreSaveUserError(BuildContext context) =>
+      AppLocalizations.of(context)!.firestoreSaveUserError;
+  static String firebaseAuthLoginError(BuildContext context) =>
+      AppLocalizations.of(context)!.firebaseAuthLoginError;
+  static String unexpectedLoginError(BuildContext context) =>
+      AppLocalizations.of(context)!.unexpectedLoginError;
+  static String errorSavingGoogleUserInfo(BuildContext context) =>
+      AppLocalizations.of(context)!.errorSavingGoogleUserInfo;
+  static String firebaseAuthResetPasswordError(BuildContext context) =>
+      AppLocalizations.of(context)!.firebaseAuthResetPasswordError;
+  static String unexpectedResetPasswordError(BuildContext context) =>
+      AppLocalizations.of(context)!.unexpectedResetPasswordError;
+}

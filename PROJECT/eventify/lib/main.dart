@@ -87,6 +87,8 @@ class MyApp extends StatelessWidget {
           Locale('en', ''),
           Locale('es', ''),
           Locale('fr', ''),
+          Locale('zh', ''),
+          Locale('ar', ''),
         ],
         home: Builder(
           builder: (context) {

@@ -1,0 +1,715 @@
+{
+  "@@locale": "zh",
+
+  "chatInitialBotGreeting": "您好！我是您的 Eventify 助手。今天我能如何帮助您安排日程？",
+  "@chatInitialBotGreeting": {
+    "description": "聊天屏幕上机器人最初的问候语。"
+  },
+  "chatInputHint": "输入消息...",
+  "@chatInputHint": {
+    "description": "聊天输入字段中的提示文本。"
+  },
+  "chatScreenTitle": "与 Eventify 聊天",
+  "@chatScreenTitle": {
+    "description": "聊天屏幕的标题。"
+  },
+  "chatUserDefaultName": "您",
+  "@chatUserDefaultName": {
+    "description": "聊天中用户的默认名称。"
+  },
+  "chatAIAvatarLetters": "EV",
+  "@chatAIAvatarLetters": {
+    "description": "聊天中机器人头像的字母。"
+  },
+
+  "profileYourAccountTitle": "您的账户",
+  "@profileYourAccountTitle": {
+    "description": "个人资料屏幕上“您的账户”部分的标题。"
+  },
+  "profileEditProfileText": "编辑个人资料",
+  "@profileEditProfileText": {
+    "description": "编辑个人资料按钮的文本。"
+  },
+  "profileNotificationSettingsText": "通知设置",
+  "@profileNotificationSettingsText": {
+    "description": "通知设置按钮的文本。"
+  },
+  "profileAppSettingsTitle": "应用设置",
+  "@profileAppSettingsTitle": {
+    "description": "个人资料屏幕上“应用设置”部分的标题。"
+  },
+  "profileSupportText": "支持",
+  "@profileSupportText": {
+    "description": "支持按钮的文本。"
+  },
+  "profileTermsOfServiceText": "服务条款",
+  "@profileTermsOfServiceText": {
+    "description": "服务条款按钮的文本。"
+  },
+  "profileLogoutButton": "退出登录",
+  "@profileLogoutButton": {
+    "description": "退出登录按钮的文本。"
+  },
+  "profileContactUsText": "联系我们：ejemplotfgdavid@gmail.com",
+  "@profileContactUsText": {
+    "description": "支持的联系信息。"
+  },
+
+  "searchEventsTitle": "搜索事件",
+  "@searchEventsTitle": {
+    "description": "事件搜索屏幕的标题。"
+  },
+  "searchFieldEventTitle": "事件标题",
+  "@searchFieldEventTitle": {
+    "description": "搜索中事件标题字段的标签。"
+  },
+  "searchFieldDescription": "描述",
+  "@searchFieldDescription": {
+    "description": "搜索中描述字段的标签。"
+  },
+  "searchFieldDate": "日期 (YYYY-MM-DD)",
+  "@searchFieldDate": {
+    "description": "搜索中日期字段的标签。"
+  },
+  "searchFieldSelectDate": "选择日期",
+  "@searchFieldSelectDate": {
+    "description": "搜索中选择日期按钮的文本。"
+  },
+  "searchFieldEventType": "事件类型",
+  "@searchFieldEventType": {
+    "description": "搜索中事件类型字段的标签。"
+  },
+  "searchFieldPriority": "优先级",
+  "@searchFieldPriority": {
+    "description": "搜索中优先级字段的标签。"
+  },
+  "searchPriorityCritical": "紧急",
+  "@searchPriorityCritical": {
+    "description": "搜索中的紧急优先级选项。"
+  },
+  "searchPriorityHigh": "高",
+  "@searchPriorityHigh": {
+    "description": "搜索中的高优先级选项。"
+  },
+  "searchPriorityMedium": "中",
+  "@searchPriorityMedium": {
+    "description": "搜索中的中优先级选项。"
+  },
+  "searchPriorityLow": "低",
+  "@searchPriorityLow": {
+    "description": "搜索中的低优先级选项。"
+  },
+  "searchFieldLocation": "地点",
+  "@searchFieldLocation": {
+    "description": "搜索中地点字段的标签。"
+  },
+  "searchFieldSubject": "主题",
+  "@searchFieldSubject": {
+    "description": "搜索中主题字段的标签。"
+  },
+  "searchFieldWithPersonYesNo": "与人 (是/否):",
+  "@searchFieldWithPersonYesNo": {
+    "description": "搜索中“与人”字段的标签，带有是/否选项。"
+  },
+  "searchFieldWithPerson": "与人",
+  "@searchFieldWithPerson": {
+    "description": "搜索中“与人”字段的标签。"
+  },
+  "searchResultsPrefix": "搜索结果 (",
+  "@searchResultsPrefix": {
+    "description": "搜索结果的前缀。"
+  },
+  "searchResultsSuffix": ")",
+  "@searchResultsSuffix": {
+    "description": "搜索结果的后缀。"
+  },
+  "searchDateAndTimePrefix": "日期和时间: ",
+  "@searchDateAndTimePrefix": {
+    "description": "在搜索结果中显示日期和时间的前缀。"
+  },
+  "searchTypePrefix": "类型: ",
+  "@searchTypePrefix": {
+    "description": "在搜索结果中显示类型的前缀。"
+  },
+  "searchDescriptionPrefix": "描述: ",
+  "@searchDescriptionPrefix": {
+    "description": "在搜索结果中显示描述的前缀。"
+  },
+  "searchPriorityPrefix": "优先级: ",
+  "@searchPriorityPrefix": {
+    "description": "在搜索结果中显示优先级的前缀。"
+  },
+  "searchLocationPrefix": "地点: ",
+  "@searchLocationPrefix": {
+    "description": "在搜索结果中显示地点的前缀。"
+  },
+  "searchSubjectPrefix": "主题: ",
+  "@searchSubjectPrefix": {
+    "description": "在搜索结果中显示主题的前缀。"
+  },
+  "searchWithPersonPrefix": "与人: ",
+  "@searchWithPersonPrefix": {
+    "description": "在搜索结果中显示“与人”的前缀。"
+  },
+  "searchEventTypeMeetingDisplay": "会议",
+  "@searchEventTypeMeetingDisplay": {
+    "description": "搜索中“会议”事件类型的显示文本。"
+  },
+  "searchEventTypeExamDisplay": "考试",
+  "@searchEventTypeExamDisplay": {
+    "description": "搜索中“考试”事件类型的显示文本。"
+  },
+  "searchEventTypeConferenceDisplay": "会议",
+  "@searchEventTypeConferenceDisplay": {
+    "description": "搜索中“会议”事件类型的显示文本。"
+  },
+  "searchEventTypeAppointmentDisplay": "预约",
+  "@searchEventTypeAppointmentDisplay": {
+    "description": "搜索中“预约”事件类型的显示文本。"
+  },
+  "searchEventTypeTaskDisplay": "任务",
+  "@searchEventTypeTaskDisplay": {
+    "description": "搜索中“任务”事件类型的显示文本。"
+  },
+  "searchEventTypeAllDisplay": "所有类型",
+  "@searchEventTypeAllDisplay": {
+    "description": "搜索中“所有类型”事件选项的显示文本。"
+  },
+  "searchDeleteEventTitle": "删除事件",
+  "@searchDeleteEventTitle": {
+    "description": "搜索中删除事件对话框的标题。"
+  },
+  "searchDeleteEventConfirmPrefix": "您确定要删除 \"",
+  "@searchDeleteEventConfirmPrefix": {
+    "description": "搜索中删除事件确认消息的前缀。"
+  },
+  "searchDeleteEventConfirmSuffix": "\" 吗？",
+  "@searchDeleteEventConfirmSuffix": {
+    "description": "搜索中删除事件确认消息的后缀。"
+  },
+  "searchCancelButton": "取消",
+  "@searchCancelButton": {
+    "description": "搜索事件删除对话框中“取消”按钮的文本。"
+  },
+  "searchDeleteButton": "删除",
+  "@searchDeleteButton": {
+    "description": "搜索事件删除对话框中“删除”按钮的文本。"
+  },
+  "searchEventDeletedSuccessPrefix": "事件 \"",
+  "@searchEventDeletedSuccessPrefix": {
+    "description": "搜索中删除事件成功消息的前缀。"
+  },
+  "searchEventDeletedSuccessSuffix": "\" 已成功删除！",
+  "@searchEventDeletedSuccessSuffix": {
+    "description": "搜索中删除事件成功消息的后缀。"
+  },
+
+  "dailiesDeleteEventTitle": "删除事件",
+  "@dailiesDeleteEventTitle": {
+    "description": "每日视图中删除事件对话框的标题。"
+  },
+  "dailiesDeleteEventConfirmPrefix": "您确定要删除 \"",
+  "@dailiesDeleteEventConfirmPrefix": {
+    "description": "每日视图中删除事件确认消息的前缀。"
+  },
+  "dailiesDeleteEventConfirmSuffix": "\" 吗？",
+  "@dailiesDeleteEventConfirmSuffix": {
+    "description": "每日视图中删除事件确认消息的后缀。"
+  },
+  "dailiesCancelButton": "取消",
+  "@dailiesCancelButton": {
+    "description": "每日事件删除对话框中“取消”按钮的文本。"
+  },
+  "dailiesDeleteButton": "删除",
+  "@dailiesDeleteButton": {
+    "description": "每日事件删除对话框中“删除”按钮的文本。"
+  },
+  "dailiesEventDeletedSuccessPrefix": "事件 \"",
+  "@dailiesEventDeletedSuccessPrefix": {
+    "description": "每日视图中删除事件成功消息的前缀。"
+  },
+  "dailiesEventDeletedSuccessSuffix": "\" 已成功删除！",
+  "@dailiesEventDeletedSuccessSuffix": {
+    "description": "每日视图中删除事件成功消息的后缀。"
+  },
+  "dailiesNoEventsForThisDay": "今天没有事件。",
+  "@dailiesNoEventsForThisDay": {
+    "description": "特定日期没有事件时的消息。"
+  },
+  "dailiesEventsForPrefix": "事件 ",
+  "@dailiesEventsForPrefix": {
+    "description": "特定日期事件列表的前缀。"
+  },
+  "dailiesEventsCountSeparator": " (",
+  "@dailiesEventsCountSeparator": {
+    "description": "每日视图中事件计数前的分隔符。"
+  },
+  "dailiesEventsCountSuffix": ")",
+  "@dailiesEventsCountSuffix": {
+    "description": "每日视图中事件计数的后缀。"
+  },
+  "dailiesTimePrefix": "时间: ",
+  "@dailiesTimePrefix": {
+    "description": "每日视图中显示时间的前缀。"
+  },
+  "dailiesTypePrefix": "类型: ",
+  "@dailiesTypePrefix": {
+    "description": "每日视图中显示类型的前缀。"
+  },
+  "dailiesDescriptionPrefix": "描述: ",
+  "@dailiesDescriptionPrefix": {
+    "description": "每日视图中显示描述的前缀。"
+  },
+  "dailiesPriorityPrefix": "优先级: ",
+  "@dailiesPriorityPrefix": {
+    "description": "每日视图中显示优先级的前缀。"
+  },
+  "dailiesMeetingDisplay": "会议",
+  "@dailiesMeetingDisplay": {
+    "description": "每日视图中“会议”事件类型的显示文本。"
+  },
+  "dailiesExamDisplay": "考试",
+  "@dailiesExamDisplay": {
+    "description": "每日视图中“考试”事件类型的显示文本。"
+  },
+  "dailiesConferenceDisplay": "会议",
+  "@dailiesConferenceDisplay": {
+    "description": "每日视图中“会议”事件类型的显示文本。"
+  },
+  "dailiesAppointmentDisplay": "预约",
+  "@dailiesAppointmentDisplay": {
+    "description": "每日视图中“预约”事件类型的显示文本。"
+  },
+  "dailiesTaskDisplay": "任务",
+  "@dailiesTaskDisplay": {
+    "description": "每日视图中“任务”事件类型的显示文本。"
+  },
+
+  "calendarNoUpcomingEvents": "没有即将发生的事件。",
+  "@calendarNoUpcomingEvents": {
+    "description": "日历中没有即将发生的事件时的消息。"
+  },
+
+  "addEventCreateTitle": "创建新事件",
+  "@addEventCreateTitle": {
+    "description": "创建新事件屏幕的标题。"
+  },
+  "addEventEditTitle": "编辑事件",
+  "@addEventEditTitle": {
+    "description": "编辑现有事件屏幕的标题。"
+  },
+  "addEventFieldTitle": "事件标题",
+  "@addEventFieldTitle": {
+    "description": "添加/编辑中事件标题字段的标签。"
+  },
+  "addEventFieldDescription": "描述",
+  "@addEventFieldDescription": {
+    "description": "添加/编辑中事件描述字段的标签。"
+  },
+  "addEventFieldPriority": "优先级",
+  "@addEventFieldPriority": {
+    "description": "添加/编辑中事件优先级字段的标签。"
+  },
+  "addEventFieldNotification": "通知",
+  "@addEventFieldNotification": {
+    "description": "添加/编辑中事件通知字段的标签。"
+  },
+  "addEventFieldDate": "日期",
+  "@addEventFieldDate": {
+    "description": "添加/编辑中事件日期字段的标签。"
+  },
+  "addEventSelectDate": "选择日期",
+  "@addEventSelectDate": {
+    "description": "添加/编辑事件中选择日期按钮的文本。"
+  },
+  "addEventFieldTime": "时间",
+  "@addEventFieldTime": {
+    "description": "添加/编辑中事件时间字段的标签。"
+  },
+  "addEventSelectTime": "选择时间",
+  "@addEventSelectTime": {
+    "description": "添加/编辑事件中选择时间按钮的文本。"
+  },
+  "addEventFieldEventType": "事件类型",
+  "@addEventFieldEventType": {
+    "description": "添加/编辑中事件类型字段的标签。"
+  },
+  "addEventFieldLocation": "地点",
+  "@addEventFieldLocation": {
+    "description": "添加/编辑中事件地点字段的标签。"
+  },
+  "addEventFieldSubject": "主题",
+  "@addEventFieldSubject": {
+    "description": "添加/编辑中事件主题字段的标签。"
+  },
+  "addEventFieldWithPersonYesNo": "与人 (是/否):",
+  "@addEventFieldWithPersonYesNo": {
+    "description": "添加/编辑中“与人”字段的标签，带有是/否选项。"
+  },
+  "addEventFieldWithPerson": "与人",
+  "@addEventFieldWithPerson": {
+    "description": "添加/编辑事件中“与人”字段的标签。"
+  },
+  "addEventSaveButton": "保存事件",
+  "@addEventSaveButton": {
+    "description": "保存新事件或编辑事件按钮的文本。"
+  },
+
+  "upcomingEventDatePrefix": "日期: ",
+  "@upcomingEventDatePrefix": {
+    "description": "即将发生的事件日期的前缀。"
+  },
+  "upcomingEventPriorityPrefix": "优先级: ",
+  "@upcomingEventPriorityPrefix": {
+    "description": "即将发生的事件优先级的前缀。"
+  },
+  "upcomingEventDescriptionPrefix": "描述: ",
+  "@upcomingEventDescriptionPrefix": {
+    "description": "即将发生的事件描述的前缀。"
+  },
+
+  "monthlyCalendarMondayAbbr": "周一",
+  "@monthlyCalendarMondayAbbr": {
+    "description": "月历中星期一的缩写。"
+  },
+  "monthlyCalendarTuesdayAbbr": "周二",
+  "@monthlyCalendarTuesdayAbbr": {
+    "description": "月历中星期二的缩写。"
+  },
+  "monthlyCalendarWednesdayAbbr": "周三",
+  "@monthlyCalendarWednesdayAbbr": {
+    "description": "月历中星期三的缩写。"
+  },
+  "monthlyCalendarThursdayAbbr": "周四",
+  "@monthlyCalendarThursdayAbbr": {
+    "description": "月历中星期四的缩写。"
+  },
+  "monthlyCalendarFridayAbbr": "周五",
+  "@monthlyCalendarFridayAbbr": {
+    "description": "月历中星期五的缩写。"
+  },
+  "monthlyCalendarSaturdayAbbr": "周六",
+  "@monthlyCalendarSaturdayAbbr": {
+    "description": "月历中星期六的缩写。"
+  },
+  "monthlyCalendarSundayAbbr": "周日",
+  "@monthlyCalendarSundayAbbr": {
+    "description": "月历中星期日的缩写。"
+  },
+  "monthlyCalendarEventsForMonthPrefix": "本月事件: ",
+  "@monthlyCalendarEventsForMonthPrefix": {
+    "description": "日历中当月事件数量的前缀。"
+  },
+  "monthlyCalendarNoEventsForMonth": "本月没有事件。",
+  "@monthlyCalendarNoEventsForMonth": {
+    "description": "日历中当月没有事件时的消息。"
+  },
+
+  "monthJanuary": "一月",
+  "@monthJanuary": {
+    "description": "一月的名称。"
+  },
+  "monthFebruary": "二月",
+  "@monthFebruary": {
+    "description": "二月的名称。"
+  },
+  "monthMarch": "三月",
+  "@monthMarch": {
+    "description": "三月的名称。"
+  },
+  "monthApril": "四月",
+  "@monthApril": {
+    "description": "四月的名称。"
+  },
+  "monthMay": "五月",
+  "@monthMay": {
+    "description": "五月的名称。"
+  },
+  "monthJune": "六月",
+  "@monthJune": {
+    "description": "六月的名称。"
+  },
+  "monthJuly": "七月",
+  "@monthJuly": {
+    "description": "七月的名称。"
+  },
+  "monthAugust": "八月",
+  "@monthAugust": {
+    "description": "八月的名称。"
+  },
+  "monthSeptember": "九月",
+  "@monthSeptember": {
+    "description": "九月的名称。"
+  },
+  "monthOctober": "十月",
+  "@monthOctober": {
+    "description": "十月的名称。"
+  },
+  "monthNovember": "十一月",
+  "@monthNovember": {
+    "description": "十一月的名称。"
+  },
+  "monthDecember": "十二月",
+  "@monthDecember": {
+    "description": "十二月的名称。"
+  },
+
+  "footerReturnToCurrentMonthTooltip": "返回当前月份",
+  "@footerReturnToCurrentMonthTooltip": {
+    "description": "页脚中返回当前月份按钮的工具提示文本。"
+  },
+
+  "profileButtonTooltip": "个人资料",
+  "@profileButtonTooltip": {
+    "description": "个人资料按钮的工具提示文本。"
+  },
+
+  "chatButtonTooltip": "聊天",
+  "@chatButtonTooltip": {
+    "description": "聊天按钮的工具提示文本。"
+  },
+
+  "calendarToggleShowYearlyViewTooltip": "显示年度视图",
+  "@calendarToggleShowYearlyViewTooltip": {
+    "description": "切换到年度视图按钮的工具提示文本。"
+  },
+  "calendarToggleShowMonthlyViewTooltip": "显示月度视图",
+  "@calendarToggleShowMonthlyViewTooltip": {
+    "description": "切换到月度视图按钮的工具提示文本。"
+  },
+
+  "priorityDisplayCritical": "紧急",
+  "@priorityDisplayCritical": {
+    "description": "“紧急”优先级的显示名称。"
+  },
+  "priorityDisplayHigh": "高",
+  "@priorityDisplayHigh": {
+    "description": "“高”优先级的显示名称。"
+  },
+  "priorityDisplayMedium": "中",
+  "@priorityDisplayMedium": {
+    "description": "“中”优先级的显示名称。"
+  },
+  "priorityDisplayLow": "低",
+  "@priorityDisplayLow": {
+    "description": "“低”优先级的显示名称。"
+  },
+
+  "signUpCreateAccountTitle": "创建账户",
+  "@signUpCreateAccountTitle": {
+    "description": "账户创建屏幕的标题。"
+  },
+  "signUpLogInText": "登录",
+  "@signUpLogInText": {
+    "description": "从注册页面跳转到登录屏幕的链接文本。"
+  },
+  "signUpSubtitleText": "让我们通过填写以下表格开始吧。",
+  "@signUpSubtitleText": {
+    "description": "注册屏幕的副标题。"
+  },
+  "signUpEmailHint": "电子邮件",
+  "@signUpEmailHint": {
+    "description": "注册页面电子邮件字段的提示文本。"
+  },
+  "signUpUsernameHint": "用户名",
+  "@signUpUsernameHint": {
+    "description": "注册页面用户名字段的提示文本。"
+  },
+  "signUpPasswordHint": "密码",
+  "@signUpPasswordHint": {
+    "description": "注册页面密码字段的提示文本。"
+  },
+  "signUpConfirmPasswordHint": "确认密码",
+  "@signUpConfirmPasswordHint": {
+    "description": "注册页面确认密码字段的提示文本。"
+  },
+  "signUpGetStartedButton": "开始",
+  "@signUpGetStartedButton": {
+    "description": "开始注册按钮的文本。"
+  },
+  "signUpOrSignUpWith": "或使用以下方式注册",
+  "@signUpOrSignUpWith": {
+    "description": "社交注册按钮前的文本。"
+  },
+
+  "signInTitle": "登录",
+  "@signInTitle": {
+    "description": "登录屏幕的标题。"
+  },
+  "emailLabel": "电子邮件",
+  "@emailLabel": {
+    "description": "电子邮件输入字段的标签。"
+  },
+  "passwordLabel": "密码",
+  "@passwordLabel": {
+    "description": "密码输入字段的标签。"
+  },
+  "signInButton": "登录",
+  "@signInButton": {
+    "description": "登录按钮的文本。"
+  },
+  "welcomeBack": "欢迎回来",
+  "@welcomeBack": {
+    "description": "登录屏幕上的标题。"
+  },
+  "signInSubtitle": "填写以下信息以访问您的账户。",
+  "@signInSubtitle": {
+    "description": "登录屏幕上的副标题。"
+  },
+  "createAccount": "创建账户",
+  "@createAccount": {
+    "description": "跳转到注册屏幕的链接文本。"
+  },
+  "logIn": "登录",
+  "@logIn": {
+    "description": "跳转到登录屏幕的链接文本。"
+  },
+  "loginFailed": "登录失败",
+  "@loginFailed": {
+    "description": "登录过程失败时的消息。"
+  },
+  "orSignInWith": "或使用以下方式登录",
+  "@orSignInWith": {
+    "description": "社交登录按钮前的文本。"
+  },
+
+  "socialSignInGoogleText": "使用 Google 继续",
+  "@socialSignInGoogleText": {
+    "description": "“使用 Google 继续”按钮的文本。"
+  },
+  "socialSignInAppleText": "使用 Apple 继续",
+  "@socialSignInAppleText": {
+    "description": "“使用 Apple 继续”按钮的文本。"
+  },
+
+  "appTitleEventify": "EVENTIFY",
+  "@appTitleEventify": {
+    "description": "应用程序的主标题。"
+  },
+
+  "forgotPasswordOptionText": "忘记密码？",
+  "@forgotPasswordOptionText": {
+    "description": "“忘记密码？”选项的文本。"
+  },
+  "signInCreateAccountText": "创建账户",
+  "@signInCreateAccountText": {
+    "description": "登录屏幕上创建账户链接的文本。"
+  },
+  "signInLogInText": "登录",
+  "@signInLogInText": {
+    "description": "登录屏幕上登录链接的文本。"
+  },
+  "signInWelcomeTitle": "欢迎来到 Eventify",
+  "@signInWelcomeTitle": {
+    "description": "登录屏幕上的欢迎标题。"
+  },
+  "signInEmailHint": "电子邮件",
+  "@signInEmailHint": {
+    "description": "登录屏幕上电子邮件字段的提示文本。"
+  },
+  "signInPasswordHint": "密码",
+  "@signInPasswordHint": {
+    "description": "登录屏幕上密码字段的提示文本。"
+  },
+  "signInButtonText": "登录",
+  "@signInButtonText": {
+    "description": "登录按钮的文本。"
+  },
+  "signInOrSignInWith": "或使用以下方式登录",
+  "@signInOrSignInWith": {
+    "description": "社交登录按钮前的文本。"
+  },
+  "profileThemesText": "主题",
+  "@profileThemesText": {
+    "description": "个人资料屏幕中“主题”选项的文本。"
+  },
+  "themeSelectSecondaryColor": "选择辅助颜色",
+  "@themeSelectSecondaryColor": {
+    "description": "主题设置中选择辅助颜色的标签。"
+  },
+  "themeOptionGreenAccent": "绿色强调",
+  "@themeOptionGreenAccent": {
+    "description": "绿色强调主题的选项。"
+  },
+  "themeOptionBlueAccent": "蓝色强调",
+  "@themeOptionBlueAccent": {
+    "description": "蓝色强调主题的选项。"
+  },
+  "themeOptionOrangeAccent": "橙色强调",
+  "@themeOptionOrangeAccent": {
+    "description": "橙色强调主题的选项。"
+  },
+  "themeOptionRedAccent": "红色强调",
+  "@themeOptionRedAccent": {
+    "description": "红色强调主题的选项。"
+  },
+
+  "forgotPasswordDialogTitle": "重置密码",
+  "@forgotPasswordDialogTitle": {
+    "description": "密码恢复对话框的标题。"
+  },
+  "forgotPasswordDialogInstructions": "输入您的电子邮件以接收密码恢复说明。",
+  "@forgotPasswordDialogInstructions": {
+    "description": "密码恢复对话框中的说明文本。"
+  },
+  "forgotPasswordDialogEmailLabel": "电子邮件",
+  "@forgotPasswordDialogEmailLabel": {
+    "description": "密码恢复对话框中电子邮件输入字段的标签。"
+  },
+  "forgotPasswordDialogSendButton": "发送",
+  "@forgotPasswordDialogSendButton": {
+    "description": "“忘记密码”对话框中“发送”按钮的文本。"
+  },
+  "forgotPasswordDialogCancelButton": "取消",
+  "@forgotPasswordDialogCancelButton": {
+    "description": "“忘记密码”对话框中“取消”按钮的文本。"
+  },
+  "forgotPasswordDialogSuccess": "恢复电子邮件已发送。",
+  "@forgotPasswordDialogSuccess": {
+    "description": "发送恢复电子邮件成功时的消息。"
+  },
+  "forgotPasswordDialogError": "发送恢复电子邮件时出错。",
+  "@forgotPasswordDialogError": {
+    "description": "发送恢复电子邮件时出现问题时的错误消息。"
+  },
+  "signInCredentialsFailed": "登录凭据无效",
+  "@signInCredentialsFailed": {
+    "description": "当登录凭据为空或不正确时的消息。"
+  },
+  "signInFailed": "登录失败",
+  "@signInFailed": {
+    "description": "登录时的通用错误消息。"
+  },
+  "passwordRequirementsNotMet": "密码不符合最低要求",
+  "@passwordRequirementsNotMet": {
+    "description": "当密码不符合最低要求时的消息。"
+  },
+  "passwordSaved": "密码保存成功。",
+  "@passwordSaved": {
+    "description": "密码保存成功时的消息。"
+  },
+  "passwordRequired": "您必须设置密码才能继续。",
+  "@passwordRequired": {
+    "description": "用户必须设置密码才能继续时的消息。"
+  },
+  "passwordResetError": "发送恢复邮件时出错。",
+  "@passwordResetError": {
+    "description": "发送恢复邮件失败时的错误消息。"
+  },
+  "firebaseAuthRegisterError": "Firebase Auth注册错误。",
+  "@firebaseAuthRegisterError": {"description": "Firebase Auth注册用户时出错。"},
+  "unexpectedRegisterError": "注册时发生意外错误。",
+  "@unexpectedRegisterError": {"description": "注册时发生意外错误。"},
+  "firestoreSaveUserError": "保存用户到Firestore时出错。",
+  "@firestoreSaveUserError": {"description": "保存用户到Firestore时出错。"},
+  "firebaseAuthLoginError": "Firebase Auth登录错误。",
+  "@firebaseAuthLoginError": {"description": "Firebase Auth登录时出错。"},
+  "unexpectedLoginError": "登录时发生意外错误。",
+  "@unexpectedLoginError": {"description": "登录时发生意外错误。"},
+  "errorSavingGoogleUserInfo": "保存Google用户信息到Firestore时出错。",
+  "@errorSavingGoogleUserInfo": {"description": "保存Google用户信息到Firestore时出错。"},
+  "firebaseAuthResetPasswordError": "Firebase Auth发送重置密码邮件时出错。",
+  "@firebaseAuthResetPasswordError": {"description": "Firebase Auth发送重置密码邮件时出错。"},
+  "unexpectedResetPasswordError": "重置密码时发生意外错误。",
+  "@unexpectedResetPasswordError": {"description": "重置密码时发生意外错误。"}
+}

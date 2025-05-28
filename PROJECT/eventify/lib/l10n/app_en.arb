@@ -642,5 +642,74 @@
   "themeOptionRedAccent": "Red Accent",
   "@themeOptionRedAccent": {
     "description": "Option for Red Accent theme."
-  }
+  },
+
+  "forgotPasswordDialogTitle": "Reset Password",
+  "@forgotPasswordDialogTitle": {
+    "description": "The title of the dialog for password recovery."
+  },
+  "forgotPasswordDialogInstructions": "Enter your email to receive password recovery instructions.",
+  "@forgotPasswordDialogInstructions": {
+    "description": "Instructions text in the password recovery dialog."
+  },
+  "forgotPasswordDialogEmailLabel": "Email",
+  "@forgotPasswordDialogEmailLabel": {
+    "description": "Label for the email input in the password recovery dialog."
+  },
+  "forgotPasswordDialogSendButton": "Send",
+  "@forgotPasswordDialogSendButton": {
+    "description": "Text for the 'Send' button in the forgot password dialog."
+  },
+  "forgotPasswordDialogCancelButton": "Cancel",
+  "@forgotPasswordDialogCancelButton": {
+    "description": "Text for the 'Cancel' button in the forgot password dialog."
+  },
+  "forgotPasswordDialogSuccess": "Recovery email sent.",
+  "@forgotPasswordDialogSuccess": {
+    "description": "Success message when the recovery email is sent."
+  },
+  "forgotPasswordDialogError": "Error sending recovery email.",
+  "@forgotPasswordDialogError": {
+    "description": "Error message when there is a problem sending the recovery email."
+  },
+  "signInCredentialsFailed": "Login credentials failed",
+  "@signInCredentialsFailed": {
+    "description": "Message when login credentials are empty or incorrect."
+  },
+  "signInFailed": "Login failed",
+  "@signInFailed": {
+    "description": "Generic login error message."
+  },
+  "passwordRequirementsNotMet": "Password does not meet the minimum requirements",
+  "@passwordRequirementsNotMet": {
+    "description": "Message when the password does not meet the minimum requirements."
+  },
+  "passwordSaved": "Password saved successfully.",
+  "@passwordSaved": {
+    "description": "Message when the password is saved successfully."
+  },
+  "passwordRequired": "You must set a password to continue.",
+  "@passwordRequired": {
+    "description": "Message when the user must set a password to continue."
+  },
+  "passwordResetError": "Error sending recovery email.",
+  "@passwordResetError": {
+    "description": "Error message when sending the recovery email fails."
+  },
+  "firebaseAuthRegisterError": "Firebase Auth registration error.",
+  "@firebaseAuthRegisterError": {"description": "Error registering user in Firebase Auth."},
+  "unexpectedRegisterError": "Unexpected error during registration.",
+  "@unexpectedRegisterError": {"description": "Unexpected error during registration."},
+  "firestoreSaveUserError": "Error saving user to Firestore.",
+  "@firestoreSaveUserError": {"description": "Error saving user to Firestore."},
+  "firebaseAuthLoginError": "Firebase Auth login error.",
+  "@firebaseAuthLoginError": {"description": "Error logging in to Firebase Auth."},
+  "unexpectedLoginError": "Unexpected error during login.",
+  "@unexpectedLoginError": {"description": "Unexpected error during login."},
+  "errorSavingGoogleUserInfo": "Error saving Google user info to Firestore.",
+  "@errorSavingGoogleUserInfo": {"description": "Error saving Google user info to Firestore."},
+  "firebaseAuthResetPasswordError": "Error sending password reset email in Firebase Auth.",
+  "@firebaseAuthResetPasswordError": {"description": "Error sending password reset email in Firebase Auth."},
+  "unexpectedResetPasswordError": "Unexpected error during password reset.",
+  "@unexpectedResetPasswordError": {"description": "Unexpected error during password reset."}
 }
