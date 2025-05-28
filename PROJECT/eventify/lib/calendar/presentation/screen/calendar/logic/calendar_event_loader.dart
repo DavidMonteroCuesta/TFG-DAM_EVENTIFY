@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
@@ -19,9 +20,7 @@ class CalendarEventLoader {
         }
       }
     } catch (e) {
-      print(
-        '${AppInternalConstants.calendarErrorLoadingMonthlyCountsPrint}$yearToLoad: $e',
-      );
+      log('${AppInternalConstants.calendarErrorLoadingMonthlyCountsPrint}$yearToLoad: $e');
     }
     return counts;
   }

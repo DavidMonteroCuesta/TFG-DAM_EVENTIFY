@@ -380,7 +380,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          // 3. CircleAvatar posicionado para superponer el header y el cuerpo (fijo) con BLUR
           Positioned(
             top: avatarTopPosition,
             left: 16,

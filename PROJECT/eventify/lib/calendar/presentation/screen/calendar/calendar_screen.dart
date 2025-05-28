@@ -230,10 +230,6 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
                                             eventViewModel,
                                             child,
                                           ) {
-                                            // DEBUG: Log para ver el estado del evento más próximo
-                                            print(
-                                              'nearestEvent: \\${eventViewModel.nearestEvent}',
-                                            );
                                             if (eventViewModel.isLoading &&
                                                 eventViewModel.nearestEvent ==
                                                     null) {

@@ -1,18 +1,17 @@
-import 'package:eventify/auth/presentation/screen/sign_up_screen.dart';
-import 'package:eventify/auth/presentation/screen/widgets/auth_subtitle.dart';
-import 'package:eventify/auth/presentation/screen/widgets/auth_title.dart';
-import 'package:eventify/auth/presentation/screen/widgets/custom_text_field.dart';
-import 'package:eventify/auth/presentation/screen/widgets/login_auth_layout.dart';
-import 'package:eventify/auth/presentation/screen/widgets/primary_button.dart';
-import 'package:eventify/auth/presentation/screen/widgets/social_sign_in_buttons.dart';
-import 'package:eventify/auth/presentation/screen/widgets/forgot_passwd_option.dart';
+import 'package:eventify/auth/presentation/screen/login/widgets/auth_subtitle.dart';
+import 'package:eventify/auth/presentation/screen/login/widgets/auth_title.dart';
+import 'package:eventify/auth/presentation/screen/login/widgets/custom_text_field.dart';
+import 'package:eventify/auth/presentation/screen/login/widgets/login_auth_layout.dart';
+import 'package:eventify/auth/presentation/screen/login/widgets/primary_button.dart';
+import 'package:eventify/auth/presentation/screen/login/widgets/forgot_passwd_option.dart';
 import 'package:eventify/common/animations/ani_left_to_right.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../view_model/sign_in_view_model.dart';
+import '../../view_model/sign_in_view_model.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart'; // Import CalendarScreen
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -61,22 +60,16 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     final signInViewModel = Provider.of<SignInViewModel>(context);
 
     return EventifyAuthLayout(
-      leftFooterText: AppStrings.signInCreateAccountText(context),
-      rightFooterText: AppStrings.signInLogInText(context),
-      onLeftFooterTap: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const SignUpScreen()),
-        );
-      },
-      onRightFooterTap: () {},
+      leftFooterText: '', // No permitir registro manual
+      rightFooterText: '', // No mostrar texto de login manual
+      onLeftFooterTap: null, // Deshabilita el tap
+      onRightFooterTap: null, // Deshabilita el tap
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AuthTitle(text: AppStrings.signInWelcomeTitle(context)),
           const SizedBox(height: 8),
-          AuthSubtitle(
-              text: AppStrings.signInSubtitle(context)),
+          AuthSubtitle(text: AppStrings.signInSubtitle(context)),
           const SizedBox(height: 24),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
@@ -104,31 +97,52 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             transform: Matrix4.translationValues(_signInButtonOffset, 0.0, 0.0),
             child: PrimaryButton(
               text: AppStrings.signInButtonText(context),
-              onPressed: signInViewModel.isLoading
-                  ? null
-                  : () async {
-                      await signInViewModel.signInWithFirebase(
-                          context, _emailController.text.trim(), _passwordController.text.trim());
-                    },
+              onPressed:
+                  signInViewModel.isLoading
+                      ? null
+                      : () async {
+                        await signInViewModel.signInWithFirebase(
+                          context,
+                          _emailController.text.trim(),
+                          _passwordController.text.trim(),
+                        );
+                      },
             ),
           ),
-          if (signInViewModel.isLoading) CircularProgressIndicator(color: AppColors.primary), // Using AppColors
+          if (signInViewModel.isLoading)
+            CircularProgressIndicator(
+              color: AppColors.primary,
+            ), // Using AppColors
           if (signInViewModel.errorMessage != null)
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 signInViewModel.errorMessage!,
-                style: TextStyles.plusJakartaSansBody1.copyWith(color: AppColors.errorTextColor), // Using AppColors
+                style: TextStyles.plusJakartaSansBody1.copyWith(
+                  color: AppColors.errorTextColor,
+                ), // Using AppColors
               ),
             ),
           const SizedBox(height: 16),
-          Text(
-            AppStrings.signInOrSignInWith(context),
-            style: TextStyles.plusJakartaSansBody2.copyWith(color: AppColors.textGrey500), // Using AppColors
+          PrimaryButton(
+            text: 'Registrarse / Iniciar sesión con Google',
+            onPressed:
+                signInViewModel.isLoading
+                    ? null
+                    : () async {
+                      final user = await signInViewModel
+                          .signInWithGoogleAndPassword(context);
+                      if (user != null) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (_) => const CalendarScreen(),
+                          ),
+                        );
+                      }
+                    },
           ),
           const SizedBox(height: 16),
-          const SocialSignInButtons(),
-          const SizedBox(height: 16),
+          // Elimina SocialSignInButtons, solo deja ForgotPasswordOption
           const ForgotPasswordOption(),
         ],
       ),

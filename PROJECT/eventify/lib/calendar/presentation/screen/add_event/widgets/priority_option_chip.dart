@@ -46,7 +46,7 @@ class PriorityOptionChip extends StatelessWidget {
       side: BorderSide(
         color: isSelected ? backgroundColor : AppColors.choiceChipBorderColor,
       ),
-      labelPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
     );
   }
 }

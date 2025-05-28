@@ -1,4 +1,4 @@
-import 'package:eventify/auth/presentation/screen/profile_screen.dart';
+import 'package:eventify/auth/presentation/screen/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors

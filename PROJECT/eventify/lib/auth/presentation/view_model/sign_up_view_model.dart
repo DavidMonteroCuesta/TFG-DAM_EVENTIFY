@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:eventify/auth/domain/entities/user.dart' as domain;
 import 'package:eventify/auth/domain/use_cases/google_sign_in_use_case.dart';
 import 'package:eventify/auth/domain/use_cases/register_use_case.dart';
@@ -5,6 +6,7 @@ import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.d
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
+
 class SignUpViewModel extends ChangeNotifier {
   final RegisterUseCase registerUseCase;
   final GoogleSignInUseCase googleSignInUseCase;
@@ -18,7 +20,10 @@ class SignUpViewModel extends ChangeNotifier {
   domain.User? _registeredUser;
   domain.User? get registeredUser => _registeredUser;
 
-  SignUpViewModel({required this.registerUseCase, required this.googleSignInUseCase});
+  SignUpViewModel({
+    required this.registerUseCase,
+    required this.googleSignInUseCase,
+  });
 
   Future<bool> register(String email, String password, String username) async {
     _setLoadingState(true);
@@ -30,7 +35,9 @@ class SignUpViewModel extends ChangeNotifier {
         _setLoadingState(false);
         return true;
       } else {
-        _setErrorMessage(AppInternalConstants.signUpFailure); // Corrected to AppInternalConstants
+        _setErrorMessage(
+          AppInternalConstants.signUpFailure,
+        ); // Corrected to AppInternalConstants
         _setLoadingState(false);
         return false;
       }
@@ -39,6 +46,10 @@ class SignUpViewModel extends ChangeNotifier {
       _setErrorMessage('${AppInternalConstants.chatUnexpectedError}: $e');
       return false;
     }
+  }
+
+  Future<bool> signUp(String email, String password, String username) async {
+    return await register(email, password, username);
   }
 
   Future<bool> signInWithGoogle(BuildContext context) async {
@@ -50,7 +61,7 @@ class SignUpViewModel extends ChangeNotifier {
         _registeredUser = user;
         _setLoadingState(false);
 
-        print('User UID after Google Sign-In: ${FirebaseAuth.instance.currentUser?.uid}');
+        log('User UID after Google Sign-In: ${FirebaseAuth.instance.currentUser?.uid}');
 
         Navigator.pushReplacement(
           // ignore: use_build_context_synchronously
@@ -59,12 +70,16 @@ class SignUpViewModel extends ChangeNotifier {
         );
         return true;
       } else {
-        _setErrorMessage(AppInternalConstants.googleSignInCancelled); // Corrected to AppInternalConstants
+        _setErrorMessage(
+          AppInternalConstants.googleSignInCancelled,
+        ); // Corrected to AppInternalConstants
         _setLoadingState(false);
         return false;
       }
     } on FirebaseAuthException catch (e) {
-      _setErrorMessage('${AppInternalConstants.chatGeminiApiError}: ${e.message}');
+      _setErrorMessage(
+        '${AppInternalConstants.chatGeminiApiError}: ${e.message}',
+      );
       _setLoadingState(false);
       return false;
     } catch (e) {

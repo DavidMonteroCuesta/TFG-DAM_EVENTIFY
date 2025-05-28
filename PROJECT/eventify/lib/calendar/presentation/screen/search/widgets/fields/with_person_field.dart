@@ -43,41 +43,6 @@ class WithPersonField extends StatelessWidget {
               ),
             ],
           ),
-          Visibility(
-            visible: withPersonYesNoSearch,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: TextFormField(
-                controller: controller,
-                style: TextStyles.plusJakartaSansBody1,
-                decoration: InputDecoration(
-                  labelText: labelText,
-                  labelStyle: TextStyles.plusJakartaSansSubtitle2,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(
-                      color: AppColors.focusedBorderDynamic,
-                      width: 1.5,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 12.0,
-                  ),
-                  filled: true,
-                  fillColor: AppColors.inputFillColor,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
