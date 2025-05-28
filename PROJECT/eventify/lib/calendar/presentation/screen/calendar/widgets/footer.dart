@@ -4,7 +4,7 @@ import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/p
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_strings.dart';
-
+import 'package:eventify/calendar/presentation/screen/calendar/logic/footer_logic.dart';
 
 class Footer extends StatelessWidget {
   final VoidCallback onToggleCalendar;
@@ -24,9 +24,7 @@ class Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final footerHeightPercentage = 0.12;
-    final footerHeight = screenHeight * footerHeightPercentage;
+    final footerHeight = FooterLogic.getFooterHeight(context);
 
     return Container(
       height: footerHeight,
@@ -36,13 +34,15 @@ class Footer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           IconButton(
-            icon: const Icon(Icons.today, color: AppColors.footerIconColor, size: 24.0), // Using AppColors
+            icon: const Icon(
+              Icons.today,
+              color: AppColors.footerIconColor,
+              size: 24.0,
+            ), // Using AppColors
             onPressed: onResetToCurrent,
             tooltip: AppStrings.footerReturnToCurrentMonthTooltip(context),
           ),
-          ChatButton(
-            size: 32,
-          ),
+          ChatButton(size: 32),
           Transform.scale(
             scale: 1,
             child: CalendarToggleButton(
@@ -50,9 +50,7 @@ class Footer extends StatelessWidget {
               isMonthlyView: isMonthlyView,
             ),
           ),
-          ProfileButton(
-            size: 32,
-          ),
+          ProfileButton(size: 32),
         ],
       ),
     );

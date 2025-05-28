@@ -97,7 +97,7 @@ class DateTimePickers extends StatelessWidget {
               ),
               child: Text(
                 selectedTime != null
-                    ? DateFormat('hh:mm a').format(
+                    ? DateFormat('hh:mm a').format( // <-- CAMBIO AQUÍ: 'hh:mm a'
                       DateTime(
                         2024,
                         1,

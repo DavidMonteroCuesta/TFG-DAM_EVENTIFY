@@ -2,9 +2,9 @@ import 'package:eventify/calendar/presentation/screen/calendar/widgets/month_row
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Timestamp
-import 'package:eventify/common/constants/app_strings.dart'; // Import the AppStrings constants
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/logic/calendar_event_loader.dart';
 
 class Calendar extends StatefulWidget {
   final Function(int monthIndex)? onMonthSelected;
@@ -43,19 +43,19 @@ class _CalendarState extends State<Calendar> {
     // Initialize _months here, where context is guaranteed to be fully available.
     // This ensures localization data is ready.
     _months ??= [
-        AppStrings.monthJanuary(context),
-        AppStrings.monthFebruary(context),
-        AppStrings.monthMarch(context),
-        AppStrings.monthApril(context),
-        AppStrings.monthMay(context),
-        AppStrings.monthJune(context),
-        AppStrings.monthJuly(context),
-        AppStrings.monthAugust(context),
-        AppStrings.monthSeptember(context),
-        AppStrings.monthOctober(context),
-        AppStrings.monthNovember(context),
-        AppStrings.monthDecember(context),
-      ];
+      AppStrings.monthJanuary(context),
+      AppStrings.monthFebruary(context),
+      AppStrings.monthMarch(context),
+      AppStrings.monthApril(context),
+      AppStrings.monthMay(context),
+      AppStrings.monthJune(context),
+      AppStrings.monthJuly(context),
+      AppStrings.monthAugust(context),
+      AppStrings.monthSeptember(context),
+      AppStrings.monthOctober(context),
+      AppStrings.monthNovember(context),
+      AppStrings.monthDecember(context),
+    ];
   }
 
   @override
@@ -68,36 +68,21 @@ class _CalendarState extends State<Calendar> {
 
   Future<void> _loadMonthlyEventCounts() async {
     if (!mounted) return;
-
     final int yearToLoad = widget.currentYear;
-    Map<int, int> counts = { for (var i = 1; i <= 12; i++) i : 0 };
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         _eventViewModel.setLoading(true);
       }
     });
-
     try {
-      await _eventViewModel.getEventsForCurrentUserAndYear(yearToLoad);
+      final counts = await CalendarEventLoader.loadMonthlyEventCounts(
+        _eventViewModel,
+        yearToLoad,
+      );
       if (!mounted) return;
-
-      // allEventsForYear is now List<Map<String, dynamic>>
-      final List<Map<String, dynamic>> allEventsForYear = _eventViewModel.events;
-
-      for (final eventData in allEventsForYear) { // Iterate over maps
-        final Timestamp? eventTimestamp = eventData['dateTime']; // Access dateTime from map
-        if (eventTimestamp != null) {
-          final int month = eventTimestamp.toDate().month; // Convert Timestamp to DateTime
-          counts[month] = (counts[month] ?? 0) + 1;
-        }
-      }
-
       setState(() {
         _monthlyEventCounts = counts;
       });
-    } catch (e) {
-      print('${AppInternalConstants.calendarErrorLoadingMonthlyCountsPrint}$yearToLoad: $e'); // Using constant from AppInternalConstants
     } finally {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
@@ -116,17 +101,21 @@ class _CalendarState extends State<Calendar> {
     }
 
     if (eventViewModel.errorMessage != null) {
-      return Center(child: Text('${AppInternalConstants.calendarErrorMessagePrefix}${eventViewModel.errorMessage}')); // Using constant from AppInternalConstants
+      return Center(
+        child: Text(
+          '${AppInternalConstants.calendarErrorMessagePrefix}${eventViewModel.errorMessage}',
+        ),
+      ); // Using constant from AppInternalConstants
     }
 
     // Add a check to ensure _months is not null before using it
     if (_months == null) {
-      return const Center(child: CircularProgressIndicator()); // Or any other loading/error state
+      return const Center(
+        child: CircularProgressIndicator(),
+      ); // Or any other loading/error state
     }
 
-    return Column(
-      children: _buildMonthRows(MediaQuery.of(context).size.width),
-    );
+    return Column(children: _buildMonthRows(MediaQuery.of(context).size.width));
   }
 
   List<Widget> _buildMonthRows(double screenWidth) {
@@ -140,19 +129,26 @@ class _CalendarState extends State<Calendar> {
 
     List<String> displayedMonths = _months!;
     if (screenWidth < 400) {
-      displayedMonths = _months!.map((month) {
-        if (month.length > 3) {
-          return month.substring(0, 3);
-        } else {
-          return month;
-        }
-      }).toList();
+      displayedMonths =
+          _months!.map((month) {
+            if (month.length > 3) {
+              return month.substring(0, 3);
+            } else {
+              return month;
+            }
+          }).toList();
     }
 
-    final List<int> notifications = List.generate(12, (index) => _monthlyEventCounts[index + 1] ?? 0);
+    final List<int> notifications = List.generate(
+      12,
+      (index) => _monthlyEventCounts[index + 1] ?? 0,
+    );
 
     for (int i = 0; i < displayedMonths.length; i += itemsPerRow) {
-      final end = i + itemsPerRow > displayedMonths.length ? displayedMonths.length : i + itemsPerRow;
+      final end =
+          i + itemsPerRow > displayedMonths.length
+              ? displayedMonths.length
+              : i + itemsPerRow;
       final rowMonths = displayedMonths.sublist(i, end);
       final rowNotifications = notifications.sublist(i, end);
       rows.add(

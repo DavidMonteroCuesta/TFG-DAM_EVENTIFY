@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/fields/date_picker_field.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/domain/entities/event.dart';
@@ -8,12 +9,21 @@ import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
 import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/fields/dropdown_field.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/priority_selector.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/fields/with_person_field.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/search_results_list.dart';
+import 'package:eventify/calendar/presentation/screen/search/logic/search_date_logic.dart';
+import 'package:eventify/calendar/presentation/screen/search/logic/event_type_logic.dart';
+import 'package:eventify/calendar/presentation/screen/search/logic/priority_logic.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/event_result_card.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/search_field.dart';
 
 class EventSearchScreen extends StatefulWidget {
   final DateTime? initialSelectedDate;
@@ -60,56 +70,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     _searchEvents();
   }
 
-  EventType _getEventTypeFromString(String typeString) {
-    switch (typeString.toLowerCase()) {
-      case AppInternalConstants.eventTypeMeeting:
-        return EventType.meeting;
-      case AppInternalConstants.eventTypeExam:
-        return EventType.exam;
-      case AppInternalConstants.eventTypeConference:
-        return EventType.conference;
-      case AppInternalConstants.eventTypeAppointment:
-        return EventType.appointment;
-      case AppInternalConstants.eventTypeTask:
-        return EventType.task;
-      default:
-        return EventType.all;
-    }
-  }
-
-  String _getTranslatedEventTypeDisplay(EventType type) {
-    switch (type) {
-      case EventType.meeting:
-        return AppStrings.searchEventTypeMeetingDisplay(context);
-      case EventType.exam:
-        return AppStrings.searchEventTypeExamDisplay(context);
-      case EventType.conference:
-        return AppStrings.searchEventTypeConferenceDisplay(context);
-      case EventType.appointment:
-        return AppStrings.searchEventTypeAppointmentDisplay(context);
-      case EventType.task:
-        return AppStrings.searchEventTypeTaskDisplay(context);
-      case EventType.all:
-        return AppStrings.searchEventTypeAllDisplay(context);
-    }
-  }
-
-  // Helper function to get translated priority for display and convert to uppercase
-  String _getTranslatedPriorityDisplay(String priorityString) {
-    switch (priorityString.toLowerCase()) {
-      case AppInternalConstants.priorityValueCritical:
-        return AppStrings.priorityDisplayCritical(context).toUpperCase();
-      case AppInternalConstants.priorityValueHigh:
-        return AppStrings.priorityDisplayHigh(context).toUpperCase();
-      case AppInternalConstants.priorityValueMedium:
-        return AppStrings.priorityDisplayMedium(context).toUpperCase();
-      case AppInternalConstants.priorityValueLow:
-        return AppStrings.priorityDisplayLow(context).toUpperCase();
-      default:
-        return priorityString.toUpperCase();
-    }
-  }
-
   Future<void> _loadEvents() async {
     try {
       await _eventViewModel.getEventsForCurrentUser();
@@ -120,33 +80,20 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppInternalConstants.searchFailedToLoadEvents}${e.toString()}')),
+          SnackBar(
+            content: Text(
+              '${AppInternalConstants.searchFailedToLoadEvents}${e.toString()}',
+            ),
+          ),
         );
       }
     }
   }
 
   Future<void> _selectSearchDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? picked = await SearchDateLogic.selectSearchDate(
       context: context,
-      initialDate: _selectedSearchDate ?? DateTime.now(),
-      firstDate: DateTime(2023),
-      lastDate: DateTime(2100),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.dark().copyWith(
-            primaryColor: AppColors.primaryContainer,
-            hintColor: AppColors.secondaryDynamic,
-            colorScheme: ColorScheme.dark(
-              primary: AppColors.primaryContainer,
-            ).copyWith(secondary: AppColors.secondaryDynamic),
-            buttonTheme: const ButtonThemeData(
-              textTheme: ButtonTextTheme.primary,
-            ),
-          ),
-          child: child!,
-        );
-      },
+      initialDate: _selectedSearchDate,
     );
     if (picked != null && picked != _selectedSearchDate) {
       setState(() {
@@ -175,43 +122,63 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       final withPerson = _withPersonSearchController.text.toLowerCase();
 
       if (title.isNotEmpty) {
-        results = results
-            .where((eventData) =>
-                (eventData['title'] as String?)?.toLowerCase().contains(title) ?? false)
-            .toList();
+        results =
+            results
+                .where(
+                  (eventData) =>
+                      (eventData['title'] as String?)?.toLowerCase().contains(
+                        title,
+                      ) ??
+                      false,
+                )
+                .toList();
       }
       if (description.isNotEmpty) {
-        results = results
-            .where((eventData) =>
-                (eventData['description'] as String?)?.toLowerCase().contains(description) ?? false)
-            .toList();
+        results =
+            results
+                .where(
+                  (eventData) =>
+                      (eventData['description'] as String?)
+                          ?.toLowerCase()
+                          .contains(description) ??
+                      false,
+                )
+                .toList();
       }
       if (_selectedSearchDate != null) {
-        results = results.where((eventData) {
-          final Timestamp? eventTimestamp = eventData['dateTime'];
-          if (eventTimestamp != null) {
-            return eventTimestamp.toDate().year == _selectedSearchDate!.year &&
-                   eventTimestamp.toDate().month == _selectedSearchDate!.month &&
-                   eventTimestamp.toDate().day == _selectedSearchDate!.day;
-          }
-          return false;
-        }).toList();
+        results =
+            results.where((eventData) {
+              final Timestamp? eventTimestamp = eventData['dateTime'];
+              if (eventTimestamp != null) {
+                return eventTimestamp.toDate().year ==
+                        _selectedSearchDate!.year &&
+                    eventTimestamp.toDate().month ==
+                        _selectedSearchDate!.month &&
+                    eventTimestamp.toDate().day == _selectedSearchDate!.day;
+              }
+              return false;
+            }).toList();
       }
       if (_selectedEventType != EventType.all) {
-        results = results.where((eventData) {
-          final eventTypeString = eventData['type'] as String?;
-          if (eventTypeString == null) return false;
+        results =
+            results.where((eventData) {
+              final eventTypeString = eventData['type'] as String?;
+              if (eventTypeString == null) return false;
 
-          final EventType eventType = _getEventTypeFromString(eventTypeString);
-          return eventType == _selectedEventType;
-        }).toList();
+              final EventType eventType = EventTypeLogic.getEventTypeFromString(
+                eventTypeString,
+              );
+              return eventType == _selectedEventType;
+            }).toList();
       }
       if (_enablePriorityFilter && _selectedPriority != null) {
-        results = results.where((eventData) {
-          final priorityString = eventData['priority'] as String?;
-          if (priorityString == null) return false;
-          return PriorityConverter.stringToPriority(priorityString) == _selectedPriority;
-        }).toList();
+        results =
+            results.where((eventData) {
+              final priorityString = eventData['priority'] as String?;
+              if (priorityString == null) return false;
+              return PriorityConverter.stringToPriority(priorityString) ==
+                  _selectedPriority;
+            }).toList();
       }
 
       if ((_selectedEventType == EventType.meeting ||
@@ -219,35 +186,53 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               _selectedEventType == EventType.appointment ||
               _selectedEventType == EventType.all) &&
           location.isNotEmpty) {
-        results = results.where((eventData) {
-          final eventTypeString = eventData['type'] as String?;
-          if (eventTypeString == AppInternalConstants.eventTypeMeeting || eventTypeString == AppInternalConstants.eventTypeConference || eventTypeString == AppInternalConstants.eventTypeAppointment) {
-            return (eventData['location'] as String?)?.toLowerCase().contains(location) ?? false;
-          }
-          return false;
-        }).toList();
+        results =
+            results.where((eventData) {
+              final eventTypeString = eventData['type'] as String?;
+              if (eventTypeString == AppInternalConstants.eventTypeMeeting ||
+                  eventTypeString == AppInternalConstants.eventTypeConference ||
+                  eventTypeString ==
+                      AppInternalConstants.eventTypeAppointment) {
+                return (eventData['location'] as String?)
+                        ?.toLowerCase()
+                        .contains(location) ??
+                    false;
+              }
+              return false;
+            }).toList();
       }
-      if ((_selectedEventType == EventType.exam || _selectedEventType == EventType.all) &&
+      if ((_selectedEventType == EventType.exam ||
+              _selectedEventType == EventType.all) &&
           subject.isNotEmpty) {
-        results = results.where((eventData) {
-          final eventTypeString = eventData['type'] as String?;
-          if (eventTypeString == AppInternalConstants.eventTypeExam) {
-            return (eventData['subject'] as String?)?.toLowerCase().contains(subject) ?? false;
-          }
-          return false;
-        }).toList();
+        results =
+            results.where((eventData) {
+              final eventTypeString = eventData['type'] as String?;
+              if (eventTypeString == AppInternalConstants.eventTypeExam) {
+                return (eventData['subject'] as String?)
+                        ?.toLowerCase()
+                        .contains(subject) ??
+                    false;
+              }
+              return false;
+            }).toList();
       }
-      if ((_selectedEventType == EventType.appointment || _selectedEventType == EventType.all) &&
+      if ((_selectedEventType == EventType.appointment ||
+              _selectedEventType == EventType.all) &&
           _withPersonYesNoSearch) {
-        results = results.where((eventData) {
-          final eventTypeString = eventData['type'] as String?;
-          if (eventTypeString == AppInternalConstants.eventTypeAppointment) {
-            final bool withPersonYesNo = eventData['withPersonYesNo'] ?? false;
-            final String? eventWithPerson = eventData['withPerson'];
-            return withPersonYesNo && (eventWithPerson?.toLowerCase().contains(withPerson) ?? false);
-          }
-          return false;
-        }).toList();
+        results =
+            results.where((eventData) {
+              final eventTypeString = eventData['type'] as String?;
+              if (eventTypeString ==
+                  AppInternalConstants.eventTypeAppointment) {
+                final bool withPersonYesNo =
+                    eventData['withPersonYesNo'] ?? false;
+                final String? eventWithPerson = eventData['withPerson'];
+                return withPersonYesNo &&
+                    (eventWithPerson?.toLowerCase().contains(withPerson) ??
+                        false);
+              }
+              return false;
+            }).toList();
       }
 
       _searchResults = results;
@@ -273,21 +258,42 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     final String eventId = eventData['id'] as String;
     final String eventTitle = eventData['title'] as String;
 
-    final bool confirm = await showDialog(
+    final bool confirm =
+        await showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               backgroundColor: AppColors.dialogBackground,
-              title: Text(AppStrings.searchDeleteEventTitle(context), style: TextStyles.urbanistSubtitle1.copyWith(color: AppColors.textPrimary)),
-              content: Text('${AppStrings.searchDeleteEventConfirmPrefix(context)}"$eventTitle"${AppStrings.searchDeleteEventConfirmSuffix(context)}', style: TextStyles.plusJakartaSansBody2.copyWith(color: AppColors.textSecondary)),
+              title: Text(
+                AppStrings.searchDeleteEventTitle(context),
+                style: TextStyles.urbanistSubtitle1.copyWith(
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              content: Text(
+                '${AppStrings.searchDeleteEventConfirmPrefix(context)}"$eventTitle"${AppStrings.searchDeleteEventConfirmSuffix(context)}',
+                style: TextStyles.plusJakartaSansBody2.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(AppStrings.searchCancelButton(context), style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.primaryContainer)),
+                  child: Text(
+                    AppStrings.searchCancelButton(context),
+                    style: TextStyles.plusJakartaSansSubtitle2.copyWith(
+                      color: AppColors.primaryContainer,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text(AppStrings.searchDeleteButton(context), style: TextStyles.plusJakartaSansSubtitle2.copyWith(color: AppColors.deleteButtonColor)),
+                  child: Text(
+                    AppStrings.searchDeleteButton(context),
+                    style: TextStyles.plusJakartaSansSubtitle2.copyWith(
+                      color: AppColors.deleteButtonColor,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -300,7 +306,11 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
         await _eventViewModel.deleteEvent(eventId);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${AppStrings.searchEventDeletedSuccessPrefix(context)}"$eventTitle"${AppStrings.searchEventDeletedSuccessSuffix(context)}')),
+            SnackBar(
+              content: Text(
+                '${AppStrings.searchEventDeletedSuccessPrefix(context)}"$eventTitle"${AppStrings.searchEventDeletedSuccessSuffix(context)}',
+              ),
+            ),
           );
           await _loadEvents();
           _searchEvents();
@@ -308,7 +318,11 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${AppInternalConstants.searchFailedToDeleteEvent}${e.toString()}')),
+            SnackBar(
+              content: Text(
+                '${AppInternalConstants.searchFailedToDeleteEvent}${e.toString()}',
+              ),
+            ),
           );
         }
       }
@@ -332,7 +346,10 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.outlineColorLight),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: AppColors.outlineColorLight,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -355,112 +372,106 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSearchField(
+              SearchField(
                 controller: _titleSearchController,
                 labelText: AppStrings.searchFieldEventTitle(context),
+                onChanged: (_) => _searchEvents(),
               ),
-              _buildSearchField(
+              SearchField(
                 controller: _descriptionSearchController,
                 labelText: AppStrings.searchFieldDescription(context),
+                onChanged: (_) => _searchEvents(),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: InkWell(
-                  onTap: () => _selectSearchDate(context),
-                  child: InputDecorator(
-                    decoration: InputDecoration(
-                      labelText: AppStrings.searchFieldDate(context),
-                      labelStyle: TextStyles.plusJakartaSansSubtitle2,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: AppColors.focusedBorderDynamic,
-                          width: 1.5,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 12.0,
-                      ),
-                      filled: true,
-                      fillColor: AppColors.inputFillColor,
-                      suffixIcon:
-                          _selectedSearchDate != null
-                              ? IconButton(
-                                icon: const Icon(
-                                  Icons.clear,
-                                  color: AppColors.textSecondary,
-                                ),
-                                onPressed: _clearSearchDate,
-                              )
-                              : const Icon(
-                                Icons.calendar_today,
-                                color: AppColors.textSecondary,
-                              ),
-                    ),
-                    child: Text(
-                      _selectedSearchDate != null
-                          ? DateFormat(
-                            'yyyy-MM-dd',
-                          ).format(_selectedSearchDate!)
-                          : AppStrings.searchFieldSelectDate(context),
-                      style:
-                          _selectedSearchDate != null
-                              ? TextStyles.plusJakartaSansBody1
-                              : TextStyles.plusJakartaSansSubtitle2,
-                    ),
-                  ),
-                ),
+              DatePickerField(
+                selectedDate: _selectedSearchDate,
+                onTap: () => _selectSearchDate(context),
+                onClear: _selectedSearchDate != null ? _clearSearchDate : null,
+                contextForStrings: context,
               ),
-              _buildDropdownField(
+              DropdownField<EventType>(
                 value: _selectedEventType,
                 onChanged: (newValue) {
                   if (newValue != null) {
                     setState(() {
-                      _selectedEventType = newValue as EventType;
+                      _selectedEventType = newValue;
                       _searchEvents();
                     });
                   }
                 },
                 items:
-                    EventType.values.map<DropdownMenuItem<EventType>>((
-                      EventType value,
-                    ) {
+                    EventType.values.map((value) {
                       return DropdownMenuItem<EventType>(
                         value: value,
                         child: Text(
-                          _getTranslatedEventTypeDisplay(value),
+                          EventTypeLogic.getTranslatedEventTypeDisplay(
+                            value,
+                            context,
+                          ),
                           style: TextStyles.plusJakartaSansBody2,
                         ),
                       );
                     }).toList(),
                 labelText: AppStrings.searchFieldEventType(context),
               ),
-              _buildPrioritySelector(),
+              PrioritySelector(
+                enablePriorityFilter: _enablePriorityFilter,
+                onEnableChanged: (newValue) {
+                  setState(() {
+                    _enablePriorityFilter = newValue;
+                    if (!newValue) _selectedPriority = null;
+                    _searchEvents();
+                  });
+                },
+                selectedPriority: _selectedPriority,
+                onPriorityChanged: (priority) {
+                  setState(() {
+                    _selectedPriority = priority;
+                    _searchEvents();
+                  });
+                },
+                labelCritical: AppStrings.searchPriorityCritical(context),
+                labelHigh: AppStrings.searchPriorityHigh(context),
+                labelMedium: AppStrings.searchPriorityMedium(context),
+                labelLow: AppStrings.searchPriorityLow(context),
+              ),
               if (_selectedEventType == EventType.meeting ||
                   _selectedEventType == EventType.conference ||
                   _selectedEventType == EventType.appointment ||
                   _selectedEventType == EventType.all)
-                _buildSearchField(
+                SearchField(
                   controller: _locationSearchController,
                   labelText: AppStrings.searchFieldLocation(context),
+                  onChanged: (_) => _searchEvents(),
                 ),
-              if (_selectedEventType == EventType.exam || _selectedEventType == EventType.all)
-                _buildSearchField(
+              if (_selectedEventType == EventType.exam ||
+                  _selectedEventType == EventType.all)
+                SearchField(
                   controller: _subjectSearchController,
                   labelText: AppStrings.searchFieldSubject(context),
+                  onChanged: (_) => _searchEvents(),
                 ),
-              if (_selectedEventType == EventType.appointment || _selectedEventType == EventType.all)
-                _buildWithPersonField(),
-
+              if (_selectedEventType == EventType.appointment ||
+                  _selectedEventType == EventType.all)
+                WithPersonField(
+                  withPersonYesNoSearch: _withPersonYesNoSearch,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _withPersonYesNoSearch = newValue ?? false;
+                      _searchEvents();
+                    });
+                  },
+                  controller: _withPersonSearchController,
+                  labelText: AppStrings.searchFieldWithPerson(context),
+                  yesNoLabel: AppStrings.searchFieldWithPersonYesNo(context),
+                ),
+              if ((_selectedEventType == EventType.appointment ||
+                      _selectedEventType == EventType.all) &&
+                  _withPersonYesNoSearch)
+                SearchField(
+                  controller: _withPersonSearchController,
+                  labelText: AppStrings.searchFieldWithPerson(context),
+                  onChanged: (_) => _searchEvents(),
+                ),
               if (_searchResults.isNotEmpty) ...[
                 const SizedBox(height: 10.0),
                 Text(
@@ -468,108 +479,50 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                   style: TextStyles.urbanistSubtitle1.copyWith(fontSize: 18),
                 ),
                 const SizedBox(height: 10.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                SearchResultsList(
                   children:
                       _searchResults.map((eventData) {
-                        final String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+                        final String? currentUserId =
+                            FirebaseAuth.instance.currentUser?.uid;
                         if (currentUserId == null) {
                           return const SizedBox.shrink();
                         }
                         final Event event = EventFactory.createEvent(
-                          _getEventTypeFromString(eventData['type'] ?? AppInternalConstants.eventTypeTask),
+                          EventTypeLogic.getEventTypeFromString(
+                            eventData['type'] ??
+                                AppInternalConstants.eventTypeTask,
+                          ),
                           eventData,
                           currentUserId,
                         );
-
-                        String eventTypeString = _getTranslatedEventTypeDisplay(_getEventTypeFromString(eventData['type'] ?? AppInternalConstants.eventTypeTask));
+                        String eventTypeString =
+                            EventTypeLogic.getTranslatedEventTypeDisplay(
+                              EventTypeLogic.getEventTypeFromString(
+                                eventData['type'] ??
+                                    AppInternalConstants.eventTypeTask,
+                              ),
+                              context,
+                            );
                         String formattedDateTime =
                             event.dateTime != null
                                 ? DateFormat(
                                   'yyyy/MM/dd HH:mm',
                                 ).format(event.dateTime!.toDate())
                                 : AppInternalConstants.searchNA;
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: SizedBox(
-                            width: screenWidth * 0.9,
-                            child: Container(
-                              padding: const EdgeInsets.all(12.0),
-                              decoration: BoxDecoration(
-                                color: AppColors.cardBackground,
-                                borderRadius: BorderRadius.circular(8.0),
-                                border: Border.all(
-                                  color: AppColors.outlineColorLight.withOpacity(0.3),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          event.title,
-                                          style: TextStyles.plusJakartaSansBody1
-                                              .copyWith(fontSize: 18),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                            icon: const Icon(Icons.edit, color: AppColors.editIconColor),
-                                            onPressed: () => _onEditEvent(eventData),
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(Icons.delete, color: AppColors.deleteIconColor),
-                                            onPressed: () => _onDeleteEvent(eventData),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                        return EventResultCard(
+                          event: event,
+                          eventTypeString: eventTypeString,
+                          formattedDateTime: formattedDateTime,
+                          getTranslatedPriorityDisplay:
+                              (priorityString) =>
+                                  PriorityLogic.getTranslatedPriorityDisplay(
+                                    priorityString,
+                                    context,
                                   ),
-                                  const SizedBox(height: 4.0),
-                                  Text(
-                                    '${AppStrings.searchDateAndTimePrefix(context)}$formattedDateTime',
-                                    style: TextStyles.plusJakartaSansBody2,
-                                  ),
-                                  const SizedBox(height: 4.0),
-                                  Text(
-                                    '${AppStrings.searchTypePrefix(context)}$eventTypeString',
-                                    style: TextStyles.plusJakartaSansBody2,
-                                  ),
-                                  const SizedBox(height: 4.0),
-                                  Text(
-                                    '${AppStrings.searchDescriptionPrefix(context)}${event.description ?? AppInternalConstants.searchNA}',
-                                    style: TextStyles.plusJakartaSansBody2,
-                                  ),
-                                  Text(
-                                    '${AppStrings.searchPriorityPrefix(context)}${_getTranslatedPriorityDisplay(event.priority.toString().split('.').last)}',
-                                    style: TextStyles.plusJakartaSansBody2
-                                        .copyWith(color: AppColors.priorityTextColorDynamic),
-                                  ),
-                                  if (event.location != null && event.location!.isNotEmpty)
-                                    Text(
-                                      '${AppStrings.searchLocationPrefix(context)}${event.location}',
-                                      style: TextStyles.plusJakartaSansBody2,
-                                    ),
-                                  if (event.subject != null && event.subject!.isNotEmpty)
-                                    Text(
-                                      '${AppStrings.searchSubjectPrefix(context)}${event.subject}',
-                                      style: TextStyles.plusJakartaSansBody2,
-                                    ),
-                                  if (event.withPerson != null && event.withPerson!.isNotEmpty)
-                                    Text(
-                                      '${AppStrings.searchWithPersonPrefix(context)}${event.withPerson}',
-                                      style: TextStyles.plusJakartaSansBody2,
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          onEdit: () => _onEditEvent(eventData),
+                          onDelete: () => _onDeleteEvent(eventData),
+                          width: screenWidth * 0.9,
+                          contextForStrings: context,
                         );
                       }).toList(),
                 ),
@@ -577,224 +530,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSearchField({
-    required TextEditingController controller,
-    required String labelText,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        controller: controller,
-        style: TextStyles.plusJakartaSansBody1,
-        onChanged: (value) => _searchEvents(),
-        decoration: InputDecoration(
-          labelText: labelText,
-          labelStyle: TextStyles.plusJakartaSansSubtitle2,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(
-              color: AppColors.focusedBorderDynamic,
-              width: 1.5,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-            vertical: 12.0,
-          ),
-          filled: true,
-          fillColor: AppColors.inputFillColor,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdownField({
-    required Object? value,
-    required void Function(Object?)? onChanged,
-    required List<DropdownMenuItem<Object>> items,
-    required String labelText,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField(
-        value: value,
-        onChanged: onChanged,
-        items: items,
-        decoration: InputDecoration(
-          labelText: labelText,
-          labelStyle: TextStyles.plusJakartaSansSubtitle2,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(
-              color: AppColors.focusedBorderDynamic,
-              width: 1.5,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-            vertical: 12.0,
-          ),
-          filled: true,
-          fillColor: AppColors.inputFillColor,
-        ),
-        style: TextStyles.plusJakartaSansBody2,
-      ),
-    );
-  }
-
-  Widget _buildPrioritySelector() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(AppStrings.searchFieldPriority(context), style: TextStyles.plusJakartaSansSubtitle2),
-              const SizedBox(width: 10),
-              Switch(
-                value: _enablePriorityFilter,
-                onChanged: (bool newValue) {
-                  setState(() {
-                    _enablePriorityFilter = newValue;
-                    if (!newValue) {
-                      _selectedPriority = null;
-                    }
-                    _searchEvents();
-                  });
-                },
-                activeColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
-                inactiveTrackColor: AppColors.switchInactiveTrackColor,
-                inactiveThumbColor: AppColors.switchInactiveThumbColor,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8.0),
-          Visibility(
-            visible: _enablePriorityFilter,
-            child: Wrap(
-              spacing: 8.0,
-              children: [
-                _buildPriorityOption(
-                  AppStrings.searchPriorityCritical(context),
-                  Priority.critical,
-                  AppColors.focusedBorderDynamic.withOpacity(0.8),
-                  AppColors.priorityOptionBackground,
-                ),
-                _buildPriorityOption(
-                  AppStrings.searchPriorityHigh(context),
-                  Priority.high,
-                  AppColors.focusedBorderDynamic.withOpacity(0.8),
-                  AppColors.priorityOptionBackground,
-                ),
-                _buildPriorityOption(
-                  AppStrings.searchPriorityMedium(context),
-                  Priority.medium,
-                  AppColors.focusedBorderDynamic.withOpacity(0.8),
-                  AppColors.priorityOptionBackground,
-                ),
-                _buildPriorityOption(
-                  AppStrings.searchPriorityLow(context),
-                  Priority.low,
-                  AppColors.focusedBorderDynamic.withOpacity(0.8),
-                  AppColors.priorityOptionBackground,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPriorityOption(
-    String label,
-    Priority priority,
-    Color backgroundColor,
-    Color textColor,
-  ) {
-    final isSelected = _selectedPriority == priority;
-    return ChoiceChip(
-      label: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? textColor : AppColors.priorityOptionSelectedTextColor,
-        ),
-      ),
-      selected: isSelected,
-      onSelected: (bool selected) {
-        setState(() {
-          if (selected) {
-            _selectedPriority = _selectedPriority == priority ? null : priority;
-            _searchEvents();
-          }
-        });
-      },
-      backgroundColor: backgroundColor.withOpacity(0.3),
-      selectedColor: backgroundColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      side: BorderSide(color: isSelected ? backgroundColor : AppColors.choiceChipBorderColor),
-      labelPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-    );
-  }
-
-  Widget _buildWithPersonField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                AppStrings.searchFieldWithPersonYesNo(context),
-                style: TextStyles.plusJakartaSansBody1.copyWith(
-                  fontSize: 16.0,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              Checkbox(
-                value: _withPersonYesNoSearch,
-                onChanged: (bool? newValue) {
-                  setState(() {
-                    _withPersonYesNoSearch = newValue ?? false;
-                    _searchEvents();
-                  });
-                },
-                activeColor: AppColors.focusedBorderDynamic,
-                checkColor: AppColors.checkboxCheckColor,
-              ),
-            ],
-          ),
-          Visibility(
-            visible: _withPersonYesNoSearch,
-            child: _buildSearchField(
-              controller: _withPersonSearchController,
-              labelText: AppStrings.searchFieldWithPerson(context),
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:eventify/calendar/presentation/screen/calendar/logic/month_item_logic.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
@@ -13,22 +14,11 @@ class MonthItem extends StatelessWidget {
     this.onTap,
   });
 
-  Color? _getNotificationColor(int count) {
-    if (count == 1) {
-      return AppColors.primary; // Using AppColors
-    } else if (count > 1 && count <= 3) {
-      return AppColors.calendarAccentColor; // Using AppColors
-    } else if (count >= 4 && count <= 7) {
-      return AppColors.notificationOrange; // Using AppColors
-    } else if (count > 7) {
-      return AppColors.deleteButtonColor; // Using AppColors
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final notificationColor = _getNotificationColor(notificationCount);
+    final notificationColor = MonthItemLogic.getNotificationColor(
+      notificationCount,
+    );
 
     return GestureDetector(
       onTap: onTap,

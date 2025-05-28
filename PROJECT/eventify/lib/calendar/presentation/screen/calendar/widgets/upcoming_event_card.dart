@@ -1,3 +1,4 @@
+import 'package:eventify/calendar/presentation/screen/calendar/logic/upcoming_event_card_logic.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:flutter/material.dart';
@@ -25,45 +26,8 @@ class UpcomingEventCard extends StatelessWidget {
     this.onTapCard,
   });
 
-  String _getTranslatedEventType(BuildContext context, String typeString) {
-    switch (typeString.toLowerCase()) {
-      case AppInternalConstants.eventTypeMeeting:
-        return AppStrings.searchEventTypeMeetingDisplay(context).toUpperCase();
-      case AppInternalConstants.eventTypeExam:
-        return AppStrings.searchEventTypeExamDisplay(context).toUpperCase();
-      case AppInternalConstants.eventTypeConference:
-        return AppStrings.searchEventTypeConferenceDisplay(
-          context,
-        ).toUpperCase();
-      case AppInternalConstants.eventTypeAppointment:
-        return AppStrings.searchEventTypeAppointmentDisplay(
-          context,
-        ).toUpperCase();
-      case AppInternalConstants.eventTypeTask:
-      default:
-        return AppStrings.searchEventTypeTaskDisplay(context).toUpperCase();
-    }
-  }
-
-  String _getTranslatedPriority(BuildContext context, String priorityString) {
-    switch (priorityString.toLowerCase()) {
-      case AppInternalConstants.priorityValueCritical:
-        return AppStrings.priorityDisplayCritical(context);
-      case AppInternalConstants.priorityValueHigh:
-        return AppStrings.priorityDisplayHigh(context);
-      case AppInternalConstants.priorityValueMedium:
-        return AppStrings.priorityDisplayMedium(context);
-      case AppInternalConstants.priorityValueLow:
-        return AppStrings.priorityDisplayLow(context);
-      default:
-        return priorityString;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    // const Color outlineColor = Color(0xFFE0E0E0); // Replaced by AppColors.outlineColorLight
-
     return InkWell(
       onTap: onTapCard,
       borderRadius: BorderRadius.circular(12.0),
@@ -73,7 +37,10 @@ class UpcomingEventCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.cardBackground, // Using AppColors
           borderRadius: BorderRadius.circular(12.0),
-          border: Border.all(color: AppColors.outlineColorLight.withOpacity(0.3), width: 1.0), // Using AppColors
+          border: Border.all(
+            color: AppColors.outlineColorLight.withOpacity(0.3),
+            width: 1.0,
+          ), // Using AppColors
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2), // Derived color, keep as is
@@ -103,7 +70,7 @@ class UpcomingEventCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  _getTranslatedEventType(
+                  UpcomingEventCardLogic.getTranslatedEventType(
                     context,
                     type.split('.').last,
                   ),
@@ -124,7 +91,7 @@ class UpcomingEventCard extends StatelessWidget {
             const SizedBox(height: 8.0),
 
             Text(
-              '${AppStrings.upcomingEventPriorityPrefix(context)}${_getTranslatedPriority(context, priority.split('.').last)}',
+              '${AppStrings.upcomingEventPriorityPrefix(context)}${UpcomingEventCardLogic.getTranslatedPriority(context, priority.split('.').last)}',
               style: TextStyles.plusJakartaSansBody2.copyWith(
                 color: AppColors.priorityTextColorDynamic, // Using AppColors
               ),

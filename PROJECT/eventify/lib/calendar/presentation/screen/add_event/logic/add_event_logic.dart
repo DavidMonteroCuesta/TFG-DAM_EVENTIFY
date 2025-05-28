@@ -5,6 +5,7 @@ import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/di/service_locator.dart';
+import 'package:eventify/common/theme/colors/app_colors.dart'; // Asegúrate de importar AppColors
 import 'event_type_utils.dart';
 import 'date_time_utils.dart';
 
@@ -65,6 +66,24 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
       initialDate: selectedDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.secondaryDynamic,
+              onPrimary: AppColors.textPrimary,
+              surface: AppColors.inputFillColor,
+              onSurface: AppColors.textPrimary,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.secondaryDynamic,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -81,6 +100,25 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedTime ?? TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.secondaryDynamic,
+              onPrimary: AppColors.textPrimary,
+              surface: AppColors.inputFillColor,
+              onSurface: AppColors.textPrimary,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.secondaryDynamic,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+      initialEntryMode: TimePickerEntryMode.input,
     );
     if (picked != null && picked != selectedTime) {
       setState(() {

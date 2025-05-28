@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/logic/monthly_calendar_logic.dart';
 
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;
@@ -45,8 +45,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
     if (widget.initialFocusedDay.year != oldWidget.initialFocusedDay.year ||
         widget.initialFocusedDay.month != oldWidget.initialFocusedDay.month ||
         widget.initialFocusedDay.day != oldWidget.initialFocusedDay.day ||
-        widget.key != oldWidget.key
-        ) {
+        widget.key != oldWidget.key) {
       setState(() {
         _focusedDay = widget.initialFocusedDay;
         _loadEventsForMonth();
@@ -87,23 +86,20 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
       if (mounted) {
         setState(() {
           _eventsForCurrentMonth = eventsData;
-          _datesWithEvents = eventsData
-              .where((eventData) => eventData['dateTime'] != null)
-              .map((eventData) {
-                final Timestamp eventTimestamp = eventData['dateTime'] as Timestamp;
-                return DateTime(
-                  eventTimestamp.toDate().year,
-                  eventTimestamp.toDate().month,
-                  eventTimestamp.toDate().day,
-                );
-              })
-              .toSet();
+          _datesWithEvents = MonthlyCalendarLogic.extractDatesWithEvents(
+            eventsData,
+          );
         });
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('${AppInternalConstants.monthlyCalendarErrorLoadingEvents}${e.toString()}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${AppInternalConstants.monthlyCalendarErrorLoadingEvents}${e.toString()}',
+            ),
+          ),
+        );
       }
     }
   }
@@ -136,7 +132,10 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary), // Using AppColors
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: AppColors.textPrimary,
+                ), // Using AppColors
                 onPressed: _goToPreviousMonth,
               ),
               Text(
@@ -145,7 +144,10 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 style: TextStyles.urbanistH6,
               ),
               IconButton(
-                icon: const Icon(Icons.arrow_forward_ios, color: AppColors.textPrimary), // Using AppColors
+                icon: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppColors.textPrimary,
+                ), // Using AppColors
                 onPressed: _goToNextMonth,
               ),
             ],
@@ -153,30 +155,41 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: daysOfWeek
-                .map((day) => Text(
-                      day,
-                      style: TextStyle(color: AppColors.calendarAccentColor),
-                    ))
-                .toList(),
+            children:
+                daysOfWeek
+                    .map(
+                      (day) => Text(
+                        day,
+                        style: TextStyle(color: AppColors.calendarAccentColor),
+                      ),
+                    )
+                    .toList(),
           ),
           const SizedBox(height: 10),
           Expanded(
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: _daysInMonth.length + (_firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1),
+              itemCount:
+                  _daysInMonth.length +
+                  (_firstDayOfMonth.weekday == 7
+                      ? 6
+                      : _firstDayOfMonth.weekday - 1),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 7,
               ),
               itemBuilder: (context, index) {
-                final int weekdayOffset = _firstDayOfMonth.weekday == 7 ? 6 : _firstDayOfMonth.weekday - 1;
+                final int weekdayOffset =
+                    _firstDayOfMonth.weekday == 7
+                        ? 6
+                        : _firstDayOfMonth.weekday - 1;
 
                 if (index < weekdayOffset) {
                   return const SizedBox();
                 }
                 final day = _daysInMonth[index - weekdayOffset];
-                final isToday = day.year == DateTime.now().year &&
+                final isToday =
+                    day.year == DateTime.now().year &&
                     day.month == DateTime.now().month &&
                     day.day == DateTime.now().day;
                 final hasEvent = _datesWithEvents.contains(day);
@@ -187,19 +200,26 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isToday
-                          ? AppColors.todayHighlightColor // Using AppColors
-                          : null,
+                      color:
+                          isToday
+                              ? AppColors
+                                  .todayHighlightColor // Using AppColors
+                              : null,
                       shape: isToday ? BoxShape.circle : BoxShape.rectangle,
                     ),
                     child: Center(
                       child: Text(
                         '${day.day}',
                         style: TextStyle(
-                          color: isToday || hasEvent
-                              ? AppColors.calendarAccentColor // Using AppColors
-                              : AppColors.textPrimary, // Using AppColors
-                          fontWeight: isToday || hasEvent ? FontWeight.bold : FontWeight.normal,
+                          color:
+                              isToday || hasEvent
+                                  ? AppColors
+                                      .calendarAccentColor // Using AppColors
+                                  : AppColors.textPrimary, // Using AppColors
+                          fontWeight:
+                              isToday || hasEvent
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                         ),
                       ),
                     ),
