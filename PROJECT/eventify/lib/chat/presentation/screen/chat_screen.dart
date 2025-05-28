@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
@@ -61,12 +63,13 @@ class _ChatScreenState extends State<ChatScreen> {
     final chatViewModel = Provider.of<ChatViewModel>(context);
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.cardBackground, // Using AppColors
+        color: AppColors.cardBackground,
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, -1),
             blurRadius: 2,
-            color: Colors.black.withOpacity(0.1), // Keep as is, derived color
+            // ignore: deprecated_member_use
+            color: Colors.black.withOpacity(0.1),
           ),
         ],
       ),
@@ -81,9 +84,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 onSubmitted: chatViewModel.isLoading ? null : _handleSubmitted,
                 style: TextStyles.plusJakartaSansBody1,
                 decoration: InputDecoration(
-                  hintText: chatViewModel.isLoading
-                      ? AppInternalConstants.chatThinkingHint
-                      : AppStrings.chatInputHint(context),
+                  hintText:
+                      chatViewModel.isLoading
+                          ? AppInternalConstants.chatThinkingHint
+                          : AppStrings.chatInputHint(context),
                   hintStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -91,16 +95,19 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide:
-                        BorderSide(color: AppColors.primary, width: 1.5),
+                    borderSide: BorderSide(
+                      color: AppColors.primary,
+                      width: 1.5,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide:
-                        BorderSide.none,
+                    borderSide: BorderSide.none,
                   ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 16.0,
+                  ),
                   filled: true,
                   fillColor: AppColors.inputFillColor,
                 ),
@@ -109,12 +116,16 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
             IconButton(
-              icon: chatViewModel.isLoading
-                  ? const CircularProgressIndicator(color: AppColors.textPrimary)
-                  : const Icon(Icons.send, color: AppColors.textPrimary),
-              onPressed: chatViewModel.isLoading
-                  ? null
-                  : () => _handleSubmitted(_messageController.text),
+              icon:
+                  chatViewModel.isLoading
+                      ? const CircularProgressIndicator(
+                        color: AppColors.textPrimary,
+                      )
+                      : const Icon(Icons.send, color: AppColors.textPrimary),
+              onPressed:
+                  chatViewModel.isLoading
+                      ? null
+                      : () => _handleSubmitted(_messageController.text),
             ),
           ],
         ),
@@ -124,49 +135,70 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const double headerHeight = kToolbarHeight;
     return Scaffold(
-      appBar: AppBar(
-        title: ShiningTextAnimation(
-          text: AppStrings.chatScreenTitle(context),
-          style: TextStyles.urbanistBody1,
-        ),
-        titleTextStyle: TextStyles.urbanistBody1,
-        backgroundColor: AppColors.headerBackground,
-        foregroundColor: AppColors.outline,
-        elevation: 0,
-        centerTitle: true,
-        toolbarHeight: kToolbarHeight,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.outline),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
       backgroundColor: AppColors.background,
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: Consumer<ChatViewModel>(
-              builder: (context, chatViewModel, child) {
-                return ListView.builder(
-                  controller: _scrollController,
-                  reverse: true,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
-                  itemCount: chatViewModel.messages.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return chatViewModel.messages[index];
+          Column(
+            children: [
+              SizedBox(height: headerHeight),
+              Expanded(
+                child: Consumer<ChatViewModel>(
+                  builder: (context, chatViewModel, child) {
+                    return ListView.builder(
+                      controller: _scrollController,
+                      reverse: true,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 16.0,
+                      ),
+                      itemCount: chatViewModel.messages.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return chatViewModel.messages[index];
+                      },
+                    );
                   },
-                );
-              },
+                ),
+              ),
+              const Divider(height: 1.0, color: AppColors.dividerColor),
+              _buildTextComposer(),
+            ],
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.zero,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+              child: Container(
+                width: double.infinity,
+                height: headerHeight,
+                // ignore: deprecated_member_use
+                color: AppColors.headerBackground.withOpacity(0.2),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: AppColors.outline,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: ShiningTextAnimation(
+                          text: AppStrings.chatScreenTitle(context),
+                          style: TextStyles.urbanistBody1,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 48), // Space for symmetry
+                  ],
+                ),
+              ),
             ),
           ),
-          const Divider(
-            height: 1.0,
-            color: AppColors.dividerColor,
-          ),
-          _buildTextComposer(),
         ],
       ),
     );

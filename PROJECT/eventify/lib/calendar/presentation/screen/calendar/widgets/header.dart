@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:eventify/calendar/presentation/screen/calendar/logic/header_logic.dart';
 import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
 import 'package:eventify/calendar/presentation/screen/search/search_events_screen.dart';
@@ -60,88 +62,94 @@ class _HeaderState extends State<Header> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      color: AppColors.headerBackground.withOpacity(
-        0.8,
-      ), // Ajusta la opacidad si lo necesitas
-      child: SizedBox(
-        height: 64, // Ajusta la altura si lo necesitas
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment:
-              CrossAxisAlignment.end, // Alinea todos los hijos abajo
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  IconButton(
-                    onPressed: _goToPreviousYear,
-                    icon: const Icon(
-                      Icons.arrow_downward,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: _goToNextYear,
-                    icon: const Icon(
-                      Icons.arrow_upward,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              margin: const EdgeInsets.only(bottom: 10),
-              child: ShiningTextAnimation(
-                text: '$_currentYear',
-                style: TextStyles.urbanistBody1,
-                shineColor: AppColors.shineEffectColor,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const EventSearchScreen(),
+    return ClipRRect(
+      borderRadius: BorderRadius.zero, // Square borders like profile header
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          color: AppColors.headerBackground.withOpacity(0.8),
+          child: SizedBox(
+            height: 64,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: _goToPreviousYear,
+                        icon: const Icon(
+                          Icons.arrow_downward,
+                          color: AppColors.textPrimary,
                         ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.search,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      final result = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const AddEventScreen(),
+                      ),
+                      IconButton(
+                        onPressed: _goToNextYear,
+                        icon: const Icon(
+                          Icons.arrow_upward,
+                          color: AppColors.textPrimary,
                         ),
-                      );
-                      if (result == true && mounted) {
-                        Provider.of<EventViewModel>(
-                          context,
-                          listen: false,
-                        ).loadNearestEvent(force: true);
-                        setState(() {});
-                      }
-                    },
-                    icon: const Icon(Icons.add, color: AppColors.textPrimary),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: ShiningTextAnimation(
+                    text: '$_currentYear',
+                    style: TextStyles.urbanistBody1,
+                    shineColor: AppColors.shineEffectColor,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const EventSearchScreen(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.search,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final result = await Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AddEventScreen(),
+                            ),
+                          );
+                          if (result == true && mounted) {
+                            Provider.of<EventViewModel>(
+                              context,
+                              listen: false,
+                            ).loadNearestEvent(force: true);
+                            setState(() {});
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.add,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

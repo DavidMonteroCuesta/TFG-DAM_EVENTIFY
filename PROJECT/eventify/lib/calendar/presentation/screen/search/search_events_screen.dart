@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/presentation/screen/search/widgets/fields/date_picker_field.dart';
@@ -342,194 +343,218 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    const double headerHeight = kToolbarHeight;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.outlineColorLight,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: ShiningTextAnimation(
-          text: AppStrings.searchEventsTitle(context),
-          style: TextStyles.urbanistBody1,
-          shineColor: AppColors.shineColorLight,
-        ),
-        backgroundColor: AppColors.headerBackground,
-        foregroundColor: AppColors.outlineColorLight,
-        elevation: 0,
-        centerTitle: true,
-        toolbarHeight: kToolbarHeight,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SearchField(
-                controller: _titleSearchController,
-                labelText: AppStrings.searchFieldEventTitle(context),
-                onChanged: (_) => _searchEvents(),
-              ),
-              SearchField(
-                controller: _descriptionSearchController,
-                labelText: AppStrings.searchFieldDescription(context),
-                onChanged: (_) => _searchEvents(),
-              ),
-              DatePickerField(
-                selectedDate: _selectedSearchDate,
-                onTap: () => _selectSearchDate(context),
-                onClear: _selectedSearchDate != null ? _clearSearchDate : null,
-                contextForStrings: context,
-              ),
-              DropdownField<EventType>(
-                value: _selectedEventType,
-                onChanged: (newValue) {
-                  if (newValue != null) {
-                    setState(() {
-                      _selectedEventType = newValue;
-                      _searchEvents();
-                    });
-                  }
-                },
-                items:
-                    EventType.values.map((value) {
-                      return DropdownMenuItem<EventType>(
-                        value: value,
-                        child: Text(
-                          EventTypeLogic.getTranslatedEventTypeDisplay(
-                            value,
-                            context,
-                          ),
-                          style: TextStyles.plusJakartaSansBody2,
-                        ),
-                      );
-                    }).toList(),
-                labelText: AppStrings.searchFieldEventType(context),
-              ),
-              PrioritySelector(
-                enablePriorityFilter: _enablePriorityFilter,
-                onEnableChanged: (newValue) {
-                  setState(() {
-                    _enablePriorityFilter = newValue;
-                    if (!newValue) _selectedPriority = null;
-                    _searchEvents();
-                  });
-                },
-                selectedPriority: _selectedPriority,
-                onPriorityChanged: (priority) {
-                  setState(() {
-                    _selectedPriority = priority;
-                    _searchEvents();
-                  });
-                },
-                labelCritical: AppStrings.searchPriorityCritical(context),
-                labelHigh: AppStrings.searchPriorityHigh(context),
-                labelMedium: AppStrings.searchPriorityMedium(context),
-                labelLow: AppStrings.searchPriorityLow(context),
-              ),
-              if (_selectedEventType == EventType.meeting ||
-                  _selectedEventType == EventType.conference ||
-                  _selectedEventType == EventType.appointment ||
-                  _selectedEventType == EventType.all)
-                SearchField(
-                  controller: _locationSearchController,
-                  labelText: AppStrings.searchFieldLocation(context),
-                  onChanged: (_) => _searchEvents(),
-                ),
-              if (_selectedEventType == EventType.exam ||
-                  _selectedEventType == EventType.all)
-                SearchField(
-                  controller: _subjectSearchController,
-                  labelText: AppStrings.searchFieldSubject(context),
-                  onChanged: (_) => _searchEvents(),
-                ),
-              if (_selectedEventType == EventType.appointment ||
-                  _selectedEventType == EventType.all)
-                WithPersonField(
-                  withPersonYesNoSearch: _withPersonYesNoSearch,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _withPersonYesNoSearch = newValue ?? false;
-                      _searchEvents();
-                    });
-                  },
-                  controller: _withPersonSearchController,
-                  labelText: AppStrings.searchFieldWithPerson(context),
-                  yesNoLabel: AppStrings.searchFieldWithPersonYesNo(context),
-                ),
-              if ((_selectedEventType == EventType.appointment ||
-                      _selectedEventType == EventType.all) &&
-                  _withPersonYesNoSearch)
-                SearchField(
-                  controller: _withPersonSearchController,
-                  labelText: AppStrings.searchFieldWithPerson(context),
-                  onChanged: (_) => _searchEvents(),
-                ),
-              if (_searchResults.isNotEmpty) ...[
-                const SizedBox(height: 10.0),
-                Text(
-                  '${AppStrings.searchResultsPrefix(context)}${_searchResults.length}${AppStrings.searchResultsSuffix(context)}',
-                  style: TextStyles.urbanistSubtitle1.copyWith(fontSize: 18),
-                ),
-                const SizedBox(height: 10.0),
-                SearchResultsList(
-                  children:
-                      _searchResults.map((eventData) {
-                        final String? currentUserId =
-                            FirebaseAuth.instance.currentUser?.uid;
-                        if (currentUserId == null) {
-                          return const SizedBox.shrink();
-                        }
-                        final Event event = EventFactory.createEvent(
-                          EventTypeLogic.getEventTypeFromString(
-                            eventData['type'] ??
-                                AppInternalConstants.eventTypeTask,
-                          ),
-                          eventData,
-                          currentUserId,
-                        );
-                        String eventTypeString =
-                            EventTypeLogic.getTranslatedEventTypeDisplay(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(20, headerHeight, 20, 0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SearchField(
+                    controller: _titleSearchController,
+                    labelText: AppStrings.searchFieldEventTitle(context),
+                    onChanged: (_) => _searchEvents(),
+                  ),
+                  SearchField(
+                    controller: _descriptionSearchController,
+                    labelText: AppStrings.searchFieldDescription(context),
+                    onChanged: (_) => _searchEvents(),
+                  ),
+                  DatePickerField(
+                    selectedDate: _selectedSearchDate,
+                    onTap: () => _selectSearchDate(context),
+                    onClear:
+                        _selectedSearchDate != null ? _clearSearchDate : null,
+                    contextForStrings: context,
+                  ),
+                  DropdownField<EventType>(
+                    value: _selectedEventType,
+                    onChanged: (newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          _selectedEventType = newValue;
+                          _searchEvents();
+                        });
+                      }
+                    },
+                    items:
+                        EventType.values.map((value) {
+                          return DropdownMenuItem<EventType>(
+                            value: value,
+                            child: Text(
+                              EventTypeLogic.getTranslatedEventTypeDisplay(
+                                value,
+                                context,
+                              ),
+                              style: TextStyles.plusJakartaSansBody2,
+                            ),
+                          );
+                        }).toList(),
+                    labelText: AppStrings.searchFieldEventType(context),
+                  ),
+                  PrioritySelector(
+                    enablePriorityFilter: _enablePriorityFilter,
+                    onEnableChanged: (newValue) {
+                      setState(() {
+                        _enablePriorityFilter = newValue;
+                        if (!newValue) _selectedPriority = null;
+                        _searchEvents();
+                      });
+                    },
+                    selectedPriority: _selectedPriority,
+                    onPriorityChanged: (priority) {
+                      setState(() {
+                        _selectedPriority = priority;
+                        _searchEvents();
+                      });
+                    },
+                    labelCritical: AppStrings.searchPriorityCritical(context),
+                    labelHigh: AppStrings.searchPriorityHigh(context),
+                    labelMedium: AppStrings.searchPriorityMedium(context),
+                    labelLow: AppStrings.searchPriorityLow(context),
+                  ),
+                  if (_selectedEventType == EventType.meeting ||
+                      _selectedEventType == EventType.conference ||
+                      _selectedEventType == EventType.appointment ||
+                      _selectedEventType == EventType.all)
+                    SearchField(
+                      controller: _locationSearchController,
+                      labelText: AppStrings.searchFieldLocation(context),
+                      onChanged: (_) => _searchEvents(),
+                    ),
+                  if (_selectedEventType == EventType.exam ||
+                      _selectedEventType == EventType.all)
+                    SearchField(
+                      controller: _subjectSearchController,
+                      labelText: AppStrings.searchFieldSubject(context),
+                      onChanged: (_) => _searchEvents(),
+                    ),
+                  if (_selectedEventType == EventType.appointment ||
+                      _selectedEventType == EventType.all)
+                    WithPersonField(
+                      withPersonYesNoSearch: _withPersonYesNoSearch,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _withPersonYesNoSearch = newValue ?? false;
+                          _searchEvents();
+                        });
+                      },
+                      controller: _withPersonSearchController,
+                      labelText: AppStrings.searchFieldWithPerson(context),
+                      yesNoLabel: AppStrings.searchFieldWithPersonYesNo(
+                        context,
+                      ),
+                    ),
+                  if ((_selectedEventType == EventType.appointment ||
+                          _selectedEventType == EventType.all) &&
+                      _withPersonYesNoSearch)
+                    SearchField(
+                      controller: _withPersonSearchController,
+                      labelText: AppStrings.searchFieldWithPerson(context),
+                      onChanged: (_) => _searchEvents(),
+                    ),
+                  if (_searchResults.isNotEmpty) ...[
+                    const SizedBox(height: 10.0),
+                    Text(
+                      '${AppStrings.searchResultsPrefix(context)}${_searchResults.length}${AppStrings.searchResultsSuffix(context)}',
+                      style: TextStyles.urbanistSubtitle1.copyWith(
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    SearchResultsList(
+                      children:
+                          _searchResults.map((eventData) {
+                            final String? currentUserId =
+                                FirebaseAuth.instance.currentUser?.uid;
+                            if (currentUserId == null) {
+                              return const SizedBox.shrink();
+                            }
+                            final Event event = EventFactory.createEvent(
                               EventTypeLogic.getEventTypeFromString(
                                 eventData['type'] ??
                                     AppInternalConstants.eventTypeTask,
                               ),
-                              context,
+                              eventData,
+                              currentUserId,
                             );
-                        String formattedDateTime =
-                            event.dateTime != null
-                                ? DateFormat(
-                                  'yyyy/MM/dd HH:mm',
-                                ).format(event.dateTime!.toDate())
-                                : AppInternalConstants.searchNA;
-                        return EventResultCard(
-                          event: event,
-                          eventTypeString: eventTypeString,
-                          formattedDateTime: formattedDateTime,
-                          getTranslatedPriorityDisplay:
-                              (priorityString) =>
-                                  PriorityLogic.getTranslatedPriorityDisplay(
-                                    priorityString,
-                                    context,
+                            String eventTypeString =
+                                EventTypeLogic.getTranslatedEventTypeDisplay(
+                                  EventTypeLogic.getEventTypeFromString(
+                                    eventData['type'] ??
+                                        AppInternalConstants.eventTypeTask,
                                   ),
-                          onEdit: () => _onEditEvent(eventData),
-                          onDelete: () => _onDeleteEvent(eventData),
-                          width: screenWidth * 0.9,
-                          contextForStrings: context,
-                        );
-                      }).toList(),
-                ),
-              ],
-            ],
+                                  context,
+                                );
+                            String formattedDateTime =
+                                event.dateTime != null
+                                    ? DateFormat(
+                                      'yyyy/MM/dd HH:mm',
+                                    ).format(event.dateTime!.toDate())
+                                    : AppInternalConstants.searchNA;
+                            return EventResultCard(
+                              event: event,
+                              eventTypeString: eventTypeString,
+                              formattedDateTime: formattedDateTime,
+                              getTranslatedPriorityDisplay:
+                                  (priorityString) =>
+                                      PriorityLogic.getTranslatedPriorityDisplay(
+                                        priorityString,
+                                        context,
+                                      ),
+                              onEdit: () => _onEditEvent(eventData),
+                              onDelete: () => _onDeleteEvent(eventData),
+                              width: screenWidth * 0.9,
+                              contextForStrings: context,
+                            );
+                          }).toList(),
+                    ),
+                  ],
+                ],
+              ),
+            ),
           ),
-        ),
+          ClipRRect(
+            borderRadius: BorderRadius.zero,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+              child: Container(
+                width: double.infinity,
+                height: headerHeight,
+                // ignore: deprecated_member_use
+                color: AppColors.headerBackground.withOpacity(0.2),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: AppColors.outlineColorLight,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: ShiningTextAnimation(
+                          text: AppStrings.searchEventsTitle(context),
+                          style: TextStyles.urbanistBody1,
+                          shineColor: AppColors.shineColorLight,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 48), // Space for symmetry
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

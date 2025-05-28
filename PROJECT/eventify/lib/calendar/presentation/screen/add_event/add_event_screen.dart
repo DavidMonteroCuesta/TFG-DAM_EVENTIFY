@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
@@ -118,6 +120,7 @@ class _AddEventScreenState extends State<AddEventScreen>
     var secondaryColor = AppColors.secondaryDynamic;
     const onSecondaryColor = AppColors.onSecondary;
     const outlineColor = AppColors.outline;
+    const double headerHeight = kToolbarHeight;
     // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
@@ -125,206 +128,223 @@ class _AddEventScreenState extends State<AddEventScreen>
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: AppColors.outlineColorLight,
-            ),
-            onPressed: () {
-              if (mounted) {
-                Navigator.of(context).pop(false);
-              }
-            },
-          ),
-          title: ShiningTextAnimation(
-            text: widget.eventToEdit == null
-                ? AppStrings.addEventCreateTitle(context)
-                : AppStrings.addEventEditTitle(context),
-            style: TextStyles.urbanistBody1,
-            shineColor: AppColors.textPrimary,
-          ),
-          // ignore: deprecated_member_use
-          backgroundColor: AppColors.headerBackground.withOpacity(0.8),
-          foregroundColor: AppColors.outline,
-          elevation: 0,
-          centerTitle: true,
-          toolbarHeight: kToolbarHeight,
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 30.0),
-                EventTitleField(
-                  controller: titleController,
-                  labelText: AppStrings.addEventFieldTitle(context),
-                  validator: validateTitle,
-                  secondaryColor: secondaryColor,
-                ),
-                const SizedBox(height: 18.0),
-                EventDescriptionField(
-                  controller: descriptionController,
-                  labelText: AppStrings.addEventFieldDescription(context),
-                  validator: validateDescription,
-                  secondaryColor: secondaryColor,
-                ),
-                const SizedBox(height: 22.0),
-                Text(
-                  AppStrings.addEventFieldPriority(context),
-                  style: TextStyles.plusJakartaSansSubtitle2,
-                ),
-                const SizedBox(height: 8.0),
-                Wrap(
-                  spacing: 8.0,
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, kToolbarHeight, 20, 0),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PriorityOptionChip(
-                      label: AppStrings.searchPriorityCritical(context),
-                      priority: Priority.critical,
-                      selectedPriority: selectedPriority,
-                      // ignore: deprecated_member_use
-                      backgroundColor: AppColors.focusedBorderDynamic
-                          .withOpacity(0.8),
-                      textColor: onSecondaryColor,
-                      onSelected: (priority) {
-                        setState(() {
-                          selectedPriority = priority;
-                        });
-                      },
+                    const SizedBox(height: 30.0),
+                    EventTitleField(
+                      controller: titleController,
+                      labelText: AppStrings.addEventFieldTitle(context),
+                      validator: validateTitle,
+                      secondaryColor: secondaryColor,
                     ),
-                    PriorityOptionChip(
-                      label: AppStrings.searchPriorityHigh(context),
-                      priority: Priority.high,
-                      selectedPriority: selectedPriority,
-                      // ignore: deprecated_member_use
-                      backgroundColor: AppColors.focusedBorderDynamic
-                          .withOpacity(0.8),
-                      textColor: onSecondaryColor,
-                      onSelected: (priority) {
-                        setState(() {
-                          selectedPriority = priority;
-                        });
-                      },
+                    const SizedBox(height: 18.0),
+                    EventDescriptionField(
+                      controller: descriptionController,
+                      labelText: AppStrings.addEventFieldDescription(context),
+                      validator: validateDescription,
+                      secondaryColor: secondaryColor,
                     ),
-                    PriorityOptionChip(
-                      label: AppStrings.searchPriorityMedium(context),
-                      priority: Priority.medium,
-                      selectedPriority: selectedPriority,
-                      // ignore: deprecated_member_use
-                      backgroundColor: AppColors.focusedBorderDynamic
-                          .withOpacity(0.8),
-                      textColor: onSecondaryColor,
-                      onSelected: (priority) {
-                        setState(() {
-                          selectedPriority = priority;
-                        });
-                      },
+                    const SizedBox(height: 22.0),
+                    Text(
+                      AppStrings.addEventFieldPriority(context),
+                      style: TextStyles.plusJakartaSansSubtitle2,
                     ),
-                    PriorityOptionChip(
-                      label: AppStrings.searchPriorityLow(context),
-                      priority: Priority.low,
-                      selectedPriority: selectedPriority,
-                      // ignore: deprecated_member_use
-                      backgroundColor: AppColors.focusedBorderDynamic
-                          .withOpacity(0.8),
-                      textColor: onSecondaryColor,
-                      onSelected: (priority) {
+                    const SizedBox(height: 8.0),
+                    Wrap(
+                      spacing: 8.0,
+                      children: [
+                        PriorityOptionChip(
+                          label: AppStrings.searchPriorityCritical(context),
+                          priority: Priority.critical,
+                          selectedPriority: selectedPriority,
+                          // ignore: deprecated_member_use
+                          backgroundColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
+                          textColor: onSecondaryColor,
+                          onSelected: (priority) {
+                            setState(() {
+                              selectedPriority = priority;
+                            });
+                          },
+                        ),
+                        PriorityOptionChip(
+                          label: AppStrings.searchPriorityHigh(context),
+                          priority: Priority.high,
+                          selectedPriority: selectedPriority,
+                          // ignore: deprecated_member_use
+                          backgroundColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
+                          textColor: onSecondaryColor,
+                          onSelected: (priority) {
+                            setState(() {
+                              selectedPriority = priority;
+                            });
+                          },
+                        ),
+                        PriorityOptionChip(
+                          label: AppStrings.searchPriorityMedium(context),
+                          priority: Priority.medium,
+                          selectedPriority: selectedPriority,
+                          // ignore: deprecated_member_use
+                          backgroundColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
+                          textColor: onSecondaryColor,
+                          onSelected: (priority) {
+                            setState(() {
+                              selectedPriority = priority;
+                            });
+                          },
+                        ),
+                        PriorityOptionChip(
+                          label: AppStrings.searchPriorityLow(context),
+                          priority: Priority.low,
+                          selectedPriority: selectedPriority,
+                          // ignore: deprecated_member_use
+                          backgroundColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
+                          textColor: onSecondaryColor,
+                          onSelected: (priority) {
+                            setState(() {
+                              selectedPriority = priority;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 22.0),
+                    NotificationSwitch(
+                      value: hasNotification,
+                      onChanged: (bool value) {
                         setState(() {
-                          selectedPriority = priority;
+                          hasNotification = value;
                         });
                       },
+                      label: AppStrings.addEventFieldNotification(context),
+                      activeColor: secondaryColor,
+                    ),
+                    const SizedBox(height: 22.0),
+                    DateTimePickers(
+                      selectedDate: selectedDate,
+                      selectedTime: selectedTime,
+                      onSelectDate: () => selectDate(context),
+                      onSelectTime: () => selectTime(context),
+                      dateLabel: AppStrings.addEventFieldDate(context),
+                      timeLabel: AppStrings.addEventFieldTime(context),
+                      dateErrorText:
+                          selectedDate == null
+                              ? AppInternalConstants.addEventValidationDate
+                              : null,
+                      timeErrorText:
+                          selectedTime == null
+                              ? AppStrings.addEventSelectTime(context)
+                              : null,
+                      secondaryColor: secondaryColor,
+                    ),
+                    const SizedBox(height: 22.0),
+                    EventTypeDropdown(
+                      selectedEventType: selectedEventType,
+                      onChanged: (EventType? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            selectedEventType = newValue;
+                          });
+                        }
+                      },
+                      labelText: AppStrings.addEventFieldEventType(context),
+                      secondaryColor: secondaryColor,
+                    ),
+                    const SizedBox(height: 22.0),
+                    EventTypeFields(
+                      selectedEventType: selectedEventType,
+                      locationController: locationController,
+                      subjectController: subjectController,
+                      withPersonController: withPersonController,
+                      withPersonYesNo: withPersonYesNo,
+                      onWithPersonChanged: (bool? value) {
+                        setState(() {
+                          withPersonYesNo = value ?? false;
+                        });
+                      },
+                      secondaryColor: secondaryColor,
+                      onSecondaryColor: onSecondaryColor,
+                      outlineColor: outlineColor,
+                      locationLabel: AppStrings.addEventFieldLocation(context),
+                      subjectLabel: AppStrings.addEventFieldSubject(context),
+                      withPersonYesNoLabel:
+                          AppStrings.addEventFieldWithPersonYesNo(context),
+                      withPersonLabel: AppStrings.addEventFieldWithPerson(
+                        context,
+                      ),
+                    ),
+                    const SizedBox(height: 30.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _saveEvent,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: secondaryColor,
+                          foregroundColor: onSecondaryColor,
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          elevation: 2,
+                        ),
+                        child: Text(AppStrings.addEventSaveButton(context)),
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 22.0),
-                NotificationSwitch(
-                  value: hasNotification,
-                  onChanged: (bool value) {
-                    setState(() {
-                      hasNotification = value;
-                    });
-                  },
-                  label: AppStrings.addEventFieldNotification(context),
-                  activeColor: secondaryColor,
-                ),
-                const SizedBox(height: 22.0),
-                DateTimePickers(
-                  selectedDate: selectedDate,
-                  selectedTime: selectedTime,
-                  onSelectDate: () => selectDate(context),
-                  onSelectTime: () => selectTime(context),
-                  dateLabel: AppStrings.addEventFieldDate(context),
-                  timeLabel: AppStrings.addEventFieldTime(context),
-                  dateErrorText: selectedDate == null
-                      ? AppInternalConstants.addEventValidationDate
-                      : null,
-                  timeErrorText: selectedTime == null
-                      ? AppStrings.addEventSelectTime(context)
-                      : null,
-                  secondaryColor: secondaryColor,
-                ),
-                const SizedBox(height: 22.0),
-                EventTypeDropdown(
-                  selectedEventType: selectedEventType,
-                  onChanged: (EventType? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        selectedEventType = newValue;
-                      });
-                    }
-                  },
-                  labelText: AppStrings.addEventFieldEventType(context),
-                  secondaryColor: secondaryColor,
-                ),
-                const SizedBox(height: 22.0),
-                EventTypeFields(
-                  selectedEventType: selectedEventType,
-                  locationController: locationController,
-                  subjectController: subjectController,
-                  withPersonController: withPersonController,
-                  withPersonYesNo: withPersonYesNo,
-                  onWithPersonChanged: (bool? value) {
-                    setState(() {
-                      withPersonYesNo = value ?? false;
-                    });
-                  },
-                  secondaryColor: secondaryColor,
-                  onSecondaryColor: onSecondaryColor,
-                  outlineColor: outlineColor,
-                  locationLabel: AppStrings.addEventFieldLocation(context),
-                  subjectLabel: AppStrings.addEventFieldSubject(context),
-                  withPersonYesNoLabel: AppStrings.addEventFieldWithPersonYesNo(
-                    context,
-                  ),
-                  withPersonLabel: AppStrings.addEventFieldWithPerson(context),
-                ),
-                const SizedBox(height: 30.0),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _saveEvent,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: secondaryColor,
-                      foregroundColor: onSecondaryColor,
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Text(AppStrings.addEventSaveButton(context)),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            ClipRRect(
+              borderRadius: BorderRadius.zero,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                child: Container(
+                  width: double.infinity,
+                  height: headerHeight,
+                  // ignore: deprecated_member_use
+                  color: AppColors.headerBackground.withOpacity(0.2),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: AppColors.outlineColorLight,
+                        ),
+                        onPressed: () {
+                          if (mounted) {
+                            Navigator.of(context).pop(false);
+                          }
+                        },
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: ShiningTextAnimation(
+                            text:
+                                widget.eventToEdit == null
+                                    ? AppStrings.addEventCreateTitle(context)
+                                    : AppStrings.addEventEditTitle(context),
+                            style: TextStyles.urbanistBody1,
+                            shineColor: AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 48), // Space for symmetry
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
