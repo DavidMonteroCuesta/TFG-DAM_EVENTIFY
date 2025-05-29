@@ -1,0 +1,46 @@
+@startuml
+left to right direction
+skinparam defaultFontName "Calibri"
+skinparam defaultFontSize 22
+skinparam actorStyle awesome
+skinparam usecaseBorderColor #444
+skinparam usecaseBackgroundColor #F8F8F8
+skinparam usecaseFontColor #222
+skinparam actorBorderColor #444
+skinparam actorBackgroundColor #F4F4F4
+skinparam shadowing false
+skinparam roundcorner 8
+skinparam titleFontSize 26
+skinparam titleFontColor #222
+
+title Casos de uso principales de la aplicación
+
+actor Usuario
+actor "Agente IA" as IA
+
+Usuario --> (Registrarse/Iniciar sesión)
+Usuario --> (Recuperar contraseña)
+Usuario --> (Ver calendario de eventos)
+Usuario --> (Crear evento)
+Usuario --> (Editar evento)
+Usuario --> (Eliminar evento)
+Usuario --> (Personalizar tema y colores)
+Usuario --> (Configurar notificaciones)
+Usuario --> (Chatear en evento)
+Usuario --> (Adjuntar archivos a evento)
+Usuario --> (Gestionar asistentes)
+Usuario --> (Recibir notificaciones)
+Usuario --> (Cambiar idioma)
+Usuario --> (Editar perfil)
+Usuario --> (Consultar ayuda)
+
+(Chatear en evento) --> (Adjuntar archivos a evento)
+(Crear evento) --> (Gestionar asistentes)
+(Crear evento) --> (Configurar notificaciones)
+
+Usuario --> (Solicitar acción al Agente IA)
+IA --> (Crear evento)
+IA --> (Editar evento)
+IA --> (Eliminar evento)
+
+@enduml

@@ -1,0 +1,104 @@
+@startuml componentes
+top to bottom direction
+skinparam componentStyle rectangle
+skinparam defaultFontName "Calibri"
+skinparam defaultFontSize 30
+skinparam backgroundColor #FFFFFF
+skinparam componentBorderColor #444
+skinparam componentBackgroundColor #F8F8F8
+skinparam shadowing false
+skinparam roundcorner 8
+skinparam titleFontSize 28
+skinparam titleFontColor #222
+skinparam nodesep 10
+skinparam ranksep 200
+
+package "App Principal" {
+  [Main]
+  [firebase_options.dart]
+}
+
+package "Capa de Presentación" {
+  package "auth" {
+    [auth.data]
+    [auth.domain]
+    [auth.presentation]
+  }
+  package "calendar" {
+    [calendar.data]
+    [calendar.domain]
+    [calendar.presentation]
+  }
+  package "chat" {
+    [chat.data]
+    [chat.domain]
+    [chat.presentation]
+  }
+}
+
+package "Capa de Utilidades y Configuración" {
+  package "common" {
+    [animations]
+    [constants]
+    [theme]
+    [utils]
+  }
+  [di]
+  [l10n]
+}
+
+package "Servicios externos" {
+  [Firebase]
+  [Gemini]
+}
+
+' Relaciones simplificadas
+[Main] --> [auth.presentation]
+[Main] --> [calendar.presentation]
+[Main] --> [chat.presentation]
+[Main] --> [common]
+[Main] --> [di]
+[Main] --> [l10n]
+[Main] --> [firebase_options.dart]
+[firebase_options.dart] --> [Firebase]
+
+' Agrupación de dependencias comunes
+[auth.presentation] ..> [auth.domain]
+[auth.domain] ..> [auth.data]
+[calendar.presentation] ..> [calendar.domain]
+[calendar.domain] ..> [calendar.data]
+[chat.presentation] ..> [chat.domain]
+[chat.domain] ..> [chat.data]
+
+' Flechas agrupadas a common y Firebase
+[auth.data] ..> [common]
+[calendar.data] ..> [common]
+[chat.data] ..> [common]
+[auth.data] ..> [Firebase]
+[calendar.data] ..> [Firebase]
+[chat.data] ..> [Firebase]
+
+di ..> [auth.presentation]
+di ..> [calendar.presentation]
+di ..> [chat.presentation]
+di ..> [common]
+l10n ..> [auth.presentation]
+l10n ..> [calendar.presentation]
+l10n ..> [chat.presentation]
+l10n ..> [common]
+[chat.presentation] ..> [Gemini]
+
+note bottom of [Gemini]
+Modelo de IA externo.
+end note
+note left of [Firebase]
+Firebase para autenticación y almacenamiento.
+end note    
+note top of [l10n]
+Localización de la aplicación con soporte para múltiples idiomas.
+end note
+note left of [Main]
+Aplicación principal que dirige la lógica y la interfaz.
+end note
+
+@enduml
