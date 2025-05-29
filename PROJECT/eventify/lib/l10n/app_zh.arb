@@ -50,7 +50,7 @@
   "@profileLogoutButton": {
     "description": "退出登录按钮的文本。"
   },
-  "profileContactUsText": "联系我们：ejemplotfgdavid@gmail.com",
+  "profileContactUsText": "联系我们: ejemplotfgdavid@gmail.com",
   "@profileContactUsText": {
     "description": "支持的联系信息。"
   },
@@ -711,5 +711,29 @@
   "firebaseAuthResetPasswordError": "Firebase Auth发送重置密码邮件时出错。",
   "@firebaseAuthResetPasswordError": {"description": "Firebase Auth发送重置密码邮件时出错。"},
   "unexpectedResetPasswordError": "重置密码时发生意外错误。",
-  "@unexpectedResetPasswordError": {"description": "重置密码时发生意外错误。"}
+  "@unexpectedResetPasswordError": {"description": "重置密码时发生意外错误。"},
+  "profileThemeSelectColorLabel": "选择主题颜色：",
+  "@profileThemeSelectColorLabel": {
+    "description": "个人资料屏幕中选择主题颜色的标签。"
+  },
+  "profileThemeDefault": "默认",
+  "@profileThemeDefault": {
+    "description": "主题颜色选项：默认。"
+  },
+  "profileThemeGreen": "绿色",
+  "@profileThemeGreen": {
+    "description": "主题颜色选项：绿色。"
+  },
+  "profileThemeBlue": "蓝色",
+  "@profileThemeBlue": {
+    "description": "主题颜色选项：蓝色。"
+  },
+  "profileThemeOrange": "橙色",
+  "@profileThemeOrange": {
+    "description": "主题颜色选项：橙色。"
+  },
+  "profileThemeRed": "红色",
+  "@profileThemeRed": {
+    "description": "主题颜色选项：红色。"
+  }
 }

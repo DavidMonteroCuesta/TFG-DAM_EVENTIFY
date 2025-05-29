@@ -45,6 +45,18 @@ abstract class AppStrings {
       AppLocalizations.of(context)!.themeOptionOrangeAccent;
   static String themeOptionRedAccent(BuildContext context) =>
       AppLocalizations.of(context)!.themeOptionRedAccent;
+  static String profileThemeSelectColorLabel(BuildContext context) =>
+      AppLocalizations.of(context)!.profileThemeSelectColorLabel;
+  static String profileThemeDefault(BuildContext context) =>
+      AppLocalizations.of(context)!.profileThemeDefault;
+  static String profileThemeGreen(BuildContext context) =>
+      AppLocalizations.of(context)!.profileThemeGreen;
+  static String profileThemeBlue(BuildContext context) =>
+      AppLocalizations.of(context)!.profileThemeBlue;
+  static String profileThemeOrange(BuildContext context) =>
+      AppLocalizations.of(context)!.profileThemeOrange;
+  static String profileThemeRed(BuildContext context) =>
+      AppLocalizations.of(context)!.profileThemeRed;
 
   // Event Search Screen Strings (display only)
   static String searchEventsTitle(BuildContext context) =>

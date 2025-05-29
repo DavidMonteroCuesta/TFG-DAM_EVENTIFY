@@ -711,5 +711,29 @@
   "firebaseAuthResetPasswordError": "Erreur lors de l'envoi de l'e-mail de réinitialisation du mot de passe dans Firebase Auth.",
   "@firebaseAuthResetPasswordError": {"description": "Erreur lors de l'envoi de l'e-mail de réinitialisation du mot de passe dans Firebase Auth."},
   "unexpectedResetPasswordError": "Erreur inattendue lors de la réinitialisation du mot de passe.",
-  "@unexpectedResetPasswordError": {"description": "Erreur inattendue lors de la réinitialisation du mot de passe."}
+  "@unexpectedResetPasswordError": {"description": "Erreur inattendue lors de la réinitialisation du mot de passe."},
+  "profileThemeSelectColorLabel": "Sélectionnez une couleur de thème :",
+  "@profileThemeSelectColorLabel": {
+    "description": "Étiquette pour sélectionner une couleur de thème dans l'écran de profil."
+  },
+  "profileThemeDefault": "Par défaut",
+  "@profileThemeDefault": {
+    "description": "Option de couleur de thème : Par défaut."
+  },
+  "profileThemeGreen": "Vert",
+  "@profileThemeGreen": {
+    "description": "Option de couleur de thème : Vert."
+  },
+  "profileThemeBlue": "Bleu",
+  "@profileThemeBlue": {
+    "description": "Option de couleur de thème : Bleu."
+  },
+  "profileThemeOrange": "Orange",
+  "@profileThemeOrange": {
+    "description": "Option de couleur de thème : Orange."
+  },
+  "profileThemeRed": "Rouge",
+  "@profileThemeRed": {
+    "description": "Option de couleur de thème : Rouge."
+  }
 }

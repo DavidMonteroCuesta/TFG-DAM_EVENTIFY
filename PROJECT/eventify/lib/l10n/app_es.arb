@@ -711,5 +711,29 @@
   "firebaseAuthResetPasswordError": "Error al enviar correo de restablecimiento de contraseña en Firebase Auth.",
   "@firebaseAuthResetPasswordError": {"description": "Error al enviar correo de restablecimiento de contraseña en Firebase Auth."},
   "unexpectedResetPasswordError": "Error inesperado al restablecer la contraseña.",
-  "@unexpectedResetPasswordError": {"description": "Error inesperado al restablecer la contraseña."}
+  "@unexpectedResetPasswordError": {"description": "Error inesperado al restablecer la contraseña."},
+  "profileThemeSelectColorLabel": "Selecciona un color para el tema:",
+  "@profileThemeSelectColorLabel": {
+    "description": "Etiqueta para seleccionar un color de tema en la pantalla de perfil."
+  },
+  "profileThemeDefault": "Predeterminado",
+  "@profileThemeDefault": {
+    "description": "Opción de color de tema: Predeterminado."
+  },
+  "profileThemeGreen": "Verde",
+  "@profileThemeGreen": {
+    "description": "Opción de color de tema: Verde."
+  },
+  "profileThemeBlue": "Azul",
+  "@profileThemeBlue": {
+    "description": "Opción de color de tema: Azul."
+  },
+  "profileThemeOrange": "Naranja",
+  "@profileThemeOrange": {
+    "description": "Opción de color de tema: Naranja."
+  },
+  "profileThemeRed": "Rojo",
+  "@profileThemeRed": {
+    "description": "Opción de color de tema: Rojo."
+  }
 }

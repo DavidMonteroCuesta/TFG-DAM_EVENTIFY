@@ -5,6 +5,7 @@ import 'package:eventify/calendar/presentation/screen/calendar/widgets/header.da
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/monthly_calendar.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/upcoming_event_card.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
+import 'package:eventify/common/constants/app_routes.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 
 class CalendarScreen extends StatelessWidget {
-  static const String routeName = '/calendar';
+  static const String routeName = AppRoutes.calendar;
   final bool showMonthlyView;
 
   const CalendarScreen({super.key, this.showMonthlyView = false});

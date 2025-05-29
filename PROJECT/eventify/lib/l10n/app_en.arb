@@ -711,5 +711,29 @@
   "firebaseAuthResetPasswordError": "Error sending password reset email in Firebase Auth.",
   "@firebaseAuthResetPasswordError": {"description": "Error sending password reset email in Firebase Auth."},
   "unexpectedResetPasswordError": "Unexpected error during password reset.",
-  "@unexpectedResetPasswordError": {"description": "Unexpected error during password reset."}
+  "@unexpectedResetPasswordError": {"description": "Unexpected error during password reset."},
+  "profileThemeSelectColorLabel": "Select a theme color:",
+  "@profileThemeSelectColorLabel": {
+    "description": "Label for selecting a theme color in the profile screen."
+  },
+  "profileThemeDefault": "Default",
+  "@profileThemeDefault": {
+    "description": "Theme color option: Default."
+  },
+  "profileThemeGreen": "Green",
+  "@profileThemeGreen": {
+    "description": "Theme color option: Green."
+  },
+  "profileThemeBlue": "Blue",
+  "@profileThemeBlue": {
+    "description": "Theme color option: Blue."
+  },
+  "profileThemeOrange": "Orange",
+  "@profileThemeOrange": {
+    "description": "Theme color option: Orange."
+  },
+  "profileThemeRed": "Red",
+  "@profileThemeRed": {
+    "description": "Theme color option: Red."
+  }
 }

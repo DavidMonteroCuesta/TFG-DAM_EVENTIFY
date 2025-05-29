@@ -711,5 +711,29 @@
   "firebaseAuthResetPasswordError": "خطأ في إرسال بريد إعادة تعيين كلمة المرور في Firebase Auth.",
   "@firebaseAuthResetPasswordError": {"description": "خطأ في إرسال بريد إعادة تعيين كلمة المرور في Firebase Auth."},
   "unexpectedResetPasswordError": "خطأ غير متوقع أثناء إعادة تعيين كلمة المرور.",
-  "@unexpectedResetPasswordError": {"description": "خطأ غير متوقع أثناء إعادة تعيين كلمة المرور."}
+  "@unexpectedResetPasswordError": {"description": "خطأ غير متوقع أثناء إعادة تعيين كلمة المرور."},
+  "profileThemeSelectColorLabel": "اختر لون السمة:",
+  "@profileThemeSelectColorLabel": {
+    "description": "تسمية لاختيار لون السمة في شاشة الملف الشخصي."
+  },
+  "profileThemeDefault": "افتراضي",
+  "@profileThemeDefault": {
+    "description": "خيار لون السمة: افتراضي."
+  },
+  "profileThemeGreen": "أخضر",
+  "@profileThemeGreen": {
+    "description": "خيار لون السمة: أخضر."
+  },
+  "profileThemeBlue": "أزرق",
+  "@profileThemeBlue": {
+    "description": "خيار لون السمة: أزرق."
+  },
+  "profileThemeOrange": "برتقالي",
+  "@profileThemeOrange": {
+    "description": "خيار لون السمة: برتقالي."
+  },
+  "profileThemeRed": "أحمر",
+  "@profileThemeRed": {
+    "description": "خيار لون السمة: أحمر."
+  }
 }

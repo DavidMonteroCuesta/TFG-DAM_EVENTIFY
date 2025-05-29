@@ -8,9 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_routes.dart';
 
 class ChatScreen extends StatefulWidget {
-  static const String routeName = '/chat';
+  static const String routeName = AppRoutes.chat;
 
   const ChatScreen({super.key});
 

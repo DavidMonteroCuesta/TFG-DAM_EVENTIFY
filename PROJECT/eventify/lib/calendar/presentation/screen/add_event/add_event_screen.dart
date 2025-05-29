@@ -17,12 +17,14 @@ import 'package:eventify/calendar/presentation/screen/add_event/widgets/event_de
 import 'package:eventify/calendar/presentation/screen/add_event/widgets/event_type_dropdown.dart';
 import 'package:eventify/calendar/presentation/screen/add_event/logic/add_event_logic.dart';
 import 'package:eventify/calendar/presentation/screen/add_event/logic/validation_utils.dart';
+import 'package:eventify/common/constants/app_routes.dart';
 
 class AddEventScreen extends StatefulWidget {
+  static String routeName = AppRoutes.addEvent;
+
   final Map<String, dynamic>? eventToEdit;
 
   const AddEventScreen({super.key, this.eventToEdit});
-  static const String routeName = '/add-event';
 
   @override
   State<AddEventScreen> createState() => _AddEventScreenState();
@@ -165,7 +167,8 @@ class _AddEventScreenState extends State<AddEventScreen>
                           priority: Priority.critical,
                           selectedPriority: selectedPriority,
                           // ignore: deprecated_member_use
-                          backgroundColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
+                          backgroundColor: AppColors.focusedBorderDynamic
+                              .withOpacity(0.8),
                           textColor: onSecondaryColor,
                           onSelected: (priority) {
                             setState(() {
@@ -178,7 +181,8 @@ class _AddEventScreenState extends State<AddEventScreen>
                           priority: Priority.high,
                           selectedPriority: selectedPriority,
                           // ignore: deprecated_member_use
-                          backgroundColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
+                          backgroundColor: AppColors.focusedBorderDynamic
+                              .withOpacity(0.8),
                           textColor: onSecondaryColor,
                           onSelected: (priority) {
                             setState(() {
@@ -191,7 +195,8 @@ class _AddEventScreenState extends State<AddEventScreen>
                           priority: Priority.medium,
                           selectedPriority: selectedPriority,
                           // ignore: deprecated_member_use
-                          backgroundColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
+                          backgroundColor: AppColors.focusedBorderDynamic
+                              .withOpacity(0.8),
                           textColor: onSecondaryColor,
                           onSelected: (priority) {
                             setState(() {
@@ -204,7 +209,8 @@ class _AddEventScreenState extends State<AddEventScreen>
                           priority: Priority.low,
                           selectedPriority: selectedPriority,
                           // ignore: deprecated_member_use
-                          backgroundColor: AppColors.focusedBorderDynamic.withOpacity(0.8),
+                          backgroundColor: AppColors.focusedBorderDynamic
+                              .withOpacity(0.8),
                           textColor: onSecondaryColor,
                           onSelected: (priority) {
                             setState(() {

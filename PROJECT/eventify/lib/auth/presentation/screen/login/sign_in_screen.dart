@@ -7,6 +7,7 @@ import 'package:eventify/auth/presentation/screen/login/widgets/primary_button.d
 import 'package:eventify/auth/presentation/screen/login/widgets/social_sign_in_button.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart'; // Import CalendarScreen
 import 'package:eventify/common/animations/ani_left_to_right.dart';
+import 'package:eventify/common/constants/app_routes.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
 import 'package:eventify/common/theme/fonts/text_styles.dart';
@@ -17,7 +18,7 @@ import '../../view_model/sign_in_view_model.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
-  static const String routeName = '/signin';
+  static const String routeName = AppRoutes.signIn;
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -145,6 +146,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (_) => const CalendarScreen(),
+                              settings: RouteSettings(name: AppRoutes.calendar),
                             ),
                           );
                         }
