@@ -29,3 +29,6 @@
 
 - **YouTube.** *Traducciones y localización en Flutter con l10n | Internacionaliza tu app*. Recuperado en abril de 2025, de [https://youtu.be/LjO2aXUZeWo?si=Lafzt1gHrKhbyAdo](https://youtu.be/LjO2aXUZeWo?si=Lafzt1gHrKhbyAdo)
   Utilizado como referencia para comprender el proceso de internacionalización y localización de aplicaciones desarrolladas con Flutter, específicamente mediante el uso de la herramienta `l10n`.
+
+- **Visual Paradigm Online.** *Use Case Diagram Tool*. Recuperado en abril de 2025, de [https://online.visual-paradigm.com/es/diagrams/solutions/free-use-case-diagram-tool/](https://online.visual-paradigm.com/es/diagrams/solutions/free-use-case-diagram-tool/)
+  Herramienta utilizada para crear el diagrama de casos de uso del proyecto.
