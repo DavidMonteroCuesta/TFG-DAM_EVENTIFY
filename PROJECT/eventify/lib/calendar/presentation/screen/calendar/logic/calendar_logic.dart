@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
 import 'package:eventify/calendar/presentation/screen/search/search_events_screen.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 class CalendarLogic extends ChangeNotifier {
   late PageController pageController;
@@ -74,16 +74,22 @@ class CalendarLogic extends ChangeNotifier {
 
   Future<void> onEditNearestEvent(Map<String, dynamic> eventData) async {
     Map<String, dynamic> safeEventData = Map.from(eventData);
-    safeEventData['title'] = safeEventData['title'] ?? '';
-    safeEventData['description'] = safeEventData['description'] ?? '';
-    safeEventData['location'] = safeEventData['location'] ?? '';
-    safeEventData['subject'] = safeEventData['subject'] ?? '';
-    safeEventData['withPerson'] = safeEventData['withPerson'] ?? '';
-    safeEventData['type'] =
-        safeEventData['type']?.toString() ?? AppInternalConstants.eventTypeTask;
-    safeEventData['priority'] =
-        safeEventData['priority']?.toString() ??
-        AppInternalConstants.priorityValueLow;
+    safeEventData[AppFirestoreFields.title] =
+        safeEventData[AppFirestoreFields.title] ?? '';
+    safeEventData[AppFirestoreFields.description] =
+        safeEventData[AppFirestoreFields.description] ?? '';
+    safeEventData[AppFirestoreFields.location] =
+        safeEventData[AppFirestoreFields.location] ?? '';
+    safeEventData[AppFirestoreFields.subject] =
+        safeEventData[AppFirestoreFields.subject] ?? '';
+    safeEventData[AppFirestoreFields.withPerson] =
+        safeEventData[AppFirestoreFields.withPerson] ?? '';
+    safeEventData[AppFirestoreFields.type] =
+        safeEventData[AppFirestoreFields.type]?.toString() ??
+        AppFirestoreFields.typeTask;
+    safeEventData[AppFirestoreFields.priority] =
+        safeEventData[AppFirestoreFields.priority]?.toString() ??
+        AppFirestoreFields.priority;
 
     final result = await Navigator.of(context).push(
       MaterialPageRoute(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 abstract class Event {
   final String userId;
@@ -22,18 +23,19 @@ abstract class Event {
 
   factory Event.fromJson(Map<String, dynamic> json) {
     throw ArgumentError(
-        'Event.fromJson: Cannot create instance of Event directly. Use a specific subclass (e.g., MeetingEvent, TaskEvent).');
+      'Event.fromJson: Cannot create instance of Event directly. Use a specific subclass (e.g., MeetingEvent, TaskEvent).',
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
-      'title': title,
-      'description': description,
-      'priority': priority.toFormattedString(),
-      'dateTime': dateTime,
-      'hasNotification': hasNotification,
-      'type': type,
+      AppFirestoreFields.email: userId,
+      AppFirestoreFields.title: title,
+      AppFirestoreFields.description: description,
+      AppFirestoreFields.priority: priority.toFormattedString(),
+      AppFirestoreFields.dateTime: dateTime,
+      AppFirestoreFields.notification: hasNotification,
+      AppFirestoreFields.type: type,
     };
   }
 

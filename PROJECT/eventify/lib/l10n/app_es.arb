@@ -737,5 +737,11 @@
     "description": "Opción de color de tema: Rojo."
   },
   "savePassword": "Guardar contraseña",
-  "@savePassword": {"description": "Etiqueta del botón para guardar la contraseña en el diálogo de inicio de sesión de Google."}
+  "@savePassword": {
+    "description": "Etiqueta del botón para guardar la contraseña en el diálogo de inicio de sesión de Google."
+  },
+  "priority": "prioridad",
+  "@priority": {
+    "description": "El término para 'prioridad' en español."
+  }
 }

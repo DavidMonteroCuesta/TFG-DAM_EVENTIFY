@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/di/service_locator.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'event_type_utils.dart';
 import 'date_time_utils.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 mixin AddEventLogic<T extends StatefulWidget> on State<T> {
   final formKey = GlobalKey<FormState>();
@@ -32,29 +32,38 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
     selectedDateTime = calculateSelectedDateTime(selectedDate, selectedTime);
     if (eventToEdit != null) {
       final eventData = eventToEdit;
-      titleController.text = eventData['title'] ?? '';
-      descriptionController.text = eventData['description'] ?? '';
+      titleController.text = eventData[AppFirestoreFields.title] ?? '';
+      descriptionController.text =
+          eventData[AppFirestoreFields.description] ?? '';
       selectedPriority = PriorityConverter.stringToPriority(
-        eventData['priority'],
+        eventData[AppFirestoreFields.priority],
       );
-      hasNotification = eventData['hasNotification'] ?? false;
-      final Timestamp? eventTimestamp = eventData['dateTime'];
+      hasNotification = eventData[AppFirestoreFields.notification] ?? false;
+      final Timestamp? eventTimestamp = eventData[AppFirestoreFields.dateTime];
       if (eventTimestamp != null) {
         selectedDate = eventTimestamp.toDate();
         selectedTime = TimeOfDay.fromDateTime(eventTimestamp.toDate());
       }
-      selectedEventType = getEventTypeFromString(eventData['type']);
-      if (eventData['type'] == AppInternalConstants.eventTypeMeeting ||
-          eventData['type'] == AppInternalConstants.eventTypeConference ||
-          eventData['type'] == AppInternalConstants.eventTypeAppointment) {
-        locationController.text = eventData['location'] ?? '';
+      selectedEventType = getEventTypeFromString(
+        eventData[AppFirestoreFields.type],
+      );
+      if (eventData[AppFirestoreFields.type] ==
+              AppFirestoreFields.typeMeeting ||
+          eventData[AppFirestoreFields.type] ==
+              AppFirestoreFields.typeConference ||
+          eventData[AppFirestoreFields.type] ==
+              AppFirestoreFields.typeAppointment) {
+        locationController.text = eventData[AppFirestoreFields.location] ?? '';
       }
-      if (eventData['type'] == AppInternalConstants.eventTypeExam) {
-        subjectController.text = eventData['subject'] ?? '';
+      if (eventData[AppFirestoreFields.type] == AppFirestoreFields.typeExam) {
+        subjectController.text = eventData[AppFirestoreFields.subject] ?? '';
       }
-      if (eventData['type'] == AppInternalConstants.eventTypeAppointment) {
-        withPersonYesNo = eventData['withPersonYesNo'] ?? false;
-        withPersonController.text = eventData['withPerson'] ?? '';
+      if (eventData[AppFirestoreFields.type] ==
+          AppFirestoreFields.typeAppointment) {
+        withPersonYesNo =
+            eventData[AppFirestoreFields.withPersonYesNo] ?? false;
+        withPersonController.text =
+            eventData[AppFirestoreFields.withPerson] ?? '';
       }
       selectedDateTime = calculateSelectedDateTime(selectedDate, selectedTime);
     }

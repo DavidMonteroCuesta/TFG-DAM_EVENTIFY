@@ -1,7 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
 
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
@@ -76,7 +79,7 @@ class _AddEventScreenState extends State<AddEventScreen>
               }
             });
       } else {
-        final String eventId = widget.eventToEdit!['id'] as String;
+        final String eventId = widget.eventToEdit![AppFirestoreFields.id] as String;
         eventViewModel
             .updateEvent(
               eventId,
@@ -123,7 +126,6 @@ class _AddEventScreenState extends State<AddEventScreen>
     const onSecondaryColor = AppColors.onSecondary;
     const outlineColor = AppColors.outline;
     const double headerHeight = kToolbarHeight;
-    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         Navigator.of(context).pop(false);
@@ -166,7 +168,6 @@ class _AddEventScreenState extends State<AddEventScreen>
                           label: AppStrings.searchPriorityCritical(context),
                           priority: Priority.critical,
                           selectedPriority: selectedPriority,
-                          // ignore: deprecated_member_use
                           backgroundColor: AppColors.focusedBorderDynamic
                               .withOpacity(0.8),
                           textColor: onSecondaryColor,
@@ -180,7 +181,6 @@ class _AddEventScreenState extends State<AddEventScreen>
                           label: AppStrings.searchPriorityHigh(context),
                           priority: Priority.high,
                           selectedPriority: selectedPriority,
-                          // ignore: deprecated_member_use
                           backgroundColor: AppColors.focusedBorderDynamic
                               .withOpacity(0.8),
                           textColor: onSecondaryColor,
@@ -194,7 +194,6 @@ class _AddEventScreenState extends State<AddEventScreen>
                           label: AppStrings.searchPriorityMedium(context),
                           priority: Priority.medium,
                           selectedPriority: selectedPriority,
-                          // ignore: deprecated_member_use
                           backgroundColor: AppColors.focusedBorderDynamic
                               .withOpacity(0.8),
                           textColor: onSecondaryColor,
@@ -208,7 +207,6 @@ class _AddEventScreenState extends State<AddEventScreen>
                           label: AppStrings.searchPriorityLow(context),
                           priority: Priority.low,
                           selectedPriority: selectedPriority,
-                          // ignore: deprecated_member_use
                           backgroundColor: AppColors.focusedBorderDynamic
                               .withOpacity(0.8),
                           textColor: onSecondaryColor,
@@ -317,7 +315,6 @@ class _AddEventScreenState extends State<AddEventScreen>
                 child: Container(
                   width: double.infinity,
                   height: headerHeight,
-                  // ignore: deprecated_member_use
                   color: AppColors.headerBackground.withOpacity(0.2),
                   child: Row(
                     children: [
@@ -344,7 +341,7 @@ class _AddEventScreenState extends State<AddEventScreen>
                           ),
                         ),
                       ),
-                      const SizedBox(width: 48), // Space for symmetry
+                      const SizedBox(width: 48),
                     ],
                   ),
                 ),

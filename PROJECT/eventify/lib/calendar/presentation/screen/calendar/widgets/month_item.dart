@@ -1,7 +1,7 @@
 import 'package:eventify/calendar/presentation/screen/calendar/logic/month_item_logic.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 
 class MonthItem extends StatelessWidget {
   final String monthName;
@@ -26,11 +26,11 @@ class MonthItem extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.1265,
         margin: const EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
-          color: AppColors.calendarBackground, // Using AppColors
+          color: AppColors.calendarBackground,
           borderRadius: BorderRadius.circular(12),
           boxShadow: const [
             BoxShadow(
-              color: Colors.black45, // Keep as is, derived color
+              color: Colors.black45,
               offset: Offset(0, 4),
               blurRadius: 6,
             ),
@@ -59,7 +59,7 @@ class MonthItem extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: const [
                       BoxShadow(
-                        color: Colors.black45, // Keep as is, derived color
+                        color: Colors.black45,
                         offset: Offset(0, 1),
                         blurRadius: 3,
                       ),
@@ -68,7 +68,7 @@ class MonthItem extends StatelessWidget {
                   child: Text(
                     notificationCount.toString(),
                     style: TextStyles.plusJakartaSansButton.copyWith(
-                      color: AppColors.textOnLightBackground, // Using AppColors
+                      color: AppColors.textOnLightBackground,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),

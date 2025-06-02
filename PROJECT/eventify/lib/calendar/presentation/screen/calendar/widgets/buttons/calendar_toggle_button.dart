@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_strings.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 
 class CalendarToggleButton extends StatelessWidget {
   final VoidCallback onToggleCalendar;
@@ -18,7 +18,7 @@ class CalendarToggleButton extends StatelessWidget {
       onPressed: onToggleCalendar,
       icon: Icon(
         isMonthlyView ? Icons.calendar_view_month : Icons.calendar_today,
-        color: AppColors.footerIconColor, // Using AppColors for consistency
+        color: AppColors.footerIconColor,
         size: 24.0,
       ),
       tooltip: isMonthlyView

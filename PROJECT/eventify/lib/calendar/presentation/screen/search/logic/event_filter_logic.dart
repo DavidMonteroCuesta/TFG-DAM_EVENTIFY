@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 class EventFilterLogic {
   static List<Map<String, dynamic>> filterEvents({
@@ -48,7 +49,8 @@ class EventFilterLogic {
     if (selectedSearchDate != null) {
       results =
           results.where((eventData) {
-            final Timestamp? eventTimestamp = eventData['dateTime'];
+            final Timestamp? eventTimestamp =
+                eventData[AppFirestoreFields.dateTime];
             if (eventTimestamp != null) {
               final date = eventTimestamp.toDate();
               return date.year == selectedSearchDate.year &&
@@ -61,7 +63,8 @@ class EventFilterLogic {
     if (selectedEventType != EventType.all) {
       results =
           results.where((eventData) {
-            final eventTypeString = eventData['type'] as String?;
+            final eventTypeString =
+                eventData[AppFirestoreFields.type] as String?;
             if (eventTypeString == null) return false;
             return eventTypeString == selectedEventType.name;
           }).toList();
@@ -69,7 +72,8 @@ class EventFilterLogic {
     if (enablePriorityFilter && selectedPriority != null) {
       results =
           results.where((eventData) {
-            final priorityString = eventData['priority'] as String?;
+            final priorityString =
+                eventData[AppFirestoreFields.priority] as String?;
             if (priorityString == null) return false;
             return PriorityConverter.stringToPriority(priorityString) ==
                 selectedPriority;
@@ -82,13 +86,14 @@ class EventFilterLogic {
         location.isNotEmpty) {
       results =
           results.where((eventData) {
-            final eventTypeString = eventData['type'] as String?;
-            if (eventTypeString == eventTypeMeeting ||
-                eventTypeString == eventTypeConference ||
-                eventTypeString == eventTypeAppointment) {
-              return (eventData['location'] as String?)?.toLowerCase().contains(
-                    location,
-                  ) ??
+            final eventTypeString =
+                eventData[AppFirestoreFields.type] as String?;
+            if (eventTypeString == AppFirestoreFields.typeMeeting ||
+                eventTypeString == AppFirestoreFields.typeConference ||
+                eventTypeString == AppFirestoreFields.typeAppointment) {
+              return (eventData[AppFirestoreFields.location] as String?)
+                      ?.toLowerCase()
+                      .contains(location) ??
                   false;
             }
             return false;
@@ -99,11 +104,12 @@ class EventFilterLogic {
         subject.isNotEmpty) {
       results =
           results.where((eventData) {
-            final eventTypeString = eventData['type'] as String?;
-            if (eventTypeString == eventTypeExam) {
-              return (eventData['subject'] as String?)?.toLowerCase().contains(
-                    subject,
-                  ) ??
+            final eventTypeString =
+                eventData[AppFirestoreFields.type] as String?;
+            if (eventTypeString == AppFirestoreFields.typeExam) {
+              return (eventData[AppFirestoreFields.subject] as String?)
+                      ?.toLowerCase()
+                      .contains(subject) ??
                   false;
             }
             return false;
@@ -114,11 +120,13 @@ class EventFilterLogic {
         withPersonYesNoSearch) {
       results =
           results.where((eventData) {
-            final eventTypeString = eventData['type'] as String?;
-            if (eventTypeString == eventTypeAppointment) {
+            final eventTypeString =
+                eventData[AppFirestoreFields.type] as String?;
+            if (eventTypeString == AppFirestoreFields.typeAppointment) {
               final bool withPersonYesNo =
-                  eventData['withPersonYesNo'] ?? false;
-              final String? eventWithPerson = eventData['withPerson'];
+                  eventData[AppFirestoreFields.withPersonYesNo] ?? false;
+              final String? eventWithPerson =
+                  eventData[AppFirestoreFields.withPerson];
               return withPersonYesNo &&
                   (eventWithPerson?.toLowerCase().contains(withPerson) ??
                       false);

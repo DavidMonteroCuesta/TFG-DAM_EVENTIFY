@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
@@ -39,7 +41,6 @@ class PriorityOptionChip extends StatelessWidget {
           onSelected(priority);
         }
       },
-      // ignore: deprecated_member_use
       backgroundColor: backgroundColor.withOpacity(0.3),
       selectedColor: backgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),

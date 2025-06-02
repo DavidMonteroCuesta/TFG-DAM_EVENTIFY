@@ -29,8 +29,7 @@ class ChatButton extends StatelessWidget {
       style: IconButton.styleFrom(
         shape: const CircleBorder(),
         backgroundColor: Colors.transparent,
-        // ignore: deprecated_member_use
-        highlightColor: AppColors.highlightColorWhite, // Using AppColors
+        highlightColor: AppColors.highlightColorWhite,
       ),
       tooltip: AppStrings.chatButtonTooltip(context),
     );

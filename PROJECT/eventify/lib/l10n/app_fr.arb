@@ -737,5 +737,11 @@
     "description": "Option de couleur de thème : Rouge."
   },
   "savePassword": "Enregistrer le mot de passe",
-  "@savePassword": {"description": "Libellé du bouton pour enregistrer le mot de passe dans la boîte de dialogue de connexion Google."}
+  "@savePassword": {
+    "description": "Libellé du bouton pour enregistrer le mot de passe dans la boîte de dialogue de connexion Google."
+  },
+  "priority": "priorité",
+  "@priority": {
+    "description": "Le terme pour 'priorité' en français."
+  }
 }

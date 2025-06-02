@@ -23,4 +23,5 @@ abstract class AppFirestoreFields {
   static const String typeExam = 'exam';
   static const String typeMeeting = 'meeting';
   static const String typeTask = 'task';
+  static const String id = 'id';
 }

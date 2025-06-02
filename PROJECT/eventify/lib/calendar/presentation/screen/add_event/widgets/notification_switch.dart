@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
@@ -22,9 +24,7 @@ class NotificationSwitch extends StatelessWidget {
       children: [
         Switch(
           value: value,
-          // ignore: deprecated_member_use
           activeColor: activeColor.withOpacity(0.7),
-          // ignore: deprecated_member_use
           inactiveTrackColor: AppColors.switchInactiveTrackColor.withOpacity(
             0.6,
           ),

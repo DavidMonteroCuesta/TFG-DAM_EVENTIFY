@@ -25,6 +25,7 @@ import 'package:eventify/calendar/presentation/screen/search/logic/event_type_lo
 import 'package:eventify/calendar/presentation/screen/search/logic/priority_logic.dart';
 import 'package:eventify/calendar/presentation/screen/search/widgets/event_result_card.dart';
 import 'package:eventify/calendar/presentation/screen/search/widgets/search_field.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 class EventSearchScreen extends StatefulWidget {
   final DateTime? initialSelectedDate;
@@ -256,8 +257,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   }
 
   Future<void> _onDeleteEvent(Map<String, dynamic> eventData) async {
-    final String eventId = eventData['id'] as String;
-    final String eventTitle = eventData['title'] as String;
+    final String eventId = eventData[AppFirestoreFields.id] as String;
+    final String eventTitle = eventData[AppFirestoreFields.title] as String;
 
     final bool confirm =
         await showDialog(
@@ -477,8 +478,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                             }
                             final Event event = EventFactory.createEvent(
                               EventTypeLogic.getEventTypeFromString(
-                                eventData['type'] ??
-                                    AppInternalConstants.eventTypeTask,
+                                eventData[AppFirestoreFields.type] ??
+                                    AppFirestoreFields.typeTask,
                               ),
                               eventData,
                               currentUserId,
@@ -486,8 +487,8 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                             String eventTypeString =
                                 EventTypeLogic.getTranslatedEventTypeDisplay(
                                   EventTypeLogic.getEventTypeFromString(
-                                    eventData['type'] ??
-                                        AppInternalConstants.eventTypeTask,
+                                    eventData[AppFirestoreFields.type] ??
+                                        AppFirestoreFields.typeTask,
                                   ),
                                   context,
                                 );

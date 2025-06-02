@@ -738,5 +738,11 @@
   },
 
   "savePassword": "保存密码",
-  "@savePassword": {"description": "Google 登录对话框中保存密码的按钮标签。"}
+  "@savePassword": {
+    "description": "Google 登录对话框中保存密码的按钮标签。"
+  },
+  "priority": "优先",
+  "@priority": {
+    "description": "“优先”一词的中文翻译。"
+  }
 }

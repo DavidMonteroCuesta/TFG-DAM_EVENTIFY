@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 import 'package:eventify/common/constants/app_logs.dart';
 
 class CalendarEventLoader {
@@ -13,7 +14,7 @@ class CalendarEventLoader {
       await eventViewModel.getEventsForCurrentUserAndYear(yearToLoad);
       final List<Map<String, dynamic>> allEventsForYear = eventViewModel.events;
       for (final eventData in allEventsForYear) {
-        final Timestamp? eventTimestamp = eventData['dateTime'];
+        final Timestamp? eventTimestamp = eventData[AppFirestoreFields.dateTime];
         if (eventTimestamp != null) {
           final int month = eventTimestamp.toDate().month;
           counts[month] = (counts[month] ?? 0) + 1;
@@ -21,10 +22,7 @@ class CalendarEventLoader {
       }
     } catch (e) {
       log(
-        AppLogs.calendarErrorLoadingMonthlyCounts +
-            yearToLoad.toString() +
-            ': ' +
-            e.toString(),
+        '${AppLogs.calendarErrorLoadingMonthlyCounts}$yearToLoad: $e',
       );
     }
     return counts;

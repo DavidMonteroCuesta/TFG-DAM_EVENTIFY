@@ -1,3 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
@@ -34,7 +37,7 @@ class PrioritySelector extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('Prioridad', style: TextStyles.plusJakartaSansSubtitle2),
+              Text(AppStrings.priority(context), style: TextStyles.plusJakartaSansSubtitle2),
               const SizedBox(width: 10),
               Switch(
                 value: enablePriorityFilter,

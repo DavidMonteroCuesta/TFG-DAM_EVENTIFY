@@ -405,4 +405,7 @@ abstract class AppStrings {
   // Button label for saving password in Google sign-in dialog
   static String savePassword(BuildContext context) =>
       AppLocalizations.of(context)!.savePassword;
+
+  static String priority(BuildContext context) =>
+      AppLocalizations.of(context)!.priority;
 }

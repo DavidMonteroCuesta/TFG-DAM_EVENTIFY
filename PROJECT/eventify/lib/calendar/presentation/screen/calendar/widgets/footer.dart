@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/calendar_toggle_button.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/chat_button.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/profile_button.dart';
@@ -28,7 +30,6 @@ class Footer extends StatelessWidget {
 
     return Container(
       height: footerHeight,
-      // ignore: deprecated_member_use
       color: AppColors.footerBackground.withOpacity(0.8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -38,7 +39,7 @@ class Footer extends StatelessWidget {
               Icons.today,
               color: AppColors.footerIconColor,
               size: 24.0,
-            ), // Using AppColors
+            ),
             onPressed: onResetToCurrent,
             tooltip: AppStrings.footerReturnToCurrentMonthTooltip(context),
           ),

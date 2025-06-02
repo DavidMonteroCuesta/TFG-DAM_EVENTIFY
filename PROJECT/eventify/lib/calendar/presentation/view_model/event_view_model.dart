@@ -38,12 +38,17 @@ class EventViewModel extends ChangeNotifier {
   late final DeleteEventUseCase _deleteEventUseCase;
 
   EventViewModel()
-      : _eventRepository = EventRepositoryImpl(
-            remoteDataSource: EventRemoteDataSource()) {
+    : _eventRepository = EventRepositoryImpl(
+        remoteDataSource: EventRemoteDataSource(),
+      ) {
     _addEventUseCase = AddEventUseCase(eventRepository: _eventRepository);
     _getEventsForUserUseCase = GetEventsForUserUseCase(_eventRepository);
-    _getEventsForUserAndMonthUseCase = GetEventsForUserAndMonthUseCase(_eventRepository);
-    _getEventsForUserAndYearUseCase = GetEventsForUserAndYearUseCase(_eventRepository);
+    _getEventsForUserAndMonthUseCase = GetEventsForUserAndMonthUseCase(
+      _eventRepository,
+    );
+    _getEventsForUserAndYearUseCase = GetEventsForUserAndYearUseCase(
+      _eventRepository,
+    );
     _updateEventUseCase = UpdateEventUseCase(eventRepository: _eventRepository);
     _deleteEventUseCase = DeleteEventUseCase(eventRepository: _eventRepository);
   }
@@ -79,7 +84,9 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = AppInternalConstants.eventUserNotAuthenticatedSave; // Usando constante
+        _errorMessage =
+            AppInternalConstants
+                .eventUserNotAuthenticatedSave; // Usando constante
         _safeNotifyListeners();
         return;
       }
@@ -100,14 +107,22 @@ class EventViewModel extends ChangeNotifier {
         if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
       };
 
-      final Event newEvent = EventFactory.createEvent(type, eventDataPayload, userId);
+      final Event newEvent = EventFactory.createEvent(
+        type,
+        eventDataPayload,
+        userId,
+      );
 
-      final String generatedId = await _addEventUseCase.execute(userId, newEvent);
+      final String generatedId = await _addEventUseCase.execute(
+        userId,
+        newEvent,
+      );
 
       final Map<String, dynamic> eventDataWithId = {
         ...eventDataPayload,
         'id': generatedId,
-        'userId': userId, // Asegura que userId también esté presente para consistencia local
+        'userId':
+            userId, // Asegura que userId también esté presente para consistencia local
       };
 
       _events.add(eventDataWithId);
@@ -118,31 +133,33 @@ class EventViewModel extends ChangeNotifier {
       _safeNotifyListeners(); // Notifica el estado final de éxito
     } catch (error) {
       _isLoading = false;
-      _errorMessage = '${AppInternalConstants.eventFailedToSave}$error'; // Usando constante
+      _errorMessage =
+          '${AppInternalConstants.eventFailedToSave}$error'; // Usando constante
       _safeNotifyListeners(); // Notifica el estado final de error
     }
   }
 
   Future<void> updateEvent(
-      String eventId, // Event ID is required for update
-      EventType type,
-      String title,
-      String? description,
-      Priority priority,
-      Timestamp? dateTime,
-      bool hasNotification,
-      String? location,
-      String? subject,
-      bool withPersonYesNo,
-      String? withPerson,
-      ) async {
+    String eventId, // Event ID is required for update
+    EventType type,
+    String title,
+    String? description,
+    Priority priority,
+    Timestamp? dateTime,
+    bool hasNotification,
+    String? location,
+    String? subject,
+    bool withPersonYesNo,
+    String? withPerson,
+  ) async {
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = AppInternalConstants.eventUserNotAuthenticated; // Usando constante
+        _errorMessage =
+            AppInternalConstants.eventUserNotAuthenticated; // Usando constante
         _safeNotifyListeners();
         return;
       }
@@ -163,14 +180,18 @@ class EventViewModel extends ChangeNotifier {
         if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
       };
 
-      final Event updatedEvent = EventFactory.createEvent(type, eventDataPayload, userId);
+      final Event updatedEvent = EventFactory.createEvent(
+        type,
+        eventDataPayload,
+        userId,
+      );
 
       await _updateEventUseCase.execute(userId, eventId, updatedEvent);
 
       // Actualiza la lista local
       final int index = _events.indexWhere((e) => e['id'] == eventId);
       if (index != -1) {
-        _events[index] = { ...eventDataPayload, 'id': eventId, 'userId': userId };
+        _events[index] = {...eventDataPayload, 'id': eventId, 'userId': userId};
       }
 
       _isLoading = false;
@@ -179,7 +200,8 @@ class EventViewModel extends ChangeNotifier {
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
-      _errorMessage = '${AppInternalConstants.eventFailedToUpdate}$e'; // Usando constante
+      _errorMessage =
+          '${AppInternalConstants.eventFailedToUpdate}$e'; // Usando constante
       _safeNotifyListeners();
     }
   }
@@ -191,22 +213,22 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = AppInternalConstants.eventUserNotAuthenticated; // Usando constante
+        _errorMessage =
+            AppInternalConstants.eventUserNotAuthenticated;
         _safeNotifyListeners();
         return;
       }
-      await _deleteEventUseCase.execute(userId, eventId); // Llama al use case de eliminación
+      await _deleteEventUseCase.execute(userId, eventId);
 
-      // Elimina de la lista local
       _events.removeWhere((event) => event['id'] == eventId);
 
       _isLoading = false;
       _isNearestEventLoaded = false;
-      await loadNearestEvent(); // Recarga el evento más cercano después de la eliminación
+      await loadNearestEvent();
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
-      _errorMessage = '${AppInternalConstants.eventFailedToDelete}$e'; // Usando constante
+      _errorMessage = '${AppInternalConstants.eventFailedToDelete}$e';
       _safeNotifyListeners();
     }
   }
@@ -218,21 +240,20 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = AppInternalConstants.eventUserNotAuthenticated; // Usando constante
+        _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
         _isLoading = false;
         _safeNotifyListeners();
-        _events = []; // Limpia los eventos si no está autenticado
+        _events = [];
         return;
       }
-      // Obtiene la lista de mapas (incluyendo 'id')
       _events = await _getEventsForUserUseCase.execute(userId);
       _isLoading = false;
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
-      _errorMessage = '${AppInternalConstants.eventFailedToFetch}$e'; // Usando constante
+      _errorMessage = '${AppInternalConstants.eventFailedToFetch}$e';
       _safeNotifyListeners();
-      _events = []; // Limpia los eventos en caso de error
+      _events = [];
     }
   }
 
@@ -247,38 +268,49 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = AppInternalConstants.eventUserNotAuthenticated; // Usando constante
+        _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
         _isLoading = false;
         _safeNotifyListeners();
         _nearestEvent = null;
         return;
       }
 
-      // Obtiene todos los datos de eventos del usuario como List<Map<String, dynamic>>
-      final List<Map<String, dynamic>> allEventsData = await _getEventsForUserUseCase.execute(userId);
+      final List<Map<String, dynamic>> allEventsData =
+          await _getEventsForUserUseCase.execute(userId);
 
-      // Convierte los mapas a objetos Event para la lógica, ya que la entidad Event ya no contiene 'id'
-      final List<Event> allEvents = allEventsData.map((data) => EventFactory.createEvent(
-        _getEventTypeFromString(data['type'] ?? AppInternalConstants.eventTypeTask), data, userId // Usando constante
-      )).toList();
+      final List<Event> allEvents =
+          allEventsData
+              .map(
+                (data) => EventFactory.createEvent(
+                  _getEventTypeFromString(
+                    data['type'] ?? AppInternalConstants.eventTypeTask,
+                  ),
+                  data,
+                  userId,
+                ),
+              )
+              .toList();
 
-
-      // Filtra eventos pasados y aquellos sin fecha/hora
       final now = DateTime.now();
-      final futureEvents = allEvents.where((event) {
-        return event.dateTime != null && event.dateTime!.toDate().isAfter(now.subtract(const Duration(minutes: 1)));
-      }).toList();
+      final futureEvents =
+          allEvents.where((event) {
+            return event.dateTime != null &&
+                event.dateTime!.toDate().isAfter(
+                  now.subtract(const Duration(minutes: 1)),
+                );
+          }).toList();
 
-      // Ordena eventos: primero por fecha/hora ascendente, luego por prioridad (Critical > High > Medium > Low)
       futureEvents.sort((a, b) {
-        // Ordenar por fecha/hora
-        final dateComparison = a.dateTime!.toDate().compareTo(b.dateTime!.toDate());
+        final dateComparison = a.dateTime!.toDate().compareTo(
+          b.dateTime!.toDate(),
+        );
         if (dateComparison != 0) {
           return dateComparison;
         }
 
-        // Si las fechas son iguales, ordenar por prioridad
-        return _getPriorityValue(b.priority).compareTo(_getPriorityValue(a.priority));
+        return _getPriorityValue(
+          b.priority,
+        ).compareTo(_getPriorityValue(a.priority));
       });
 
       _nearestEvent = futureEvents.isNotEmpty ? futureEvents.first : null;
@@ -287,13 +319,12 @@ class EventViewModel extends ChangeNotifier {
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
-      _errorMessage = '${AppInternalConstants.eventFailedToFetchNearest}$e'; // Usando constante
+      _errorMessage = '${AppInternalConstants.eventFailedToFetchNearest}$e';
       _safeNotifyListeners();
       _nearestEvent = null;
     }
   }
 
-  // Helper para obtener un valor numérico de la prioridad para la ordenación
   int _getPriorityValue(Priority priority) {
     switch (priority) {
       case Priority.critical:
@@ -307,68 +338,76 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
-  // Helper para convertir string type a EventType enum
   EventType _getEventTypeFromString(String typeString) {
     switch (typeString.toLowerCase()) {
-      case AppInternalConstants.eventTypeMeeting: // Usando constante
+      case AppInternalConstants.eventTypeMeeting:
         return EventType.meeting;
-      case AppInternalConstants.eventTypeExam: // Usando constante
+      case AppInternalConstants.eventTypeExam:
         return EventType.exam;
-      case AppInternalConstants.eventTypeConference: // Usando constante
+      case AppInternalConstants.eventTypeConference:
         return EventType.conference;
-      case AppInternalConstants.eventTypeAppointment: // Usando constante
+      case AppInternalConstants.eventTypeAppointment:
         return EventType.appointment;
-      case AppInternalConstants.eventTypeTask: // Usando constante
+      case AppInternalConstants.eventTypeTask:
       default:
         return EventType.task;
     }
   }
 
-  Future<List<Map<String, dynamic>>> getEventsForCurrentUserAndMonth(int year, int month) async {
+  Future<List<Map<String, dynamic>>> getEventsForCurrentUserAndMonth(
+    int year,
+    int month,
+  ) async {
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = AppInternalConstants.eventUserNotAuthenticated; // Usando constante
+        _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
         _isLoading = false;
         _safeNotifyListeners();
-        return []; // Retorna una lista vacía en caso de error
+        return [];
       }
-      _events = await _getEventsForUserAndMonthUseCase.execute(userId, year, month);
+      _events = await _getEventsForUserAndMonthUseCase.execute(
+        userId,
+        year,
+        month,
+      );
       _isLoading = false;
       _safeNotifyListeners();
-      return _events; // Retorna la lista de mapas de eventos
+      return _events;
     } catch (e) {
       _isLoading = false;
-      _errorMessage = '${AppInternalConstants.eventFailedToFetchForMonth}$e'; // Usando constante
+      _errorMessage = '${AppInternalConstants.eventFailedToFetchForMonth}$e';
       _safeNotifyListeners();
-      return []; // Retorna una lista vacía en caso de error
+      return [];
     }
   }
 
-  Future<List<Map<String, dynamic>>> getEventsForCurrentUserAndYear(int year) async {
+  Future<List<Map<String, dynamic>>> getEventsForCurrentUserAndYear(
+    int year,
+  ) async {
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage = AppInternalConstants.eventUserNotAuthenticated; // Usando constante
+        _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
         _isLoading = false;
         _safeNotifyListeners();
-        return []; // Retorna una lista vacía en caso de error
+        return [];
       }
       _events = await _getEventsForUserAndYearUseCase.execute(userId, year);
       _isLoading = false;
       _safeNotifyListeners();
-      return _events; // Retorna la lista de mapas de eventos
+      return _events;
     } catch (e) {
       _isLoading = false;
-      _errorMessage = '${AppInternalConstants.eventFailedToFetchForYear}$e'; // Usando constante
+      _errorMessage = '${AppInternalConstants.eventFailedToFetchForYear}$e';
       _safeNotifyListeners();
-      return []; // Retorna una lista vacía en caso de error
+      return [];
     }
   }
 }
