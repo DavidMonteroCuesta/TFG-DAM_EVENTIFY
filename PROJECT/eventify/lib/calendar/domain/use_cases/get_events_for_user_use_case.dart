@@ -5,7 +5,6 @@ class GetEventsForUserUseCase {
 
   GetEventsForUserUseCase(this.eventRepository);
 
-  // Now returns List<Map<String, dynamic>>
   Future<List<Map<String, dynamic>>> execute(String userId) async {
     return await eventRepository.getEventsForUser(userId);
   }

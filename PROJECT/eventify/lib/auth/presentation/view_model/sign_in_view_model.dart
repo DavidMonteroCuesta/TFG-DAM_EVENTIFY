@@ -1,9 +1,11 @@
-import 'dart:ui'; // Import for ImageFilter
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
+import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/auth/domain/use_cases/login_use_case.dart';
 import 'package:eventify/auth/domain/use_cases/send_password_reset_email_use_case.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,7 +28,6 @@ class SignInViewModel extends ChangeNotifier {
     // No need to check current user here. We do it in main.dart
   }
 
-  // Method to initialize the view model with the context
   void initialize(BuildContext context) {
     _context = context;
   }
@@ -42,7 +43,6 @@ class SignInViewModel extends ChangeNotifier {
     _context = context;
     notifyListeners();
 
-    // Validación de campos vacíos
     if (email.isEmpty || password.isEmpty) {
       _isLoading = false;
       _errorMessage = AppStrings.signInCredentialsFailed(context);
@@ -118,7 +118,10 @@ class SignInViewModel extends ChangeNotifier {
         // Comprobar si el usuario existe en la base de datos (colección 'users')
         final firestore = FirebaseFirestore.instance;
         final userDoc =
-            await firestore.collection('users').doc(firebaseUser.uid).get();
+            await firestore
+                .collection(AppFirestoreFields.users)
+                .doc(firebaseUser.uid)
+                .get();
         if (!userDoc.exists) {
           // Usuario nuevo: pedir contraseña
           final password = await showDialog<String>(
@@ -190,9 +193,9 @@ class SignInViewModel extends ChangeNotifier {
                                   Navigator.pop(context, pwd);
                                 }
                               },
-                              child: const Text(
-                                'Guardar',
-                                style: TextStyle(color: Colors.white),
+                              child: Text(
+                                AppStrings.savePassword(context),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ],
@@ -328,7 +331,7 @@ class _PasswordFieldWithToggleState extends State<_PasswordFieldWithToggle> {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
         ),
-        errorText: null, // Mostramos el error abajo
+        errorText: null,
         suffixIcon: IconButton(
           icon: Icon(
             _obscure ? Icons.visibility_off : Icons.visibility,

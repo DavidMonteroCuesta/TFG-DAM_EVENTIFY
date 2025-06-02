@@ -5,11 +5,12 @@ import 'package:eventify/auth/presentation/screen/login/widgets/forgot_passwd_op
 import 'package:eventify/auth/presentation/screen/login/widgets/login_auth_layout.dart';
 import 'package:eventify/auth/presentation/screen/login/widgets/primary_button.dart';
 import 'package:eventify/auth/presentation/screen/login/widgets/social_sign_in_button.dart';
-import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart'; // Import CalendarScreen
+import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
 import 'package:eventify/common/animations/ani_left_to_right.dart';
+import 'package:eventify/common/constants/app_assets.dart';
 import 'package:eventify/common/constants/app_routes.dart';
 import 'package:eventify/common/constants/app_strings.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,10 +64,10 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
     final signInViewModel = Provider.of<SignInViewModel>(context);
 
     return EventifyAuthLayout(
-      leftFooterText: '', // No permitir registro manual
-      rightFooterText: '', // No mostrar texto de login manual
-      onLeftFooterTap: null, // Deshabilita el tap
-      onRightFooterTap: null, // Deshabilita el tap
+      leftFooterText: '',
+      rightFooterText: '',
+      onLeftFooterTap: null,
+      onRightFooterTap: null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -115,7 +116,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
           if (signInViewModel.isLoading)
             CircularProgressIndicator(
               color: AppColors.primary,
-            ), // Using AppColors
+            ),
           if (signInViewModel.errorMessage != null)
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
@@ -123,18 +124,14 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
                 signInViewModel.errorMessage!,
                 style: TextStyles.plusJakartaSansBody1.copyWith(
                   color: AppColors.errorTextColor,
-                ), // Using AppColors
+                ),
               ),
             ),
           const SizedBox(height: 16),
           SizedBox(
-            height: 45, // Altura estándar, menos alto que antes
+            height: 45,
             child: SocialSignInButton(
-              icon: Image.asset(
-                'assets/icons/google.png',
-                width: 24,
-                height: 24,
-              ),
+              icon: Image.asset(AppAssets.googleIcon, width: 24, height: 24),
               text: AppStrings.socialSignInGoogleText(context),
               onPressed:
                   signInViewModel.isLoading
@@ -154,7 +151,6 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          // Elimina SocialSignInButtons, solo deja ForgotPasswordOption
           const ForgotPasswordOption(),
         ],
       ),

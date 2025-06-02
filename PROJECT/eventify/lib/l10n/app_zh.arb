@@ -735,5 +735,8 @@
   "profileThemeRed": "红色",
   "@profileThemeRed": {
     "description": "主题颜色选项：红色。"
-  }
+  },
+
+  "savePassword": "保存密码",
+  "@savePassword": {"description": "Google 登录对话框中保存密码的按钮标签。"}
 }

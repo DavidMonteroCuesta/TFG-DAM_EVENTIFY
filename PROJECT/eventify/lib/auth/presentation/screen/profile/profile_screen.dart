@@ -1,4 +1,5 @@
-import 'dart:ui'; // <-- Añadido para BackdropFilter
+// ignore_for_file: deprecated_member_use
+
 import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/utils/auth/logout_service.dart';
@@ -9,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
-import 'package:eventify/common/theme/colors/app_colors_palette.dart'; // Asegúrate de importar AppColorPalette
+import 'package:eventify/common/theme/colors/app_colors_palette.dart';
 import 'package:eventify/common/constants/app_routes.dart';
 import 'package:eventify/auth/presentation/screen/profile/widgets/profile_list_item.dart';
 import 'package:eventify/auth/presentation/screen/profile/logic/profile_theme_logic.dart';
@@ -42,9 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     Color? currentAppThemeColor =
-        AppColors.secondaryDynamic; // Color actual del tema global
-
-    // Buscar si el color del tema actual coincide con alguna de nuestras opciones del dropdown
+        AppColors.secondaryDynamic;
     Color? matchedDropdownValue = ProfileThemeLogic.getMatchedDropdownValue(
       currentAppThemeColor,
     );

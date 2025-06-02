@@ -1,10 +1,12 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 class MeetingEvent extends Event {
   @override
-  String get type => 'meeting';
+  String get type => AppFirestoreFields.typeMeeting;
 
+  @override
   final String? location;
 
   MeetingEvent({
@@ -19,14 +21,15 @@ class MeetingEvent extends Event {
 
   factory MeetingEvent.fromJson(Map<String, dynamic> json) {
     return MeetingEvent(
-      userId: json['userId'] ?? '',
-      title: json['title'] ?? '',
-      description: json['description'],
-      priority:
-          PriorityConverter.stringToPriority(json['priority']),
-      dateTime: json['dateTime'],
-      hasNotification: json['hasNotification'],
-      location: json['location'],
+      userId: json[AppFirestoreFields.email] ?? '',
+      title: json[AppFirestoreFields.title] ?? '',
+      description: json[AppFirestoreFields.description],
+      priority: PriorityConverter.stringToPriority(
+        json[AppFirestoreFields.priority],
+      ),
+      dateTime: json[AppFirestoreFields.dateTime],
+      hasNotification: json[AppFirestoreFields.notification],
+      location: json[AppFirestoreFields.location],
     );
   }
 
@@ -34,9 +37,9 @@ class MeetingEvent extends Event {
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(),
-      'type': 'meeting',
-      'location': location,
-      'priority': priority.toFormattedString(),
+      AppFirestoreFields.type: AppFirestoreFields.typeMeeting,
+      AppFirestoreFields.location: location,
+      AppFirestoreFields.priority: priority.toFormattedString(),
     };
   }
 }

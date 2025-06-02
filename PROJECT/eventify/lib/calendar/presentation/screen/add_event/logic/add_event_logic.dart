@@ -5,7 +5,7 @@ import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/di/service_locator.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Asegúrate de importar AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'event_type_utils.dart';
 import 'date_time_utils.dart';
 

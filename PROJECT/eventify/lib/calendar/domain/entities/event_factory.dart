@@ -6,64 +6,72 @@ import 'package:eventify/calendar/domain/entities/events/meeting_event.dart';
 import 'package:eventify/calendar/domain/entities/events/task_event.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 class EventFactory {
-  static Event createEvent(EventType type, Map<String, dynamic> json, String userId) {
-    final String eventTypeString = json['type'] ?? 'task';
-    final Priority priority = PriorityConverter.stringToPriority(json['priority']);
+  static Event createEvent(
+    EventType type,
+    Map<String, dynamic> json,
+    String userId,
+  ) {
+    final String eventTypeString =
+        json[AppFirestoreFields.type] ?? AppFirestoreFields.typeTask;
+    final Priority priority = PriorityConverter.stringToPriority(
+      json[AppFirestoreFields.priority],
+    );
 
     switch (eventTypeString) {
-      case 'meeting':
+      case AppFirestoreFields.typeMeeting:
         return MeetingEvent(
           userId: userId,
-          title: json['title'] ?? '',
-          description: json['description'],
+          title: json[AppFirestoreFields.title] ?? '',
+          description: json[AppFirestoreFields.description],
           priority: priority,
-          dateTime: json['dateTime'],
-          hasNotification: json['hasNotification'],
-          location: json['location'],
+          dateTime: json[AppFirestoreFields.dateTime],
+          hasNotification: json[AppFirestoreFields.notification],
+          location: json[AppFirestoreFields.location],
         );
-      case 'exam':
+      case AppFirestoreFields.typeExam:
         return ExamEvent(
           userId: userId,
-          title: json['title'] ?? '',
-          description: json['description'],
+          title: json[AppFirestoreFields.title] ?? '',
+          description: json[AppFirestoreFields.description],
           priority: priority,
-          dateTime: json['dateTime'],
-          hasNotification: json['hasNotification'],
-          subject: json['subject'],
+          dateTime: json[AppFirestoreFields.dateTime],
+          hasNotification: json[AppFirestoreFields.notification],
+          subject: json[AppFirestoreFields.subject],
         );
-      case 'conference':
+      case AppFirestoreFields.typeConference:
         return ConferenceEvent(
           userId: userId,
-          title: json['title'] ?? '',
-          description: json['description'],
+          title: json[AppFirestoreFields.title] ?? '',
+          description: json[AppFirestoreFields.description],
           priority: priority,
-          dateTime: json['dateTime'],
-          hasNotification: json['hasNotification'],
-          location: json['location'],
+          dateTime: json[AppFirestoreFields.dateTime],
+          hasNotification: json[AppFirestoreFields.notification],
+          location: json[AppFirestoreFields.location],
         );
-      case 'appointment':
+      case AppFirestoreFields.typeAppointment:
         return AppointmentEvent(
           userId: userId,
-          title: json['title'] ?? '',
-          description: json['description'],
+          title: json[AppFirestoreFields.title] ?? '',
+          description: json[AppFirestoreFields.description],
           priority: priority,
-          dateTime: json['dateTime'],
-          hasNotification: json['hasNotification'],
-          location: json['location'],
-          withPerson: json['withPerson'],
-          withPersonYesNo: json['withPersonYesNo'] ?? false,
+          dateTime: json[AppFirestoreFields.dateTime],
+          hasNotification: json[AppFirestoreFields.notification],
+          location: json[AppFirestoreFields.location],
+          withPerson: json[AppFirestoreFields.withPerson],
+          withPersonYesNo: json[AppFirestoreFields.withPersonYesNo] ?? false,
         );
-      case 'task':
+      case AppFirestoreFields.typeTask:
       default:
         return TaskEvent(
           userId: userId,
-          title: json['title'] ?? '',
-          description: json['description'],
+          title: json[AppFirestoreFields.title] ?? '',
+          description: json[AppFirestoreFields.description],
           priority: priority,
-          dateTime: json['dateTime'],
-          hasNotification: json['hasNotification'],
+          dateTime: json[AppFirestoreFields.dateTime],
+          hasNotification: json[AppFirestoreFields.notification],
         );
     }
   }

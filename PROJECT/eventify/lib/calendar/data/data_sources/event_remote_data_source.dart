@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer';
 import 'package:eventify/common/constants/app_logs.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 class EventRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -9,18 +10,12 @@ class EventRemoteDataSource {
   Future<String> addEvent(String userId, Map<String, dynamic> eventData) async {
     try {
       final DocumentReference docRef = await _firestore
-          .collection('users')
+          .collection(AppFirestoreFields.users)
           .doc(userId)
-          .collection('events')
+          .collection(AppFirestoreFields.events)
           .add(eventData);
       log(
-        AppLogs.eventAdded +
-            ' ' +
-            userId +
-            ' ' +
-            AppLogs.withId +
-            ' ' +
-            docRef.id,
+        '${AppLogs.eventAdded} $userId ${AppLogs.withId} ${docRef.id}',
         name: _tag,
       );
       return docRef.id;
@@ -37,19 +32,13 @@ class EventRemoteDataSource {
   ) async {
     try {
       await _firestore
-          .collection('users')
+          .collection(AppFirestoreFields.users)
           .doc(userId)
-          .collection('events')
+          .collection(AppFirestoreFields.events)
           .doc(eventId)
           .update(eventData);
       log(
-        AppLogs.eventUpdated +
-            ' ' +
-            userId +
-            ' ' +
-            AppLogs.andEvent +
-            ' ' +
-            eventId,
+        '${AppLogs.eventUpdated} $userId ${AppLogs.andEvent} $eventId',
         name: _tag,
       );
     } catch (e) {
@@ -61,19 +50,13 @@ class EventRemoteDataSource {
   Future<void> deleteEvent(String userId, String eventId) async {
     try {
       await _firestore
-          .collection('users')
+          .collection(AppFirestoreFields.users)
           .doc(userId)
-          .collection('events')
+          .collection(AppFirestoreFields.events)
           .doc(eventId) // Use the eventId to target the specific document
           .delete();
       log(
-        AppLogs.eventDeleted +
-            ' ' +
-            userId +
-            ' ' +
-            AppLogs.andEvent +
-            ' ' +
-            eventId,
+        '${AppLogs.eventDeleted} $userId ${AppLogs.andEvent} $eventId',
         name: _tag,
       );
     } catch (e) {
@@ -87,9 +70,9 @@ class EventRemoteDataSource {
     try {
       final QuerySnapshot<Map<String, dynamic>> snapshot =
           await _firestore
-              .collection('users')
+              .collection(AppFirestoreFields.users)
               .doc(userId)
-              .collection('events')
+              .collection(AppFirestoreFields.events)
               .get();
       return snapshot.docs.map((doc) => {...doc.data(), 'id': doc.id}).toList();
     } catch (e) {
@@ -102,10 +85,10 @@ class EventRemoteDataSource {
     try {
       final QuerySnapshot<Map<String, dynamic>> snapshot =
           await _firestore
-              .collection('users')
+              .collection(AppFirestoreFields.users)
               .doc(userId)
-              .collection('events')
-              .orderBy('dateTime')
+              .collection(AppFirestoreFields.events)
+              .orderBy(AppFirestoreFields.dateTime)
               .get();
 
       if (snapshot.docs.isEmpty) {
@@ -115,7 +98,7 @@ class EventRemoteDataSource {
       Timestamp now = Timestamp.now();
       for (final doc in snapshot.docs) {
         final eventData = doc.data();
-        final Timestamp? eventDateTime = eventData['dateTime'];
+        final Timestamp? eventDateTime = eventData[AppFirestoreFields.dateTime];
 
         if (eventDateTime != null && (eventDateTime.compareTo(now) >= 0)) {
           return {...eventData, 'id': doc.id};
@@ -139,15 +122,15 @@ class EventRemoteDataSource {
 
       final QuerySnapshot<Map<String, dynamic>> snapshot =
           await _firestore
-              .collection('users')
+              .collection(AppFirestoreFields.users)
               .doc(userId)
-              .collection('events')
+              .collection(AppFirestoreFields.events)
               .where(
-                'dateTime',
+                AppFirestoreFields.dateTime,
                 isGreaterThanOrEqualTo: Timestamp.fromDate(startOfMonth),
               )
               .where(
-                'dateTime',
+                AppFirestoreFields.dateTime,
                 isLessThanOrEqualTo: Timestamp.fromDate(endOfMonth),
               )
               .get();
@@ -168,30 +151,20 @@ class EventRemoteDataSource {
 
       final QuerySnapshot<Map<String, dynamic>> snapshot =
           await _firestore
-              .collection('users')
+              .collection(AppFirestoreFields.users)
               .doc(userId)
-              .collection('events')
+              .collection(AppFirestoreFields.events)
               .where(
-                'dateTime',
+                AppFirestoreFields.dateTime,
                 isGreaterThanOrEqualTo: Timestamp.fromDate(startOfYear),
               )
               .where(
-                'dateTime',
+                AppFirestoreFields.dateTime,
                 isLessThanOrEqualTo: Timestamp.fromDate(endOfYear),
               )
               .get();
       log(
-        AppLogs.eventFetchByYear +
-            ' ' +
-            year.toString() +
-            ' ' +
-            AppLogs.forUser +
-            ' ' +
-            userId +
-            ': ' +
-            AppLogs.count +
-            ' ' +
-            snapshot.docs.length.toString(),
+        '${AppLogs.eventFetchByYear} $year ${AppLogs.forUser} $userId: ${AppLogs.count} ${snapshot.docs.length}',
         name: _tag,
       );
       return snapshot.docs.map((doc) => {...doc.data(), 'id': doc.id}).toList();

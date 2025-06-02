@@ -1,9 +1,10 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 class TaskEvent extends Event {
   @override
-  String get type => 'task';
+  String get type => AppFirestoreFields.typeTask;
 
   TaskEvent({
     required super.title,
@@ -16,12 +17,14 @@ class TaskEvent extends Event {
 
   factory TaskEvent.fromJson(Map<String, dynamic> json) {
     return TaskEvent(
-      userId: json['userId'] ?? '',
-      title: json['title'] ?? '',
-      description: json['description'],
-      priority: PriorityConverter.stringToPriority(json['priority']),
-      dateTime: json['dateTime'],
-      hasNotification: json['hasNotification'],
+      userId: json[AppFirestoreFields.email] ?? '',
+      title: json[AppFirestoreFields.title] ?? '',
+      description: json[AppFirestoreFields.description],
+      priority: PriorityConverter.stringToPriority(
+        json[AppFirestoreFields.priority],
+      ),
+      dateTime: json[AppFirestoreFields.dateTime],
+      hasNotification: json[AppFirestoreFields.notification],
     );
   }
 
@@ -29,8 +32,8 @@ class TaskEvent extends Event {
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(),
-      'type': 'task',
-      'priority': priority.toFormattedString(),
+      AppFirestoreFields.type: AppFirestoreFields.typeTask,
+      AppFirestoreFields.priority: priority.toFormattedString(),
     };
   }
 }

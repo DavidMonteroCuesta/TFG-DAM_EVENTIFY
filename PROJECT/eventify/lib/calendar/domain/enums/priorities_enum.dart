@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart'; // Import flutter material for Color
+import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 
 enum Priority {
   critical,
@@ -23,7 +23,6 @@ extension PriorityExtension on Priority {
     }
   }
 
-  // Changed return type to Color and used AppColors
   Color get color {
     switch (this) {
       case Priority.critical:

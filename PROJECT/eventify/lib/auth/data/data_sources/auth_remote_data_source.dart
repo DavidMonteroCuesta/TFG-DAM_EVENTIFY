@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/auth/domain/entities/user.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 import 'package:eventify/common/constants/app_logs.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
@@ -32,7 +33,7 @@ class AuthRemoteDataSource {
   Future<void> saveUser(UserModel userModel) async {
     try {
       await _firestore
-          .collection('users')
+          .collection(AppFirestoreFields.users)
           .doc(userModel.id)
           .set(userModel.toJson());
     } catch (e) {
@@ -62,7 +63,9 @@ class AuthRemoteDataSource {
 
   Future<User?> signInWithGoogle(firebase_auth.User firebaseUser) async {
     try {
-      final userDoc = _firestore.collection('users').doc(firebaseUser.uid);
+      final userDoc = _firestore
+          .collection(AppFirestoreFields.users)
+          .doc(firebaseUser.uid);
       final snapshot = await userDoc.get();
 
       if (!snapshot.exists) {

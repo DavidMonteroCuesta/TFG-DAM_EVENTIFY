@@ -735,5 +735,7 @@
   "profileThemeRed": "Rouge",
   "@profileThemeRed": {
     "description": "Option de couleur de thème : Rouge."
-  }
+  },
+  "savePassword": "Enregistrer le mot de passe",
+  "@savePassword": {"description": "Libellé du bouton pour enregistrer le mot de passe dans la boîte de dialogue de connexion Google."}
 }

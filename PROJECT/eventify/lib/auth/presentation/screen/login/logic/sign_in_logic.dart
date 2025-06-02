@@ -1,4 +1,5 @@
 import 'package:eventify/auth/presentation/view_model/sign_in_view_model.dart';
+import 'package:eventify/common/constants/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class SignInLogic {
@@ -21,6 +22,6 @@ class SignInLogic {
   }
 
   void goToSignUp(BuildContext context) {
-    Navigator.pushReplacementNamed(context, '/signup');
+    Navigator.pushReplacementNamed(context, AppRoutes.signUp);
   }
 }

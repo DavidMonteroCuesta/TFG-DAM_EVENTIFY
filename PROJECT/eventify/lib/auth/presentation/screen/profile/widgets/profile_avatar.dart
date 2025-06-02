@@ -27,6 +27,7 @@ class ProfileAvatar extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             decoration: BoxDecoration(
+              // ignore: deprecated_member_use
               color: AppColors.profileMediumGrey.withOpacity(0.35),
               shape: BoxShape.circle,
             ),

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'package:eventify/auth/domain/entities/user.dart' as domain;
 import 'package:eventify/auth/domain/use_cases/google_sign_in_use_case.dart';
@@ -66,7 +68,6 @@ class SignUpViewModel extends ChangeNotifier {
         );
 
         Navigator.pushReplacement(
-          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (_) => const CalendarScreen()),
         );

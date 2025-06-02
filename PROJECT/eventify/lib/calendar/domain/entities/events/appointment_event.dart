@@ -1,12 +1,16 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 class AppointmentEvent extends Event {
   @override
-  String get type => 'appointment';
+  String get type => AppFirestoreFields.typeAppointment;
 
+  @override
   final String? withPerson;
+  @override
   final bool withPersonYesNo;
+  @override
   final String? location;
 
   AppointmentEvent({
@@ -23,15 +27,17 @@ class AppointmentEvent extends Event {
 
   factory AppointmentEvent.fromJson(Map<String, dynamic> json) {
     return AppointmentEvent(
-      userId: json['userId'] ?? '',
-      title: json['title'] ?? '',
-      description: json['description'],
-      priority: PriorityConverter.stringToPriority(json['priority']),
-      dateTime: json['dateTime'],
-      hasNotification: json['hasNotification'],
-      withPerson: json['withPerson'],
-      withPersonYesNo: json['withPersonYesNo'] ?? false,
-      location: json['location'],
+      userId: json[AppFirestoreFields.email] ?? '',
+      title: json[AppFirestoreFields.title] ?? '',
+      description: json[AppFirestoreFields.description],
+      priority: PriorityConverter.stringToPriority(
+        json[AppFirestoreFields.priority],
+      ),
+      dateTime: json[AppFirestoreFields.dateTime],
+      hasNotification: json[AppFirestoreFields.notification],
+      withPerson: json[AppFirestoreFields.withPerson],
+      withPersonYesNo: json[AppFirestoreFields.withPersonYesNo] ?? false,
+      location: json[AppFirestoreFields.location],
     );
   }
 
@@ -39,11 +45,11 @@ class AppointmentEvent extends Event {
   Map<String, dynamic> toJson() {
     return {
       ...super.toJson(),
-      'type': 'appointment',
-      'withPerson': withPerson,
-      'withPersonYesNo': withPersonYesNo,
-      'location': location,
-      'priority': priority.toFormattedString(),
+      AppFirestoreFields.type: AppFirestoreFields.typeAppointment,
+      AppFirestoreFields.withPerson: withPerson,
+      AppFirestoreFields.withPersonYesNo: withPersonYesNo,
+      AppFirestoreFields.location: location,
+      AppFirestoreFields.priority: priority.toFormattedString(),
     };
   }
 }

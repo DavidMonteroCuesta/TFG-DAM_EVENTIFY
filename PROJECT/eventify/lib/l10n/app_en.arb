@@ -735,5 +735,7 @@
   "profileThemeRed": "Red",
   "@profileThemeRed": {
     "description": "Theme color option: Red."
-  }
+  },
+  "savePassword": "Save Password",
+  "@savePassword": {"description": "Button label for saving password in Google sign-in dialog."}
 }

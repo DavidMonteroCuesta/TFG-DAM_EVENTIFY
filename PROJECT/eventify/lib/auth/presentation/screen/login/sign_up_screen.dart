@@ -182,7 +182,7 @@ class _SignUpScreenState extends SlideLeftToRightAnimationState<SignUpScreen> {
           Text(
             AppStrings.signUpOrSignUpWith(context),
             style: TextStyle(
-              color: AppColors.textGrey500, // Using AppColors
+              color: AppColors.textGrey500,
               fontSize: 14,
             ),
           ),

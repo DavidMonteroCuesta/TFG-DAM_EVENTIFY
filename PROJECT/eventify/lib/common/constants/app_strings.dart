@@ -401,4 +401,8 @@ abstract class AppStrings {
       AppLocalizations.of(context)!.firebaseAuthResetPasswordError;
   static String unexpectedResetPasswordError(BuildContext context) =>
       AppLocalizations.of(context)!.unexpectedResetPasswordError;
+
+  // Button label for saving password in Google sign-in dialog
+  static String savePassword(BuildContext context) =>
+      AppLocalizations.of(context)!.savePassword;
 }

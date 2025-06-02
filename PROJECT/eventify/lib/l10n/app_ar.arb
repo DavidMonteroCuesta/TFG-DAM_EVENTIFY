@@ -735,5 +735,7 @@
   "profileThemeRed": "أحمر",
   "@profileThemeRed": {
     "description": "خيار لون السمة: أحمر."
-  }
+  },
+  "savePassword": "حفظ كلمة المرور",
+  "@savePassword": {"description": "تسمية زر حفظ كلمة المرور في مربع حوار تسجيل الدخول باستخدام Google."}
 }
