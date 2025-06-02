@@ -15,6 +15,7 @@ import 'package:eventify/calendar/domain/use_cases/get_events_for_user_use_case.
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_month_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_year_use_case.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_firestore_fields.dart';
 
 class EventViewModel extends ChangeNotifier {
   bool _isLoading = false;
@@ -91,20 +92,25 @@ class EventViewModel extends ChangeNotifier {
         return;
       }
 
+      // Sustituir las claves por constantes de AppFirestoreFields
       final Map<String, dynamic> eventDataPayload = {
-        'title': title,
-        'description': description,
-        'priority': priority.toString().split('.').last, // Store as string
-        'dateTime': dateTime,
-        'hasNotification': hasNotification,
-        'type': type.toString().split('.').last, // Store as string
+        AppFirestoreFields.title: title,
+        AppFirestoreFields.description: description,
+        AppFirestoreFields.priority:
+            priority.toString().split('.').last, // Store as string
+        AppFirestoreFields.dateTime: dateTime,
+        AppFirestoreFields.notification: hasNotification,
+        AppFirestoreFields.type:
+            type.toString().split('.').last, // Store as string
         if (type == EventType.meeting ||
             type == EventType.conference ||
             type == EventType.appointment)
-          'location': location,
-        if (type == EventType.exam) 'subject': subject,
-        if (type == EventType.appointment) 'withPerson': withPerson,
-        if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
+          AppFirestoreFields.location: location,
+        if (type == EventType.exam) AppFirestoreFields.subject: subject,
+        if (type == EventType.appointment)
+          AppFirestoreFields.withPerson: withPerson,
+        if (type == EventType.appointment)
+          AppFirestoreFields.withPersonYesNo: withPersonYesNo,
       };
 
       final Event newEvent = EventFactory.createEvent(
@@ -120,8 +126,8 @@ class EventViewModel extends ChangeNotifier {
 
       final Map<String, dynamic> eventDataWithId = {
         ...eventDataPayload,
-        'id': generatedId,
-        'userId':
+        AppFirestoreFields.id: generatedId,
+        AppFirestoreFields.userId:
             userId, // Asegura que userId también esté presente para consistencia local
       };
 
@@ -164,20 +170,25 @@ class EventViewModel extends ChangeNotifier {
         return;
       }
 
+      // Sustituir las claves por constantes de AppFirestoreFields
       final Map<String, dynamic> eventDataPayload = {
-        'title': title,
-        'description': description,
-        'priority': priority.toString().split('.').last, // Store as string
-        'dateTime': dateTime,
-        'hasNotification': hasNotification,
-        'type': type.toString().split('.').last, // Store as string
+        AppFirestoreFields.title: title,
+        AppFirestoreFields.description: description,
+        AppFirestoreFields.priority:
+            priority.toString().split('.').last, // Store as string
+        AppFirestoreFields.dateTime: dateTime,
+        AppFirestoreFields.notification: hasNotification,
+        AppFirestoreFields.type:
+            type.toString().split('.').last, // Store as string
         if (type == EventType.meeting ||
             type == EventType.conference ||
             type == EventType.appointment)
-          'location': location,
-        if (type == EventType.exam) 'subject': subject,
-        if (type == EventType.appointment) 'withPerson': withPerson,
-        if (type == EventType.appointment) 'withPersonYesNo': withPersonYesNo,
+          AppFirestoreFields.location: location,
+        if (type == EventType.exam) AppFirestoreFields.subject: subject,
+        if (type == EventType.appointment)
+          AppFirestoreFields.withPerson: withPerson,
+        if (type == EventType.appointment)
+          AppFirestoreFields.withPersonYesNo: withPersonYesNo,
       };
 
       final Event updatedEvent = EventFactory.createEvent(
@@ -189,9 +200,15 @@ class EventViewModel extends ChangeNotifier {
       await _updateEventUseCase.execute(userId, eventId, updatedEvent);
 
       // Actualiza la lista local
-      final int index = _events.indexWhere((e) => e['id'] == eventId);
+      final int index = _events.indexWhere(
+        (e) => e[AppFirestoreFields.id] == eventId,
+      );
       if (index != -1) {
-        _events[index] = {...eventDataPayload, 'id': eventId, 'userId': userId};
+        _events[index] = {
+          ...eventDataPayload,
+          AppFirestoreFields.id: eventId,
+          AppFirestoreFields.users: userId,
+        };
       }
 
       _isLoading = false;
@@ -213,14 +230,13 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage =
-            AppInternalConstants.eventUserNotAuthenticated;
+        _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
         _safeNotifyListeners();
         return;
       }
       await _deleteEventUseCase.execute(userId, eventId);
 
-      _events.removeWhere((event) => event['id'] == eventId);
+      _events.removeWhere((event) => event[AppFirestoreFields.id] == eventId);
 
       _isLoading = false;
       _isNearestEventLoaded = false;
@@ -283,7 +299,7 @@ class EventViewModel extends ChangeNotifier {
               .map(
                 (data) => EventFactory.createEvent(
                   _getEventTypeFromString(
-                    data['type'] ?? AppInternalConstants.eventTypeTask,
+                    data[AppFirestoreFields.type] ?? AppInternalConstants.eventTypeTask,
                   ),
                   data,
                   userId,

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
@@ -117,128 +119,162 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
       List<Map<String, dynamic>> allEventsData = _eventViewModel.events;
       List<Map<String, dynamic>> results = List.from(allEventsData);
 
-      final title = _titleSearchController.text.toLowerCase();
-      final description = _descriptionSearchController.text.toLowerCase();
-      final location = _locationSearchController.text.toLowerCase();
-      final subject = _subjectSearchController.text.toLowerCase();
-      final withPerson = _withPersonSearchController.text.toLowerCase();
-
-      if (title.isNotEmpty) {
-        results =
-            results
-                .where(
-                  (eventData) =>
-                      (eventData['title'] as String?)?.toLowerCase().contains(
-                        title,
-                      ) ??
-                      false,
-                )
-                .toList();
-      }
-      if (description.isNotEmpty) {
-        results =
-            results
-                .where(
-                  (eventData) =>
-                      (eventData['description'] as String?)
-                          ?.toLowerCase()
-                          .contains(description) ??
-                      false,
-                )
-                .toList();
-      }
-      if (_selectedSearchDate != null) {
-        results =
-            results.where((eventData) {
-              final Timestamp? eventTimestamp = eventData['dateTime'];
-              if (eventTimestamp != null) {
-                return eventTimestamp.toDate().year ==
-                        _selectedSearchDate!.year &&
-                    eventTimestamp.toDate().month ==
-                        _selectedSearchDate!.month &&
-                    eventTimestamp.toDate().day == _selectedSearchDate!.day;
-              }
-              return false;
-            }).toList();
-      }
-      if (_selectedEventType != EventType.all) {
-        results =
-            results.where((eventData) {
-              final eventTypeString = eventData['type'] as String?;
-              if (eventTypeString == null) return false;
-
-              final EventType eventType = EventTypeLogic.getEventTypeFromString(
-                eventTypeString,
-              );
-              return eventType == _selectedEventType;
-            }).toList();
-      }
-      if (_enablePriorityFilter && _selectedPriority != null) {
-        results =
-            results.where((eventData) {
-              final priorityString = eventData['priority'] as String?;
-              if (priorityString == null) return false;
-              return PriorityConverter.stringToPriority(priorityString) ==
-                  _selectedPriority;
-            }).toList();
-      }
-
-      if ((_selectedEventType == EventType.meeting ||
-              _selectedEventType == EventType.conference ||
-              _selectedEventType == EventType.appointment ||
-              _selectedEventType == EventType.all) &&
-          location.isNotEmpty) {
-        results =
-            results.where((eventData) {
-              final eventTypeString = eventData['type'] as String?;
-              if (eventTypeString == AppInternalConstants.eventTypeMeeting ||
-                  eventTypeString == AppInternalConstants.eventTypeConference ||
-                  eventTypeString ==
-                      AppInternalConstants.eventTypeAppointment) {
-                return (eventData['location'] as String?)
-                        ?.toLowerCase()
-                        .contains(location) ??
-                    false;
-              }
-              return false;
-            }).toList();
-      }
-      if ((_selectedEventType == EventType.exam ||
-              _selectedEventType == EventType.all) &&
-          subject.isNotEmpty) {
-        results =
-            results.where((eventData) {
-              final eventTypeString = eventData['type'] as String?;
-              if (eventTypeString == AppInternalConstants.eventTypeExam) {
-                return (eventData['subject'] as String?)
-                        ?.toLowerCase()
-                        .contains(subject) ??
-                    false;
-              }
-              return false;
-            }).toList();
-      }
-      if ((_selectedEventType == EventType.appointment ||
-              _selectedEventType == EventType.all) &&
-          _withPersonYesNoSearch) {
-        results =
-            results.where((eventData) {
-              final eventTypeString = eventData['type'] as String?;
-              if (eventTypeString ==
-                  AppInternalConstants.eventTypeAppointment) {
-                final bool withPersonYesNo =
-                    eventData['withPersonYesNo'] ?? false;
-                final String? eventWithPerson = eventData['withPerson'];
-                return withPersonYesNo &&
-                    (eventWithPerson?.toLowerCase().contains(withPerson) ??
-                        false);
-              }
-              return false;
-            }).toList();
-      }
+      results = _filterByTitle(results);
+      results = _filterByDescription(results);
+      results = _filterByDate(results);
+      results = _filterByEventType(results);
+      results = _filterByPriority(results);
+      results = _filterByLocation(results);
+      results = _filterBySubject(results);
+      results = _filterByWithPerson(results);
 
       _searchResults = results;
     });
+  }
+
+  List<Map<String, dynamic>> _filterByTitle(List<Map<String, dynamic>> events) {
+    final title = _titleSearchController.text.toLowerCase();
+    if (title.isNotEmpty) {
+      return events.where((eventData) {
+        return (eventData[AppFirestoreFields.title] as String?)
+                ?.toLowerCase()
+                .contains(title) ??
+            false;
+      }).toList();
+    }
+    return events;
+  }
+
+  List<Map<String, dynamic>> _filterByDescription(
+    List<Map<String, dynamic>> events,
+  ) {
+    final description = _descriptionSearchController.text.toLowerCase();
+    if (description.isNotEmpty) {
+      return events.where((eventData) {
+        return (eventData[AppFirestoreFields.description] as String?)
+                ?.toLowerCase()
+                .contains(description) ??
+            false;
+      }).toList();
+    }
+    return events;
+  }
+
+  List<Map<String, dynamic>> _filterByDate(List<Map<String, dynamic>> events) {
+    if (_selectedSearchDate != null) {
+      return events.where((eventData) {
+        final Timestamp? eventTimestamp =
+            eventData[AppFirestoreFields.dateTime];
+        if (eventTimestamp != null) {
+          return eventTimestamp.toDate().year == _selectedSearchDate!.year &&
+              eventTimestamp.toDate().month == _selectedSearchDate!.month &&
+              eventTimestamp.toDate().day == _selectedSearchDate!.day;
+        }
+        return false;
+      }).toList();
+    }
+    return events;
+  }
+
+  List<Map<String, dynamic>> _filterByEventType(
+    List<Map<String, dynamic>> events,
+  ) {
+    if (_selectedEventType != EventType.all) {
+      return events.where((eventData) {
+        final eventTypeString = eventData[AppFirestoreFields.type] as String?;
+        if (eventTypeString == null) return false;
+
+        final EventType eventType = EventTypeLogic.getEventTypeFromString(
+          eventTypeString,
+        );
+        return eventType == _selectedEventType;
+      }).toList();
+    }
+    return events;
+  }
+
+  List<Map<String, dynamic>> _filterByPriority(
+    List<Map<String, dynamic>> events,
+  ) {
+    if (_enablePriorityFilter && _selectedPriority != null) {
+      return events.where((eventData) {
+        final priorityString =
+            eventData[AppFirestoreFields.priority] as String?;
+        if (priorityString == null) return false;
+        return PriorityConverter.stringToPriority(priorityString) ==
+            _selectedPriority;
+      }).toList();
+    }
+    return events;
+  }
+
+  List<Map<String, dynamic>> _filterByLocation(
+    List<Map<String, dynamic>> events,
+  ) {
+    final location = _locationSearchController.text.toLowerCase();
+    if ((_selectedEventType == EventType.meeting ||
+            _selectedEventType == EventType.conference ||
+            _selectedEventType == EventType.appointment ||
+            _selectedEventType == EventType.all) &&
+        location.isNotEmpty) {
+      return events.where((eventData) {
+        final eventTypeString = eventData[AppFirestoreFields.type] as String?;
+        if (eventTypeString == AppFirestoreFields.typeMeeting ||
+            eventTypeString == AppFirestoreFields.typeConference ||
+            eventTypeString == AppFirestoreFields.typeAppointment) {
+          return (eventData[AppFirestoreFields.location] as String?)
+                  ?.toLowerCase()
+                  .contains(location) ??
+              false;
+        }
+        return false;
+      }).toList();
+    }
+    return events;
+  }
+
+  List<Map<String, dynamic>> _filterBySubject(
+    List<Map<String, dynamic>> events,
+  ) {
+    final subject = _subjectSearchController.text.toLowerCase();
+    if ((_selectedEventType == EventType.exam ||
+            _selectedEventType == EventType.all) &&
+        subject.isNotEmpty) {
+      return events.where((eventData) {
+        final eventTypeString = eventData[AppFirestoreFields.type] as String?;
+        if (eventTypeString == AppFirestoreFields.typeExam) {
+          return (eventData[AppFirestoreFields.subject] as String?)
+                  ?.toLowerCase()
+                  .contains(subject) ??
+              false;
+        }
+        return false;
+      }).toList();
+    }
+    return events;
+  }
+
+  List<Map<String, dynamic>> _filterByWithPerson(
+    List<Map<String, dynamic>> events,
+  ) {
+    final withPerson = _withPersonSearchController.text.toLowerCase();
+    if ((_selectedEventType == EventType.appointment ||
+            _selectedEventType == EventType.all) &&
+        _withPersonYesNoSearch) {
+      return events.where((eventData) {
+        final eventTypeString = eventData[AppFirestoreFields.type] as String?;
+        if (eventTypeString == AppFirestoreFields.typeAppointment) {
+          final bool withPersonYesNo =
+              eventData[AppFirestoreFields.withPersonYesNo] ?? false;
+          final String? eventWithPerson =
+              eventData[AppFirestoreFields.withPerson];
+          return withPersonYesNo &&
+              (eventWithPerson?.toLowerCase().contains(withPerson) ?? false);
+        }
+        return false;
+      }).toList();
+    }
+    return events;
   }
 
   Future<void> _onEditEvent(Map<String, dynamic> eventData) async {
@@ -527,7 +563,6 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
               child: Container(
                 width: double.infinity,
                 height: headerHeight,
-                // ignore: deprecated_member_use
                 color: AppColors.headerBackground.withOpacity(0.2),
                 child: Row(
                   children: [
@@ -549,7 +584,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 48), // Space for symmetry
+                    const SizedBox(width: 48),
                   ],
                 ),
               ),
