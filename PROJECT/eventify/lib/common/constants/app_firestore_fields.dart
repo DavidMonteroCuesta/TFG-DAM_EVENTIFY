@@ -3,7 +3,6 @@ abstract class AppFirestoreFields {
   static const String users = 'users';
   static const String events = 'events';
   static const String chats = 'chats';
-  // Add more collection names as needed
 
   // Common document fields
   static const String dateTime = 'dateTime';

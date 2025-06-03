@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
 
 import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
@@ -69,7 +71,6 @@ class _ChatScreenState extends State<ChatScreen> {
           BoxShadow(
             offset: const Offset(0, -1),
             blurRadius: 2,
-            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.1),
           ),
         ],
@@ -136,7 +137,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double headerHeight = kToolbarHeight * 1.3;
+    const double headerHeight = kToolbarHeight * 1.6;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
@@ -173,7 +174,6 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Container(
                 width: double.infinity,
                 height: headerHeight,
-                // ignore: deprecated_member_use
                 color: AppColors.headerBackground.withOpacity(0.2),
                 child: Stack(
                   children: [

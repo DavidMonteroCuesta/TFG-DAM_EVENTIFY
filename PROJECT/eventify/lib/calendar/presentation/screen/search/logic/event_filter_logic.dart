@@ -27,7 +27,7 @@ class EventFilterLogic {
           results
               .where(
                 (eventData) =>
-                    (eventData['title'] as String?)?.toLowerCase().contains(
+                    (eventData[AppFirestoreFields.title] as String?)?.toLowerCase().contains(
                       title,
                     ) ??
                     false,
@@ -39,7 +39,7 @@ class EventFilterLogic {
           results
               .where(
                 (eventData) =>
-                    (eventData['description'] as String?)
+                    (eventData[AppFirestoreFields.description] as String?)
                         ?.toLowerCase()
                         .contains(description) ??
                     false,

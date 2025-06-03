@@ -6,14 +6,14 @@ class MonthRow extends StatelessWidget {
   final List<String> rowMonths;
   final List<int> rowNotifications;
   final Function(int monthIndex)? onMonthTap;
-  final TextStyle? textStyle; // Added textStyle parameter
+  final TextStyle? textStyle;
 
   const MonthRow({
     super.key,
     required this.rowMonths,
     required this.rowNotifications,
     this.onMonthTap,
-    this.textStyle, // Made textStyle optional
+    this.textStyle,
   });
 
   @override
@@ -39,7 +39,7 @@ class MonthRow extends StatelessWidget {
                       onMonthTap != null && globalMonthIndex != -1
                           ? () => onMonthTap!(globalMonthIndex)
                           : null,
-                  textStyle: textStyle, // Pass textStyle to MonthItem
+                  textStyle: textStyle,
                 ),
               );
             }).toList(),

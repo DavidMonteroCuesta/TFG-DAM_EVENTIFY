@@ -7,14 +7,14 @@ class MonthItem extends StatelessWidget {
   final String monthName;
   final int notificationCount;
   final VoidCallback? onTap;
-  final TextStyle? textStyle; // Added textStyle parameter
+  final TextStyle? textStyle;
 
   const MonthItem({
     super.key,
     required this.monthName,
     required this.notificationCount,
     this.onTap,
-    this.textStyle, // Made textStyle optional
+    this.textStyle,
   });
 
   @override

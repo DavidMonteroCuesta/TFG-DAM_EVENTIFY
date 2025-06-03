@@ -6,15 +6,12 @@ import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/common/constants/app_logs.dart';
 
 class ChatRemoteDataSource {
-  // Define la URL base de la API de Gemini
   final String _apiUrl = AppInternalConstants.chatApiUrl;
 
   Future<String> sendMessage(String message) async {
     try {
-      // Historial de chat para la solicitud de Gemini
       List<Map<String, dynamic>> chatHistory = [
         {
-          // CORRECTED LINE: The key must be "role", and its value is the constant for "user"
           "role": AppInternalConstants.chatApiRoleUser,
           AppInternalConstants.chatApiPartsKey: [
             {AppInternalConstants.chatApiTextKey: message},
@@ -22,12 +19,10 @@ class ChatRemoteDataSource {
         },
       ];
 
-      // Payload para la solicitud de la API de Gemini
       final Map<String, dynamic> payload = {
         AppInternalConstants.chatApiContentsKey: chatHistory,
       };
 
-      // Realiza la solicitud POST a la API de Gemini
       final response = await http.post(
         Uri.parse('$_apiUrl?key=${ApiConstants.geminiApiKey}'),
         headers: {
@@ -38,7 +33,6 @@ class ChatRemoteDataSource {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> result = json.decode(response.body);
-        // Extrae el texto de la respuesta del bot
         if (result[AppInternalConstants.chatApiCandidatesKey] != null &&
             result[AppInternalConstants.chatApiCandidatesKey].isNotEmpty &&
             result[AppInternalConstants
@@ -62,13 +56,13 @@ class ChatRemoteDataSource {
         }
       } else {
         // Manejo de errores basado en el código de estado HTTP
-        log(AppLogs.chatGeminiApiError + ' ' + AppLogs.statusCode + ' ' + response.statusCode.toString(),);
-        log(AppLogs.chatResponseBody + ' ' + response.body);
+        log('${AppLogs.chatGeminiApiError} ${AppLogs.statusCode} ${response.statusCode}',);
+        log('${AppLogs.chatResponseBody} ${response.body}');
         return '${AppInternalConstants.chatConnectionError}${response.statusCode}';
       }
     } catch (e) {
       // Manejo de errores de red o cualquier otra excepción
-      log(AppLogs.chatExceptionSendingMessage + ' ' + e.toString());
+      log('${AppLogs.chatExceptionSendingMessage} $e');
       return AppInternalConstants.chatUnexpectedError;
     }
   }

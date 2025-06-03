@@ -3,7 +3,7 @@
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/calendar_toggle_button.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/chat_button.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/buttons/profile_button.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/logic/footer_logic.dart';

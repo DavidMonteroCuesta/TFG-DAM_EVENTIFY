@@ -138,8 +138,8 @@ class _CalendarState extends State<Calendar> {
           onMonthTap: widget.onMonthSelected,
           textStyle:
               screenWidth < 400
-                  ? const TextStyle(fontSize: 12) // Apply smaller font size
-                  : null, // Default style
+                  ? const TextStyle(fontSize: 12)
+                  : null,
         ),
       );
     }

@@ -1,6 +1,6 @@
 import 'package:eventify/chat/domain/use_cases/send_message_use_case.dart';
 import 'package:eventify/chat/presentation/screen/chat_message.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart'; // Import AppInternalConstants
+import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:flutter/material.dart';
 
 class ChatViewModel extends ChangeNotifier {
@@ -32,7 +32,6 @@ class ChatViewModel extends ChangeNotifier {
 
       _messages.insert(0, ChatMessage(text: aiResponse, isUser: false));
     } catch (e) {
-      // Reemplazado el texto hardcodeado por la constante de AppInternalConstants
       _messages.insert(0, ChatMessage(text: '${AppInternalConstants.chatErrorPrefix}${e.toString()}', isUser: false));
     } finally {
       _setLoading(false);

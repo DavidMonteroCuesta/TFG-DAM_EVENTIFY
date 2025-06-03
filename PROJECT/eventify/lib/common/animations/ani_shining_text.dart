@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +29,7 @@ class _ShiningTextAnimationState extends State<ShiningTextAnimation> with Single
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration)
-      ..repeat(reverse: true); // Cambiando a false va pero no vuelve
+      ..repeat(reverse: true);
     _maskAnimation = Tween<double>(begin: -1.5, end: 1.5).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
@@ -54,7 +56,7 @@ class _ShiningTextAnimationState extends State<ShiningTextAnimation> with Single
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Colors.transparent, // Colors.transparent es una constante de Flutter, no necesita AppColors
+                    Colors.transparent,
                     widget.shineColor.withOpacity(0.8),
                     widget.shineColor.withOpacity(0.8),
                     Colors.transparent,

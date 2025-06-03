@@ -36,24 +36,24 @@ class ChatMessage extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
-                  color: AppColors.userMessageBubbleBackground, // Using AppColors
+                  color: AppColors.userMessageBubbleBackground,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: MarkdownText(
                   text: text,
                   baseStyle: TextStyles.plusJakartaSansBody1.copyWith(
-                      color: AppColors.textPrimary), // Using AppColors
+                      color: AppColors.textPrimary),
                 ),
               ),
             ),
             const SizedBox(width: 8.0),
             CircleAvatar(
-              backgroundColor: AppColors.userMessageBubbleBackground, // Using AppColors
+              backgroundColor: AppColors.userMessageBubbleBackground,
               radius: 16,
               child: Text(
                 firstLetter,
                 style: const TextStyle(
-                  color: AppColors.avatarTextColor, // Using AppColors
+                  color: AppColors.avatarTextColor,
                   fontSize: 14,
                 ),
               ),
@@ -65,7 +65,7 @@ class ChatMessage extends StatelessWidget {
               child: Text(
                 aiFirstLetters,
                 style: const TextStyle(
-                  color: AppColors.textOnLightBackground, // Using AppColors
+                  color: AppColors.textOnLightBackground,
                   fontSize: 14,
                 ),
               ),
@@ -81,7 +81,7 @@ class ChatMessage extends StatelessWidget {
                 child: MarkdownText(
                   text: text,
                   baseStyle: TextStyles.urbanistBody1.copyWith(
-                      color: AppColors.textOnLightBackground), // Using AppColors
+                      color: AppColors.textOnLightBackground),
                 ),
               ),
             ),
