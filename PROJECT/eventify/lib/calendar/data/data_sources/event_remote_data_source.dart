@@ -53,7 +53,7 @@ class EventRemoteDataSource {
           .collection(AppFirestoreFields.users)
           .doc(userId)
           .collection(AppFirestoreFields.events)
-          .doc(eventId) // Use the eventId to target the specific document
+          .doc(eventId)
           .delete();
       log(
         '${AppLogs.eventDeleted} $userId ${AppLogs.andEvent} $eventId',
@@ -65,7 +65,6 @@ class EventRemoteDataSource {
     }
   }
 
-  // Always includes the document ID in the returned maps
   Future<List<Map<String, dynamic>>> getEventsForUser(String userId) async {
     try {
       final QuerySnapshot<Map<String, dynamic>> snapshot =
