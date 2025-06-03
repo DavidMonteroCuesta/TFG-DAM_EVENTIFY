@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
+import 'package:flutter/material.dart';
 
 class EventDescriptionField extends StatelessWidget {
   final TextEditingController controller;
@@ -16,30 +16,44 @@ class EventDescriptionField extends StatelessWidget {
     required this.secondaryColor,
   });
 
+  static const double _inputFontSize = 16.0;
+  static const double _inputBorderRadius = 10.0;
+  static const double _inputFocusedBorderWidth = 1.5;
+  static const double _inputContentPaddingH = 16.0;
+  static const double _inputContentPaddingV = 12.0;
+  static const int _maxLines = 3;
+
   @override
   Widget build(BuildContext context) {
+    // Campo de texto para la descripción del evento con estilos personalizados
     return TextFormField(
       controller: controller,
-      maxLines: 3,
-      style: const TextStyle(fontSize: 16.0, color: AppColors.textPrimary),
+      maxLines: _maxLines,
+      style: const TextStyle(
+        fontSize: _inputFontSize,
+        color: AppColors.textPrimary,
+      ),
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyles.plusJakartaSansSubtitle2,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(_inputBorderRadius),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: secondaryColor, width: 1.5),
+          borderRadius: BorderRadius.circular(_inputBorderRadius),
+          borderSide: BorderSide(
+            color: secondaryColor,
+            width: _inputFocusedBorderWidth,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(_inputBorderRadius),
           borderSide: BorderSide.none,
         ),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 12.0,
+          horizontal: _inputContentPaddingH,
+          vertical: _inputContentPaddingV,
         ),
         filled: true,
         fillColor: AppColors.inputFillColor,

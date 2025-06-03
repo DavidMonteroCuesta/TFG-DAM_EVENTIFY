@@ -1,15 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:eventify/calendar/presentation/screen/calendar/logic/monthly_calendar_logic.dart';
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/common/constants/app_strings.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart';
-import 'package:eventify/calendar/presentation/screen/calendar/logic/monthly_calendar_logic.dart';
 
+/// Widget que muestra un calendario mensual interactivo con los eventos del usuario.
 class MonthlyCalendar extends StatefulWidget {
   final DateTime initialFocusedDay;
   final ValueChanged<DateTime>? onDaySelected;
@@ -32,6 +33,18 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   late EventViewModel _eventViewModel;
   List<Map<String, dynamic>> _eventsForCurrentMonth = [];
   Set<DateTime> _datesWithEvents = {};
+
+  static const double _calendarBorderRadius = 10.0;
+  static const double _calendarPadding = 16.0;
+  static const double _daysOfWeekSpacing = 12.0;
+  static const double _daysGridSpacing = 10.0;
+  static const double _eventsSpacing = 16.0;
+  static const int _daysInWeek = 7;
+  static const int _firstDayOffsetIfSunday = 6;
+  static const int _firstDayOffsetElse = 1;
+  static const int _firstDayNum = 1;
+  static const int _lastDayOffset = 0;
+  static const int _monthChangeDay = 1;
 
   @override
   void initState() {
@@ -56,24 +69,40 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
   }
 
   void _updateCalendarDays() {
-    _firstDayOfMonth = DateTime(_focusedDay.year, _focusedDay.month, 1);
-    _lastDayOfMonth = DateTime(_focusedDay.year, _focusedDay.month + 1, 0);
+    _firstDayOfMonth = DateTime(
+      _focusedDay.year,
+      _focusedDay.month,
+      _firstDayNum,
+    );
+    _lastDayOfMonth = DateTime(
+      _focusedDay.year,
+      _focusedDay.month + 1,
+      _lastDayOffset,
+    );
     _daysInMonth = List.generate(
       _lastDayOfMonth.day,
-      (i) => DateTime(_focusedDay.year, _focusedDay.month, i + 1),
+      (i) => DateTime(_focusedDay.year, _focusedDay.month, i + _firstDayNum),
     );
   }
 
   void _goToPreviousMonth() {
     setState(() {
-      _focusedDay = DateTime(_focusedDay.year, _focusedDay.month - 1, 1);
+      _focusedDay = DateTime(
+        _focusedDay.year,
+        _focusedDay.month - 1,
+        _monthChangeDay,
+      );
       _loadEventsForMonth();
     });
   }
 
   void _goToNextMonth() {
     setState(() {
-      _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1, 1);
+      _focusedDay = DateTime(
+        _focusedDay.year,
+        _focusedDay.month + 1,
+        _monthChangeDay,
+      );
       _loadEventsForMonth();
     });
   }
@@ -108,7 +137,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    // Get the current device locale
+    // Construye la UI del calendario mensual, mostrando días, eventos y navegación de meses.
     final String currentLocale = Localizations.localeOf(context).languageCode;
 
     final daysOfWeek = [
@@ -124,9 +153,9 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.calendarBackground,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(_calendarBorderRadius),
       ),
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(_calendarPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -153,7 +182,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: _daysOfWeekSpacing),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children:
@@ -166,24 +195,24 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                     )
                     .toList(),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: _daysGridSpacing),
           Expanded(
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount:
                   _daysInMonth.length +
-                  (_firstDayOfMonth.weekday == 7
-                      ? 6
-                      : _firstDayOfMonth.weekday - 1),
+                  (_firstDayOfMonth.weekday == _daysInWeek
+                      ? _firstDayOffsetIfSunday
+                      : _firstDayOfMonth.weekday - _firstDayOffsetElse),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 7,
+                crossAxisCount: _daysInWeek,
               ),
               itemBuilder: (context, index) {
                 final int weekdayOffset =
-                    _firstDayOfMonth.weekday == 7
-                        ? 6
-                        : _firstDayOfMonth.weekday - 1;
+                    _firstDayOfMonth.weekday == _daysInWeek
+                        ? _firstDayOffsetIfSunday
+                        : _firstDayOfMonth.weekday - _firstDayOffsetElse;
 
                 if (index < weekdayOffset) {
                   return const SizedBox();
@@ -201,11 +230,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color:
-                          isToday
-                              ? AppColors
-                                  .todayHighlightColor
-                              : null,
+                      color: isToday ? AppColors.todayHighlightColor : null,
                       shape: isToday ? BoxShape.circle : BoxShape.rectangle,
                     ),
                     child: Center(
@@ -214,8 +239,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                         style: TextStyle(
                           color:
                               isToday || hasEvent
-                                  ? AppColors
-                                      .calendarAccentColor
+                                  ? AppColors.calendarAccentColor
                                   : AppColors.textPrimary,
                           fontWeight:
                               isToday || hasEvent
@@ -229,7 +253,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
               },
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: _eventsSpacing),
           if (_eventsForCurrentMonth.isNotEmpty)
             Text(
               '${AppStrings.monthlyCalendarEventsForMonthPrefix(context)}${_eventsForCurrentMonth.length}',

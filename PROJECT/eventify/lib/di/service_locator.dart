@@ -23,11 +23,10 @@ import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
-final sl = GetIt.instance;
+final sl = GetIt.instance; // Instancia de GetIt para inyección de dependencias
 
 void setupLocator() {
-  // Auth feature
-  // Register Firebase Auth
+  // --- Auth feature ---
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: sl()),
@@ -55,7 +54,7 @@ void setupLocator() {
     () => SignUpViewModel(registerUseCase: sl(), googleSignInUseCase: sl()),
   );
 
-  // Event feature
+  // --- Event feature ---
   sl.registerLazySingleton<EventRemoteDataSource>(
     () => EventRemoteDataSource(),
   );
@@ -76,7 +75,7 @@ void setupLocator() {
   );
   sl.registerFactory<EventViewModel>(() => EventViewModel());
 
-  // Chat feature
+  // --- Chat feature ---
   sl.registerLazySingleton<ChatRemoteDataSource>(() => ChatRemoteDataSource());
   sl.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImpl(remoteDataSource: sl()),
@@ -88,5 +87,5 @@ void setupLocator() {
 }
 
 Future<void> init() async {
-  setupLocator();
+  setupLocator(); // Inicializa todos los servicios y dependencias
 }

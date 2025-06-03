@@ -1,5 +1,6 @@
 import 'package:eventify/calendar/domain/repositories/event_repository.dart';
 
+/// Caso de uso para obtener el evento más próximo de un usuario
 class GetNearestEventUseCase {
   final EventRepository _eventRepository;
 

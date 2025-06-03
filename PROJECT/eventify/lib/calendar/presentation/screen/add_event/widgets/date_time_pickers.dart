@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DateTimePickers extends StatelessWidget {
   final DateTime? selectedDate;
@@ -13,6 +13,15 @@ class DateTimePickers extends StatelessWidget {
   final String? dateErrorText;
   final String? timeErrorText;
   final Color secondaryColor;
+
+  static const double _inputBorderRadius = 10.0;
+  static const double _inputFocusedBorderWidth = 1.5;
+  static const double _inputContentPaddingH = 16.0;
+  static const double _inputContentPaddingV = 12.0;
+  static const double _dateTimeFieldSpacing = 15.0;
+  static const int _dummyYear = 2024;
+  static const int _dummyMonth = 1;
+  static const int _dummyDay = 1;
 
   const DateTimePickers({
     super.key,
@@ -29,6 +38,7 @@ class DateTimePickers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Widget para seleccionar fecha y hora con estilos personalizados
     return Row(
       children: [
         Expanded(
@@ -39,21 +49,24 @@ class DateTimePickers extends StatelessWidget {
                 labelText: dateLabel,
                 labelStyle: TextStyles.plusJakartaSansSubtitle2,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(_inputBorderRadius),
                   borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: secondaryColor, width: 1.5),
+                  borderRadius: BorderRadius.circular(_inputBorderRadius),
+                  borderSide: BorderSide(
+                    color: secondaryColor,
+                    width: _inputFocusedBorderWidth,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(_inputBorderRadius),
                   borderSide: BorderSide.none,
                 ),
                 errorText: dateErrorText,
                 contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 12.0,
+                  horizontal: _inputContentPaddingH,
+                  vertical: _inputContentPaddingV,
                 ),
                 filled: true,
                 fillColor: AppColors.inputFillColor,
@@ -67,7 +80,7 @@ class DateTimePickers extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 15.0),
+        const SizedBox(width: _dateTimeFieldSpacing),
         Expanded(
           child: InkWell(
             onTap: onSelectTime,
@@ -76,21 +89,24 @@ class DateTimePickers extends StatelessWidget {
                 labelText: timeLabel,
                 labelStyle: TextStyles.plusJakartaSansSubtitle2,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(_inputBorderRadius),
                   borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: secondaryColor, width: 1.5),
+                  borderRadius: BorderRadius.circular(_inputBorderRadius),
+                  borderSide: BorderSide(
+                    color: secondaryColor,
+                    width: _inputFocusedBorderWidth,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(_inputBorderRadius),
                   borderSide: BorderSide.none,
                 ),
                 errorText: timeErrorText,
                 contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 12.0,
+                  horizontal: _inputContentPaddingH,
+                  vertical: _inputContentPaddingV,
                 ),
                 filled: true,
                 fillColor: AppColors.inputFillColor,
@@ -99,9 +115,9 @@ class DateTimePickers extends StatelessWidget {
                 selectedTime != null
                     ? DateFormat('hh:mm a').format(
                       DateTime(
-                        2024,
-                        1,
-                        1,
+                        _dummyYear,
+                        _dummyMonth,
+                        _dummyDay,
                         selectedTime!.hour,
                         selectedTime!.minute,
                       ),

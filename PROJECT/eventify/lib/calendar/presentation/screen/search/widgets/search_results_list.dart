@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Widget que muestra una lista de resultados de búsqueda de eventos
 class SearchResultsList extends StatelessWidget {
   final List<Widget> children;
 

@@ -1,13 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:flutter/material.dart';
 
-enum Priority {
-  critical,
-  high,
-  medium,
-  low,
-}
+enum Priority { critical, high, medium, low }
 
 extension PriorityExtension on Priority {
   String get key {
@@ -37,10 +32,12 @@ extension PriorityExtension on Priority {
   }
 
   String toFormattedString() {
+    // Devuelve el nombre de la prioridad como string formateado
     return toString().split('.').last;
   }
 }
 
+// Clase para convertir strings a valores de la enumeración Priority
 class PriorityConverter {
   static Priority stringToPriority(String? priorityString) {
     final normalized = priorityString?.trim().toLowerCase();

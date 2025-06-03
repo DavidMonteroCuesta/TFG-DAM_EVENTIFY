@@ -2,6 +2,7 @@ import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
 
+// Evento de tipo tarea, hereda de Event
 class TaskEvent extends Event {
   @override
   String get type => AppFirestoreFields.typeTask;
@@ -15,6 +16,7 @@ class TaskEvent extends Event {
     required super.userId,
   }) : super();
 
+  // Crea una instancia de TaskEvent a partir de un Map
   factory TaskEvent.fromJson(Map<String, dynamic> json) {
     return TaskEvent(
       userId: json[AppFirestoreFields.email] ?? '',
@@ -28,6 +30,7 @@ class TaskEvent extends Event {
     );
   }
 
+  // Serializa la tarea a un Map para Firestore
   @override
   Map<String, dynamic> toJson() {
     return {

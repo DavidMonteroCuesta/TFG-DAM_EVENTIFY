@@ -4,16 +4,16 @@ import 'dart:ui';
 
 import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_routes.dart';
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/common/constants/app_strings.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/common/constants/app_routes.dart';
 
 class ChatScreen extends StatefulWidget {
-  static const String routeName = AppRoutes.chat;
+  static const String routeName = AppRoutes.chat; // Ruta para navegación
 
   const ChatScreen({super.key});
 
@@ -22,13 +22,39 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _messageController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
+  final TextEditingController _messageController =
+      TextEditingController(); // Controlador para el input de mensajes
+  final ScrollController _scrollController =
+      ScrollController(); // Controlador para el scroll del chat
+
+  static const double _boxShadowOffsetX = 0.0;
+  static const double _boxShadowOffsetY = -1.0;
+  static const double _boxShadowBlurRadius = 2.0;
+  static const double _boxShadowOpacity = 0.1;
+  static const double _composerPaddingLeft = 8.0;
+  static const double _composerPaddingTop = 8.0;
+  static const double _composerPaddingRight = 8.0;
+  static const double _composerPaddingBottom = 35.0;
+  static const double _inputBorderRadius = 10.0;
+  static const double _inputFocusedBorderWidth = 1.5;
+  static const double _inputContentPaddingH = 16.0;
+  static const double _inputContentPaddingV = 16.0;
+  static const double _dividerHeight = 1.0;
+  static const double _listPaddingH = 8.0;
+  static const double _listPaddingV = 16.0;
+  static const double _headerBlurSigma = 18.0;
+  static const double _headerOpacity = 0.2;
+  static const double _headerHeightFactor = 1.6;
+  static const double _headerIconBottomFactor = 0.1;
+  static const double _headerTitleBottomFactor = 0.2;
+  static const double _positionedLeft = 0.0;
+  static const double _positionedRight = 0.0;
+  static const double _borderRadiusZero = 0.0;
 
   @override
   void initState() {
     super.initState();
-
+    // Al iniciar, añade el saludo inicial del bot si no hay mensajes y hace scroll al fondo
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final chatViewModel = Provider.of<ChatViewModel>(context, listen: false);
       if (chatViewModel.messages.isEmpty) {
@@ -40,6 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  // Maneja el envío de mensajes del usuario
   void _handleSubmitted(String text) async {
     if (text.trim().isEmpty) {
       return;
@@ -50,6 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToBottom();
   }
 
+  // Hace scroll al fondo del chat
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -62,6 +90,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  // Construye el input de texto y el botón de enviar
   Widget _buildTextComposer() {
     final chatViewModel = Provider.of<ChatViewModel>(context);
     return Container(
@@ -69,14 +98,19 @@ class _ChatScreenState extends State<ChatScreen> {
         color: AppColors.cardBackground,
         boxShadow: [
           BoxShadow(
-            offset: const Offset(0, -1),
-            blurRadius: 2,
-            color: Colors.black.withOpacity(0.1),
+            offset: const Offset(_boxShadowOffsetX, _boxShadowOffsetY),
+            blurRadius: _boxShadowBlurRadius,
+            color: Colors.black.withOpacity(_boxShadowOpacity),
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 35.0),
+        padding: const EdgeInsets.fromLTRB(
+          _composerPaddingLeft,
+          _composerPaddingTop,
+          _composerPaddingRight,
+          _composerPaddingBottom,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -92,23 +126,23 @@ class _ChatScreenState extends State<ChatScreen> {
                           : AppStrings.chatInputHint(context),
                   hintStyle: TextStyles.plusJakartaSansSubtitle2,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(_inputBorderRadius),
                     borderSide: BorderSide.none,
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(_inputBorderRadius),
                     borderSide: BorderSide(
                       color: AppColors.primary,
-                      width: 1.5,
+                      width: _inputFocusedBorderWidth,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(_inputBorderRadius),
                     borderSide: BorderSide.none,
                   ),
                   contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 16.0,
+                    horizontal: _inputContentPaddingH,
+                    vertical: _inputContentPaddingV,
                   ),
                   filled: true,
                   fillColor: AppColors.inputFillColor,
@@ -137,7 +171,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double headerHeight = kToolbarHeight * 1.6;
+    const double headerHeight = kToolbarHeight * _headerHeightFactor;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
@@ -152,8 +186,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       controller: _scrollController,
                       reverse: true,
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 16.0,
+                        horizontal: _listPaddingH,
+                        vertical: _listPaddingV,
                       ),
                       itemCount: chatViewModel.messages.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -163,35 +197,41 @@ class _ChatScreenState extends State<ChatScreen> {
                   },
                 ),
               ),
-              const Divider(height: 1.0, color: AppColors.dividerColor),
+              const Divider(
+                height: _dividerHeight,
+                color: AppColors.dividerColor,
+              ),
               _buildTextComposer(),
             ],
           ),
           ClipRRect(
-            borderRadius: BorderRadius.zero,
+            borderRadius: BorderRadius.circular(_borderRadiusZero),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+              filter: ImageFilter.blur(
+                sigmaX: _headerBlurSigma,
+                sigmaY: _headerBlurSigma,
+              ),
               child: Container(
                 width: double.infinity,
                 height: headerHeight,
-                color: AppColors.headerBackground.withOpacity(0.2),
+                color: AppColors.headerBackground.withOpacity(_headerOpacity),
                 child: Stack(
                   children: [
                     Positioned(
-                      bottom:
-                          headerHeight * 0.2,
-                      left: 0,
-                      right: 0,
+                      bottom: headerHeight * _headerTitleBottomFactor,
+                      left: _positionedLeft,
+                      right: _positionedRight,
                       child: Center(
                         child: ShiningTextAnimation(
-                          text: AppStrings.chatScreenTitle(context).toUpperCase(),
+                          text:
+                              AppStrings.chatScreenTitle(context).toUpperCase(),
                           style: TextStyles.urbanistBody1,
                         ),
                       ),
                     ),
                     Positioned(
-                      bottom: headerHeight * 0.1,
-                      left: 0,
+                      bottom: headerHeight * _headerIconBottomFactor,
+                      left: _positionedLeft,
                       child: IconButton(
                         icon: const Icon(
                           Icons.arrow_back,

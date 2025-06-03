@@ -1,39 +1,38 @@
-// eventify/common/theme/colors/app_colors.dart
+// ignore_for_file: deprecated_member_use
+
 import 'package:eventify/common/theme/colors/app_colors_palette.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // ¡Importa esto!
+import 'package:shared_preferences/shared_preferences.dart';
 
-/// Paleta de colores de la aplicación.
-/// Cada color tiene un nombre descriptivo y referencia a la paleta base.
-/// Esta clase actúa como la interfaz pública para acceder a los colores.
+// Esta clase actúa como la interfaz pública para acceder a los colores.
 abstract class AppColors extends AppColorPalette {
-  // Clave para guardar/cargar el color en SharedPreferences
+  // Clave para guardar y cargar el color en SharedPreferences
   static const String _themeColorKey = 'user_selected_theme_color';
 
-  // --- USER-MANAGED DYNAMIC ACCENT COLOR SOURCE ---
   static Color? currentUserSelectedColor;
 
-  // NUEVOS MÉTODOS: Cargar y Guardar el color del tema
+  // Carga el color del tema guardado por el usuario
   static Future<void> loadThemeColor() async {
     final prefs = await SharedPreferences.getInstance();
     final int? colorValue = prefs.getInt(_themeColorKey);
     if (colorValue != null) {
       currentUserSelectedColor = Color(colorValue);
     } else {
-      currentUserSelectedColor = null; // Asegura que sea null si no hay nada guardado
+      currentUserSelectedColor = null;
     }
   }
 
+  // Guarda o elimina el color del tema seleccionado por el usuario
   static Future<void> saveThemeColor(Color? color) async {
     final prefs = await SharedPreferences.getInstance();
     if (color != null) {
       await prefs.setInt(_themeColorKey, color.value);
     } else {
-      await prefs.remove(_themeColorKey); // Elimina la clave si se selecciona "Predeterminado"
+      await prefs.remove(_themeColorKey);
     }
   }
 
-  // --- DYNAMIC COLOR GETTERS (Non-reactive, based on currentUserSelectedColor) ---
+  // Getters dinámicos: devuelven el color personalizado o el predeterminado
   static Color get primary {
     return currentUserSelectedColor ?? AppColorPalette.green;
   }
@@ -79,7 +78,9 @@ abstract class AppColors extends AppColorPalette {
   }
 
   static Color get onSecondaryDynamic {
-    return secondaryDynamic.computeLuminance() > 0.5 ? AppColorPalette.black : AppColorPalette.white;
+    return secondaryDynamic.computeLuminance() > 0.5
+        ? AppColorPalette.black
+        : AppColorPalette.white;
   }
 
   static Color get outlineDynamic {
@@ -124,10 +125,9 @@ abstract class AppColors extends AppColorPalette {
   static const Color outlineColorLight = AppColorPalette.colorE0E0E0;
   static const Color choiceChipBorderColor = AppColorPalette.colorBDBDBD;
 
-
   static const Color primaryContainer = AppColorPalette.colorE0F7FA;
   static const Color onPrimaryContainer = AppColorPalette.black87;
-  static const Color onSecondary = AppColorPalette.white; 
+  static const Color onSecondary = AppColorPalette.white;
   static const Color accentColor400 = AppColorPalette.color00E676;
   static const Color editIconColor = AppColorPalette.blueAccent;
   static const Color snackBarInfoColor = AppColorPalette.blueGrey;
@@ -145,7 +145,8 @@ abstract class AppColors extends AppColorPalette {
   static const Color switchInactiveTrackColor = AppColorPalette.color757575;
   static const Color switchInactiveThumbColor = AppColorPalette.colorBDBDBD;
   static const Color priorityOptionBackground = AppColorPalette.color0F0F0F;
-  static const Color priorityOptionSelectedTextColor = AppColorPalette.color000000_0_8;
+  static const Color priorityOptionSelectedTextColor =
+      AppColorPalette.color000000_0_8;
   static const Color fabIconColor = AppColorPalette.white;
   static const Color elevatedButtonForeground = AppColorPalette.black;
   static const Color footerIconColor = AppColorPalette.white;

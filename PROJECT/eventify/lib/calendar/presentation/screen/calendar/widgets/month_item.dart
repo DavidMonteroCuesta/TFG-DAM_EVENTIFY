@@ -1,9 +1,25 @@
 import 'package:eventify/calendar/presentation/screen/calendar/logic/month_item_logic.dart';
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart';
 
+/// Widget que representa un mes individual en la fila de meses, mostrando el nombre y el contador de notificaciones.
 class MonthItem extends StatelessWidget {
+  static const double _containerHeightFactor = 0.1265;
+  static const double _horizontalMargin = 5.0;
+  static const double _borderRadius = 12.0;
+  static const double _boxShadowOffsetY = 4.0;
+  static const double _boxShadowBlur = 6.0;
+  static const double _paddingAll = 8.0;
+  static const double _notificationTop = 5.0;
+  static const double _notificationRight = 5.0;
+  static const double _notificationPadding = 6.0;
+  static const double _notificationBoxShadowOffsetX = 0.0;
+  static const double _notificationBoxShadowOffsetY = 1.0;
+  static const double _notificationBoxShadowBlur = 3.0;
+  static const double _notificationFontSize = 12.0;
+  static const double _boxShadowOffsetX = 0.0;
+
   final String monthName;
   final int notificationCount;
   final VoidCallback? onTap;
@@ -23,19 +39,20 @@ class MonthItem extends StatelessWidget {
       notificationCount,
     );
 
+    // Contenedor interactivo que muestra el nombre del mes y, si corresponde, el contador de notificaciones.
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.1265,
-        margin: const EdgeInsets.symmetric(horizontal: 5),
+        height: MediaQuery.of(context).size.height * _containerHeightFactor,
+        margin: const EdgeInsets.symmetric(horizontal: _horizontalMargin),
         decoration: BoxDecoration(
           color: AppColors.calendarBackground,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
+          borderRadius: BorderRadius.circular(_borderRadius),
+          boxShadow: [
             BoxShadow(
               color: Colors.black45,
-              offset: Offset(0, 4),
-              blurRadius: 6,
+              offset: Offset(_boxShadowOffsetX, _boxShadowOffsetY),
+              blurRadius: _boxShadowBlur,
             ),
           ],
         ),
@@ -43,31 +60,31 @@ class MonthItem extends StatelessWidget {
           children: [
             Center(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(_paddingAll),
                 child: Text(
                   monthName.toUpperCase(),
-                  style:
-                      textStyle ??
-                      TextStyles
-                          .plusJakartaSansBody1, // Use textStyle if provided
+                  style: textStyle ?? TextStyles.plusJakartaSansBody1,
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
             if (notificationColor != null)
               Positioned(
-                top: 5,
-                right: 5,
+                top: _notificationTop,
+                right: _notificationRight,
                 child: Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(_notificationPadding),
                   decoration: BoxDecoration(
                     color: notificationColor,
                     shape: BoxShape.circle,
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
                         color: Colors.black45,
-                        offset: Offset(0, 1),
-                        blurRadius: 3,
+                        offset: Offset(
+                          _notificationBoxShadowOffsetX,
+                          _notificationBoxShadowOffsetY,
+                        ),
+                        blurRadius: _notificationBoxShadowBlur,
                       ),
                     ],
                   ),
@@ -76,7 +93,7 @@ class MonthItem extends StatelessWidget {
                     style: TextStyles.plusJakartaSansButton.copyWith(
                       color: AppColors.textOnLightBackground,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12,
+                      fontSize: _notificationFontSize,
                     ),
                   ),
                 ),

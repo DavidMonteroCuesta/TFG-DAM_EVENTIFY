@@ -1,8 +1,13 @@
+import 'package:eventify/calendar/presentation/screen/calendar/logic/month_row_logic.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/month_item.dart';
 import 'package:flutter/material.dart';
-import 'package:eventify/calendar/presentation/screen/calendar/logic/month_row_logic.dart';
 
+/// Widget que muestra una fila de meses con notificaciones y permite seleccionar un mes.
 class MonthRow extends StatelessWidget {
+  static const double _verticalPadding = 4.0;
+  static const double _horizontalPadding = 4.0;
+  static const int _invalidMonthIndex = -1;
+
   final List<String> rowMonths;
   final List<int> rowNotifications;
   final Function(int monthIndex)? onMonthTap;
@@ -19,7 +24,10 @@ class MonthRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+      padding: const EdgeInsets.symmetric(
+        vertical: _verticalPadding,
+        horizontal: _horizontalPadding,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children:
@@ -36,7 +44,8 @@ class MonthRow extends StatelessWidget {
                   monthName: month,
                   notificationCount: rowNotifications[index],
                   onTap:
-                      onMonthTap != null && globalMonthIndex != -1
+                      onMonthTap != null &&
+                              globalMonthIndex != _invalidMonthIndex
                           ? () => onMonthTap!(globalMonthIndex)
                           : null,
                   textStyle: textStyle,

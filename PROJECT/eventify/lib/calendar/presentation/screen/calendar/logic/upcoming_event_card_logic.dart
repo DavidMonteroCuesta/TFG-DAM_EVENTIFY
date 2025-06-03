@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:flutter/material.dart';
 
+// Lógica para obtener los textos traducidos de tipo y prioridad para la tarjeta de evento próximo.
 class UpcomingEventCardLogic {
+  // Devuelve el texto traducido y en mayúsculas del tipo de evento.
   static String getTranslatedEventType(
     BuildContext context,
     String typeString,
@@ -26,6 +28,7 @@ class UpcomingEventCardLogic {
     }
   }
 
+  // Devuelve el texto traducido de la prioridad del evento.
   static String getTranslatedPriority(
     BuildContext context,
     String priorityString,

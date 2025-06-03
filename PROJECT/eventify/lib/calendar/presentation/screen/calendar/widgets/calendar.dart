@@ -1,11 +1,12 @@
+import 'package:eventify/calendar/presentation/screen/calendar/logic/calendar_event_loader.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/widgets/month_row.dart';
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/common/constants/app_strings.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/calendar/presentation/screen/calendar/logic/calendar_event_loader.dart';
 
+// Widget que muestra la vista principal del calendario con filas de meses y contadores de eventos.
 class Calendar extends StatefulWidget {
   final Function(int monthIndex)? onMonthSelected;
   final int currentYear;
@@ -17,6 +18,17 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
+  static const int _monthsInYear = 12;
+  static const int _defaultItemsPerRow = 3;
+  static const int _wideScreenItemsPerRow = 4;
+  static const double _smallScreenWidth = 400.0;
+  static const double _wideScreenMinWidth = 1000.0;
+  static const double _mediumScreenMinWidth = 600.0;
+  static const double _smallFontSize = 12.0;
+  static const int _firstMonthIndex = 1;
+  static const int _initialMonthIndex = 0;
+  static const int _initialEventCount = 0;
+
   List<String>? _months;
 
   Map<int, int> _monthlyEventCounts = {};
@@ -59,6 +71,7 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
+  // Carga los conteos de eventos mensuales desde el modelo de eventos.
   Future<void> _loadMonthlyEventCounts() async {
     if (!mounted) return;
     final int yearToLoad = widget.currentYear;
@@ -89,10 +102,12 @@ class _CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     final eventViewModel = Provider.of<EventViewModel>(context);
 
+    // Muestra un indicador de carga mientras se están cargando los eventos.
     if (eventViewModel.isLoading && _monthlyEventCounts.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
+    // Muestra un mensaje de error si ocurre un problema al cargar los eventos.
     if (eventViewModel.errorMessage != null) {
       return Center(
         child: Text(
@@ -101,30 +116,38 @@ class _CalendarState extends State<Calendar> {
       );
     }
 
+    // Muestra un indicador de carga si los meses aún no están disponibles.
     if (_months == null) {
       return const Center(child: CircularProgressIndicator());
     }
 
+    // Construye la columna de filas de meses, mostrando el calendario y los contadores de eventos.
     return Column(children: _buildMonthRows(MediaQuery.of(context).size.width));
   }
 
+  // Construye las filas de meses para mostrar en el calendario.
   List<Widget> _buildMonthRows(double screenWidth) {
     final List<Widget> rows = [];
-    int itemsPerRow = 3;
-    if (screenWidth >= 1000) {
-      itemsPerRow = 4;
-    } else if (screenWidth > 600) {
-      itemsPerRow = 3;
+    int itemsPerRow = _defaultItemsPerRow;
+    if (screenWidth >= _wideScreenMinWidth) {
+      itemsPerRow = _wideScreenItemsPerRow;
+    } else if (screenWidth > _mediumScreenMinWidth) {
+      itemsPerRow = _defaultItemsPerRow;
     }
 
     List<String> displayedMonths = _months!;
 
     final List<int> notifications = List.generate(
-      12,
-      (index) => _monthlyEventCounts[index + 1] ?? 0,
+      _monthsInYear,
+      (index) =>
+          _monthlyEventCounts[index + _firstMonthIndex] ?? _initialEventCount,
     );
 
-    for (int i = 0; i < displayedMonths.length; i += itemsPerRow) {
+    for (
+      int i = _initialMonthIndex;
+      i < displayedMonths.length;
+      i += itemsPerRow
+    ) {
       final end =
           i + itemsPerRow > displayedMonths.length
               ? displayedMonths.length
@@ -137,8 +160,8 @@ class _CalendarState extends State<Calendar> {
           rowNotifications: rowNotifications,
           onMonthTap: widget.onMonthSelected,
           textStyle:
-              screenWidth < 400
-                  ? const TextStyle(fontSize: 12)
+              screenWidth < _smallScreenWidth
+                  ? const TextStyle(fontSize: _smallFontSize)
                   : null,
         ),
       );

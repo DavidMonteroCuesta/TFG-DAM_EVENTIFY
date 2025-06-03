@@ -2,6 +2,7 @@ import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
 
+/// Evento de tipo conferencia, hereda de Event
 class ConferenceEvent extends Event {
   @override
   final String? location;
@@ -19,6 +20,7 @@ class ConferenceEvent extends Event {
     this.location,
   }) : super();
 
+  /// Crea una instancia de ConferenceEvent a partir de un Map (por ejemplo, de Firestore)
   factory ConferenceEvent.fromJson(Map<String, dynamic> json) {
     return ConferenceEvent(
       userId: json[AppFirestoreFields.email] ?? '',
@@ -33,6 +35,7 @@ class ConferenceEvent extends Event {
     );
   }
 
+  /// Serializa la conferencia a un Map para Firestore
   @override
   Map<String, dynamic> toJson() {
     return {

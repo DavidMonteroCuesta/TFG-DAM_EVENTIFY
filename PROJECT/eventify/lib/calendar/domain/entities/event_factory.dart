@@ -8,6 +8,7 @@ import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
 
+// Fábrica para crear instancias de eventos según el tipo y los datos recibidos
 class EventFactory {
   static Event createEvent(
     EventType type,
@@ -20,8 +21,10 @@ class EventFactory {
       json[AppFirestoreFields.priority],
     );
 
+    // Selecciona el tipo de evento y crea la instancia correspondiente
     switch (eventTypeString) {
       case AppFirestoreFields.typeMeeting:
+        // Crea un MeetingEvent a partir del JSON
         return MeetingEvent(
           userId: userId,
           title: json[AppFirestoreFields.title] ?? '',
@@ -32,6 +35,7 @@ class EventFactory {
           location: json[AppFirestoreFields.location],
         );
       case AppFirestoreFields.typeExam:
+        // Crea un ExamEvent a partir del JSON
         return ExamEvent(
           userId: userId,
           title: json[AppFirestoreFields.title] ?? '',
@@ -42,6 +46,7 @@ class EventFactory {
           subject: json[AppFirestoreFields.subject],
         );
       case AppFirestoreFields.typeConference:
+        // Crea un ConferenceEvent a partir del JSON
         return ConferenceEvent(
           userId: userId,
           title: json[AppFirestoreFields.title] ?? '',
@@ -52,6 +57,7 @@ class EventFactory {
           location: json[AppFirestoreFields.location],
         );
       case AppFirestoreFields.typeAppointment:
+        // Crea un AppointmentEvent a partir del JSON
         return AppointmentEvent(
           userId: userId,
           title: json[AppFirestoreFields.title] ?? '',
@@ -65,6 +71,7 @@ class EventFactory {
         );
       case AppFirestoreFields.typeTask:
       default:
+        // Crea un TaskEvent por defecto si el tipo no coincide
         return TaskEvent(
           userId: userId,
           title: json[AppFirestoreFields.title] ?? '',

@@ -1,33 +1,34 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
-import 'package:eventify/calendar/presentation/screen/search/widgets/fields/date_picker_field.dart';
-import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/calendar/domain/entities/event.dart';
-import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
-import 'package:eventify/common/theme/fonts/text_styles.dart';
-import 'package:eventify/di/service_locator.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
+import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
+import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
-import 'package:eventify/common/constants/app_strings.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart';
-import 'package:eventify/calendar/presentation/screen/search/widgets/fields/dropdown_field.dart';
-import 'package:eventify/calendar/presentation/screen/search/widgets/priority_selector.dart';
-import 'package:eventify/calendar/presentation/screen/search/widgets/fields/with_person_field.dart';
-import 'package:eventify/calendar/presentation/screen/search/widgets/search_results_list.dart';
-import 'package:eventify/calendar/presentation/screen/search/logic/search_date_logic.dart';
 import 'package:eventify/calendar/presentation/screen/search/logic/event_type_logic.dart';
 import 'package:eventify/calendar/presentation/screen/search/logic/priority_logic.dart';
+import 'package:eventify/calendar/presentation/screen/search/logic/search_date_logic.dart';
 import 'package:eventify/calendar/presentation/screen/search/widgets/event_result_card.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/fields/date_picker_field.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/fields/dropdown_field.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/fields/with_person_field.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/priority_selector.dart';
 import 'package:eventify/calendar/presentation/screen/search/widgets/search_field.dart';
+import 'package:eventify/calendar/presentation/screen/search/widgets/search_results_list.dart';
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
+import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:eventify/common/theme/fonts/text_styles.dart';
+import 'package:eventify/di/service_locator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class EventSearchScreen extends StatefulWidget {
   final DateTime? initialSelectedDate;
@@ -57,6 +58,14 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   List<Map<String, dynamic>> _searchResults = [];
   late EventViewModel _eventViewModel;
   bool _enablePriorityFilter = false;
+
+  static const double _headerHeight = kToolbarHeight;
+  static const double _formHorizontalPadding = 20.0;
+  static const double _resultsSpacing = 10.0;
+  static const double _resultsFontSize = 18.0;
+  static const double _headerBlurSigma = 18.0;
+  static const double _headerOpacity = 0.2;
+  static const double _headerIconWidth = 48.0;
 
   @override
   void initState() {
@@ -132,6 +141,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     });
   }
 
+  // Filtra los eventos por título
   List<Map<String, dynamic>> _filterByTitle(List<Map<String, dynamic>> events) {
     final title = _titleSearchController.text.toLowerCase();
     if (title.isNotEmpty) {
@@ -145,6 +155,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     return events;
   }
 
+  // Filtra los eventos por descripción
   List<Map<String, dynamic>> _filterByDescription(
     List<Map<String, dynamic>> events,
   ) {
@@ -160,6 +171,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     return events;
   }
 
+  // Filtra los eventos por fecha seleccionada
   List<Map<String, dynamic>> _filterByDate(List<Map<String, dynamic>> events) {
     if (_selectedSearchDate != null) {
       return events.where((eventData) {
@@ -176,6 +188,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     return events;
   }
 
+  // Filtra los eventos por tipo
   List<Map<String, dynamic>> _filterByEventType(
     List<Map<String, dynamic>> events,
   ) {
@@ -193,6 +206,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     return events;
   }
 
+  // Filtra los eventos por prioridad
   List<Map<String, dynamic>> _filterByPriority(
     List<Map<String, dynamic>> events,
   ) {
@@ -208,6 +222,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     return events;
   }
 
+  // Filtra los eventos por localización
   List<Map<String, dynamic>> _filterByLocation(
     List<Map<String, dynamic>> events,
   ) {
@@ -233,6 +248,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     return events;
   }
 
+  // Filtra los eventos por asignatura
   List<Map<String, dynamic>> _filterBySubject(
     List<Map<String, dynamic>> events,
   ) {
@@ -254,6 +270,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     return events;
   }
 
+  // Filtra los eventos por persona asociada (para citas)
   List<Map<String, dynamic>> _filterByWithPerson(
     List<Map<String, dynamic>> events,
   ) {
@@ -384,13 +401,17 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    const double headerHeight = kToolbarHeight;
 
     return Scaffold(
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(20, headerHeight, 20, 0),
+            padding: EdgeInsets.fromLTRB(
+              _formHorizontalPadding,
+              _headerHeight,
+              _formHorizontalPadding,
+              0,
+            ),
             child: Form(
               key: _formKey,
               child: Column(
@@ -500,14 +521,14 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                       onChanged: (_) => _searchEvents(),
                     ),
                   if (_searchResults.isNotEmpty) ...[
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: _resultsSpacing),
                     Text(
                       '${AppStrings.searchResultsPrefix(context)}${_searchResults.length}${AppStrings.searchResultsSuffix(context)}',
                       style: TextStyles.urbanistSubtitle1.copyWith(
-                        fontSize: 18,
+                        fontSize: _resultsFontSize,
                       ),
                     ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: _resultsSpacing),
                     SearchResultsList(
                       children:
                           _searchResults.map((eventData) {
@@ -563,11 +584,14 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           ClipRRect(
             borderRadius: BorderRadius.zero,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+              filter: ImageFilter.blur(
+                sigmaX: _headerBlurSigma,
+                sigmaY: _headerBlurSigma,
+              ),
               child: Container(
                 width: double.infinity,
-                height: headerHeight,
-                color: AppColors.headerBackground.withOpacity(0.2),
+                height: _headerHeight,
+                color: AppColors.headerBackground.withOpacity(_headerOpacity),
                 child: Row(
                   children: [
                     IconButton(
@@ -588,7 +612,7 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 48),
+                    const SizedBox(width: _headerIconWidth),
                   ],
                 ),
               ),

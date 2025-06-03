@@ -1,10 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
 import 'package:eventify/calendar/presentation/screen/search/search_events_screen.dart';
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
+import 'package:flutter/material.dart';
 
 class CalendarLogic extends ChangeNotifier {
+  static const int _monthlyPageIndex = 1;
+  static const int _defaultPageIndex = 0;
+  static const int _animationDurationMs = 300;
+
   late PageController pageController;
   late bool isMonthlyView;
   late EventViewModel eventViewModel;
@@ -14,6 +18,7 @@ class CalendarLogic extends ChangeNotifier {
   final BuildContext context;
   final bool showMonthlyView;
 
+  // Lógica principal para gestionar la vista y navegación del calendario.
   CalendarLogic({required this.context, this.showMonthlyView = false}) {
     isMonthlyView = showMonthlyView;
     pageController = PageController(initialPage: isMonthlyView ? 1 : 0);
@@ -26,8 +31,8 @@ class CalendarLogic extends ChangeNotifier {
   void toggleCalendarView() {
     isMonthlyView = !isMonthlyView;
     pageController.animateToPage(
-      isMonthlyView ? 1 : 0,
-      duration: const Duration(milliseconds: 300),
+      isMonthlyView ? _monthlyPageIndex : _defaultPageIndex,
+      duration: const Duration(milliseconds: _animationDurationMs),
       curve: Curves.easeInOut,
     );
     notifyListeners();
@@ -37,8 +42,8 @@ class CalendarLogic extends ChangeNotifier {
     focusedMonthForMonthlyView = DateTime(currentYear, monthIndex, 1);
     isMonthlyView = true;
     pageController.animateToPage(
-      1,
-      duration: const Duration(milliseconds: 300),
+      _monthlyPageIndex,
+      duration: const Duration(milliseconds: _animationDurationMs),
       curve: Curves.easeInOut,
     );
     notifyListeners();
@@ -59,6 +64,7 @@ class CalendarLogic extends ChangeNotifier {
   }
 
   Future<void> navigateToSearchScreenWithDate(DateTime selectedDate) async {
+    // Navega a la pantalla de búsqueda con la fecha seleccionada y recarga el evento más próximo si es necesario.
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
         builder:

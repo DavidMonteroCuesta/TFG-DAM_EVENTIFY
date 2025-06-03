@@ -1,4 +1,5 @@
 class AppLogs {
+  // Constantes para mensajes de log y errores en la app
   static const String firebaseAuthRegisterError =
       'Firebase Auth registration error.';
   static const String unexpectedRegisterError =

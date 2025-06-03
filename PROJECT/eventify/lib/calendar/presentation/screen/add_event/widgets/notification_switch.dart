@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:flutter/material.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
+import 'package:flutter/material.dart';
 
 class NotificationSwitch extends StatelessWidget {
   final bool value;
@@ -18,20 +18,25 @@ class NotificationSwitch extends StatelessWidget {
     required this.activeColor,
   });
 
+  static const double _activeColorOpacity = 0.7;
+  static const double _inactiveTrackOpacity = 0.6;
+  static const double _labelSpacing = 8.0;
+
   @override
   Widget build(BuildContext context) {
+    // Switch de notificación con opacidades y espaciado personalizados
     return Row(
       children: [
         Switch(
           value: value,
-          activeColor: activeColor.withOpacity(0.7),
+          activeColor: activeColor.withOpacity(_activeColorOpacity),
           inactiveTrackColor: AppColors.switchInactiveTrackColor.withOpacity(
-            0.6,
+            _inactiveTrackOpacity,
           ),
           inactiveThumbColor: AppColors.switchInactiveThumbColor,
           onChanged: onChanged,
         ),
-        const SizedBox(width: 8.0),
+        const SizedBox(width: _labelSpacing),
         Expanded(
           child: Text(label, style: TextStyles.plusJakartaSansSubtitle2),
         ),

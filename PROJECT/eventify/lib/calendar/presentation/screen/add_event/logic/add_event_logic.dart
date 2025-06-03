@@ -1,14 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
-import 'package:eventify/di/service_locator.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart';
-import 'event_type_utils.dart';
-import 'date_time_utils.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
+import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:eventify/di/service_locator.dart';
+import 'package:flutter/material.dart';
 
+import 'date_time_utils.dart';
+import 'event_type_utils.dart';
+
+// Mixin que centraliza la lógica y el estado para la pantalla de añadir/editar evento
 mixin AddEventLogic<T extends StatefulWidget> on State<T> {
   final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
@@ -25,6 +27,7 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
   bool withPersonYesNo = false;
   late final EventViewModel eventViewModel;
 
+  // Inicializa el estado y los controladores según si es edición o nuevo evento
   void initAddEventLogic(Map<String, dynamic>? eventToEdit) {
     eventViewModel = sl<EventViewModel>();
     selectedDate = DateTime.now();
@@ -69,6 +72,7 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
     }
   }
 
+  // Abre el selector de fecha y actualiza el estado
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -105,6 +109,7 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
     }
   }
 
+  // Abre el selector de hora y actualiza el estado
   Future<void> selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -140,6 +145,7 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
     }
   }
 
+  // Libera los controladores de texto al cerrar la pantalla
   void disposeAddEventLogic() {
     titleController.dispose();
     descriptionController.dispose();

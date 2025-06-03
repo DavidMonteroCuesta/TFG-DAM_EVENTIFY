@@ -1,28 +1,30 @@
 import 'package:eventify/auth/presentation/screen/login/sign_in_screen.dart';
+import 'package:eventify/auth/presentation/screen/profile/profile_screen.dart';
 import 'package:eventify/auth/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/auth/presentation/view_model/sign_up_view_model.dart';
 import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/chat/presentation/screen/chat_screen.dart';
 import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
-import 'package:eventify/auth/presentation/screen/profile/profile_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart';
-import 'di/service_locator.dart' as di;
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eventify/common/constants/app_localizations_constants.dart';
+import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
+import 'di/service_locator.dart' as di;
+import 'firebase_options.dart';
+
+// Función principal que inicializa la app y sus dependencias
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await di.init();
+  await di.init(); // Inyección de dependencias
   await AppColors.loadThemeColor();
 
   await SystemChrome.setPreferredOrientations([
@@ -33,13 +35,17 @@ void main() async {
   await initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
+// Widget principal de la aplicación
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  static const String _emptyLocale = '';
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // ViewModels principales
         ChangeNotifierProvider(create: (_) => di.sl<SignInViewModel>()),
         ChangeNotifierProvider(create: (_) => di.sl<SignUpViewModel>()),
         ChangeNotifierProvider(create: (_) => di.sl<EventViewModel>()),
@@ -90,20 +96,20 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [
-          Locale(AppLocalizationsConstants.en, ''),
-          Locale(AppLocalizationsConstants.es, ''),
-          Locale(AppLocalizationsConstants.fr, ''),
-          Locale(AppLocalizationsConstants.zh, ''),
-          Locale(AppLocalizationsConstants.ar, ''),
+          Locale(AppLocalizationsConstants.en, _emptyLocale),
+          Locale(AppLocalizationsConstants.es, _emptyLocale),
+          Locale(AppLocalizationsConstants.fr, _emptyLocale),
+          Locale(AppLocalizationsConstants.zh, _emptyLocale),
+          Locale(AppLocalizationsConstants.ar, _emptyLocale),
         ],
         home: Builder(
           builder: (context) {
             final auth = FirebaseAuth.instance;
             final user = auth.currentUser;
             if (user != null) {
-              return const CalendarScreen();
+              return const CalendarScreen(); // Usuario autenticado
             } else {
-              return const SignInScreen();
+              return const SignInScreen(); // Usuario no autenticado
             }
           },
         ),

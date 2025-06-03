@@ -4,20 +4,26 @@ import 'package:eventify/calendar/data/repositories/event_repository_impl.dart';
 import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/entities/event_factory.dart';
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
-import 'package:eventify/calendar/domain/repositories/event_repository.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
+import 'package:eventify/calendar/domain/repositories/event_repository.dart';
 import 'package:eventify/calendar/domain/use_cases/add_event_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/delete_event_use_case.dart';
-import 'package:eventify/calendar/domain/use_cases/update_event_use_case.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:eventify/calendar/domain/use_cases/get_events_for_user_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_month_use_case.dart';
 import 'package:eventify/calendar/domain/use_cases/get_events_for_user_and_year_use_case.dart';
-import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/calendar/domain/use_cases/get_events_for_user_use_case.dart';
+import 'package:eventify/calendar/domain/use_cases/update_event_use_case.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class EventViewModel extends ChangeNotifier {
+  static const int priorityCritical = 4;
+  static const int priorityHigh = 3;
+  static const int priorityMedium = 2;
+  static const int priorityLow = 1;
+  static const int nearestEventMinutesOffset = 1;
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   String? _errorMessage;
@@ -62,11 +68,13 @@ class EventViewModel extends ChangeNotifier {
     });
   }
 
+  // Cambia el estado de carga y notifica
   void setLoading(bool value) {
     _isLoading = value;
     _safeNotifyListeners();
   }
 
+  // Añade un nuevo evento al usuario actual
   Future<void> addEvent(
     EventType type,
     String title,
@@ -138,6 +146,7 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
+  // Actualiza un evento existente
   Future<void> updateEvent(
     String eventId,
     EventType type,
@@ -210,6 +219,7 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
+  // Elimina un evento por su id
   Future<void> deleteEvent(String eventId) async {
     _isLoading = true;
     _errorMessage = null;
@@ -236,6 +246,7 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
+  // Obtiene todos los eventos del usuario actual
   Future<void> getEventsForCurrentUser() async {
     _initializeLoadingState();
     try {
@@ -251,6 +262,7 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
+  // Carga el evento más próximo del usuario actual
   Future<void> loadNearestEvent({bool force = false}) async {
     if (_isNearestEventLoaded && !force) {
       return;
@@ -277,27 +289,32 @@ class EventViewModel extends ChangeNotifier {
     }
   }
 
+  // Inicializa el estado de carga
   void _initializeLoadingState() {
     _isLoading = true;
     _errorMessage = null;
     _safeNotifyListeners();
   }
 
+  // Finaliza el estado de carga
   void _finalizeLoadingState() {
     _isLoading = false;
     _safeNotifyListeners();
   }
 
+  // Obtiene el id del usuario actual
   String? _getCurrentUserId() {
     return FirebaseAuth.instance.currentUser?.uid;
   }
 
+  // Maneja el caso de usuario no autenticado
   void _handleUserNotAuthenticated() {
     _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
     _isLoading = false;
     _safeNotifyListeners();
   }
 
+  // Maneja errores al obtener eventos
   void _handleFetchError(dynamic error) {
     _isLoading = false;
     _errorMessage = '${AppInternalConstants.eventFailedToFetch}$error';
@@ -305,6 +322,7 @@ class EventViewModel extends ChangeNotifier {
     _events = [];
   }
 
+  // Busca el evento más próximo a la fecha actual
   Event? _findNearestEvent(
     List<Map<String, dynamic>> allEventsData,
     String userId,
@@ -326,7 +344,9 @@ class EventViewModel extends ChangeNotifier {
         allEvents.where((event) {
           return event.dateTime != null &&
               event.dateTime!.toDate().isAfter(
-                now.subtract(const Duration(minutes: 1)),
+                now.subtract(
+                  const Duration(minutes: nearestEventMinutesOffset),
+                ),
               );
         }).toList();
 
@@ -346,19 +366,21 @@ class EventViewModel extends ChangeNotifier {
     return futureEvents.isNotEmpty ? futureEvents.first : null;
   }
 
+  // Devuelve el valor numérico de la prioridad
   int _getPriorityValue(Priority priority) {
     switch (priority) {
       case Priority.critical:
-        return 4;
+        return priorityCritical;
       case Priority.high:
-        return 3;
+        return priorityHigh;
       case Priority.medium:
-        return 2;
+        return priorityMedium;
       case Priority.low:
-        return 1;
+        return priorityLow;
     }
   }
 
+  // Convierte el string del tipo de evento a su enum correspondiente
   EventType _getEventTypeFromString(String typeString) {
     switch (typeString.toLowerCase()) {
       case AppInternalConstants.eventTypeMeeting:

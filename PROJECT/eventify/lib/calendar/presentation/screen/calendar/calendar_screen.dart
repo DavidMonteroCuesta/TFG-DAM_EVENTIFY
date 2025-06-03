@@ -7,10 +7,10 @@ import 'package:eventify/calendar/presentation/screen/calendar/widgets/upcoming_
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/constants/app_routes.dart';
 import 'package:eventify/common/constants/app_strings.dart';
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart';
 
 class CalendarScreen extends StatelessWidget {
   static const String routeName = AppRoutes.calendar;
@@ -37,6 +37,17 @@ class _CalendarScreenBody extends StatefulWidget {
 }
 
 class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
+  static const double _spacingBetweenHeaderAndCalendar = 10.0;
+  static const double _spacingBetweenContentAndFooter = 10.0;
+  static const double _footerHeightFraction = 0.10;
+  static const double _heightThreshold = 760.0;
+  static const double _tabletMinWidth = 600.0;
+  static const double _tabletMaxWidth = 900.0;
+  static const double _desktopMinWidth = 900.0;
+  static const double _horizontalPadding = 16.0;
+  static const double _eventCardSpacing = 16.0;
+  static const double _monthlyCalendarWidth = 20.0;
+
   @override
   void initState() {
     super.initState();
@@ -48,21 +59,19 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
   @override
   Widget build(BuildContext context) {
     final logic = Provider.of<CalendarLogic>(context);
-    const double spacingBetweenHeaderAndCalendar = 10.0;
-    const double spacingBetweenContentAndFooter = 10.0;
     final screenHeight = MediaQuery.of(context).size.height;
-    final footerHeight = screenHeight * 0.10;
-    final double heightThreshold = 760;
+    final footerHeight = screenHeight * _footerHeightFraction;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final isTablet =
-              constraints.maxWidth > 600 && constraints.maxWidth <= 900;
-          final isDesktop = constraints.maxWidth > 900;
+              constraints.maxWidth > _tabletMinWidth &&
+              constraints.maxWidth <= _tabletMaxWidth;
+          final isDesktop = constraints.maxWidth > _desktopMinWidth;
 
-          bool showEventCard = constraints.maxHeight > heightThreshold;
+          bool showEventCard = constraints.maxHeight > _heightThreshold;
 
           return Column(
             children: [
@@ -73,10 +82,12 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
                   currentYear: logic.currentYear,
                 ),
               ),
-              SizedBox(height: spacingBetweenHeaderAndCalendar),
+              const SizedBox(height: _spacingBetweenHeaderAndCalendar),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: _horizontalPadding,
+                  ),
                   child:
                       isTablet || isDesktop
                           ? Row(
@@ -92,10 +103,12 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
                                         currentYear: logic.currentYear,
                                       ),
                                       if (showEventCard) ...[
-                                        const SizedBox(height: 16.0),
+                                        const SizedBox(
+                                          height: _eventCardSpacing,
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0,
+                                            horizontal: _horizontalPadding,
                                           ),
                                           child: Consumer<EventViewModel>(
                                             builder: (
@@ -194,7 +207,7 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 20.0),
+                              const SizedBox(width: _monthlyCalendarWidth),
                               Expanded(
                                 flex: 1,
                                 child: MonthlyCalendar(
@@ -220,10 +233,10 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
                                       currentYear: logic.currentYear,
                                     ),
                                     if (showEventCard) ...[
-                                      const SizedBox(height: 16.0),
+                                      const SizedBox(height: _eventCardSpacing),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0,
+                                          horizontal: _horizontalPadding,
                                         ),
                                         child: Consumer<EventViewModel>(
                                           builder: (
@@ -262,7 +275,6 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
                                                         .nearestEvent!
                                                         .dateTime !=
                                                     null) {
-                                              // Fallback para campos nulos
                                               final event =
                                                   eventViewModel.nearestEvent!;
                                               return UpcomingEventCard(
@@ -316,7 +328,7 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
                           ),
                 ),
               ),
-              SizedBox(height: spacingBetweenContentAndFooter),
+              const SizedBox(height: _spacingBetweenContentAndFooter),
               SizedBox(
                 height: footerHeight,
                 child: Footer(

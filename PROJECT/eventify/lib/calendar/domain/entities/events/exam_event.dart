@@ -2,12 +2,13 @@ import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
 
+// Evento de tipo examen, hereda de Event
 class ExamEvent extends Event {
   @override
   String get type => AppFirestoreFields.typeExam;
 
   @override
-  final String? subject;
+  final String? subject; // Asignatura del examen
 
   ExamEvent({
     required super.title,
@@ -19,6 +20,7 @@ class ExamEvent extends Event {
     this.subject,
   }) : super();
 
+  // Crea una instancia de ExamEvent a partir de un Map
   factory ExamEvent.fromJson(Map<String, dynamic> json) {
     return ExamEvent(
       userId: json[AppFirestoreFields.email] ?? '',
@@ -33,6 +35,7 @@ class ExamEvent extends Event {
     );
   }
 
+  // Serializa el examen a un Map para Firestore
   @override
   Map<String, dynamic> toJson() {
     return {

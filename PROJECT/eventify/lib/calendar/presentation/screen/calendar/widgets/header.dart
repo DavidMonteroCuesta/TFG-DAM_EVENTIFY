@@ -2,16 +2,17 @@
 
 import 'dart:ui';
 
-import 'package:eventify/calendar/presentation/screen/calendar/logic/header_logic.dart';
 import 'package:eventify/calendar/presentation/screen/add_event/add_event_screen.dart';
+import 'package:eventify/calendar/presentation/screen/calendar/logic/header_logic.dart';
 import 'package:eventify/calendar/presentation/screen/search/search_events_screen.dart';
-import 'package:eventify/common/theme/fonts/text_styles.dart';
-import 'package:flutter/material.dart';
+import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:eventify/common/theme/fonts/text_styles.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 
+// Widget que muestra el encabezado del calendario, permitiendo cambiar de año y acceder a búsqueda o añadir eventos.
 class Header extends StatefulWidget {
   final Function(int year)? onYearChanged;
   final int currentYear;
@@ -23,6 +24,12 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
+  static const double _horizontalPadding = 16.0;
+  static const double _headerHeight = 64.0;
+  static const double _bottomPadding = 10.0;
+  static const double _headerOpacity = 0.8;
+  static const double _blurSigma = 10.0;
+
   late int _currentYear;
   late HeaderLogic _logic;
 
@@ -64,21 +71,22 @@ class _HeaderState extends State<Header> {
 
   @override
   Widget build(BuildContext context) {
+    // Encabezado con botones para cambiar de año, buscar y añadir eventos.
     return ClipRRect(
       borderRadius: BorderRadius.zero,
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        filter: ImageFilter.blur(sigmaX: _blurSigma, sigmaY: _blurSigma),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          color: AppColors.headerBackground.withOpacity(0.8),
+          padding: const EdgeInsets.symmetric(horizontal: _horizontalPadding),
+          color: AppColors.headerBackground.withOpacity(_headerOpacity),
           child: SizedBox(
-            height: 64,
+            height: _headerHeight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: _bottomPadding),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -101,7 +109,7 @@ class _HeaderState extends State<Header> {
                 ),
                 Container(
                   alignment: Alignment.bottomCenter,
-                  margin: const EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: _bottomPadding),
                   child: ShiningTextAnimation(
                     text: '$_currentYear',
                     style: TextStyles.urbanistBody1,
@@ -109,7 +117,7 @@ class _HeaderState extends State<Header> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: _bottomPadding),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [

@@ -1,10 +1,11 @@
 import 'package:eventify/calendar/domain/enums/events_type_enum.dart';
-import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class EventTypeLogic {
   static EventType getEventTypeFromString(String typeString) {
+    // Devuelve el tipo de evento correspondiente al string recibido.
     switch (typeString.toLowerCase()) {
       case AppInternalConstants.eventTypeMeeting:
         return EventType.meeting;
@@ -25,6 +26,7 @@ class EventTypeLogic {
     EventType type,
     BuildContext context,
   ) {
+    // Devuelve el texto traducido del tipo de evento.
     switch (type) {
       case EventType.meeting:
         return AppStrings.searchEventTypeMeetingDisplay(context);

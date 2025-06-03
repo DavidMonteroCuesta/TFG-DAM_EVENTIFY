@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:flutter/material.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:flutter/material.dart';
 
 class PriorityOptionChip extends StatelessWidget {
   final String label;
@@ -11,6 +11,11 @@ class PriorityOptionChip extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final ValueChanged<Priority> onSelected;
+
+  static const double _chipBackgroundOpacity = 0.3;
+  static const double _chipBorderRadius = 8.0;
+  static const double _chipLabelPaddingH = 6.0;
+  static const double _chipLabelPaddingV = 8.0;
 
   const PriorityOptionChip({
     super.key,
@@ -25,6 +30,7 @@ class PriorityOptionChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSelected = selectedPriority == priority;
+    // Devuelve un ChoiceChip personalizado para la prioridad
     return ChoiceChip(
       label: Text(
         label,
@@ -41,13 +47,18 @@ class PriorityOptionChip extends StatelessWidget {
           onSelected(priority);
         }
       },
-      backgroundColor: backgroundColor.withOpacity(0.3),
+      backgroundColor: backgroundColor.withOpacity(_chipBackgroundOpacity),
       selectedColor: backgroundColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(_chipBorderRadius),
+      ),
       side: BorderSide(
         color: isSelected ? backgroundColor : AppColors.choiceChipBorderColor,
       ),
-      labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+      labelPadding: const EdgeInsets.symmetric(
+        horizontal: _chipLabelPaddingH,
+        vertical: _chipLabelPaddingV,
+      ),
     );
   }
 }

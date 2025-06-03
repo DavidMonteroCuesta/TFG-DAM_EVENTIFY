@@ -2,16 +2,17 @@ import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
 
+// Evento de tipo cita, hereda de Event
 class AppointmentEvent extends Event {
   @override
   String get type => AppFirestoreFields.typeAppointment;
 
   @override
-  final String? withPerson;
+  final bool withPersonYesNo; // Indica si la cita es con alguien
   @override
-  final bool withPersonYesNo;
+  final String? withPerson; // Persona con la que es la cita
   @override
-  final String? location;
+  final String? location; // Ubicación de la cita
 
   AppointmentEvent({
     required super.title,
@@ -25,6 +26,7 @@ class AppointmentEvent extends Event {
     this.location,
   }) : super();
 
+  // Crea una instancia de AppointmentEvent a partir de un Map (por ejemplo, de Firestore)
   factory AppointmentEvent.fromJson(Map<String, dynamic> json) {
     return AppointmentEvent(
       userId: json[AppFirestoreFields.email] ?? '',
@@ -41,6 +43,7 @@ class AppointmentEvent extends Event {
     );
   }
 
+  // Serializa la cita a un Map para Firestore
   @override
   Map<String, dynamic> toJson() {
     return {

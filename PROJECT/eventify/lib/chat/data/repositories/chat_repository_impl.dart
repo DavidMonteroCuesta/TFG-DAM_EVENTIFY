@@ -1,6 +1,7 @@
 import 'package:eventify/chat/data/data_sources/chat_remote_data_source.dart';
 import 'package:eventify/chat/domain/repositories/chat_repository.dart';
 
+// Implementación del repositorio de chat que delega en el data source remoto
 class ChatRepositoryImpl implements ChatRepository {
   final ChatRemoteDataSource remoteDataSource;
 

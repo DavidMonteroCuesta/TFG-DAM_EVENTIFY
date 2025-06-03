@@ -1,5 +1,6 @@
 import 'package:eventify/calendar/domain/repositories/event_repository.dart';
 
+/// Caso de uso para obtener los eventos de un usuario en un mes y año específicos
 class GetEventsForUserAndMonthUseCase {
   final EventRepository eventRepository;
 

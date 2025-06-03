@@ -1,5 +1,5 @@
-import 'package:eventify/common/constants/app_strings.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
+import 'package:eventify/common/constants/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class PriorityLogic {

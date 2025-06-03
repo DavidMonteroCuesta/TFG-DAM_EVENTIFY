@@ -1,6 +1,7 @@
 import 'package:eventify/calendar/domain/entities/event.dart';
 import 'package:eventify/calendar/domain/repositories/event_repository.dart';
 
+/// Caso de uso para añadir un nuevo evento a un usuario
 class AddEventUseCase {
   final EventRepository eventRepository;
 

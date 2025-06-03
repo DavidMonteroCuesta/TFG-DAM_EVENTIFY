@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
 
+/// Lógica para extraer los días del mes que tienen eventos asociados.
 class MonthlyCalendarLogic {
+  /// Devuelve un conjunto de fechas que tienen eventos en el mes.
   static Set<DateTime> extractDatesWithEvents(
     List<Map<String, dynamic>> eventsData,
   ) {
