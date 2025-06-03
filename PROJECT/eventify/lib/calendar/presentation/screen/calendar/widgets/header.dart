@@ -65,7 +65,7 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.zero, // Square borders like profile header
+      borderRadius: BorderRadius.zero,
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(

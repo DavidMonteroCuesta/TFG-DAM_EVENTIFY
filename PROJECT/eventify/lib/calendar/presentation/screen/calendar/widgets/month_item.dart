@@ -7,11 +7,14 @@ class MonthItem extends StatelessWidget {
   final String monthName;
   final int notificationCount;
   final VoidCallback? onTap;
+  final TextStyle? textStyle; // Added textStyle parameter
+
   const MonthItem({
     super.key,
     required this.monthName,
     required this.notificationCount,
     this.onTap,
+    this.textStyle, // Made textStyle optional
   });
 
   @override
@@ -43,7 +46,10 @@ class MonthItem extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   monthName.toUpperCase(),
-                  style: TextStyles.plusJakartaSansBody1,
+                  style:
+                      textStyle ??
+                      TextStyles
+                          .plusJakartaSansBody1, // Use textStyle if provided
                   textAlign: TextAlign.center,
                 ),
               ),

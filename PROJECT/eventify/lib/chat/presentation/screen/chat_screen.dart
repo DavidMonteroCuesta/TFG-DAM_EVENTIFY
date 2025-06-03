@@ -136,7 +136,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double headerHeight = kToolbarHeight;
+    const double headerHeight = kToolbarHeight * 1.3;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
@@ -175,26 +175,33 @@ class _ChatScreenState extends State<ChatScreen> {
                 height: headerHeight,
                 // ignore: deprecated_member_use
                 color: AppColors.headerBackground.withOpacity(0.2),
-                child: Row(
+                child: Stack(
                   children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: AppColors.outline,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    Expanded(
+                    Positioned(
+                      bottom:
+                          headerHeight * 0.2,
+                      left: 0,
+                      right: 0,
                       child: Center(
                         child: ShiningTextAnimation(
-                          text: AppStrings.chatScreenTitle(context),
+                          text: AppStrings.chatScreenTitle(context).toUpperCase(),
                           style: TextStyles.urbanistBody1,
                         ),
                       ),
                     ),
-                    const SizedBox(width: 48), // Space for symmetry
+                    Positioned(
+                      bottom: headerHeight * 0.1,
+                      left: 0,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: AppColors.outline,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

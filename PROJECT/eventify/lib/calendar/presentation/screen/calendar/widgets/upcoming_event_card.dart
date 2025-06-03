@@ -37,15 +37,15 @@ class UpcomingEventCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-          color: AppColors.cardBackground, // Using AppColors
+          color: AppColors.cardBackground,
           borderRadius: BorderRadius.circular(12.0),
           border: Border.all(
             color: AppColors.outlineColorLight.withOpacity(0.3),
             width: 1.0,
-          ), // Using AppColors
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2), // Derived color, keep as is
+              color: Colors.black.withOpacity(0.2),
               spreadRadius: 1,
               blurRadius: 5,
               offset: const Offset(0, 3),
@@ -65,7 +65,7 @@ class UpcomingEventCard extends StatelessWidget {
                     style: TextStyles.plusJakartaSansBody1.copyWith(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary, // Using AppColors
+                      color: AppColors.textPrimary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -77,7 +77,7 @@ class UpcomingEventCard extends StatelessWidget {
                     type.split('.').last,
                   ),
                   style: TextStyles.plusJakartaSansBody2.copyWith(
-                    color: AppColors.textGrey400, // Using AppColors
+                    color: AppColors.textGrey400,
                   ),
                 ),
               ],
@@ -87,7 +87,7 @@ class UpcomingEventCard extends StatelessWidget {
             Text(
               '${AppStrings.upcomingEventDatePrefix(context)}${DateFormat('yyyy/MM/dd HH:mm').format(date)}',
               style: TextStyles.plusJakartaSansBody2.copyWith(
-                color: AppColors.textGrey400, // Using AppColors
+                color: AppColors.textGrey400,
               ),
             ),
             const SizedBox(height: 8.0),
@@ -95,7 +95,7 @@ class UpcomingEventCard extends StatelessWidget {
             Text(
               '${AppStrings.upcomingEventPriorityPrefix(context)}${UpcomingEventCardLogic.getTranslatedPriority(context, priority.split('.').last)}',
               style: TextStyles.plusJakartaSansBody2.copyWith(
-                color: AppColors.priorityTextColorDynamic, // Using AppColors
+                color: AppColors.priorityTextColorDynamic,
               ),
             ),
             const SizedBox(height: 8.0),
@@ -104,7 +104,7 @@ class UpcomingEventCard extends StatelessWidget {
               child: Text(
                 '${AppStrings.upcomingEventDescriptionPrefix(context)}${description.isNotEmpty ? description : AppInternalConstants.upcomingEventDescriptionEmpty}',
                 style: TextStyles.plusJakartaSansBody2.copyWith(
-                  color: AppColors.textSubtitle1Grey, // Using AppColors
+                  color: AppColors.textSubtitle1Grey,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

@@ -123,7 +123,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.calendarBackground, // Using AppColors
+        color: AppColors.calendarBackground,
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.all(16.0),
@@ -137,11 +137,10 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                 icon: const Icon(
                   Icons.arrow_back_ios,
                   color: AppColors.textPrimary,
-                ), // Using AppColors
+                ),
                 onPressed: _goToPreviousMonth,
               ),
               Text(
-                // Use the currentLocale for formatting the month name
                 DateFormat('MMMM', currentLocale).format(_focusedDay),
                 style: TextStyles.urbanistH6,
               ),
@@ -205,7 +204,7 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                       color:
                           isToday
                               ? AppColors
-                                  .todayHighlightColor // Using AppColors
+                                  .todayHighlightColor
                               : null,
                       shape: isToday ? BoxShape.circle : BoxShape.rectangle,
                     ),
@@ -216,8 +215,8 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
                           color:
                               isToday || hasEvent
                                   ? AppColors
-                                      .calendarAccentColor // Using AppColors
-                                  : AppColors.textPrimary, // Using AppColors
+                                      .calendarAccentColor
+                                  : AppColors.textPrimary,
                           fontWeight:
                               isToday || hasEvent
                                   ? FontWeight.bold

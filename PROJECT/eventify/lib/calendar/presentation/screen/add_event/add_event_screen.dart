@@ -48,76 +48,96 @@ class _AddEventScreenState extends State<AddEventScreen>
   }
 
   void _saveEvent() {
-    if (formKey.currentState!.validate() && selectedDateTime != null) {
+    if (_isFormValid()) {
       if (widget.eventToEdit == null) {
-        eventViewModel
-            .addEvent(
-              selectedEventType,
-              titleController.text,
-              descriptionController.text,
-              selectedPriority,
-              selectedDateTime,
-              hasNotification,
-              locationController.text,
-              subjectController.text,
-              withPersonController.text,
-              withPersonYesNo,
-            )
-            .then((_) {
-              if (mounted) Navigator.of(context).pop(true);
-            })
-            .catchError((error) {
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      '${AppInternalConstants.addEventFailedToSave}$error',
-                    ),
-                    backgroundColor: AppColors.deleteButtonColor,
-                  ),
-                );
-              }
-            });
+        _addNewEvent();
       } else {
-        final String eventId = widget.eventToEdit![AppFirestoreFields.id] as String;
-        eventViewModel
-            .updateEvent(
-              eventId,
-              selectedEventType,
-              titleController.text,
-              descriptionController.text,
-              selectedPriority,
-              selectedDateTime,
-              hasNotification,
-              locationController.text,
-              subjectController.text,
-              withPersonYesNo,
-              withPersonController.text,
-            )
-            .then((_) {
-              if (mounted) Navigator.of(context).pop(true);
-            })
-            .catchError((error) {
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      '${AppInternalConstants.addEventFailedToUpdate}$error',
-                    ),
-                    backgroundColor: AppColors.deleteButtonColor,
-                  ),
-                );
-              }
-            });
+        _updateExistingEvent();
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(AppInternalConstants.addEventValidationDateTime),
-          backgroundColor: AppColors.deleteButtonColor,
-        ),
-      );
+      _showValidationError();
     }
+  }
+
+  bool _isFormValid() {
+    return formKey.currentState!.validate() && selectedDateTime != null;
+  }
+
+  void _addNewEvent() {
+    eventViewModel
+      .addEvent(
+        selectedEventType,
+        titleController.text,
+        descriptionController.text,
+        selectedPriority,
+        selectedDateTime,
+        hasNotification,
+        locationController.text,
+        subjectController.text,
+        withPersonController.text,
+        withPersonYesNo,
+      )
+      .then((_) {
+        if (mounted) Navigator.of(context).pop(true);
+      })
+      .catchError((error) {
+        if (mounted) {
+          _showSaveError(error);
+        }
+      });
+  }
+
+  void _updateExistingEvent() {
+    final String eventId = widget.eventToEdit![AppFirestoreFields.id] as String;
+    eventViewModel
+      .updateEvent(
+        eventId,
+        selectedEventType,
+        titleController.text,
+        descriptionController.text,
+        selectedPriority,
+        selectedDateTime,
+        hasNotification,
+        locationController.text,
+        subjectController.text,
+        withPersonYesNo,
+        withPersonController.text,
+      )
+      .then((_) {
+        if (mounted) Navigator.of(context).pop(true);
+      })
+      .catchError((error) {
+        if (mounted) {
+          _showUpdateError(error);
+        }
+      });
+  }
+
+  void _showValidationError() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text(AppInternalConstants.addEventValidationDateTime),
+        backgroundColor: AppColors.deleteButtonColor,
+      ),
+    );
+  }
+
+  void _showSaveError(dynamic error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${AppInternalConstants.addEventFailedToSave}$error'),
+        backgroundColor: AppColors.deleteButtonColor,
+      ),
+    );
+  }
+
+  void _showUpdateError(dynamic error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${AppInternalConstants.addEventFailedToUpdate}$error'),
+        backgroundColor: AppColors.deleteButtonColor,
+      ),
+    );
   }
 
   @override

@@ -296,8 +296,15 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
     final String eventId = eventData[AppFirestoreFields.id] as String;
     final String eventTitle = eventData[AppFirestoreFields.title] as String;
 
-    final bool confirm =
-        await showDialog(
+    final bool confirm = await _showDeleteConfirmationDialog(eventTitle);
+
+    if (confirm) {
+      await _deleteEvent(eventId, eventTitle);
+    }
+  }
+
+  Future<bool> _showDeleteConfirmationDialog(String eventTitle) async {
+    return await showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -338,33 +345,30 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
           },
         ) ??
         false;
+  }
 
-    if (confirm) {
-      try {
-        await _eventViewModel.deleteEvent(eventId);
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                '${AppStrings.searchEventDeletedSuccessPrefix(context)}"$eventTitle"${AppStrings.searchEventDeletedSuccessSuffix(context)}',
-              ),
-            ),
-          );
-          await _loadEvents();
-          _searchEvents();
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                '${AppInternalConstants.searchFailedToDeleteEvent}${e.toString()}',
-              ),
-            ),
-          );
-        }
+  Future<void> _deleteEvent(String eventId, String eventTitle) async {
+    try {
+      await _eventViewModel.deleteEvent(eventId);
+      if (mounted) {
+        await _loadEvents();
+        _searchEvents();
+      }
+    } catch (e) {
+      if (mounted) {
+        _showErrorSnackbar(e);
       }
     }
+  }
+
+  void _showErrorSnackbar(Object error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '${AppInternalConstants.searchFailedToDeleteEvent}${error.toString()}',
+        ),
+      ),
+    );
   }
 
   @override

@@ -81,27 +81,22 @@ class EventViewModel extends ChangeNotifier {
   ) async {
     _isLoading = true;
     _errorMessage = null;
-    _safeNotifyListeners(); // Notify initial loading state
+    _safeNotifyListeners();
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage =
-            AppInternalConstants
-                .eventUserNotAuthenticatedSave; // Usando constante
+        _errorMessage = AppInternalConstants.eventUserNotAuthenticatedSave;
         _safeNotifyListeners();
         return;
       }
 
-      // Sustituir las claves por constantes de AppFirestoreFields
       final Map<String, dynamic> eventDataPayload = {
         AppFirestoreFields.title: title,
         AppFirestoreFields.description: description,
-        AppFirestoreFields.priority:
-            priority.toString().split('.').last, // Store as string
+        AppFirestoreFields.priority: priority.toString().split('.').last,
         AppFirestoreFields.dateTime: dateTime,
         AppFirestoreFields.notification: hasNotification,
-        AppFirestoreFields.type:
-            type.toString().split('.').last, // Store as string
+        AppFirestoreFields.type: type.toString().split('.').last,
         if (type == EventType.meeting ||
             type == EventType.conference ||
             type == EventType.appointment)
@@ -127,26 +122,24 @@ class EventViewModel extends ChangeNotifier {
       final Map<String, dynamic> eventDataWithId = {
         ...eventDataPayload,
         AppFirestoreFields.id: generatedId,
-        AppFirestoreFields.userId:
-            userId, // Asegura que userId también esté presente para consistencia local
+        AppFirestoreFields.userId: userId,
       };
 
       _events.add(eventDataWithId);
 
       _isLoading = false;
-      _isNearestEventLoaded = false; // Resetea la bandera para forzar recarga
-      await loadNearestEvent(); // Recarga el evento más cercano después de añadir
-      _safeNotifyListeners(); // Notifica el estado final de éxito
+      _isNearestEventLoaded = false;
+      await loadNearestEvent();
+      _safeNotifyListeners();
     } catch (error) {
       _isLoading = false;
-      _errorMessage =
-          '${AppInternalConstants.eventFailedToSave}$error'; // Usando constante
-      _safeNotifyListeners(); // Notifica el estado final de error
+      _errorMessage = '${AppInternalConstants.eventFailedToSave}$error';
+      _safeNotifyListeners();
     }
   }
 
   Future<void> updateEvent(
-    String eventId, // Event ID is required for update
+    String eventId,
     EventType type,
     String title,
     String? description,
@@ -164,22 +157,18 @@ class EventViewModel extends ChangeNotifier {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
-        _errorMessage =
-            AppInternalConstants.eventUserNotAuthenticated; // Usando constante
+        _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
         _safeNotifyListeners();
         return;
       }
 
-      // Sustituir las claves por constantes de AppFirestoreFields
       final Map<String, dynamic> eventDataPayload = {
         AppFirestoreFields.title: title,
         AppFirestoreFields.description: description,
-        AppFirestoreFields.priority:
-            priority.toString().split('.').last, // Store as string
+        AppFirestoreFields.priority: priority.toString().split('.').last,
         AppFirestoreFields.dateTime: dateTime,
         AppFirestoreFields.notification: hasNotification,
-        AppFirestoreFields.type:
-            type.toString().split('.').last, // Store as string
+        AppFirestoreFields.type: type.toString().split('.').last,
         if (type == EventType.meeting ||
             type == EventType.conference ||
             type == EventType.appointment)
@@ -199,7 +188,6 @@ class EventViewModel extends ChangeNotifier {
 
       await _updateEventUseCase.execute(userId, eventId, updatedEvent);
 
-      // Actualiza la lista local
       final int index = _events.indexWhere(
         (e) => e[AppFirestoreFields.id] == eventId,
       );
@@ -213,12 +201,11 @@ class EventViewModel extends ChangeNotifier {
 
       _isLoading = false;
       _isNearestEventLoaded = false;
-      await loadNearestEvent(); // Recarga el evento más cercano después de la actualización
+      await loadNearestEvent();
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
-      _errorMessage =
-          '${AppInternalConstants.eventFailedToUpdate}$e'; // Usando constante
+      _errorMessage = '${AppInternalConstants.eventFailedToUpdate}$e';
       _safeNotifyListeners();
     }
   }
@@ -250,26 +237,17 @@ class EventViewModel extends ChangeNotifier {
   }
 
   Future<void> getEventsForCurrentUser() async {
-    _isLoading = true;
-    _errorMessage = null;
-    _safeNotifyListeners();
+    _initializeLoadingState();
     try {
-      final userId = FirebaseAuth.instance.currentUser?.uid;
+      final userId = _getCurrentUserId();
       if (userId == null) {
-        _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
-        _isLoading = false;
-        _safeNotifyListeners();
-        _events = [];
+        _handleUserNotAuthenticated();
         return;
       }
       _events = await _getEventsForUserUseCase.execute(userId);
-      _isLoading = false;
-      _safeNotifyListeners();
+      _finalizeLoadingState();
     } catch (e) {
-      _isLoading = false;
-      _errorMessage = '${AppInternalConstants.eventFailedToFetch}$e';
-      _safeNotifyListeners();
-      _events = [];
+      _handleFetchError(e);
     }
   }
 
@@ -278,15 +256,11 @@ class EventViewModel extends ChangeNotifier {
       return;
     }
 
-    _isLoading = true;
-    _errorMessage = null;
-    _safeNotifyListeners();
+    _initializeLoadingState();
     try {
-      final userId = FirebaseAuth.instance.currentUser?.uid;
+      final userId = _getCurrentUserId();
       if (userId == null) {
-        _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
-        _isLoading = false;
-        _safeNotifyListeners();
+        _handleUserNotAuthenticated();
         _nearestEvent = null;
         return;
       }
@@ -294,51 +268,82 @@ class EventViewModel extends ChangeNotifier {
       final List<Map<String, dynamic>> allEventsData =
           await _getEventsForUserUseCase.execute(userId);
 
-      final List<Event> allEvents =
-          allEventsData
-              .map(
-                (data) => EventFactory.createEvent(
-                  _getEventTypeFromString(
-                    data[AppFirestoreFields.type] ?? AppInternalConstants.eventTypeTask,
-                  ),
-                  data,
-                  userId,
-                ),
-              )
-              .toList();
-
-      final now = DateTime.now();
-      final futureEvents =
-          allEvents.where((event) {
-            return event.dateTime != null &&
-                event.dateTime!.toDate().isAfter(
-                  now.subtract(const Duration(minutes: 1)),
-                );
-          }).toList();
-
-      futureEvents.sort((a, b) {
-        final dateComparison = a.dateTime!.toDate().compareTo(
-          b.dateTime!.toDate(),
-        );
-        if (dateComparison != 0) {
-          return dateComparison;
-        }
-
-        return _getPriorityValue(
-          b.priority,
-        ).compareTo(_getPriorityValue(a.priority));
-      });
-
-      _nearestEvent = futureEvents.isNotEmpty ? futureEvents.first : null;
+      _nearestEvent = _findNearestEvent(allEventsData, userId);
       _isNearestEventLoaded = true;
-      _isLoading = false;
-      _safeNotifyListeners();
+      _finalizeLoadingState();
     } catch (e) {
-      _isLoading = false;
-      _errorMessage = '${AppInternalConstants.eventFailedToFetchNearest}$e';
-      _safeNotifyListeners();
+      _handleFetchError(e);
       _nearestEvent = null;
     }
+  }
+
+  void _initializeLoadingState() {
+    _isLoading = true;
+    _errorMessage = null;
+    _safeNotifyListeners();
+  }
+
+  void _finalizeLoadingState() {
+    _isLoading = false;
+    _safeNotifyListeners();
+  }
+
+  String? _getCurrentUserId() {
+    return FirebaseAuth.instance.currentUser?.uid;
+  }
+
+  void _handleUserNotAuthenticated() {
+    _errorMessage = AppInternalConstants.eventUserNotAuthenticated;
+    _isLoading = false;
+    _safeNotifyListeners();
+  }
+
+  void _handleFetchError(dynamic error) {
+    _isLoading = false;
+    _errorMessage = '${AppInternalConstants.eventFailedToFetch}$error';
+    _safeNotifyListeners();
+    _events = [];
+  }
+
+  Event? _findNearestEvent(
+    List<Map<String, dynamic>> allEventsData,
+    String userId,
+  ) {
+    final List<Event> allEvents =
+        allEventsData.map((data) {
+          return EventFactory.createEvent(
+            _getEventTypeFromString(
+              data[AppFirestoreFields.type] ??
+                  AppInternalConstants.eventTypeTask,
+            ),
+            data,
+            userId,
+          );
+        }).toList();
+
+    final now = DateTime.now();
+    final futureEvents =
+        allEvents.where((event) {
+          return event.dateTime != null &&
+              event.dateTime!.toDate().isAfter(
+                now.subtract(const Duration(minutes: 1)),
+              );
+        }).toList();
+
+    futureEvents.sort((a, b) {
+      final dateComparison = a.dateTime!.toDate().compareTo(
+        b.dateTime!.toDate(),
+      );
+      if (dateComparison != 0) {
+        return dateComparison;
+      }
+
+      return _getPriorityValue(
+        b.priority,
+      ).compareTo(_getPriorityValue(a.priority));
+    });
+
+    return futureEvents.isNotEmpty ? futureEvents.first : null;
   }
 
   int _getPriorityValue(Priority priority) {

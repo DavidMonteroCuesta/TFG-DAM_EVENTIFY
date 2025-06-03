@@ -102,9 +102,7 @@ class _CalendarState extends State<Calendar> {
     }
 
     if (_months == null) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Column(children: _buildMonthRows(MediaQuery.of(context).size.width));
@@ -113,23 +111,13 @@ class _CalendarState extends State<Calendar> {
   List<Widget> _buildMonthRows(double screenWidth) {
     final List<Widget> rows = [];
     int itemsPerRow = 3;
-    if (screenWidth >= 900) {
-      itemsPerRow = 3;
+    if (screenWidth >= 1000) {
+      itemsPerRow = 4;
     } else if (screenWidth > 600) {
       itemsPerRow = 3;
     }
 
     List<String> displayedMonths = _months!;
-    if (screenWidth < 400) {
-      displayedMonths =
-          _months!.map((month) {
-            if (month.length > 3) {
-              return month.substring(0, 3);
-            } else {
-              return month;
-            }
-          }).toList();
-    }
 
     final List<int> notifications = List.generate(
       12,
@@ -148,6 +136,10 @@ class _CalendarState extends State<Calendar> {
           rowMonths: rowMonths,
           rowNotifications: rowNotifications,
           onMonthTap: widget.onMonthSelected,
+          textStyle:
+              screenWidth < 400
+                  ? const TextStyle(fontSize: 12) // Apply smaller font size
+                  : null, // Default style
         ),
       );
     }
