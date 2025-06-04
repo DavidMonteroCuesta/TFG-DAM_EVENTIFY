@@ -17,6 +17,28 @@ import 'package:eventify/auth/presentation/screen/profile/logic/profile_theme_lo
 import 'package:eventify/auth/presentation/screen/profile/widgets/profile_header.dart';
 import 'package:eventify/auth/presentation/screen/profile/widgets/profile_avatar.dart';
 
+const double kProfileHeaderHeight = 120.0;
+const double kProfileAvatarRadius = 40.0;
+const double kProfileAvatarTopOffset =
+    kProfileHeaderHeight - kProfileAvatarRadius;
+const double kProfilePaddingLeft = 96.0;
+const double kProfilePaddingRight = 16.0;
+const double kProfileSectionSpacing = 24.0;
+const double kProfileSectionTitlePaddingTop = 4.0;
+const double kProfileSectionTitlePaddingLeft = 24.0;
+const double kProfileSectionTitlePaddingBottom = 0.0;
+const double kProfileSectionTitlePaddingRight = 0.0;
+const double kProfileListItemSpacing = 8.0;
+const double kProfileDropdownCircleSize = 20.0;
+const double kProfileDropdownCircleSpacing = 8.0;
+const double kProfileLogoutButtonWidth = 200.0;
+const double kProfileLogoutButtonHeight = 50.0;
+const double kProfileLogoutButtonRadius = 12.0;
+const double kProfileLogoutButtonElevation = 5.0;
+const double kProfileLogoutButtonShadowOpacity = 0.5;
+const double kProfileLogoutButtonFontSize = 16.0;
+const double kProfileAvatarTopPadding = 16.0;
+
 class ProfileScreen extends StatefulWidget {
   static String routeName = AppRoutes.profile;
   static String routePath = AppRoutes.profile;
@@ -42,8 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    Color? currentAppThemeColor =
-        AppColors.secondaryDynamic;
+    Color? currentAppThemeColor = AppColors.secondaryDynamic;
     Color? matchedDropdownValue = ProfileThemeLogic.getMatchedDropdownValue(
       currentAppThemeColor,
     );
@@ -130,24 +151,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
         user?.displayName ?? AppInternalConstants.profileUsernameDefault;
     final email = user?.email ?? AppInternalConstants.profileEmailDefault;
 
-    const double headerHeight = 120.0;
-    const double avatarRadius = 40.0;
-    const double avatarTopPosition = headerHeight - avatarRadius;
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
         children: [
-          // 1. Contenido principal que se desplaza (incluye el header y el resto)
           SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              top: avatarTopPosition + avatarRadius + 16.0,
+            padding: EdgeInsets.only(
+              top:
+                  kProfileAvatarTopOffset +
+                  kProfileAvatarRadius +
+                  kProfileAvatarTopPadding,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 96.0, right: 16.0),
+                  padding: EdgeInsets.only(
+                    left: kProfilePaddingLeft,
+                    right: kProfilePaddingRight,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -167,9 +189,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24.0),
+                SizedBox(height: kProfileSectionSpacing),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 0, 0),
+                  padding: EdgeInsetsDirectional.fromSTEB(
+                    kProfileSectionTitlePaddingLeft,
+                    kProfileSectionTitlePaddingTop,
+                    kProfileSectionTitlePaddingRight,
+                    kProfileSectionTitlePaddingBottom,
+                  ),
                   child: Text(
                     AppStrings.profileYourAccountTitle(context),
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
@@ -177,7 +204,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8.0),
+                // Espaciado entre secciones del perfil
+                SizedBox(height: kProfileListItemSpacing),
+                // Ítem para editar el perfil
                 ProfileListItem(
                   icon: Icons.person_outline,
                   text: AppStrings.profileEditProfileText(context),
@@ -192,7 +221,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8.0),
+                // Espaciado entre ítems
+                SizedBox(height: kProfileListItemSpacing),
+                // Ítem para notificaciones
                 ProfileListItem(
                   icon: Icons.notifications_none,
                   text: AppStrings.profileNotificationSettingsText(context),
@@ -207,9 +238,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24.0),
+                // Espaciado entre secciones del perfil
+                SizedBox(height: kProfileSectionSpacing),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(24, 16, 0, 0),
+                  padding: EdgeInsetsDirectional.fromSTEB(
+                    kProfileSectionTitlePaddingLeft,
+                    16,
+                    kProfileSectionTitlePaddingRight,
+                    kProfileSectionTitlePaddingBottom,
+                  ),
                   child: Text(
                     AppStrings.profileAppSettingsTitle(context),
                     style: TextStyles.plusJakartaSansSubtitle2.copyWith(
@@ -217,7 +254,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8.0),
+                // Espaciado entre ítems
+                SizedBox(height: kProfileListItemSpacing),
+                // Ítem para temas de color
                 ProfileListItem(
                   icon: Icons.color_lens_outlined,
                   text: AppStrings.profileThemesText(context),
@@ -234,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 8.0),
+                      SizedBox(height: kProfileDropdownCircleSpacing),
                       DropdownButton<Color?>(
                         value: _selectedColor,
                         dropdownColor: AppColors.dropdownContentBackground,
@@ -259,15 +298,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: 20,
-                                      height: 20,
+                                      width: kProfileDropdownCircleSize,
+                                      height: kProfileDropdownCircleSize,
                                       decoration: BoxDecoration(
                                         color:
                                             colorOption ?? AppColorPalette.grey,
                                         shape: BoxShape.circle,
                                       ),
                                     ),
-                                    const SizedBox(width: 8.0),
+                                    SizedBox(
+                                      width: kProfileDropdownCircleSpacing,
+                                    ),
                                     Text(
                                       name,
                                       style: TextStyles.plusJakartaSansBody1
@@ -283,7 +324,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 8.0),
+                // Espaciado entre ítems
+                SizedBox(height: kProfileListItemSpacing),
+                // Ítem para soporte
                 ProfileListItem(
                   icon: Icons.help_outline_rounded,
                   text: AppStrings.profileSupportText(context),
@@ -301,7 +344,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8.0),
+                // Espaciado entre ítems
+                SizedBox(height: kProfileListItemSpacing),
+                // Ítem para términos de servicio
                 ProfileListItem(
                   icon: Icons.privacy_tip_rounded,
                   text: AppStrings.profileTermsOfServiceText(context),
@@ -316,7 +361,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24.0),
+                // Espaciado antes del botón de logout
+                SizedBox(height: kProfileSectionSpacing),
                 Align(
                   alignment: AlignmentDirectional.center,
                   child: ElevatedButton(
@@ -326,34 +372,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: errorColor,
                       foregroundColor: AppColors.textPrimary,
-                      fixedSize: const Size(200, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      fixedSize: const Size(
+                        kProfileLogoutButtonWidth,
+                        kProfileLogoutButtonHeight,
                       ),
-                      elevation: 5,
-                      shadowColor: errorColor.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          kProfileLogoutButtonRadius,
+                        ),
+                      ),
+                      elevation: kProfileLogoutButtonElevation,
+                      shadowColor: errorColor.withOpacity(
+                        kProfileLogoutButtonShadowOpacity,
+                      ),
                     ),
                     child: Text(
                       AppStrings.profileLogoutButton(context),
                       style: TextStyles.plusJakartaSansButton.copyWith(
-                        fontSize: 16,
+                        fontSize: kProfileLogoutButtonFontSize,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24.0),
+                // Espaciado final
+                SizedBox(height: kProfileSectionSpacing),
               ],
             ),
           ),
           ProfileHeader(
             currentDate: currentDate,
             onClose: () => _navigateToCalendarScreen(context),
-            headerHeight: headerHeight,
+            headerHeight: kProfileHeaderHeight,
           ),
           ProfileAvatar(
             firstLetter: _firstLetter,
-            avatarRadius: avatarRadius,
-            avatarTopPosition: avatarTopPosition,
+            avatarRadius: kProfileAvatarRadius,
+            avatarTopPosition: kProfileAvatarTopOffset,
           ),
         ],
       ),

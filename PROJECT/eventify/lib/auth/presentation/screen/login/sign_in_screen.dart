@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:eventify/auth/presentation/screen/login/widgets/auth_subtitle.dart';
 import 'package:eventify/auth/presentation/screen/login/widgets/auth_title.dart';
 import 'package:eventify/auth/presentation/screen/login/widgets/custom_text_field.dart';
@@ -17,6 +19,18 @@ import 'package:provider/provider.dart';
 
 import '../../view_model/sign_in_view_model.dart';
 
+const double kSignInScreenTitleSpacing = 8.0;
+const double kSignInScreenSubtitleSpacing = 24.0;
+const double kSignInScreenFieldSpacing = 16.0;
+const double kSignInScreenSocialButtonHeight = 45.0;
+const double kSignInScreenErrorPaddingTop = 8.0;
+const int kSignInScreenEmailAnimDelay = 200;
+const int kSignInScreenPasswordAnimDelay = 300;
+const int kSignInScreenButtonAnimDelay = 1;
+const int kSignInScreenAnimDurationMs = 300;
+const double kSignInScreenSocialIconSize = 24.0;
+const double kSignInScreenZero = 0.0;
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
   static const String routeName = AppRoutes.signIn;
@@ -29,9 +43,9 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  double _emailOffset = 0.0;
-  double _passwordOffset = 0.0;
-  double _signInButtonOffset = 0.0;
+  double _emailOffset = kSignInScreenZero;
+  double _passwordOffset = kSignInScreenZero;
+  double _signInButtonOffset = kSignInScreenZero;
 
   @override
   void initializeAnimationOffsets() {
@@ -42,17 +56,17 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
 
   @override
   void startAnimations() {
-    animateElement(-screenWidth, 200, (value) {
+    animateElement(-screenWidth, kSignInScreenEmailAnimDelay, (value) {
       setState(() {
         _emailOffset = value;
       });
     });
-    animateElement(-screenWidth, 300, (value) {
+    animateElement(-screenWidth, kSignInScreenPasswordAnimDelay, (value) {
       setState(() {
         _passwordOffset = value;
       });
     });
-    animateElement(-screenWidth, 1, (value) {
+    animateElement(-screenWidth, kSignInScreenButtonAnimDelay, (value) {
       setState(() {
         _signInButtonOffset = value;
       });
@@ -72,22 +86,30 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AuthTitle(text: AppStrings.signInWelcomeTitle(context)),
-          const SizedBox(height: 8),
+          SizedBox(height: kSignInScreenTitleSpacing),
           AuthSubtitle(text: AppStrings.signInSubtitle(context)),
-          const SizedBox(height: 24),
+          SizedBox(height: kSignInScreenSubtitleSpacing),
           AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            transform: Matrix4.translationValues(_emailOffset, 0.0, 0.0),
+            duration: Duration(milliseconds: kSignInScreenAnimDurationMs),
+            transform: Matrix4.translationValues(
+              _emailOffset,
+              kSignInScreenZero,
+              kSignInScreenZero,
+            ),
             child: CustomTextField(
               hintText: AppStrings.signInEmailHint(context),
               controller: _emailController,
               textStyle: TextStyles.plusJakartaSansBody1,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: kSignInScreenFieldSpacing),
           AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            transform: Matrix4.translationValues(_passwordOffset, 0.0, 0.0),
+            duration: Duration(milliseconds: kSignInScreenAnimDurationMs),
+            transform: Matrix4.translationValues(
+              _passwordOffset,
+              kSignInScreenZero,
+              kSignInScreenZero,
+            ),
             child: CustomTextField(
               hintText: AppStrings.signInPasswordHint(context),
               obscure: true,
@@ -95,10 +117,14 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
               textStyle: TextStyles.plusJakartaSansBody1,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: kSignInScreenFieldSpacing),
           AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            transform: Matrix4.translationValues(_signInButtonOffset, 0.0, 0.0),
+            duration: Duration(milliseconds: kSignInScreenAnimDurationMs),
+            transform: Matrix4.translationValues(
+              _signInButtonOffset,
+              kSignInScreenZero,
+              kSignInScreenZero,
+            ),
             child: PrimaryButton(
               text: AppStrings.signInButtonText(context),
               onPressed:
@@ -114,12 +140,10 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
             ),
           ),
           if (signInViewModel.isLoading)
-            CircularProgressIndicator(
-              color: AppColors.primary,
-            ),
+            CircularProgressIndicator(color: AppColors.primary),
           if (signInViewModel.errorMessage != null)
             Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: EdgeInsets.only(top: kSignInScreenErrorPaddingTop),
               child: Text(
                 signInViewModel.errorMessage!,
                 style: TextStyles.plusJakartaSansBody1.copyWith(
@@ -127,11 +151,15 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
                 ),
               ),
             ),
-          const SizedBox(height: 16),
+          SizedBox(height: kSignInScreenFieldSpacing),
           SizedBox(
-            height: 45,
+            height: kSignInScreenSocialButtonHeight,
             child: SocialSignInButton(
-              icon: Image.asset(AppAssets.googleIcon, width: 24, height: 24),
+              icon: Image.asset(
+                AppAssets.googleIcon,
+                width: kSignInScreenSocialIconSize,
+                height: kSignInScreenSocialIconSize,
+              ),
               text: AppStrings.socialSignInGoogleText(context),
               onPressed:
                   signInViewModel.isLoading
@@ -150,7 +178,7 @@ class _SignInScreenState extends SlideLeftToRightAnimationState<SignInScreen> {
                       },
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: kSignInScreenFieldSpacing),
           const ForgotPasswordOption(),
         ],
       ),

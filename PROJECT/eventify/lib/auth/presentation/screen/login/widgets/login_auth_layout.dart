@@ -1,7 +1,18 @@
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:flutter/material.dart';
 import 'package:eventify/common/constants/app_strings.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
+
+const double kAuthLayoutMaxWidth = 400.0;
+const double kAuthLayoutPaddingHorizontal = 24.0;
+const double kAuthLayoutPaddingVertical = 32.0;
+const double kAuthLayoutTitleFontSize = 40.0;
+const double kAuthLayoutTitleLetterSpacing = 1.5;
+const int kAuthLayoutTitleDurationMs = 2000;
+const double kAuthLayoutTitleSpacing = 32.0;
+const double kAuthLayoutFooterSpacing = 24.0;
+const double kAuthLayoutFooterTextFontSize = 14.0;
+const double kAuthLayoutFooterTextSpacing = 16.0;
 
 class EventifyAuthLayout extends StatelessWidget {
   final Widget child;
@@ -22,33 +33,35 @@ class EventifyAuthLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background, // Using AppColors
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              constraints: const BoxConstraints(maxWidth: 400),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              constraints: BoxConstraints(maxWidth: kAuthLayoutMaxWidth),
+              padding: EdgeInsets.symmetric(
+                horizontal: kAuthLayoutPaddingHorizontal,
+                vertical: kAuthLayoutPaddingVertical,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ShiningTextAnimation(
                     text: AppStrings.appTitleEventify(context),
-                    style: const TextStyle(
-                      color: AppColors.textPrimary, // Using AppColors
-                      fontSize: 40,
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: kAuthLayoutTitleFontSize,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
+                      letterSpacing: kAuthLayoutTitleLetterSpacing,
                     ),
-                    duration: const Duration(milliseconds: 2000),
-                    shineColor: AppColors.accentColor400, // Using AppColors
+                    duration: Duration(
+                      milliseconds: kAuthLayoutTitleDurationMs,
+                    ),
+                    shineColor: AppColors.accentColor400,
                   ),
-                  const SizedBox(height: 32),
-
+                  SizedBox(height: kAuthLayoutTitleSpacing),
                   child,
-
-                  const SizedBox(height: 24),
-
+                  SizedBox(height: kAuthLayoutFooterSpacing),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -56,21 +69,21 @@ class EventifyAuthLayout extends StatelessWidget {
                         onTap: onLeftFooterTap,
                         child: Text(
                           leftFooterText,
-                          style: const TextStyle(
-                            color: AppColors.textPrimary, // Using AppColors
-                            fontSize: 14,
+                          style: TextStyle(
+                            color: AppColors.textPrimary,
+                            fontSize: kAuthLayoutFooterTextFontSize,
                             decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: kAuthLayoutFooterTextSpacing),
                       GestureDetector(
                         onTap: onRightFooterTap,
                         child: Text(
                           rightFooterText,
-                          style: const TextStyle(
-                            color: AppColors.footerRightTextColor, // Using AppColors
-                            fontSize: 14,
+                          style: TextStyle(
+                            color: AppColors.footerRightTextColor,
+                            fontSize: kAuthLayoutFooterTextFontSize,
                             decoration: TextDecoration.underline,
                           ),
                         ),

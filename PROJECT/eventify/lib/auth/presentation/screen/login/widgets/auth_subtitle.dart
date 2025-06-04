@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 
+const double kAuthSubtitleFontSize = 14.0;
+
 class AuthSubtitle extends StatelessWidget {
   final String text;
 
@@ -12,7 +14,7 @@ class AuthSubtitle extends StatelessWidget {
       text,
       style: const TextStyle(
         color: AppColors.textGrey400,
-        fontSize: 14,
+        fontSize: kAuthSubtitleFontSize,
       ),
     );
   }

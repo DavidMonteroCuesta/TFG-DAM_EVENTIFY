@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
+
+const double kPrimaryButtonWidth = double.infinity;
+const double kPrimaryButtonHeight = 48.0;
+const double kPrimaryButtonBorderRadius = 8.0;
+const double kPrimaryButtonFontSize = 16.0;
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -10,20 +15,23 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
-      height: 48,
+      width: kPrimaryButtonWidth,
+      height: kPrimaryButtonHeight,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.accentColor400, // Using AppColors
-          foregroundColor: AppColors.elevatedButtonForeground, // Using AppColors
+          backgroundColor: AppColors.accentColor400,
+          foregroundColor: AppColors.elevatedButtonForeground,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(kPrimaryButtonBorderRadius),
           ),
         ),
         onPressed: onPressed,
         child: Text(
           text,
-          style: const TextStyle(fontSize: 16, color: AppColors.textPrimary), // Using AppColors
+          style: const TextStyle(
+            fontSize: kPrimaryButtonFontSize,
+            color: AppColors.textPrimary,
+          ),
         ),
       ),
     );

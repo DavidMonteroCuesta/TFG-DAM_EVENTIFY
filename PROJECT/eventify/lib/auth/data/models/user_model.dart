@@ -1,6 +1,7 @@
 import 'package:eventify/auth/domain/entities/user.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
 
+/// Modelo de usuario para la capa de datos, incluye métodos de conversión y serialización
 class UserModel {
   final String id;
   final String username;

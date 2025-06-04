@@ -137,6 +137,9 @@ class EventViewModel extends ChangeNotifier {
 
       _isLoading = false;
       _isNearestEventLoaded = false;
+      final now = DateTime.now();
+      await getEventsForCurrentUserAndMonth(now.year, now.month);
+      await getEventsForCurrentUserAndYear(now.year);
       await loadNearestEvent();
       _safeNotifyListeners();
     } catch (error) {
@@ -147,6 +150,7 @@ class EventViewModel extends ChangeNotifier {
   }
 
   // Actualiza un evento existente
+  // Tras editar, actualiza el evento más cercano, la lista mensual y la lista anual
   Future<void> updateEvent(
     String eventId,
     EventType type,
@@ -211,6 +215,10 @@ class EventViewModel extends ChangeNotifier {
       _isLoading = false;
       _isNearestEventLoaded = false;
       await loadNearestEvent();
+      // Actualiza la lista de eventos del mes y año actual tras editar
+      final now = DateTime.now();
+      await getEventsForCurrentUserAndMonth(now.year, now.month);
+      await getEventsForCurrentUserAndYear(now.year);
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;
@@ -220,6 +228,7 @@ class EventViewModel extends ChangeNotifier {
   }
 
   // Elimina un evento por su id
+  // Tras borrar, actualiza el evento más cercano, la lista mensual y la lista anual
   Future<void> deleteEvent(String eventId) async {
     _isLoading = true;
     _errorMessage = null;
@@ -238,6 +247,10 @@ class EventViewModel extends ChangeNotifier {
       _isLoading = false;
       _isNearestEventLoaded = false;
       await loadNearestEvent();
+      // Actualiza la lista de eventos del mes y año actual tras borrar
+      final now = DateTime.now();
+      await getEventsForCurrentUserAndMonth(now.year, now.month);
+      await getEventsForCurrentUserAndYear(now.year);
       _safeNotifyListeners();
     } catch (e) {
       _isLoading = false;

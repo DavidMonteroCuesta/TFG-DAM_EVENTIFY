@@ -150,7 +150,6 @@ class EventRemoteDataSource {
     int year,
   ) async {
     try {
-      // Constantes privadas para los valores de mes, día y hora
       const int startMonth = 1;
       const int startDay = 1;
       const int endMonth = 12;

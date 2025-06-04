@@ -1,6 +1,7 @@
 import 'package:eventify/auth/domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 
+/// Caso de uso para registrar un nuevo usuario
 class RegisterUseCase {
   final AuthRepository authRepository;
 

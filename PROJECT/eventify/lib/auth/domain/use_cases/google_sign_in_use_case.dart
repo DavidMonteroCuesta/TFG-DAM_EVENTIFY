@@ -5,16 +5,18 @@ import '../repositories/auth_repository.dart';
 import 'dart:developer'; // Import for log
 import 'package:eventify/common/constants/app_logs.dart';
 
+// Caso de uso para iniciar sesión con Google y guardar/actualizar el usuario en Firestore
 class GoogleSignInUseCase {
   final AuthRepository authRepository;
 
   GoogleSignInUseCase({required this.authRepository});
 
+  // Ejecuta el flujo de autenticación con Google y devuelve el usuario de la app
   Future<User?> execute() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
-        // User cancelled the sign-in flow
+        // El usuario canceló el flujo de inicio de sesión
         log(AppLogs.googleSignInCancelled, name: 'GoogleSignInUseCase');
         return null;
       }
@@ -27,7 +29,7 @@ class GoogleSignInUseCase {
         idToken: googleAuth.idToken,
       );
 
-      // Sign in to Firebase with the Google credential
+      // Inicia sesión en Firebase con las credenciales de Google
       final firebase_auth.UserCredential userCredential = await firebase_auth
           .FirebaseAuth
           .instance
@@ -39,7 +41,7 @@ class GoogleSignInUseCase {
           AppLogs.googleSignInAuthenticated + firebaseUser.uid,
           name: 'GoogleSignInUseCase',
         );
-        // Save user info to Firestore if it's a new user or update existing
+        // Guarda o actualiza la información del usuario en Firestore
         return await authRepository.signInWithGoogle(firebaseUser);
       } else {
         log(AppLogs.googleSignInNullUser, name: 'GoogleSignInUseCase');
@@ -47,11 +49,11 @@ class GoogleSignInUseCase {
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
       log(
-        AppLogs.googleSignInFirebaseAuthError + "${e.code} - ${e.message}",
+        "${AppLogs.googleSignInFirebaseAuthError}${e.code} - ${e.message}",
         name: 'GoogleSignInUseCase',
         error: e,
       );
-      rethrow; // Rethrow Firebase specific exceptions
+      rethrow; // Relanza excepciones específicas de Firebase
     } catch (e) {
       log(
         AppLogs.googleSignInUnexpectedError + e.toString(),
@@ -60,7 +62,7 @@ class GoogleSignInUseCase {
       );
       throw Exception(
         AppLogs.googleSignInUnexpectedError + e.toString(),
-      ); // Rethrow generic errors
+      ); // Relanza errores genéricos
     }
   }
 }

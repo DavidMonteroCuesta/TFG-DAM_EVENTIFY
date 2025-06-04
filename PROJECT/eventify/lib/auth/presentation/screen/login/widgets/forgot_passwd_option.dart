@@ -1,11 +1,22 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
 import 'dart:ui';
 
 import 'package:eventify/auth/presentation/screen/login/widgets/custom_text_field.dart';
 import 'package:eventify/auth/presentation/view_model/sign_in_view_model.dart';
 import 'package:eventify/common/constants/app_strings.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+// Constantes para valores numéricos y estilos en ForgotPasswordOption
+const double kForgotPasswordDialogBlurSigma = 8.0;
+const double kForgotPasswordDialogBarrierOpacity = 0.3;
+const double kForgotPasswordDialogContentPaddingH = 24.0;
+const double kForgotPasswordDialogContentPaddingV = 24.0;
+const double kForgotPasswordDialogContentPaddingBottom = 0.0;
+const double kForgotPasswordDialogActionsPaddingH = 8.0;
+const double kForgotPasswordDialogActionsPaddingV = 8.0;
 
 class ForgotPasswordOption extends StatelessWidget {
   const ForgotPasswordOption({super.key});
@@ -18,27 +29,32 @@ class ForgotPasswordOption extends StatelessWidget {
           final emailController = TextEditingController();
           final result = await showDialog<String>(
             context: context,
-            barrierColor: Colors.black.withOpacity(0.3),
+            barrierColor: Colors.black.withOpacity(
+              kForgotPasswordDialogBarrierOpacity,
+            ),
             builder:
                 (context) => BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                  filter: ImageFilter.blur(
+                    sigmaX: kForgotPasswordDialogBlurSigma,
+                    sigmaY: kForgotPasswordDialogBlurSigma,
+                  ),
                   child: AlertDialog(
                     title: null,
-                    contentPadding: const EdgeInsets.fromLTRB(
-                      24,
-                      24,
-                      24,
-                      0,
-                    ), // Reduce el padding inferior
+                    contentPadding: EdgeInsets.fromLTRB(
+                      kForgotPasswordDialogContentPaddingH,
+                      kForgotPasswordDialogContentPaddingV,
+                      kForgotPasswordDialogContentPaddingH,
+                      kForgotPasswordDialogContentPaddingBottom,
+                    ),
                     content: CustomTextField(
                       hintText: AppStrings.emailLabel(context),
                       controller: emailController,
                       textStyle: Theme.of(context).textTheme.bodyMedium!,
                     ),
-                    actionsPadding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ), // Reduce el padding de los botones
+                    actionsPadding: EdgeInsets.symmetric(
+                      horizontal: kForgotPasswordDialogActionsPaddingH,
+                      vertical: kForgotPasswordDialogActionsPaddingV,
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
@@ -81,7 +97,7 @@ class ForgotPasswordOption extends StatelessWidget {
         child: Text(
           AppStrings.forgotPasswordOptionText(context),
           style: TextStyle(
-            color: AppColors.textSecondary, // Using AppColors
+            color: AppColors.textSecondary,
             decoration: TextDecoration.underline,
           ),
         ),

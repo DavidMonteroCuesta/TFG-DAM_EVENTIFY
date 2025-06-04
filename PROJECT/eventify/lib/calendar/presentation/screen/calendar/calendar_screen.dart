@@ -11,6 +11,7 @@ import 'package:eventify/common/theme/colors/app_colors.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:eventify/main.dart';
 
 class CalendarScreen extends StatelessWidget {
   static const String routeName = AppRoutes.calendar;
@@ -36,7 +37,8 @@ class _CalendarScreenBody extends StatefulWidget {
   State<_CalendarScreenBody> createState() => _CalendarScreenBodyState();
 }
 
-class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
+class _CalendarScreenBodyState extends State<_CalendarScreenBody>
+    with RouteAware {
   static const double _spacingBetweenHeaderAndCalendar = 10.0;
   static const double _spacingBetweenContentAndFooter = 10.0;
   static const double _footerHeightFraction = 0.10;
@@ -47,6 +49,27 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
   static const double _horizontalPadding = 16.0;
   static const double _eventCardSpacing = 16.0;
   static const double _monthlyCalendarWidth = 20.0;
+
+  Key _calendarKey = UniqueKey();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      _calendarKey = UniqueKey();
+    });
+  }
 
   @override
   void initState() {
@@ -98,6 +121,7 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
                                   child: Column(
                                     children: [
                                       Calendar(
+                                        key: _calendarKey,
                                         onMonthSelected:
                                             logic.handleMonthSelected,
                                         currentYear: logic.currentYear,
@@ -228,6 +252,7 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody> {
                                 child: Column(
                                   children: [
                                     Calendar(
+                                      key: _calendarKey,
                                       onMonthSelected:
                                           logic.handleMonthSelected,
                                       currentYear: logic.currentYear,

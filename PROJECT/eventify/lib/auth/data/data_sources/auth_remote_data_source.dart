@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventify/auth/domain/entities/user.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
 import 'package:eventify/common/constants/app_logs.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 import '../models/user_model.dart';
@@ -61,6 +62,7 @@ class AuthRemoteDataSource {
     }
   }
 
+  /// Inicia sesión con Google. Si el usuario no existe en Firestore, lo crea.
   Future<User?> signInWithGoogle(firebase_auth.User firebaseUser) async {
     try {
       final userDoc = _firestore
@@ -71,7 +73,9 @@ class AuthRemoteDataSource {
       if (!snapshot.exists) {
         final newUser = UserModel(
           id: firebaseUser.uid,
-          username: firebaseUser.displayName ?? 'Google User',
+          username:
+              firebaseUser.displayName ??
+              AppInternalConstants.googleUserDefault,
           email: firebaseUser.email ?? '',
         );
         await userDoc.set(newUser.toJson());
@@ -86,6 +90,7 @@ class AuthRemoteDataSource {
     }
   }
 
+  /// Envía un correo de restablecimiento de contraseña usando Firebase Auth.
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);

@@ -7,6 +7,17 @@ import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
 
+const double kProfileHeaderBlurSigma = 10.0;
+const double kProfileHeaderBorderRadius = 0.0;
+const double kProfileHeaderOpacity = 0.80;
+const double kProfileHeaderCloseButtonPaddingRight = 16.0;
+const double kProfileHeaderCloseButtonPaddingTop = 20.0;
+const double kProfileHeaderCloseButtonRadius = 24.0;
+const double kProfileHeaderCloseButtonInnerBlurSigma = 10.0;
+const double kProfileHeaderCloseButtonInnerOpacity = 0.28;
+const double kProfileHeaderDatePaddingLeft = 96.0;
+const double kProfileHeaderDatePaddingTop = 60.0;
+
 class ProfileHeader extends StatelessWidget {
   final String currentDate;
   final VoidCallback onClose;
@@ -22,26 +33,41 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.zero,
+      borderRadius: BorderRadius.circular(kProfileHeaderBorderRadius),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        filter: ImageFilter.blur(
+          sigmaX: kProfileHeaderBlurSigma,
+          sigmaY: kProfileHeaderBlurSigma,
+        ),
         child: Container(
           width: double.infinity,
           height: headerHeight,
-          color: AppColors.profileHeaderBackground.withOpacity(0.80),
+          color: AppColors.profileHeaderBackground.withOpacity(
+            kProfileHeaderOpacity,
+          ),
           child: Stack(
             children: [
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 16.0, top: 20.0),
+                  padding: EdgeInsets.only(
+                    right: kProfileHeaderCloseButtonPaddingRight,
+                    top: kProfileHeaderCloseButtonPaddingTop,
+                  ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(
+                      kProfileHeaderCloseButtonRadius,
+                    ),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      filter: ImageFilter.blur(
+                        sigmaX: kProfileHeaderCloseButtonInnerBlurSigma,
+                        sigmaY: kProfileHeaderCloseButtonInnerBlurSigma,
+                      ),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: AppColors.profileMediumGrey.withOpacity(0.28),
+                          color: AppColors.profileMediumGrey.withOpacity(
+                            kProfileHeaderCloseButtonInnerOpacity,
+                          ),
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
@@ -56,8 +82,12 @@ class ProfileHeader extends StatelessWidget {
                   ),
                 ),
               ),
+              // Fecha actual con animación y estilo
               Padding(
-                padding: const EdgeInsets.only(left: 96.0, top: 60.0),
+                padding: EdgeInsets.only(
+                  left: kProfileHeaderDatePaddingLeft,
+                  top: kProfileHeaderDatePaddingTop,
+                ),
                 child: ShiningTextAnimation(
                   text: currentDate,
                   style: TextStyles.urbanistBody1.copyWith(

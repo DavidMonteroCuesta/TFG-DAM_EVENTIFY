@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // ViewModels principales
+        // ViewModels
         ChangeNotifierProvider(create: (_) => di.sl<SignInViewModel>()),
         ChangeNotifierProvider(create: (_) => di.sl<SignUpViewModel>()),
         ChangeNotifierProvider(create: (_) => di.sl<EventViewModel>()),
@@ -119,7 +119,10 @@ class MyApp extends StatelessWidget {
           ProfileScreen.routeName: (context) => const ProfileScreen(),
           SignInScreen.routeName: (context) => const SignInScreen(),
         },
+        navigatorObservers: [routeObserver],
       ),
     );
   }
 }
+
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();

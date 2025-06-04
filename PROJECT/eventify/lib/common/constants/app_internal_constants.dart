@@ -102,4 +102,7 @@ abstract class AppInternalConstants {
   static const String profileEmailDefault = 'email@domain.com';
   static const String functionalityNotImplemented =
       'Functionality not yet implemented.';
+
+  // Valor por defecto para el nombre de usuario de Google si no se proporciona displayName
+  static const String googleUserDefault = 'Google User';
 }

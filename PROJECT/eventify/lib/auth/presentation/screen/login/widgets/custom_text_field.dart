@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:eventify/common/theme/colors/app_colors.dart'; // Import AppColors
+import 'package:eventify/common/theme/colors/app_colors.dart';
+
+const double kCustomTextFieldBorderRadius = 8.0;
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
   final bool obscure;
   final TextEditingController? controller;
-  final TextStyle textStyle; // Added textStyle parameter
+  final TextStyle textStyle;
 
   const CustomTextField({
     super.key,
     required this.hintText,
     this.obscure = false,
     this.controller,
-    required this.textStyle, // Made textStyle required
+    required this.textStyle,
   });
 
   @override
@@ -20,14 +22,18 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscure,
-      style: textStyle.copyWith(color: AppColors.textPrimary), // Using AppColors and textStyle
+      style: textStyle.copyWith(
+        color: AppColors.textPrimary,
+      ),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: textStyle.copyWith(color: AppColors.textBody2Grey), // Using AppColors and textStyle
+        hintStyle: textStyle.copyWith(
+          color: AppColors.textBody2Grey,
+        ),
         filled: true,
-        fillColor: AppColors.inputFillColor, // Using AppColors
+        fillColor: AppColors.inputFillColor,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(kCustomTextFieldBorderRadius),
           borderSide: BorderSide.none,
         ),
       ),

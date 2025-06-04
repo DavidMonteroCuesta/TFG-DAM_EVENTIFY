@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:eventify/common/theme/colors/app_colors_palette.dart';
 import 'package:eventify/common/constants/app_strings.dart';
 
+// Constantes para la lógica de temas de perfil
+const int kProfileThemeColorsCount = 5;
+
 class ProfileThemeLogic {
   static final List<Color?> availableColors = [
     null,
@@ -11,6 +14,7 @@ class ProfileThemeLogic {
     AppColorPalette.redAccent,
   ];
 
+  // Devuelve los nombres de los colores disponibles para el perfil
   static List<String> colorNames(BuildContext context) => [
     AppStrings.profileThemeDefault(context),
     AppStrings.profileThemeGreen(context),
@@ -19,6 +23,7 @@ class ProfileThemeLogic {
     AppStrings.profileThemeRed(context),
   ];
 
+  // Busca el color seleccionado en el dropdown según el color actual del tema
   static Color? getMatchedDropdownValue(Color? currentAppThemeColor) {
     for (int i = 0; i < availableColors.length; i++) {
       Color? optionColor = availableColors[i];

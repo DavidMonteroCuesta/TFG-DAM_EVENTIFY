@@ -12,6 +12,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+const double kDialogBlurSigma = 10.0;
+const double kDialogBorderRadius = 16.0;
+const double kDialogBackgroundOpacity = 0.92;
+const double kDialogBarrierOpacity = 0.80;
+const double kDialogWidth = 340.0;
+const double kPasswordErrorFontSize = 13.0;
+const int kPasswordMinLength = 8;
+const double kInputBorderRadius = 12.0;
+const double kInputBorderWidth = 1.2;
+const double kInputBorderWidthFocused = 1.5;
+const double kInputVerticalPadding = 16.0;
+const double kInputHorizontalPadding = 16.0;
+const double kPasswordFieldFontSize = 16.0;
+const double kPasswordFieldErrorBorderWidth = 1.5;
+const double kPasswordFieldPaddingTop = 8.0;
+const double kPasswordFieldPaddingLeft = 4.0;
+const double kPasswordFieldTextSecondaryOpacity = 0.2;
+
 class SignInViewModel extends ChangeNotifier {
   final LoginUseCase loginUseCase;
   final SendPasswordResetEmailUseCase sendPasswordResetEmailUseCase;
@@ -25,14 +43,13 @@ class SignInViewModel extends ChangeNotifier {
     required this.loginUseCase,
     required this.sendPasswordResetEmailUseCase,
   }) {
-    // No need to check current user here. We do it in main.dart
+    // No es necesario comprobar el usuario actual aquí
   }
 
   void initialize(BuildContext context) {
     _context = context;
   }
 
-  // Method to sign in with Firebase, called from the UI
   Future<void> signInWithFirebase(
     BuildContext context,
     String email,
@@ -99,121 +116,23 @@ class SignInViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      final user = await GoogleSignIn().signIn();
+      final user = await _signInWithGoogle();
       if (user == null) {
         _isLoading = false;
         notifyListeners();
         return null;
       }
-      final googleAuth = await user.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      final userCredential = await FirebaseAuth.instance.signInWithCredential(
-        credential,
-      );
-      final firebaseUser = userCredential.user;
+      final firebaseUser = await _signInWithGoogleCredential(user);
       if (firebaseUser != null) {
-        // Comprobar si el usuario existe en la base de datos (colección 'users')
-        final firestore = FirebaseFirestore.instance;
-        final userDoc =
-            await firestore
-                .collection(AppFirestoreFields.users)
-                .doc(firebaseUser.uid)
-                .get();
-        if (!userDoc.exists) {
-          // Usuario nuevo: pedir contraseña
-          final password = await showDialog<String>(
-            context: context,
-            barrierColor: AppColors.profileHeaderBackground.withOpacity(0.80),
-            builder: (context) {
-              String pwd = '';
-              String? errorText;
-              return StatefulBuilder(
-                builder: (context, setState) {
-                  return Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: AlertDialog(
-                          backgroundColor: AppColors.profileHeaderBackground
-                              .withOpacity(0.92),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 340, // Más ancho
-                                child: _PasswordFieldWithToggle(
-                                  errorText: errorText,
-                                  onChanged: (value) {
-                                    pwd = value;
-                                    if (errorText != null) {
-                                      setState(() {
-                                        errorText = null;
-                                      });
-                                    }
-                                  },
-                                ),
-                              ),
-                              if (errorText != null)
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 8.0,
-                                    left: 4.0,
-                                  ),
-                                  child: Text(
-                                    errorText!,
-                                    style: const TextStyle(
-                                      color: Colors.redAccent,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                final validPwd = pwd
-                                    .replaceAll('ñ', '')
-                                    .replaceAll('Ñ', '');
-                                if (validPwd.length < 8) {
-                                  if (errorText == null) {
-                                    setState(() {
-                                      errorText =
-                                          AppStrings.passwordRequirementsNotMet(
-                                            context,
-                                          );
-                                    });
-                                  }
-                                } else {
-                                  Navigator.pop(context, pwd);
-                                }
-                              },
-                              child: Text(
-                                AppStrings.savePassword(context),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          );
+        final isNewUser = await _isNewUser(firebaseUser);
+        if (isNewUser) {
+          final password = await _promptForPassword(context);
           if (password != null && password.isNotEmpty) {
             await firebaseUser.updatePassword(password);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(AppStrings.passwordSaved(context))),
             );
           } else {
-            // Si no define contraseña, cerrar sesión y mostrar error
             await FirebaseAuth.instance.signOut();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(AppStrings.passwordRequired(context))),
@@ -237,6 +156,123 @@ class SignInViewModel extends ChangeNotifier {
       notifyListeners();
       return null;
     }
+  }
+
+  Future<GoogleSignInAccount?> _signInWithGoogle() async {
+    return await GoogleSignIn().signIn();
+  }
+
+  Future<User?> _signInWithGoogleCredential(GoogleSignInAccount user) async {
+    final googleAuth = await user.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    final userCredential = await FirebaseAuth.instance.signInWithCredential(
+      credential,
+    );
+    return userCredential.user;
+  }
+
+  Future<bool> _isNewUser(User firebaseUser) async {
+    final firestore = FirebaseFirestore.instance;
+    final userDoc =
+        await firestore
+            .collection(AppFirestoreFields.users)
+            .doc(firebaseUser.uid)
+            .get();
+    return !userDoc.exists;
+  }
+
+  Future<String?> _promptForPassword(BuildContext context) async {
+    String pwd = '';
+    String? errorText;
+    return await showDialog<String>(
+      context: context,
+      barrierColor: AppColors.profileHeaderBackground.withOpacity(
+        kDialogBarrierOpacity,
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(kDialogBorderRadius),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: kDialogBlurSigma,
+                    sigmaY: kDialogBlurSigma,
+                  ),
+                  child: AlertDialog(
+                    backgroundColor: AppColors.profileHeaderBackground
+                        .withOpacity(kDialogBackgroundOpacity),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: kDialogWidth,
+                          child: _PasswordFieldWithToggle(
+                            errorText: errorText,
+                            onChanged: (value) {
+                              pwd = value;
+                              if (errorText != null) {
+                                setState(() {
+                                  errorText = null;
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                        if (errorText != null)
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: kPasswordFieldPaddingTop,
+                              left: kPasswordFieldPaddingLeft,
+                            ),
+                            child: Text(
+                              errorText!,
+                              style: const TextStyle(
+                                color: Colors.redAccent,
+                                fontSize: kPasswordErrorFontSize,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          final validPwd = pwd
+                              .replaceAll('ñ', '')
+                              .replaceAll('Ñ', '');
+                          if (validPwd.length < kPasswordMinLength) {
+                            if (errorText == null) {
+                              setState(() {
+                                errorText =
+                                    AppStrings.passwordRequirementsNotMet(
+                                      context,
+                                    );
+                              });
+                            }
+                          } else {
+                            Navigator.pop(context, pwd);
+                          }
+                        },
+                        child: Text(
+                          AppStrings.savePassword(context),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
@@ -287,13 +323,13 @@ class _PasswordFieldWithToggleState extends State<_PasswordFieldWithToggle> {
       onChanged: widget.onChanged,
       style: TextStyle(
         color: AppColors.textPrimary,
-        fontSize: 16,
+        fontSize: kPasswordFieldFontSize,
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 16,
+          vertical: kInputVerticalPadding,
+          horizontal: kInputHorizontalPadding,
         ),
         filled: true,
         fillColor: AppColors.cardBackground,
@@ -306,30 +342,38 @@ class _PasswordFieldWithToggleState extends State<_PasswordFieldWithToggle> {
           fontWeight: FontWeight.w400,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(kInputBorderRadius),
           borderSide: BorderSide(
             color:
                 widget.errorText != null
                     ? Colors.redAccent
-                    : AppColors.textSecondary.withOpacity(0.2),
-            width: 1.2,
+                    : AppColors.textSecondary.withOpacity(
+                      kPasswordFieldTextSecondaryOpacity,
+                    ),
+            width: kInputBorderWidth,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(kInputBorderRadius),
           borderSide: BorderSide(
             color:
                 widget.errorText != null ? Colors.redAccent : AppColors.primary,
-            width: 1.5,
+            width: kInputBorderWidthFocused,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
+          borderRadius: BorderRadius.circular(kInputBorderRadius),
+          borderSide: const BorderSide(
+            color: Colors.redAccent,
+            width: kPasswordFieldErrorBorderWidth,
+          ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
+          borderRadius: BorderRadius.circular(kInputBorderRadius),
+          borderSide: const BorderSide(
+            color: Colors.redAccent,
+            width: kPasswordFieldErrorBorderWidth,
+          ),
         ),
         errorText: null,
         suffixIcon: IconButton(
