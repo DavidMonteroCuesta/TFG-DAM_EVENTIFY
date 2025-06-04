@@ -17,6 +17,9 @@ class ShiningTextAnimation extends StatefulWidget {
   static const double _stop2 = 0.5;
   static const double _stop3 = 0.6;
   static const double _stop4 = 0.8;
+  static const double _shaderMaskBlendOpacity = 0.8;
+  static const double _shaderMaskTransparent = 0.0;
+  static const double _animationValueMultiplier = 0.5;
 
   const ShiningTextAnimation({
     super.key,
@@ -35,9 +38,6 @@ class _ShiningTextAnimationState extends State<ShiningTextAnimation>
   late AnimationController _controller;
   late Animation<double> _maskAnimation;
 
-  static const double _shaderMaskBlendOpacity = 0.8;
-  static const double _shaderMaskTransparent = 0.0;
-
   @override
   void initState() {
     super.initState();
@@ -46,7 +46,7 @@ class _ShiningTextAnimationState extends State<ShiningTextAnimation>
       duration: widget.duration,
     )..repeat(
       reverse: true,
-    ); // Controla la animación de brillo, en caso de ser false la animación se ejecutará una sola vez.
+    );
     _maskAnimation = Tween<double>(
       begin: ShiningTextAnimation._maskBegin,
       end: ShiningTextAnimation._maskEnd,
@@ -74,16 +74,16 @@ class _ShiningTextAnimationState extends State<ShiningTextAnimation>
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Colors.transparent.withOpacity(_shaderMaskTransparent),
-                    widget.shineColor.withOpacity(_shaderMaskBlendOpacity),
-                    widget.shineColor.withOpacity(_shaderMaskBlendOpacity),
-                    Colors.transparent.withOpacity(_shaderMaskTransparent),
+                    Colors.transparent.withOpacity(ShiningTextAnimation._shaderMaskTransparent),
+                    widget.shineColor.withOpacity(ShiningTextAnimation._shaderMaskBlendOpacity),
+                    widget.shineColor.withOpacity(ShiningTextAnimation._shaderMaskBlendOpacity),
+                    Colors.transparent.withOpacity(ShiningTextAnimation._shaderMaskTransparent),
                   ],
                   stops: [
-                    _maskAnimation.value * 0.5 + ShiningTextAnimation._stop1,
-                    _maskAnimation.value * 0.5 + ShiningTextAnimation._stop2,
-                    _maskAnimation.value * 0.5 + ShiningTextAnimation._stop3,
-                    _maskAnimation.value * 0.5 + ShiningTextAnimation._stop4,
+                    _maskAnimation.value * ShiningTextAnimation._animationValueMultiplier + ShiningTextAnimation._stop1,
+                    _maskAnimation.value * ShiningTextAnimation._animationValueMultiplier + ShiningTextAnimation._stop2,
+                    _maskAnimation.value * ShiningTextAnimation._animationValueMultiplier + ShiningTextAnimation._stop3,
+                    _maskAnimation.value * ShiningTextAnimation._animationValueMultiplier + ShiningTextAnimation._stop4,
                   ],
                 ).createShader(bounds);
               },

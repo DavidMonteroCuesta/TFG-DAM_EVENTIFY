@@ -26,7 +26,7 @@ import 'package:get_it/get_it.dart';
 final sl = GetIt.instance; // Instancia de GetIt para inyección de dependencias
 
 void setupLocator() {
-  // --- Auth feature ---
+  // Autenticación
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: sl()),
@@ -54,7 +54,7 @@ void setupLocator() {
     () => SignUpViewModel(registerUseCase: sl(), googleSignInUseCase: sl()),
   );
 
-  // --- Event feature ---
+  // Eventos
   sl.registerLazySingleton<EventRemoteDataSource>(
     () => EventRemoteDataSource(),
   );
@@ -75,7 +75,7 @@ void setupLocator() {
   );
   sl.registerFactory<EventViewModel>(() => EventViewModel());
 
-  // --- Chat feature ---
+  // Chat
   sl.registerLazySingleton<ChatRemoteDataSource>(() => ChatRemoteDataSource());
   sl.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImpl(remoteDataSource: sl()),
