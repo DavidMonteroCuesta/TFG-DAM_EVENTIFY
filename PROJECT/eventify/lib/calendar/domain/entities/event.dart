@@ -43,7 +43,6 @@ abstract class Event {
     };
   }
 
-  // Getters opcionales para subclases específicas
   String? get location => null;
   String? get subject => null;
   String? get withPerson => null;

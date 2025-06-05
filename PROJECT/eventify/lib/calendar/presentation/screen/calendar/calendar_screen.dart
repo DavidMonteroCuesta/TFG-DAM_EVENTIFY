@@ -85,39 +85,174 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody>
     final screenHeight = MediaQuery.of(context).size.height;
     final footerHeight = screenHeight * _footerHeightFraction;
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final isTablet =
-              constraints.maxWidth > _tabletMinWidth &&
-              constraints.maxWidth <= _tabletMaxWidth;
-          final isDesktop = constraints.maxWidth > _desktopMinWidth;
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final isTablet =
+                constraints.maxWidth > _tabletMinWidth &&
+                constraints.maxWidth <= _tabletMaxWidth;
+            final isDesktop = constraints.maxWidth > _desktopMinWidth;
 
-          bool showEventCard = constraints.maxHeight > _heightThreshold;
+            bool showEventCard = constraints.maxHeight > _heightThreshold;
 
-          return Column(
-            children: [
-              SizedBox(
-                height: kToolbarHeight + MediaQuery.of(context).padding.top,
-                child: Header(
-                  onYearChanged: logic.handleYearChanged,
-                  currentYear: logic.currentYear,
-                ),
-              ),
-              const SizedBox(height: _spacingBetweenHeaderAndCalendar),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: _horizontalPadding,
+            return Column(
+              children: [
+                SizedBox(
+                  height: kToolbarHeight + MediaQuery.of(context).padding.top,
+                  child: Header(
+                    onYearChanged: logic.handleYearChanged,
+                    currentYear: logic.currentYear,
                   ),
-                  child:
-                      isTablet || isDesktop
-                          ? Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: SingleChildScrollView(
+                ),
+                const SizedBox(height: _spacingBetweenHeaderAndCalendar),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: _horizontalPadding,
+                    ),
+                    child:
+                        isTablet || isDesktop
+                            ? Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Calendar(
+                                          key: _calendarKey,
+                                          onMonthSelected:
+                                              logic.handleMonthSelected,
+                                          currentYear: logic.currentYear,
+                                        ),
+                                        if (showEventCard) ...[
+                                          const SizedBox(
+                                            height: _eventCardSpacing,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: _horizontalPadding,
+                                            ),
+                                            child: Consumer<EventViewModel>(
+                                              builder: (
+                                                context,
+                                                eventViewModel,
+                                                child,
+                                              ) {
+                                                if (eventViewModel.isLoading &&
+                                                    eventViewModel
+                                                            .nearestEvent ==
+                                                        null) {
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                          color:
+                                                              AppColors.primary,
+                                                        ),
+                                                  );
+                                                } else if (eventViewModel
+                                                        .errorMessage !=
+                                                    null) {
+                                                  return Center(
+                                                    child: Text(
+                                                      eventViewModel
+                                                          .errorMessage!,
+                                                      style:
+                                                          TextStyles
+                                                              .urbanistBody1,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  );
+                                                } else if (eventViewModel
+                                                        .nearestEvent !=
+                                                    null) {
+                                                  return UpcomingEventCard(
+                                                    title:
+                                                        eventViewModel
+                                                            .nearestEvent!
+                                                            .title,
+                                                    type:
+                                                        eventViewModel
+                                                            .nearestEvent!
+                                                            .type
+                                                            .toString(),
+                                                    date:
+                                                        eventViewModel
+                                                            .nearestEvent!
+                                                            .dateTime!
+                                                            .toDate(),
+                                                    priority:
+                                                        eventViewModel
+                                                            .nearestEvent!
+                                                            .priority
+                                                            .toString(),
+                                                    description:
+                                                        eventViewModel
+                                                            .nearestEvent!
+                                                            .description ??
+                                                        '',
+                                                    onEdit:
+                                                        () => logic
+                                                            .onEditNearestEvent(
+                                                              eventViewModel
+                                                                  .nearestEvent!
+                                                                  .toJson(),
+                                                            ),
+                                                    onTapCard:
+                                                        () => logic
+                                                            .navigateToSearchScreenWithNearestEvent(
+                                                              eventViewModel
+                                                                  .nearestEvent!
+                                                                  .title,
+                                                              eventViewModel
+                                                                  .nearestEvent!
+                                                                  .dateTime!
+                                                                  .toDate(),
+                                                            ),
+                                                  );
+                                                } else {
+                                                  return Center(
+                                                    child: Text(
+                                                      AppStrings.calendarNoUpcomingEvents(
+                                                        context,
+                                                      ),
+                                                      style:
+                                                          TextStyles
+                                                              .urbanistBody1,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: _monthlyCalendarWidth),
+                                Expanded(
+                                  flex: 1,
+                                  child: MonthlyCalendar(
+                                    key: logic.monthlyCalendarKey,
+                                    initialFocusedDay:
+                                        logic.focusedMonthForMonthlyView,
+                                    onDaySelected:
+                                        logic.navigateToSearchScreenWithDate,
+                                  ),
+                                ),
+                              ],
+                            )
+                            : PageView(
+                              controller: logic.pageController,
+                              physics: const NeverScrollableScrollPhysics(),
+                              children: [
+                                SingleChildScrollView(
                                   child: Column(
                                     children: [
                                       Calendar(
@@ -164,49 +299,38 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody>
                                                   ),
                                                 );
                                               } else if (eventViewModel
-                                                      .nearestEvent !=
-                                                  null) {
+                                                          .nearestEvent !=
+                                                      null &&
+                                                  eventViewModel
+                                                      .nearestEvent!
+                                                      .title
+                                                      .isNotEmpty &&
+                                                  eventViewModel
+                                                          .nearestEvent!
+                                                          .dateTime !=
+                                                      null) {
+                                                final event =
+                                                    eventViewModel
+                                                        .nearestEvent!;
                                                 return UpcomingEventCard(
-                                                  title:
-                                                      eventViewModel
-                                                          .nearestEvent!
-                                                          .title,
-                                                  type:
-                                                      eventViewModel
-                                                          .nearestEvent!
-                                                          .type
-                                                          .toString(),
+                                                  title: event.title,
+                                                  type: event.type.toString(),
                                                   date:
-                                                      eventViewModel
-                                                          .nearestEvent!
-                                                          .dateTime!
-                                                          .toDate(),
+                                                      event.dateTime!.toDate(),
                                                   priority:
-                                                      eventViewModel
-                                                          .nearestEvent!
-                                                          .priority
-                                                          .toString(),
+                                                      event.priority.toString(),
                                                   description:
-                                                      eventViewModel
-                                                          .nearestEvent!
-                                                          .description ??
-                                                      '',
+                                                      event.description ?? '',
                                                   onEdit:
                                                       () => logic
                                                           .onEditNearestEvent(
-                                                            eventViewModel
-                                                                .nearestEvent!
-                                                                .toJson(),
+                                                            event.toJson(),
                                                           ),
                                                   onTapCard:
                                                       () => logic
                                                           .navigateToSearchScreenWithNearestEvent(
-                                                            eventViewModel
-                                                                .nearestEvent!
-                                                                .title,
-                                                            eventViewModel
-                                                                .nearestEvent!
-                                                                .dateTime!
+                                                            event.title,
+                                                            event.dateTime!
                                                                 .toDate(),
                                                           ),
                                                 );
@@ -230,141 +354,30 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody>
                                     ],
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: _monthlyCalendarWidth),
-                              Expanded(
-                                flex: 1,
-                                child: MonthlyCalendar(
+                                MonthlyCalendar(
                                   key: logic.monthlyCalendarKey,
                                   initialFocusedDay:
                                       logic.focusedMonthForMonthlyView,
                                   onDaySelected:
                                       logic.navigateToSearchScreenWithDate,
                                 ),
-                              ),
-                            ],
-                          )
-                          : PageView(
-                            controller: logic.pageController,
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: [
-                              SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Calendar(
-                                      key: _calendarKey,
-                                      onMonthSelected:
-                                          logic.handleMonthSelected,
-                                      currentYear: logic.currentYear,
-                                    ),
-                                    if (showEventCard) ...[
-                                      const SizedBox(height: _eventCardSpacing),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: _horizontalPadding,
-                                        ),
-                                        child: Consumer<EventViewModel>(
-                                          builder: (
-                                            context,
-                                            eventViewModel,
-                                            child,
-                                          ) {
-                                            if (eventViewModel.isLoading &&
-                                                eventViewModel.nearestEvent ==
-                                                    null) {
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                      color: AppColors.primary,
-                                                    ),
-                                              );
-                                            } else if (eventViewModel
-                                                    .errorMessage !=
-                                                null) {
-                                              return Center(
-                                                child: Text(
-                                                  eventViewModel.errorMessage!,
-                                                  style:
-                                                      TextStyles.urbanistBody1,
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            } else if (eventViewModel
-                                                        .nearestEvent !=
-                                                    null &&
-                                                eventViewModel
-                                                    .nearestEvent!
-                                                    .title
-                                                    .isNotEmpty &&
-                                                eventViewModel
-                                                        .nearestEvent!
-                                                        .dateTime !=
-                                                    null) {
-                                              final event =
-                                                  eventViewModel.nearestEvent!;
-                                              return UpcomingEventCard(
-                                                title: event.title,
-                                                type: event.type.toString(),
-                                                date: event.dateTime!.toDate(),
-                                                priority:
-                                                    event.priority.toString(),
-                                                description:
-                                                    event.description ?? '',
-                                                onEdit:
-                                                    () => logic
-                                                        .onEditNearestEvent(
-                                                          event.toJson(),
-                                                        ),
-                                                onTapCard:
-                                                    () => logic
-                                                        .navigateToSearchScreenWithNearestEvent(
-                                                          event.title,
-                                                          event.dateTime!
-                                                              .toDate(),
-                                                        ),
-                                              );
-                                            } else {
-                                              return Center(
-                                                child: Text(
-                                                  AppStrings.calendarNoUpcomingEvents(
-                                                    context,
-                                                  ),
-                                                  style:
-                                                      TextStyles.urbanistBody1,
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                              MonthlyCalendar(
-                                key: logic.monthlyCalendarKey,
-                                initialFocusedDay:
-                                    logic.focusedMonthForMonthlyView,
-                                onDaySelected:
-                                    logic.navigateToSearchScreenWithDate,
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: _spacingBetweenContentAndFooter),
-              SizedBox(
-                height: footerHeight,
-                child: Footer(
-                  onToggleCalendar: logic.toggleCalendarView,
-                  isMonthlyView: logic.isMonthlyView,
-                  onResetToCurrent: logic.resetCalendarToCurrent,
+                const SizedBox(height: _spacingBetweenContentAndFooter),
+                SizedBox(
+                  height: footerHeight,
+                  child: Footer(
+                    onToggleCalendar: logic.toggleCalendarView,
+                    isMonthlyView: logic.isMonthlyView,
+                    onResetToCurrent: logic.resetCalendarToCurrent,
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }

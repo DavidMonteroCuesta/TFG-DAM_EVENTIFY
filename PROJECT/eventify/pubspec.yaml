@@ -38,6 +38,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icons/
+    - assets/logo/
   generate: true
 
 l10n:

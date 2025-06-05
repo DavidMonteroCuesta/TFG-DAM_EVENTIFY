@@ -52,7 +52,6 @@ class ProfileHeader extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(
                     right: kProfileHeaderCloseButtonPaddingRight,
-                    top: kProfileHeaderCloseButtonPaddingTop,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(
@@ -82,16 +81,15 @@ class ProfileHeader extends StatelessWidget {
                   ),
                 ),
               ),
-              // Fecha actual con animación y estilo
-              Padding(
-                padding: EdgeInsets.only(
-                  left: kProfileHeaderDatePaddingLeft,
-                  top: kProfileHeaderDatePaddingTop,
-                ),
-                child: ShiningTextAnimation(
-                  text: currentDate,
-                  style: TextStyles.urbanistBody1.copyWith(
-                    color: AppColors.shineEffectColor,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: kProfileHeaderDatePaddingLeft),
+                  child: ShiningTextAnimation(
+                    text: currentDate,
+                    style: TextStyles.urbanistBody1.copyWith(
+                      color: AppColors.shineEffectColor,
+                    ),
                   ),
                 ),
               ),

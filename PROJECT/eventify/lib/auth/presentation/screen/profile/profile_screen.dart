@@ -17,7 +17,7 @@ import 'package:eventify/auth/presentation/screen/profile/logic/profile_theme_lo
 import 'package:eventify/auth/presentation/screen/profile/widgets/profile_header.dart';
 import 'package:eventify/auth/presentation/screen/profile/widgets/profile_avatar.dart';
 
-const double kProfileHeaderHeight = 120.0;
+const double kProfileHeaderHeight = 90.0;
 const double kProfileAvatarRadius = 40.0;
 const double kProfileAvatarTopOffset =
     kProfileHeaderHeight - kProfileAvatarRadius;
@@ -151,265 +151,268 @@ class _ProfileScreenState extends State<ProfileScreen> {
         user?.displayName ?? AppInternalConstants.profileUsernameDefault;
     final email = user?.email ?? AppInternalConstants.profileEmailDefault;
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: EdgeInsets.only(
-              top:
-                  kProfileAvatarTopOffset +
-                  kProfileAvatarRadius +
-                  kProfileAvatarTopPadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: kProfilePaddingLeft,
-                    right: kProfilePaddingRight,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ShiningTextAnimation(
-                        text: username,
-                        style: TextStyles.urbanistH6.copyWith(
-                          color: AppColors.shineColorLight,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.only(
+                top:
+                    kProfileAvatarTopOffset +
+                    kProfileAvatarRadius +
+                    kProfileAvatarTopPadding,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: kProfilePaddingLeft,
+                      right: kProfilePaddingRight,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ShiningTextAnimation(
+                          text: username,
+                          style: TextStyles.urbanistH6.copyWith(
+                            color: AppColors.shineColorLight,
+                          ),
+                          shineColor: AppColors.shineColorLight,
                         ),
-                        shineColor: AppColors.shineColorLight,
-                      ),
-                      Text(
-                        email,
-                        style: TextStyles.plusJakartaSansBody2.copyWith(
-                          color: AppColors.textGrey400,
+                        Text(
+                          email,
+                          style: TextStyles.plusJakartaSansBody2.copyWith(
+                            color: AppColors.textGrey400,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: kProfileSectionSpacing),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(
-                    kProfileSectionTitlePaddingLeft,
-                    kProfileSectionTitlePaddingTop,
-                    kProfileSectionTitlePaddingRight,
-                    kProfileSectionTitlePaddingBottom,
-                  ),
-                  child: Text(
-                    AppStrings.profileYourAccountTitle(context),
-                    style: TextStyles.plusJakartaSansSubtitle2.copyWith(
-                      color: AppColors.switchInactiveTrackColor,
+                      ],
                     ),
                   ),
-                ),
-                // Espaciado entre secciones del perfil
-                SizedBox(height: kProfileListItemSpacing),
-                // Ítem para editar el perfil
-                ProfileListItem(
-                  icon: Icons.person_outline,
-                  text: AppStrings.profileEditProfileText(context),
-                  isExpandable: true,
-                  isExpanded: _isEditProfileExpanded,
-                  onToggleExpand: _toggleEditProfile,
-                  listBackgroundColor: AppColors.cardBackground,
-                  dropdownContent: Text(
-                    AppInternalConstants.functionalityNotImplemented,
-                    style: TextStyles.plusJakartaSansBody1.copyWith(
-                      color: AppColors.shineEffectColor,
+                  SizedBox(height: kProfileSectionSpacing),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(
+                      kProfileSectionTitlePaddingLeft,
+                      kProfileSectionTitlePaddingTop,
+                      kProfileSectionTitlePaddingRight,
+                      kProfileSectionTitlePaddingBottom,
                     ),
-                  ),
-                ),
-                // Espaciado entre ítems
-                SizedBox(height: kProfileListItemSpacing),
-                // Ítem para notificaciones
-                ProfileListItem(
-                  icon: Icons.notifications_none,
-                  text: AppStrings.profileNotificationSettingsText(context),
-                  isExpandable: true,
-                  isExpanded: _isNotificationSettingsExpanded,
-                  onToggleExpand: _toggleNotificationSettings,
-                  listBackgroundColor: AppColors.cardBackground,
-                  dropdownContent: Text(
-                    AppInternalConstants.functionalityNotImplemented,
-                    style: TextStyles.plusJakartaSansBody1.copyWith(
-                      color: AppColors.shineEffectColor,
-                    ),
-                  ),
-                ),
-                // Espaciado entre secciones del perfil
-                SizedBox(height: kProfileSectionSpacing),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(
-                    kProfileSectionTitlePaddingLeft,
-                    16,
-                    kProfileSectionTitlePaddingRight,
-                    kProfileSectionTitlePaddingBottom,
-                  ),
-                  child: Text(
-                    AppStrings.profileAppSettingsTitle(context),
-                    style: TextStyles.plusJakartaSansSubtitle2.copyWith(
-                      color: AppColors.switchInactiveTrackColor,
-                    ),
-                  ),
-                ),
-                // Espaciado entre ítems
-                SizedBox(height: kProfileListItemSpacing),
-                // Ítem para temas de color
-                ProfileListItem(
-                  icon: Icons.color_lens_outlined,
-                  text: AppStrings.profileThemesText(context),
-                  isExpandable: true,
-                  isExpanded: _isThemeColorExpanded,
-                  onToggleExpand: _toggleThemeColor,
-                  listBackgroundColor: AppColors.cardBackground,
-                  dropdownContent: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppStrings.profileThemeSelectColorLabel(context),
-                        style: TextStyles.plusJakartaSansBody2.copyWith(
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      SizedBox(height: kProfileDropdownCircleSpacing),
-                      DropdownButton<Color?>(
-                        value: _selectedColor,
-                        dropdownColor: AppColors.dropdownContentBackground,
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: AppColors.textPrimary,
-                        ),
-                        underline: Container(
-                          height: 1,
-                          color: AppColors.textPrimary.withOpacity(0.5),
-                        ),
-                        isExpanded: true,
-                        onChanged: _changeThemeColor,
-                        items:
-                            _availableColors.asMap().entries.map((entry) {
-                              final int index = entry.key;
-                              final Color? colorOption = entry.value;
-                              final String name = _colorNames[index];
-
-                              return DropdownMenuItem<Color?>(
-                                value: colorOption,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: kProfileDropdownCircleSize,
-                                      height: kProfileDropdownCircleSize,
-                                      decoration: BoxDecoration(
-                                        color:
-                                            colorOption ?? AppColorPalette.grey,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: kProfileDropdownCircleSpacing,
-                                    ),
-                                    Text(
-                                      name,
-                                      style: TextStyles.plusJakartaSansBody1
-                                          .copyWith(
-                                            color: AppColors.textPrimary,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                      ),
-                    ],
-                  ),
-                ),
-                // Espaciado entre ítems
-                SizedBox(height: kProfileListItemSpacing),
-                // Ítem para soporte
-                ProfileListItem(
-                  icon: Icons.help_outline_rounded,
-                  text: AppStrings.profileSupportText(context),
-                  isExpandable: true,
-                  isExpanded: _isSupportExpanded,
-                  onToggleExpand: _toggleSupport,
-                  listBackgroundColor: AppColors.cardBackground,
-                  dropdownContent: InkWell(
-                    onTap: () => _contactSupport(context),
                     child: Text(
-                      AppStrings.profileContactUsText(context),
+                      AppStrings.profileYourAccountTitle(context),
+                      style: TextStyles.plusJakartaSansSubtitle2.copyWith(
+                        color: AppColors.switchInactiveTrackColor,
+                      ),
+                    ),
+                  ),
+                  // Espaciado entre secciones del perfil
+                  SizedBox(height: kProfileListItemSpacing),
+                  // Ítem para editar el perfil
+                  ProfileListItem(
+                    icon: Icons.person_outline,
+                    text: AppStrings.profileEditProfileText(context),
+                    isExpandable: true,
+                    isExpanded: _isEditProfileExpanded,
+                    onToggleExpand: _toggleEditProfile,
+                    listBackgroundColor: AppColors.cardBackground,
+                    dropdownContent: Text(
+                      AppInternalConstants.functionalityNotImplemented,
                       style: TextStyles.plusJakartaSansBody1.copyWith(
                         color: AppColors.shineEffectColor,
                       ),
                     ),
                   ),
-                ),
-                // Espaciado entre ítems
-                SizedBox(height: kProfileListItemSpacing),
-                // Ítem para términos de servicio
-                ProfileListItem(
-                  icon: Icons.privacy_tip_rounded,
-                  text: AppStrings.profileTermsOfServiceText(context),
-                  isExpandable: true,
-                  isExpanded: _isTermsOfServiceExpanded,
-                  onToggleExpand: _toggleTermsOfService,
-                  listBackgroundColor: AppColors.cardBackground,
-                  dropdownContent: Text(
-                    AppInternalConstants.functionalityNotImplemented,
-                    style: TextStyles.plusJakartaSansBody1.copyWith(
-                      color: AppColors.shineEffectColor,
+                  // Espaciado entre ítems
+                  SizedBox(height: kProfileListItemSpacing),
+                  // Ítem para notificaciones
+                  ProfileListItem(
+                    icon: Icons.notifications_none,
+                    text: AppStrings.profileNotificationSettingsText(context),
+                    isExpandable: true,
+                    isExpanded: _isNotificationSettingsExpanded,
+                    onToggleExpand: _toggleNotificationSettings,
+                    listBackgroundColor: AppColors.cardBackground,
+                    dropdownContent: Text(
+                      AppInternalConstants.functionalityNotImplemented,
+                      style: TextStyles.plusJakartaSansBody1.copyWith(
+                        color: AppColors.shineEffectColor,
+                      ),
                     ),
                   ),
-                ),
-                // Espaciado antes del botón de logout
-                SizedBox(height: kProfileSectionSpacing),
-                Align(
-                  alignment: AlignmentDirectional.center,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      LogoutService.logout(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: errorColor,
-                      foregroundColor: AppColors.textPrimary,
-                      fixedSize: const Size(
-                        kProfileLogoutButtonWidth,
-                        kProfileLogoutButtonHeight,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          kProfileLogoutButtonRadius,
-                        ),
-                      ),
-                      elevation: kProfileLogoutButtonElevation,
-                      shadowColor: errorColor.withOpacity(
-                        kProfileLogoutButtonShadowOpacity,
-                      ),
+                  // Espaciado entre secciones del perfil
+                  SizedBox(height: kProfileSectionSpacing),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(
+                      kProfileSectionTitlePaddingLeft,
+                      16,
+                      kProfileSectionTitlePaddingRight,
+                      kProfileSectionTitlePaddingBottom,
                     ),
                     child: Text(
-                      AppStrings.profileLogoutButton(context),
-                      style: TextStyles.plusJakartaSansButton.copyWith(
-                        fontSize: kProfileLogoutButtonFontSize,
+                      AppStrings.profileAppSettingsTitle(context),
+                      style: TextStyles.plusJakartaSansSubtitle2.copyWith(
+                        color: AppColors.switchInactiveTrackColor,
                       ),
                     ),
                   ),
-                ),
-                // Espaciado final
-                SizedBox(height: kProfileSectionSpacing),
-              ],
+                  // Espaciado entre ítems
+                  SizedBox(height: kProfileListItemSpacing),
+                  // Ítem para temas de color
+                  ProfileListItem(
+                    icon: Icons.color_lens_outlined,
+                    text: AppStrings.profileThemesText(context),
+                    isExpandable: true,
+                    isExpanded: _isThemeColorExpanded,
+                    onToggleExpand: _toggleThemeColor,
+                    listBackgroundColor: AppColors.cardBackground,
+                    dropdownContent: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppStrings.profileThemeSelectColorLabel(context),
+                          style: TextStyles.plusJakartaSansBody2.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        SizedBox(height: kProfileDropdownCircleSpacing),
+                        DropdownButton<Color?>(
+                          value: _selectedColor,
+                          dropdownColor: AppColors.dropdownContentBackground,
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: AppColors.textPrimary,
+                          ),
+                          underline: Container(
+                            height: 1,
+                            color: AppColors.textPrimary.withOpacity(0.5),
+                          ),
+                          isExpanded: true,
+                          onChanged: _changeThemeColor,
+                          items:
+                              _availableColors.asMap().entries.map((entry) {
+                                final int index = entry.key;
+                                final Color? colorOption = entry.value;
+                                final String name = _colorNames[index];
+
+                                return DropdownMenuItem<Color?>(
+                                  value: colorOption,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: kProfileDropdownCircleSize,
+                                        height: kProfileDropdownCircleSize,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              colorOption ??
+                                              AppColorPalette.grey,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: kProfileDropdownCircleSpacing,
+                                      ),
+                                      Text(
+                                        name,
+                                        style: TextStyles.plusJakartaSansBody1
+                                            .copyWith(
+                                              color: AppColors.textPrimary,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Espaciado entre ítems
+                  SizedBox(height: kProfileListItemSpacing),
+                  // Ítem para soporte
+                  ProfileListItem(
+                    icon: Icons.help_outline_rounded,
+                    text: AppStrings.profileSupportText(context),
+                    isExpandable: true,
+                    isExpanded: _isSupportExpanded,
+                    onToggleExpand: _toggleSupport,
+                    listBackgroundColor: AppColors.cardBackground,
+                    dropdownContent: InkWell(
+                      onTap: () => _contactSupport(context),
+                      child: Text(
+                        AppStrings.profileContactUsText(context),
+                        style: TextStyles.plusJakartaSansBody1.copyWith(
+                          color: AppColors.shineEffectColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Espaciado entre ítems
+                  SizedBox(height: kProfileListItemSpacing),
+                  // Ítem para términos de servicio
+                  ProfileListItem(
+                    icon: Icons.privacy_tip_rounded,
+                    text: AppStrings.profileTermsOfServiceText(context),
+                    isExpandable: true,
+                    isExpanded: _isTermsOfServiceExpanded,
+                    onToggleExpand: _toggleTermsOfService,
+                    listBackgroundColor: AppColors.cardBackground,
+                    dropdownContent: Text(
+                      AppInternalConstants.functionalityNotImplemented,
+                      style: TextStyles.plusJakartaSansBody1.copyWith(
+                        color: AppColors.shineEffectColor,
+                      ),
+                    ),
+                  ),
+                  // Espaciado antes del botón de logout
+                  SizedBox(height: kProfileSectionSpacing),
+                  Align(
+                    alignment: AlignmentDirectional.center,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        LogoutService.logout(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: errorColor,
+                        foregroundColor: AppColors.textPrimary,
+                        fixedSize: const Size(
+                          kProfileLogoutButtonWidth,
+                          kProfileLogoutButtonHeight,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            kProfileLogoutButtonRadius,
+                          ),
+                        ),
+                        elevation: kProfileLogoutButtonElevation,
+                        shadowColor: errorColor.withOpacity(
+                          kProfileLogoutButtonShadowOpacity,
+                        ),
+                      ),
+                      child: Text(
+                        AppStrings.profileLogoutButton(context),
+                        style: TextStyles.plusJakartaSansButton.copyWith(
+                          fontSize: kProfileLogoutButtonFontSize,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Espaciado final
+                  SizedBox(height: kProfileSectionSpacing),
+                ],
+              ),
             ),
-          ),
-          ProfileHeader(
-            currentDate: currentDate,
-            onClose: () => _navigateToCalendarScreen(context),
-            headerHeight: kProfileHeaderHeight,
-          ),
-          ProfileAvatar(
-            firstLetter: _firstLetter,
-            avatarRadius: kProfileAvatarRadius,
-            avatarTopPosition: kProfileAvatarTopOffset,
-          ),
-        ],
+            ProfileHeader(
+              currentDate: currentDate,
+              onClose: () => _navigateToCalendarScreen(context),
+              headerHeight: kProfileHeaderHeight,
+            ),
+            ProfileAvatar(
+              firstLetter: _firstLetter,
+              avatarRadius: kProfileAvatarRadius,
+              avatarTopPosition: kProfileAvatarTopOffset,
+            ),
+          ],
+        ),
       ),
     );
   }

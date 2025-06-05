@@ -402,223 +402,225 @@ class _EventSearchScreenState extends State<EventSearchScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(
-              _formHorizontalPadding,
-              _headerHeight,
-              _formHorizontalPadding,
-              0,
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SearchField(
-                    controller: _titleSearchController,
-                    labelText: AppStrings.searchFieldEventTitle(context),
-                    onChanged: (_) => _searchEvents(),
-                  ),
-                  SearchField(
-                    controller: _descriptionSearchController,
-                    labelText: AppStrings.searchFieldDescription(context),
-                    onChanged: (_) => _searchEvents(),
-                  ),
-                  DatePickerField(
-                    selectedDate: _selectedSearchDate,
-                    onTap: () => _selectSearchDate(context),
-                    onClear:
-                        _selectedSearchDate != null ? _clearSearchDate : null,
-                    contextForStrings: context,
-                  ),
-                  DropdownField<EventType>(
-                    value: _selectedEventType,
-                    onChanged: (newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          _selectedEventType = newValue;
-                          _searchEvents();
-                        });
-                      }
-                    },
-                    items:
-                        EventType.values.map((value) {
-                          return DropdownMenuItem<EventType>(
-                            value: value,
-                            child: Text(
-                              EventTypeLogic.getTranslatedEventTypeDisplay(
-                                value,
-                                context,
-                              ),
-                              style: TextStyles.plusJakartaSansBody2,
-                            ),
-                          );
-                        }).toList(),
-                    labelText: AppStrings.searchFieldEventType(context),
-                  ),
-                  PrioritySelector(
-                    enablePriorityFilter: _enablePriorityFilter,
-                    onEnableChanged: (newValue) {
-                      setState(() {
-                        _enablePriorityFilter = newValue;
-                        if (!newValue) _selectedPriority = null;
-                        _searchEvents();
-                      });
-                    },
-                    selectedPriority: _selectedPriority,
-                    onPriorityChanged: (priority) {
-                      setState(() {
-                        _selectedPriority = priority;
-                        _searchEvents();
-                      });
-                    },
-                    labelCritical: AppStrings.searchPriorityCritical(context),
-                    labelHigh: AppStrings.searchPriorityHigh(context),
-                    labelMedium: AppStrings.searchPriorityMedium(context),
-                    labelLow: AppStrings.searchPriorityLow(context),
-                  ),
-                  if (_selectedEventType == EventType.meeting ||
-                      _selectedEventType == EventType.conference ||
-                      _selectedEventType == EventType.appointment ||
-                      _selectedEventType == EventType.all)
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(
+                _formHorizontalPadding,
+                _headerHeight,
+                _formHorizontalPadding,
+                0,
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     SearchField(
-                      controller: _locationSearchController,
-                      labelText: AppStrings.searchFieldLocation(context),
+                      controller: _titleSearchController,
+                      labelText: AppStrings.searchFieldEventTitle(context),
                       onChanged: (_) => _searchEvents(),
                     ),
-                  if (_selectedEventType == EventType.exam ||
-                      _selectedEventType == EventType.all)
                     SearchField(
-                      controller: _subjectSearchController,
-                      labelText: AppStrings.searchFieldSubject(context),
+                      controller: _descriptionSearchController,
+                      labelText: AppStrings.searchFieldDescription(context),
                       onChanged: (_) => _searchEvents(),
                     ),
-                  if (_selectedEventType == EventType.appointment ||
-                      _selectedEventType == EventType.all)
-                    WithPersonField(
-                      withPersonYesNoSearch: _withPersonYesNoSearch,
+                    DatePickerField(
+                      selectedDate: _selectedSearchDate,
+                      onTap: () => _selectSearchDate(context),
+                      onClear:
+                          _selectedSearchDate != null ? _clearSearchDate : null,
+                      contextForStrings: context,
+                    ),
+                    DropdownField<EventType>(
+                      value: _selectedEventType,
                       onChanged: (newValue) {
-                        setState(() {
-                          _withPersonYesNoSearch = newValue ?? false;
-                          _searchEvents();
-                        });
+                        if (newValue != null) {
+                          setState(() {
+                            _selectedEventType = newValue;
+                            _searchEvents();
+                          });
+                        }
                       },
-                      controller: _withPersonSearchController,
-                      labelText: AppStrings.searchFieldWithPerson(context),
-                      yesNoLabel: AppStrings.searchFieldWithPersonYesNo(
-                        context,
-                      ),
-                    ),
-                  if ((_selectedEventType == EventType.appointment ||
-                          _selectedEventType == EventType.all) &&
-                      _withPersonYesNoSearch)
-                    SearchField(
-                      controller: _withPersonSearchController,
-                      labelText: AppStrings.searchFieldWithPerson(context),
-                      onChanged: (_) => _searchEvents(),
-                    ),
-                  if (_searchResults.isNotEmpty) ...[
-                    const SizedBox(height: _resultsSpacing),
-                    Text(
-                      '${AppStrings.searchResultsPrefix(context)}${_searchResults.length}${AppStrings.searchResultsSuffix(context)}',
-                      style: TextStyles.urbanistSubtitle1.copyWith(
-                        fontSize: _resultsFontSize,
-                      ),
-                    ),
-                    const SizedBox(height: _resultsSpacing),
-                    SearchResultsList(
-                      children:
-                          _searchResults.map((eventData) {
-                            final String? currentUserId =
-                                FirebaseAuth.instance.currentUser?.uid;
-                            if (currentUserId == null) {
-                              return const SizedBox.shrink();
-                            }
-                            final Event event = EventFactory.createEvent(
-                              EventTypeLogic.getEventTypeFromString(
-                                eventData[AppFirestoreFields.type] ??
-                                    AppFirestoreFields.typeTask,
-                              ),
-                              eventData,
-                              currentUserId,
-                            );
-                            String eventTypeString =
+                      items:
+                          EventType.values.map((value) {
+                            return DropdownMenuItem<EventType>(
+                              value: value,
+                              child: Text(
                                 EventTypeLogic.getTranslatedEventTypeDisplay(
-                                  EventTypeLogic.getEventTypeFromString(
-                                    eventData[AppFirestoreFields.type] ??
-                                        AppFirestoreFields.typeTask,
-                                  ),
+                                  value,
                                   context,
-                                );
-                            String formattedDateTime =
-                                event.dateTime != null
-                                    ? DateFormat(
-                                      'yyyy/MM/dd HH:mm',
-                                    ).format(event.dateTime!.toDate())
-                                    : AppInternalConstants.searchNA;
-                            return EventResultCard(
-                              event: event,
-                              eventTypeString: eventTypeString,
-                              formattedDateTime: formattedDateTime,
-                              getTranslatedPriorityDisplay:
-                                  (priorityString) =>
-                                      PriorityLogic.getTranslatedPriorityDisplay(
-                                        priorityString,
-                                        context,
-                                      ),
-                              onEdit: () => _onEditEvent(eventData),
-                              onDelete: () => _onDeleteEvent(eventData),
-                              width: screenWidth * 0.9,
-                              contextForStrings: context,
+                                ),
+                                style: TextStyles.plusJakartaSansBody2,
+                              ),
                             );
                           }).toList(),
+                      labelText: AppStrings.searchFieldEventType(context),
                     ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.zero,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: _headerBlurSigma,
-                sigmaY: _headerBlurSigma,
-              ),
-              child: Container(
-                width: double.infinity,
-                height: _headerHeight,
-                color: AppColors.headerBackground.withOpacity(_headerOpacity),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: AppColors.outlineColorLight,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
+                    PrioritySelector(
+                      enablePriorityFilter: _enablePriorityFilter,
+                      onEnableChanged: (newValue) {
+                        setState(() {
+                          _enablePriorityFilter = newValue;
+                          if (!newValue) _selectedPriority = null;
+                          _searchEvents();
+                        });
                       },
+                      selectedPriority: _selectedPriority,
+                      onPriorityChanged: (priority) {
+                        setState(() {
+                          _selectedPriority = priority;
+                          _searchEvents();
+                        });
+                      },
+                      labelCritical: AppStrings.searchPriorityCritical(context),
+                      labelHigh: AppStrings.searchPriorityHigh(context),
+                      labelMedium: AppStrings.searchPriorityMedium(context),
+                      labelLow: AppStrings.searchPriorityLow(context),
                     ),
-                    Expanded(
-                      child: Center(
-                        child: ShiningTextAnimation(
-                          text: AppStrings.searchEventsTitle(context),
-                          style: TextStyles.urbanistBody1,
-                          shineColor: AppColors.shineColorLight,
+                    if (_selectedEventType == EventType.meeting ||
+                        _selectedEventType == EventType.conference ||
+                        _selectedEventType == EventType.appointment ||
+                        _selectedEventType == EventType.all)
+                      SearchField(
+                        controller: _locationSearchController,
+                        labelText: AppStrings.searchFieldLocation(context),
+                        onChanged: (_) => _searchEvents(),
+                      ),
+                    if (_selectedEventType == EventType.exam ||
+                        _selectedEventType == EventType.all)
+                      SearchField(
+                        controller: _subjectSearchController,
+                        labelText: AppStrings.searchFieldSubject(context),
+                        onChanged: (_) => _searchEvents(),
+                      ),
+                    if (_selectedEventType == EventType.appointment ||
+                        _selectedEventType == EventType.all)
+                      WithPersonField(
+                        withPersonYesNoSearch: _withPersonYesNoSearch,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _withPersonYesNoSearch = newValue ?? false;
+                            _searchEvents();
+                          });
+                        },
+                        controller: _withPersonSearchController,
+                        labelText: AppStrings.searchFieldWithPerson(context),
+                        yesNoLabel: AppStrings.searchFieldWithPersonYesNo(
+                          context,
                         ),
                       ),
-                    ),
-                    const SizedBox(width: _headerIconWidth),
+                    if ((_selectedEventType == EventType.appointment ||
+                            _selectedEventType == EventType.all) &&
+                        _withPersonYesNoSearch)
+                      SearchField(
+                        controller: _withPersonSearchController,
+                        labelText: AppStrings.searchFieldWithPerson(context),
+                        onChanged: (_) => _searchEvents(),
+                      ),
+                    if (_searchResults.isNotEmpty) ...[
+                      const SizedBox(height: _resultsSpacing),
+                      Text(
+                        '${AppStrings.searchResultsPrefix(context)}${_searchResults.length}${AppStrings.searchResultsSuffix(context)}',
+                        style: TextStyles.urbanistSubtitle1.copyWith(
+                          fontSize: _resultsFontSize,
+                        ),
+                      ),
+                      const SizedBox(height: _resultsSpacing),
+                      SearchResultsList(
+                        children:
+                            _searchResults.map((eventData) {
+                              final String? currentUserId =
+                                  FirebaseAuth.instance.currentUser?.uid;
+                              if (currentUserId == null) {
+                                return const SizedBox.shrink();
+                              }
+                              final Event event = EventFactory.createEvent(
+                                EventTypeLogic.getEventTypeFromString(
+                                  eventData[AppFirestoreFields.type] ??
+                                      AppFirestoreFields.typeTask,
+                                ),
+                                eventData,
+                                currentUserId,
+                              );
+                              String eventTypeString =
+                                  EventTypeLogic.getTranslatedEventTypeDisplay(
+                                    EventTypeLogic.getEventTypeFromString(
+                                      eventData[AppFirestoreFields.type] ??
+                                          AppFirestoreFields.typeTask,
+                                    ),
+                                    context,
+                                  );
+                              String formattedDateTime =
+                                  event.dateTime != null
+                                      ? DateFormat(
+                                        'yyyy/MM/dd HH:mm',
+                                      ).format(event.dateTime!.toDate())
+                                      : AppInternalConstants.searchNA;
+                              return EventResultCard(
+                                event: event,
+                                eventTypeString: eventTypeString,
+                                formattedDateTime: formattedDateTime,
+                                getTranslatedPriorityDisplay:
+                                    (priorityString) =>
+                                        PriorityLogic.getTranslatedPriorityDisplay(
+                                          priorityString,
+                                          context,
+                                        ),
+                                onEdit: () => _onEditEvent(eventData),
+                                onDelete: () => _onDeleteEvent(eventData),
+                                width: screenWidth * 0.9,
+                                contextForStrings: context,
+                              );
+                            }).toList(),
+                      ),
+                    ],
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+            ClipRRect(
+              borderRadius: BorderRadius.zero,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: _headerBlurSigma,
+                  sigmaY: _headerBlurSigma,
+                ),
+                child: Container(
+                  width: double.infinity,
+                  height: _headerHeight,
+                  color: AppColors.headerBackground.withOpacity(_headerOpacity),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: AppColors.outlineColorLight,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: ShiningTextAnimation(
+                            text: AppStrings.searchEventsTitle(context),
+                            style: TextStyles.urbanistBody1,
+                            shineColor: AppColors.shineColorLight,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: _headerIconWidth),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -105,4 +105,7 @@ abstract class AppInternalConstants {
 
   // Valor por defecto para el nombre de usuario de Google si no se proporciona displayName
   static const String googleUserDefault = 'Google User';
+
+  // Nombre de la aplicación
+  static const String appName = 'Eventify';
 }

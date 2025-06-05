@@ -6,9 +6,10 @@ import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.d
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/chat/presentation/screen/chat_screen.dart';
 import 'package:eventify/chat/presentation/view_model/chat_view_model.dart';
+import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/common/constants/app_localizations_constants.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:eventify/common/widgets/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => di.sl<ChatViewModel>()),
       ],
       child: MaterialApp(
-        title: 'Eventify',
+        title: AppInternalConstants.appName,
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: AppColors.background,
@@ -102,17 +103,7 @@ class MyApp extends StatelessWidget {
           Locale(AppLocalizationsConstants.zh, _emptyLocale),
           Locale(AppLocalizationsConstants.ar, _emptyLocale),
         ],
-        home: Builder(
-          builder: (context) {
-            final auth = FirebaseAuth.instance;
-            final user = auth.currentUser;
-            if (user != null) {
-              return const CalendarScreen(); // Usuario autenticado
-            } else {
-              return const SignInScreen(); // Usuario no autenticado
-            }
-          },
-        ),
+        home: const SplashScreen(),
         routes: {
           CalendarScreen.routeName: (context) => const CalendarScreen(),
           ChatScreen.routeName: (context) => const ChatScreen(),

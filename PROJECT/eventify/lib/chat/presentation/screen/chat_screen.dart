@@ -13,8 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
-  static const String routeName = AppRoutes.chat; // Ruta para navegación
-
+  static const String routeName = AppRoutes.chat;
   const ChatScreen({super.key});
 
   @override
@@ -44,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
   static const double _listPaddingV = 16.0;
   static const double _headerBlurSigma = 18.0;
   static const double _headerOpacity = 0.2;
-  static const double _headerHeightFactor = 1.6;
+  static const double _headerHeightFactor = 1;
   static const double _headerIconBottomFactor = 0.1;
   static const double _headerTitleBottomFactor = 0.2;
   static const double _positionedLeft = 0.0;
@@ -172,82 +171,86 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     const double headerHeight = kToolbarHeight * _headerHeightFactor;
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              SizedBox(height: headerHeight),
-              Expanded(
-                child: Consumer<ChatViewModel>(
-                  builder: (context, chatViewModel, child) {
-                    return ListView.builder(
-                      controller: _scrollController,
-                      reverse: true,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: _listPaddingH,
-                        vertical: _listPaddingV,
-                      ),
-                      itemCount: chatViewModel.messages.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return chatViewModel.messages[index];
-                      },
-                    );
-                  },
-                ),
-              ),
-              const Divider(
-                height: _dividerHeight,
-                color: AppColors.dividerColor,
-              ),
-              _buildTextComposer(),
-            ],
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(_borderRadiusZero),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: _headerBlurSigma,
-                sigmaY: _headerBlurSigma,
-              ),
-              child: Container(
-                width: double.infinity,
-                height: headerHeight,
-                color: AppColors.headerBackground.withOpacity(_headerOpacity),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      bottom: headerHeight * _headerTitleBottomFactor,
-                      left: _positionedLeft,
-                      right: _positionedRight,
-                      child: Center(
-                        child: ShiningTextAnimation(
-                          text:
-                              AppStrings.chatScreenTitle(context).toUpperCase(),
-                          style: TextStyles.urbanistBody1,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                SizedBox(height: headerHeight),
+                Expanded(
+                  child: Consumer<ChatViewModel>(
+                    builder: (context, chatViewModel, child) {
+                      return ListView.builder(
+                        controller: _scrollController,
+                        reverse: true,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: _listPaddingH,
+                          vertical: _listPaddingV,
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: headerHeight * _headerIconBottomFactor,
-                      left: _positionedLeft,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          color: AppColors.outline,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
+                        itemCount: chatViewModel.messages.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return chatViewModel.messages[index];
                         },
+                      );
+                    },
+                  ),
+                ),
+                const Divider(
+                  height: _dividerHeight,
+                  color: AppColors.dividerColor,
+                ),
+                _buildTextComposer(),
+              ],
+            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(_borderRadiusZero),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: _headerBlurSigma,
+                  sigmaY: _headerBlurSigma,
+                ),
+                child: Container(
+                  width: double.infinity,
+                  height: headerHeight,
+                  color: AppColors.headerBackground.withOpacity(_headerOpacity),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        bottom: headerHeight * _headerTitleBottomFactor,
+                        left: _positionedLeft,
+                        right: _positionedRight,
+                        child: Center(
+                          child: ShiningTextAnimation(
+                            text:
+                                AppStrings.chatScreenTitle(
+                                  context,
+                                ).toUpperCase(),
+                            style: TextStyles.urbanistBody1,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        bottom: headerHeight * _headerIconBottomFactor,
+                        left: _positionedLeft,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: AppColors.outline,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
