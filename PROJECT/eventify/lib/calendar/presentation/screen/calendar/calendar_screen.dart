@@ -43,7 +43,7 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody>
   static const double _spacingBetweenContentAndFooter = 10.0;
   static const double _footerHeightFraction = 0.10;
   static const double _heightThreshold = 760.0;
-  static const double _tabletMinWidth = 600.0;
+  static const double _tabletMinWidth = 900.0;
   static const double _tabletMaxWidth = 900.0;
   static const double _desktopMinWidth = 900.0;
   static const double _horizontalPadding = 16.0;
@@ -368,11 +368,20 @@ class _CalendarScreenBodyState extends State<_CalendarScreenBody>
                 const SizedBox(height: _spacingBetweenContentAndFooter),
                 SizedBox(
                   height: footerHeight,
-                  child: Footer(
-                    onToggleCalendar: logic.toggleCalendarView,
-                    isMonthlyView: logic.isMonthlyView,
-                    onResetToCurrent: logic.resetCalendarToCurrent,
-                  ),
+                  child:
+                      (MediaQuery.of(context).size.width <= _tabletMinWidth)
+                          ? Footer(
+                            onToggleCalendar: logic.toggleCalendarView,
+                            isMonthlyView: logic.isMonthlyView,
+                            onResetToCurrent: logic.resetCalendarToCurrent,
+                            showToggle: true,
+                          )
+                          : Footer(
+                            onToggleCalendar: logic.toggleCalendarView,
+                            isMonthlyView: logic.isMonthlyView,
+                            onResetToCurrent: logic.resetCalendarToCurrent,
+                            showToggle: false,
+                          ),
                 ),
               ],
             );

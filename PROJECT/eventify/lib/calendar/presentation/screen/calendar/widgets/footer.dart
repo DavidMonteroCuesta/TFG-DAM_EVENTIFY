@@ -19,6 +19,7 @@ class Footer extends StatelessWidget {
   final VoidCallback? onProfileTap;
   final VoidCallback? onChatTap;
   final VoidCallback onResetToCurrent;
+  final bool showToggle;
 
   const Footer({
     super.key,
@@ -27,12 +28,12 @@ class Footer extends StatelessWidget {
     this.onProfileTap,
     this.onChatTap,
     required this.onResetToCurrent,
+    this.showToggle = true,
   });
 
   @override
   Widget build(BuildContext context) {
     final footerHeight = FooterLogic.getFooterHeight(context);
-
     // Pie de página con botones para volver al mes actual, chat, alternar vista y perfil.
     return Container(
       height: footerHeight,
@@ -50,13 +51,14 @@ class Footer extends StatelessWidget {
             tooltip: AppStrings.footerReturnToCurrentMonthTooltip(context),
           ),
           ChatButton(size: _actionButtonSize),
-          Transform.scale(
-            scale: 1,
-            child: CalendarToggleButton(
-              onToggleCalendar: onToggleCalendar,
-              isMonthlyView: isMonthlyView,
+          if (showToggle)
+            Transform.scale(
+              scale: 1,
+              child: CalendarToggleButton(
+                onToggleCalendar: onToggleCalendar,
+                isMonthlyView: isMonthlyView,
+              ),
             ),
-          ),
           ProfileButton(size: _actionButtonSize),
         ],
       ),
