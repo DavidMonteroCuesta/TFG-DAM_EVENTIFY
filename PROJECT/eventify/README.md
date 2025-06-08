@@ -4,13 +4,17 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+After cloning the repository, you should set up your environment and generate the localization files. You can do this by running the following script from the project root:
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+./tools/flutter_refresh.sh
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Alternatively, you can run these commands manually:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter clean
+flutter pub get
+flutter gen-l10n
+flutter pub get
+```

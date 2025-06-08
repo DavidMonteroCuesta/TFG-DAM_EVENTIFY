@@ -35,7 +35,7 @@ class EventTypeDropdown extends StatelessWidget {
                 return DropdownMenuItem<EventType>(
                   value: value,
                   child: Text(
-                    value.toString().split('.').last.toUpperCase(),
+                    value.localizedName(context),
                     style: TextStyles.plusJakartaSansBody1,
                   ),
                 );
