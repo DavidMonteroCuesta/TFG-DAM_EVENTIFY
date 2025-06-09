@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:eventify/common/constants/api_constants.dart';
+import 'package:eventify/common/constants/app_constants.dart';
 import 'package:eventify/common/constants/app_internal_constants.dart';
 import 'package:eventify/common/constants/app_logs.dart';
 import 'package:http/http.dart' as http;

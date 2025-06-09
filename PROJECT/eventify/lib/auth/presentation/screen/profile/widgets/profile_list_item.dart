@@ -111,10 +111,7 @@ class ProfileListItem extends StatelessWidget {
                     ),
                     Expanded(
                       child: Align(
-                        alignment: AlignmentDirectional(
-                          kProfileListItemDropdownAlignX,
-                          0,
-                        ),
+                        alignment: AlignmentDirectional.centerEnd,
                         child: Icon(
                           isExpandable
                               ? (isExpanded

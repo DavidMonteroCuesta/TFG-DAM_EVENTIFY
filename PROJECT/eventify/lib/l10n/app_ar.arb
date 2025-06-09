@@ -743,5 +743,21 @@
   "priority": "أولوية",
   "@priority": {
     "description": "المصطلح العربي لكلمة 'أولوية'."
+  },
+  "profileUserManualText": "دليل المستخدم",
+  "@profileUserManualText": {
+    "description": "نص دليل المستخدم في شاشة الملف الشخصي."
+  },
+  "profileUserManualOpenText": "لفتح دليل المستخدم انقر هنا",
+  "@profileUserManualOpenText": {
+    "description": "نص الرابط لفتح دليل المستخدم."
+  },
+  "profileBasicGuideText": "الدليل الأساسي",
+  "@profileBasicGuideText": {
+    "description": "نص الدليل الأساسي في شاشة الملف الشخصي."
+  },
+  "profileBasicGuideOpenText": "لفتح الدليل الأساسي انقر هنا",
+  "@profileBasicGuideOpenText": {
+    "description": "نص الرابط لفتح الدليل الأساسي."
   }
 }

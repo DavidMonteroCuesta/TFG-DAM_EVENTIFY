@@ -744,5 +744,21 @@
   "priority": "优先",
   "@priority": {
     "description": "“优先”一词的中文翻译。"
+  },
+  "profileUserManualText": "用户手册",
+  "@profileUserManualText": {
+    "description": "配置文件屏幕上的用户手册文本。"
+  },
+  "profileUserManualOpenText": "点击此处打开用户手册",
+  "@profileUserManualOpenText": {
+    "description": "打开用户手册链接的文本。"
+  },
+  "profileBasicGuideText": "基本指南",
+  "@profileBasicGuideText": {
+    "description": "配置文件屏幕上的基本指南文本。"
+  },
+  "profileBasicGuideOpenText": "点击此处打开基本指南",
+  "@profileBasicGuideOpenText": {
+    "description": "打开基本指南链接的文本。"
   }
 }

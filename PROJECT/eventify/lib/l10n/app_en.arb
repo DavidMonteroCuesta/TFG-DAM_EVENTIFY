@@ -743,5 +743,21 @@
   "priority": "priority",
   "@priority": {
     "description": "The term for 'priority' in English."
+  },
+  "profileUserManualText": "User Manual",
+  "@profileUserManualText": {
+    "description": "Text for the user manual on the profile screen."
+  },
+  "profileUserManualOpenText": "To open the user manual click here",
+  "@profileUserManualOpenText": {
+    "description": "Text for the link to open the user manual."
+  },
+  "profileBasicGuideText": "Basic Guide",
+  "@profileBasicGuideText": {
+    "description": "Text for the basic guide on the profile screen."
+  },
+  "profileBasicGuideOpenText": "To open the basic guide click here",
+  "@profileBasicGuideOpenText": {
+    "description": "Text for the link to open the basic guide."
   }
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:eventify/calendar/presentation/screen/calendar/calendar_screen.dart';
+import 'package:eventify/common/constants/api_urls_constants.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/utils/auth/logout_service.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
@@ -16,6 +17,7 @@ import 'package:eventify/auth/presentation/screen/profile/widgets/profile_list_i
 import 'package:eventify/auth/presentation/screen/profile/logic/profile_theme_logic.dart';
 import 'package:eventify/auth/presentation/screen/profile/widgets/profile_header.dart';
 import 'package:eventify/auth/presentation/screen/profile/widgets/profile_avatar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const double kProfileHeaderHeight = 90.0;
 const double kProfileAvatarRadius = 40.0;
@@ -55,6 +57,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isTermsOfServiceExpanded = false;
   bool _isSupportExpanded = false;
   bool _isThemeColorExpanded = false;
+  bool _isManualExpanded = false;
+  bool _isBasicGuideExpanded = false;
 
   final List<Color?> _availableColors = ProfileThemeLogic.availableColors;
   List<String> get _colorNames => ProfileThemeLogic.colorNames(context);
@@ -139,6 +143,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: AppColors.snackBarInfoColor,
       ),
     );
+  }
+
+  Future<void> _openExternalUrl(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    }
   }
 
   @override
@@ -363,6 +373,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
+                  // Espaciado entre ítems
+                  SizedBox(height: kProfileListItemSpacing),
+                  // Ítem para manual de usuario
+                  ProfileListItem(
+                    icon: Icons.menu_book_outlined,
+                    text: AppStrings.profileUserManualText(context),
+                    isExpandable: true,
+                    isExpanded: _isManualExpanded,
+                    onToggleExpand: () {
+                      setState(() {
+                        _isManualExpanded = !_isManualExpanded;
+                      });
+                    },
+                    listBackgroundColor: AppColors.cardBackground,
+                    dropdownContent: InkWell(
+                      onTap: () {
+                        _openExternalUrl(AppUrls.userTutorialGoogleDrive);
+                        setState(() {
+                          _isManualExpanded = false;
+                        });
+                      },
+                      child: Text(
+                        AppStrings.profileUserManualOpenText(context),
+                        style: TextStyles.plusJakartaSansBody1.copyWith(
+                          color: AppColors.shineEffectColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Espaciado entre ítems
+                  SizedBox(height: kProfileListItemSpacing),
+                  // Ítem para guía básica
+                  ProfileListItem(
+                    icon: Icons.info_outline,
+                    text: AppStrings.profileBasicGuideText(context),
+                    isExpandable: true,
+                    isExpanded: _isBasicGuideExpanded,
+                    onToggleExpand: () {
+                      setState(() {
+                        _isBasicGuideExpanded = !_isBasicGuideExpanded;
+                      });
+                    },
+                    listBackgroundColor: AppColors.cardBackground,
+                    dropdownContent: InkWell(
+                      onTap: () {
+                        _openExternalUrl(AppUrls.userBasicGuideGoogleDrive);
+                        setState(() {
+                          _isBasicGuideExpanded = false;
+                        });
+                      },
+                      child: Text(
+                        AppStrings.profileBasicGuideOpenText(context),
+                        style: TextStyles.plusJakartaSansBody1.copyWith(
+                          color: AppColors.shineEffectColor,
+                        ),
+                      ),
+                    ),
+                  ),
                   // Espaciado antes del botón de logout
                   SizedBox(height: kProfileSectionSpacing),
                   Align(
@@ -396,7 +464,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                  // Espaciado final
                   SizedBox(height: kProfileSectionSpacing),
                 ],
               ),

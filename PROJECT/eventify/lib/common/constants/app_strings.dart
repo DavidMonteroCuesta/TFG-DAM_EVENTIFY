@@ -408,4 +408,14 @@ abstract class AppStrings {
 
   static String priority(BuildContext context) =>
       AppLocalizations.of(context)!.priority;
+
+  // User manual and guide texts
+  static String profileUserManualText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileUserManualText;
+  static String profileUserManualOpenText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileUserManualOpenText;
+  static String profileBasicGuideText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileBasicGuideText;
+  static String profileBasicGuideOpenText(BuildContext context) =>
+      AppLocalizations.of(context)!.profileBasicGuideOpenText;
 }
