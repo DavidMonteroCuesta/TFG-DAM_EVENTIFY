@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:eventify/common/animations/ani_shining_text.dart';
 import 'package:eventify/common/theme/fonts/text_styles.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:eventify/common/utils/dates/months_enum.dart';
 
 const double kProfileHeaderBlurSigma = 10.0;
 const double kProfileHeaderBorderRadius = 0.0;
@@ -29,6 +30,19 @@ class ProfileHeader extends StatelessWidget {
     required this.onClose,
     this.headerHeight = 120.0,
   });
+
+  String _getLocalizedDate(BuildContext context) {
+    try {
+      final date = DateTime.now();
+      final day = date.day;
+      final month = date.month;
+      final year = date.year;
+      final localizedMonth = Month.fromInt(month).localizedName(context);
+      return '$day $localizedMonth $year';
+    } catch (_) {
+      return currentDate;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +100,7 @@ class ProfileHeader extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(left: kProfileHeaderDatePaddingLeft),
                   child: ShiningTextAnimation(
-                    text: currentDate,
+                    text: _getLocalizedDate(context),
                     style: TextStyles.urbanistBody1.copyWith(
                       color: AppColors.shineEffectColor,
                     ),

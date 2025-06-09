@@ -405,54 +405,30 @@
     "description": "Mensaje cuando no hay eventos para el mes actual en el calendario."
   },
 
-  "monthJanuary": "ENERO",
-  "@monthJanuary": {
-    "description": "Nombre del mes de Enero."
-  },
-  "monthFebruary": "FEBRERO",
-  "@monthFebruary": {
-    "description": "Nombre del mes de Febrero."
-  },
-  "monthMarch": "MARZO",
-  "@monthMarch": {
-    "description": "Nombre del mes de Marzo."
-  },
-  "monthApril": "ABRIL",
-  "@monthApril": {
-    "description": "Nombre del mes de Abril."
-  },
-  "monthMay": "MAYO",
-  "@monthMay": {
-    "description": "Nombre del mes de Mayo."
-  },
-  "monthJune": "JUNIO",
-  "@monthJune": {
-    "description": "Nombre del mes de Junio."
-  },
-  "monthJuly": "JULIO",
-  "@monthJuly": {
-    "description": "Nombre del mes de Julio."
-  },
-  "monthAugust": "AGOSTO",
-  "@monthAugust": {
-    "description": "Nombre del mes de Agosto."
-  },
-  "monthSeptember": "SEPTIEMBRE",
-  "@monthSeptember": {
-    "description": "Nombre del mes de Septiembre."
-  },
-  "monthOctober": "OCTUBRE",
-  "@monthOctober": {
-    "description": "Nombre del mes de Octubre."
-  },
-  "monthNovember": "NOVIEMBRE",
-  "@monthNovember": {
-    "description": "Nombre del mes de Noviembre."
-  },
-  "monthDecember": "DICIEMBRE",
-  "@monthDecember": {
-    "description": "Nombre del mes de Diciembre."
-  },
+  "monthJanuary": "enero",
+  "@monthJanuary": {"description": "Nombre del mes: enero."},
+  "monthFebruary": "febrero",
+  "@monthFebruary": {"description": "Nombre del mes: febrero."},
+  "monthMarch": "marzo",
+  "@monthMarch": {"description": "Nombre del mes: marzo."},
+  "monthApril": "abril",
+  "@monthApril": {"description": "Nombre del mes: abril."},
+  "monthMay": "mayo",
+  "@monthMay": {"description": "Nombre del mes: mayo."},
+  "monthJune": "junio",
+  "@monthJune": {"description": "Nombre del mes: junio."},
+  "monthJuly": "julio",
+  "@monthJuly": {"description": "Nombre del mes: julio."},
+  "monthAugust": "agosto",
+  "@monthAugust": {"description": "Nombre del mes: agosto."},
+  "monthSeptember": "septiembre",
+  "@monthSeptember": {"description": "Nombre del mes: septiembre."},
+  "monthOctober": "octubre",
+  "@monthOctober": {"description": "Nombre del mes: octubre."},
+  "monthNovember": "noviembre",
+  "@monthNovember": {"description": "Nombre del mes: noviembre."},
+  "monthDecember": "diciembre",
+  "@monthDecember": {"description": "Nombre del mes: diciembre."},
 
   "footerReturnToCurrentMonthTooltip": "Volver al mes actual",
   "@footerReturnToCurrentMonthTooltip": {

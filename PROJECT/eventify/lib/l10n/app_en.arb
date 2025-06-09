@@ -405,54 +405,30 @@
     "description": "Message when there are no events for the current month on the calendar."
   },
 
-  "monthJanuary": "JANUARY",
-  "@monthJanuary": {
-    "description": "Name of the month January."
-  },
-  "monthFebruary": "FEBRUARY",
-  "@monthFebruary": {
-    "description": "Name of the month February."
-  },
-  "monthMarch": "MARCH",
-  "@monthMarch": {
-    "description": "Name of the month March."
-  },
-  "monthApril": "APRIL",
-  "@monthApril": {
-    "description": "Name of the month April."
-  },
-  "monthMay": "MAY",
-  "@monthMay": {
-    "description": "Name of the month May."
-  },
-  "monthJune": "JUNE",
-  "@monthJune": {
-    "description": "Name of the month June."
-  },
-  "monthJuly": "JULY",
-  "@monthJuly": {
-    "description": "Name of the month July."
-  },
-  "monthAugust": "AUGUST",
-  "@monthAugust": {
-    "description": "Name of the month August."
-  },
-  "monthSeptember": "SEPTEMBER",
-  "@monthSeptember": {
-    "description": "Name of the month September."
-  },
-  "monthOctober": "OCTOBER",
-  "@monthOctober": {
-    "description": "Name of the month October."
-  },
-  "monthNovember": "NOVEMBER",
-  "@monthNovember": {
-    "description": "Name of the month November."
-  },
-  "monthDecember": "DECEMBER",
-  "@monthDecember": {
-    "description": "Name of the month December."
-  },
+  "monthJanuary": "January",
+  "@monthJanuary": {"description": "Month name: January."},
+  "monthFebruary": "February",
+  "@monthFebruary": {"description": "Month name: February."},
+  "monthMarch": "March",
+  "@monthMarch": {"description": "Month name: March."},
+  "monthApril": "April",
+  "@monthApril": {"description": "Month name: April."},
+  "monthMay": "May",
+  "@monthMay": {"description": "Month name: May."},
+  "monthJune": "June",
+  "@monthJune": {"description": "Month name: June."},
+  "monthJuly": "July",
+  "@monthJuly": {"description": "Month name: July."},
+  "monthAugust": "August",
+  "@monthAugust": {"description": "Month name: August."},
+  "monthSeptember": "September",
+  "@monthSeptember": {"description": "Month name: September."},
+  "monthOctober": "October",
+  "@monthOctober": {"description": "Month name: October."},
+  "monthNovember": "November",
+  "@monthNovember": {"description": "Month name: November."},
+  "monthDecember": "December",
+  "@monthDecember": {"description": "Month name: December."},
 
   "footerReturnToCurrentMonthTooltip": "Return to current month",
   "@footerReturnToCurrentMonthTooltip": {
