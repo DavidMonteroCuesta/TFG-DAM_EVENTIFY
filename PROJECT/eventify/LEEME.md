@@ -1,7 +1,3 @@
-# eventify
-
-Un nuevo proyecto Flutter.
-
 ## Primeros pasos
 
 Después de clonar el repositorio, debes preparar tu entorno y generar los archivos de localización. Puedes hacerlo ejecutando el siguiente script desde la raíz del proyecto:

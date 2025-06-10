@@ -1,7 +1,3 @@
-# eventify
-
-A new Flutter project.
-
 ## Getting Started
 
 After cloning the repository, you should set up your environment and generate the localization files. You can do this by running the following script from the project root:

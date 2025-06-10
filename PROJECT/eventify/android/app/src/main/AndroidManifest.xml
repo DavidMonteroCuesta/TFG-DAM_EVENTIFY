@@ -29,9 +29,31 @@
     </application>
 
     <queries>
+        <!-- Tus intenciones existentes -->
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT" />
             <data android:mimeType="text/plain" />
         </intent>
+
+        <!-- **NUEVAS INTENCIONES PARA URL_LAUNCHER** -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+        <!-- Opcional: Si tu aplicación también necesita abrir correos electrónicos o llamadas telefónicas -->
+        <!--
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        -->
     </queries>
 </manifest>
