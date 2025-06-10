@@ -4,6 +4,7 @@ import 'package:eventify/calendar/domain/enums/priorities_enum.dart';
 import 'package:eventify/calendar/presentation/view_model/event_view_model.dart';
 import 'package:eventify/common/constants/app_firestore_fields.dart';
 import 'package:eventify/common/theme/colors/app_colors.dart';
+import 'package:eventify/common/theme/colors/app_colors_palette.dart';
 import 'package:eventify/di/service_locator.dart';
 import 'package:flutter/material.dart';
 
@@ -85,7 +86,7 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
             colorScheme: ColorScheme.light(
               primary: AppColors.secondaryDynamic,
               onPrimary: AppColors.textPrimary,
-              surface: AppColors.inputFillColor,
+              surface: AppColorPalette.black,
               onSurface: AppColors.textPrimary,
             ),
             textButtonTheme: TextButtonThemeData(
@@ -120,7 +121,7 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
             colorScheme: ColorScheme.light(
               primary: AppColors.secondaryDynamic,
               onPrimary: AppColors.textPrimary,
-              surface: AppColors.inputFillColor,
+              surface: AppColorPalette.black,
               onSurface: AppColors.textPrimary,
             ),
             textButtonTheme: TextButtonThemeData(
@@ -132,7 +133,7 @@ mixin AddEventLogic<T extends StatefulWidget> on State<T> {
           child: child!,
         );
       },
-      initialEntryMode: TimePickerEntryMode.input,
+      initialEntryMode: TimePickerEntryMode.dial,
     );
     if (picked != null && picked != selectedTime) {
       setState(() {

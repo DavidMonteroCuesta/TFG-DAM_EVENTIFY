@@ -17,14 +17,17 @@ class SearchDateLogic {
       lastDate: DateTime(_lastYear),
       builder: (BuildContext context, Widget? child) {
         return Theme(
-          data: ThemeData.dark().copyWith(
-            primaryColor: AppColors.primaryContainer,
-            hintColor: AppColors.secondaryDynamic,
-            colorScheme: ColorScheme.dark(
-              primary: AppColors.primaryContainer,
-            ).copyWith(secondary: AppColors.secondaryDynamic),
-            buttonTheme: const ButtonThemeData(
-              textTheme: ButtonTextTheme.primary,
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.secondaryDynamic,
+              onPrimary: AppColors.textPrimary,
+              surface: AppColors.background,
+              onSurface: AppColors.textPrimary,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.secondaryDynamic,
+              ),
             ),
           ),
           child: child!,

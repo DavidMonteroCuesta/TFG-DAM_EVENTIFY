@@ -38,7 +38,7 @@ class DateTimePickers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Widget para seleccionar fecha y hora con estilos personalizados
+    // Widget para seleccionar fecha y hora
     return Row(
       children: [
         Expanded(
