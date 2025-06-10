@@ -156,115 +156,128 @@ class _MonthlyCalendarState extends State<MonthlyCalendar> {
         borderRadius: BorderRadius.circular(_calendarBorderRadius),
       ),
       padding: const EdgeInsets.all(_calendarPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  color: AppColors.textPrimary,
+      child: GestureDetector(
+        onHorizontalDragEnd: (details) {
+          if (details.primaryVelocity != null) {
+            if (details.primaryVelocity! > 0) {
+              _goToPreviousMonth();
+            } else if (details.primaryVelocity! < 0) {
+              _goToNextMonth();
+            }
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: AppColors.textPrimary,
+                  ),
+                  onPressed: _goToPreviousMonth,
                 ),
-                onPressed: _goToPreviousMonth,
-              ),
-              Text(
-                DateFormat('MMMM', currentLocale).format(_focusedDay),
-                style: TextStyles.urbanistH6,
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.textPrimary,
-                ), // Using AppColors
-                onPressed: _goToNextMonth,
-              ),
-            ],
-          ),
-          const SizedBox(height: _daysOfWeekSpacing),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:
-                daysOfWeek
-                    .map(
-                      (day) => Text(
-                        day,
-                        style: TextStyle(color: AppColors.calendarAccentColor),
-                      ),
-                    )
-                    .toList(),
-          ),
-          const SizedBox(height: _daysGridSpacing),
-          Expanded(
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount:
-                  _daysInMonth.length +
-                  (_firstDayOfMonth.weekday == _daysInWeek
-                      ? _firstDayOffsetIfSunday
-                      : _firstDayOfMonth.weekday - _firstDayOffsetElse),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: _daysInWeek,
-              ),
-              itemBuilder: (context, index) {
-                final int weekdayOffset =
-                    _firstDayOfMonth.weekday == _daysInWeek
+                Text(
+                  DateFormat('MMMM', currentLocale).format(_focusedDay),
+                  style: TextStyles.urbanistH6,
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.textPrimary,
+                  ), // Using AppColors
+                  onPressed: _goToNextMonth,
+                ),
+              ],
+            ),
+            const SizedBox(height: _daysOfWeekSpacing),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children:
+                  daysOfWeek
+                      .map(
+                        (day) => Text(
+                          day,
+                          style: TextStyle(
+                            color: AppColors.calendarAccentColor,
+                          ),
+                        ),
+                      )
+                      .toList(),
+            ),
+            const SizedBox(height: _daysGridSpacing),
+            Expanded(
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount:
+                    _daysInMonth.length +
+                    (_firstDayOfMonth.weekday == _daysInWeek
                         ? _firstDayOffsetIfSunday
-                        : _firstDayOfMonth.weekday - _firstDayOffsetElse;
+                        : _firstDayOfMonth.weekday - _firstDayOffsetElse),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: _daysInWeek,
+                ),
+                itemBuilder: (context, index) {
+                  final int weekdayOffset =
+                      _firstDayOfMonth.weekday == _daysInWeek
+                          ? _firstDayOffsetIfSunday
+                          : _firstDayOfMonth.weekday - _firstDayOffsetElse;
 
-                if (index < weekdayOffset) {
-                  return const SizedBox();
-                }
-                final day = _daysInMonth[index - weekdayOffset];
-                final isToday =
-                    day.year == DateTime.now().year &&
-                    day.month == DateTime.now().month &&
-                    day.day == DateTime.now().day;
-                final hasEvent = _datesWithEvents.contains(day);
+                  if (index < weekdayOffset) {
+                    return const SizedBox();
+                  }
+                  final day = _daysInMonth[index - weekdayOffset];
+                  final isToday =
+                      day.year == DateTime.now().year &&
+                      day.month == DateTime.now().month &&
+                      day.day == DateTime.now().day;
+                  final hasEvent = _datesWithEvents.contains(day);
 
-                return GestureDetector(
-                  onTap: () {
-                    widget.onDaySelected?.call(day);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isToday ? AppColors.todayHighlightColor : null,
-                      shape: isToday ? BoxShape.circle : BoxShape.rectangle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        '${day.day}',
-                        style: TextStyle(
-                          color:
-                              isToday || hasEvent
-                                  ? AppColors.calendarAccentColor
-                                  : AppColors.textPrimary,
-                          fontWeight:
-                              isToday || hasEvent
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
+                  return GestureDetector(
+                    onTap: () {
+                      widget.onDaySelected?.call(day);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: isToday ? AppColors.todayHighlightColor : null,
+                        shape: isToday ? BoxShape.circle : BoxShape.rectangle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${day.day}',
+                          style: TextStyle(
+                            color:
+                                isToday || hasEvent
+                                    ? AppColors.calendarAccentColor
+                                    : AppColors.textPrimary,
+                            fontWeight:
+                                isToday || hasEvent
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-          const SizedBox(height: _eventsSpacing),
-          if (_eventsForCurrentMonth.isNotEmpty)
-            Text(
-              '${AppStrings.monthlyCalendarEventsForMonthPrefix(context)}${_eventsForCurrentMonth.length}',
-              style: TextStyles.plusJakartaSansBody1,
-            )
-          else
-            Text(
-              AppStrings.monthlyCalendarNoEventsForMonth(context),
-              style: TextStyles.plusJakartaSansBody1,
-            ),
-        ],
+            const SizedBox(height: _eventsSpacing),
+            if (_eventsForCurrentMonth.isNotEmpty)
+              Text(
+                '${AppStrings.monthlyCalendarEventsForMonthPrefix(context)}${_eventsForCurrentMonth.length}',
+                style: TextStyles.plusJakartaSansBody1,
+              )
+            else
+              Text(
+                AppStrings.monthlyCalendarNoEventsForMonth(context),
+                style: TextStyles.plusJakartaSansBody1,
+              ),
+          ],
+        ),
       ),
     );
   }

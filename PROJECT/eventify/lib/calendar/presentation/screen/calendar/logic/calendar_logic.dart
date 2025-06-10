@@ -41,12 +41,16 @@ class CalendarLogic extends ChangeNotifier {
   void handleMonthSelected(int monthIndex) {
     focusedMonthForMonthlyView = DateTime(currentYear, monthIndex, 1);
     isMonthlyView = true;
-    pageController.animateToPage(
-      _monthlyPageIndex,
-      duration: const Duration(milliseconds: _animationDurationMs),
-      curve: Curves.easeInOut,
-    );
     notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (pageController.hasClients) {
+        pageController.animateToPage(
+          _monthlyPageIndex,
+          duration: const Duration(milliseconds: _animationDurationMs),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
   }
 
   void handleYearChanged(int year) {
