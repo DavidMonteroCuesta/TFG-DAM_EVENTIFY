@@ -14,3 +14,11 @@ flutter pub get
 flutter gen-l10n
 flutter pub get
 ```
+
+## ACCOUNTS BEFORE CREATED
+
+### monterodc17@gmail.com
+### 1234567f
+
+### eventifyfd@gmail.com
+### 1234567f

@@ -29,10 +29,9 @@ class PrioritySelector extends StatelessWidget {
     required this.labelLow,
   });
 
-  static const double _chipSelectedOpacity = 0.8;
-  static const double _chipUnselectedOpacity = 0.5;
+  static const double _chipUnselectedOpacity = 0.3;
   static const double _chipBorderRadius = 8.0;
-  static const double _chipLabelPaddingH = 12.0;
+  static const double _chipLabelPaddingH = 6.0;
   static const double _chipLabelPaddingV = 8.0;
   static const double _switchActiveOpacity = 0.8;
   static const double _rowSpacing = 10.0;
@@ -89,16 +88,14 @@ class PrioritySelector extends StatelessWidget {
     final isSelected = selectedPriority == priority;
     return Builder(
       builder: (context) {
-        final Color chipColor = AppColors.secondaryDynamic.withOpacity(
-          isSelected ? _chipSelectedOpacity : _chipUnselectedOpacity,
-        );
+        final Color chipColor = AppColors.focusedBorderDynamic;
         return ChoiceChip(
           label: Text(
             label,
             style: TextStyle(
               color:
                   isSelected
-                      ? AppColors.priorityOptionBackground
+                      ? AppColors.onSecondary
                       : AppColors.priorityOptionSelectedTextColor,
             ),
           ),
@@ -106,7 +103,7 @@ class PrioritySelector extends StatelessWidget {
           onSelected: (bool selected) {
             onPriorityChanged(selected ? priority : null);
           },
-          backgroundColor: chipColor,
+          backgroundColor: chipColor.withOpacity(_chipUnselectedOpacity),
           selectedColor: chipColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(_chipBorderRadius),
